@@ -219,6 +219,8 @@ gulp.task('watch-client', function() { // using the native "gulp.watch" plugin
                     }));                 
                     //.pipe(livereload()); // it works but displays a long, ugly path 
             };         
+        } else if(ext == '.html'){
+            livereload.changed(fileName); 
         };
 
     });

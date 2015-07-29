@@ -1,0 +1,30 @@
+﻿
+<!--
+    navbar implemented in angular-ui: 
+    info: https://github.com/angular-ui/bootstrap/issues/1672#issuecomment-33616426
+    plunker (complex menu): http://plnkr.co/edit/qPeBaVUyr5cH6QOV5WF5?p=preview
+    plunker (simple menu, close on click): http://plnkr.co/edit/L8H80ULgf3fMnROSAqCu?p=preview
+-->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">My-app</a>
+        </div>
+        <div class="collapse navbar-collapse" collapse="isCollapsed" ng-click="isCollapsed = true">
+            <ul class="nav navbar-nav">
+                <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
+                    <a ng-href="{{item.link}}">{{item.title}}</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="" >v0.1</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

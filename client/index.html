@@ -1,11 +1,20 @@
 <!doctype html>
-<html ng-app=app>
+<html ng-app=my-app>
 
 <head>
     <base href="/" />
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Celebrate Taste</title>
+    <meta name="description" content="Aplicatie care gestioneaza servirea mesei la cantina">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->    
     
     <!-- cdn -->
-    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     
     <!-- inject-vendor:css -->
     <link rel="stylesheet" href="bower_components/normalize.css/normalize.css">
@@ -13,21 +22,46 @@
 
     <!-- inject:css -->
     <link rel="stylesheet" href="app/app.css">
-    <link rel="stylesheet" href="app/controllers/test.css">
+    <link rel="stylesheet" href="app/home/home.css">
     <!-- endinject -->
 
 </head>
 
 <body>  
+    <!--[if lt IE 9]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
    
-    <h2>My Node.js starter project</h2>
+    <!--<h2>My Node.js starter project</h2>
     <div ng-class="demoClass" ng-controller="demoController">{{itemValue | json}}</div>
-    <img src="assets/img/pagina-in-constructie.png"></img>
+    <img src="app/assets/img/pagina-in-constructie.png"></img>
     </br>
-    <p>end</p>
+    <p>end</p>-->
+    
+    <ng-include src="'app/navbar/navbar.html'" ng-controller="navbarController"></ng-include>
+
+    <ng-view></ng-view>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-XXXXX-X');
+        ga('send', 'pageview');
+    </script>    
 
     <!-- cdn -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-route.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.1/ui-bootstrap-tpls.min.js"></script>    
+    
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>-->
     
     <!-- inject-vendor:js -->
     <script src="bower_components/lodash/lodash.js"></script>
@@ -35,9 +69,11 @@
 
     <!-- inject:js -->
     <script src="app/app.js"></script>
-    <script src="app/controllers/demoController.js"></script>
-    <script src="app/directives/demoDirective.js"></script>
-    <script src="app/services/demoService.js"></script>
+    <script src="app/contact/contactController.js"></script>
+    <script src="app/contact/googleMap.js"></script>
+    <script src="app/home/homeController.js"></script>
+    <script src="app/navbar/navbarController.js"></script>
+    <script src="app/page1/page1Controller.js"></script>
     <!-- endinject -->
 
 </body>

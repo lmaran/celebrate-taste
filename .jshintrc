@@ -87,6 +87,10 @@
       "it"          : false,
       "inject"      : false,
       "expect"      : false,
-      "spyOn"       : false
+      "spyOn"       : false,
+      
+      // my globals
+      "app"         : true,
+      "google"      : true // used by google Map
     }
 }
