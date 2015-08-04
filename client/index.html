@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app=my-app>
+<html>
 
 <head>
     <base href="/" />
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <!-- Place favicon.ico in the root directory -->    
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->    
     
     <!-- cdn -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
@@ -22,23 +22,17 @@
 
     <!-- inject:css -->
     <link rel="stylesheet" href="app/app.css">
+    <link rel="stylesheet" href="app/admin/admin.css">
     <link rel="stylesheet" href="app/home/home.css">
+    <link rel="stylesheet" href="app/account/login/login.css">
     <!-- endinject -->
 
 </head>
 
-<body>  
+<body  ng-app=my-app>  
     <!--[if lt IE 9]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-   
-    <!--<h2>My Node.js starter project</h2>
-    <div ng-class="demoClass" ng-controller="demoController">{{itemValue | json}}</div>
-    <img src="app/assets/img/pagina-in-constructie.png"></img>
-    </br>
-    <p>end</p>-->
-    
-    <ng-include src="'app/navbar/navbar.html'" ng-controller="navbarController"></ng-include>
+    <![endif]-->      
 
     <ng-view></ng-view>
 
@@ -65,15 +59,29 @@
     
     <!-- inject-vendor:js -->
     <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <!-- endinject -->
 
     <!-- inject:js -->
     <script src="app/app.js"></script>
+    <script src="app/account/accountRoutes.js"></script>
+    <script src="app/admin/adminController.js"></script>
+    <script src="app/admin/adminRoutest.js"></script>
+    <script src="app/auth/authService.js"></script>
+    <script src="app/auth/userService.js"></script>
     <script src="app/contact/contactController.js"></script>
+    <script src="app/contact/contactRoutes.js"></script>
     <script src="app/contact/googleMap.js"></script>
     <script src="app/home/homeController.js"></script>
+    <script src="app/home/homeRoutes.js"></script>
     <script src="app/navbar/navbarController.js"></script>
     <script src="app/page1/page1Controller.js"></script>
+    <script src="app/page1/page1Routes.js"></script>
+    <script src="app/account/login/loginController.js"></script>
+    <script src="app/account/settings/settingsController.js"></script>
+    <script src="app/account/signup/signupController.js"></script>
     <!-- endinject -->
 
 </body>

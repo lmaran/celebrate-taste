@@ -1,57 +1,58 @@
 'use strict';
 
 var app = angular.module('my-app', [
-    //'ngAnimate',
-    //'ngSanitize',
+    'ngCookies',
+    'ngResource',
+    'ngSanitize',
     'ngRoute',
-    //'pascalprecht.translate',
-    //'ngCookies',
-    //'monospaced.elastic',
-    //'mgcrea.ngStrap',
-    //'ui.bootstrap.accordion',
-    'ui.bootstrap',
-    //'angularFileUpload'
+    'ui.bootstrap'
 ]);
 
-app.config(['$routeProvider', '$locationProvider',  function ($routeProvider, $locationProvider) {
-        
-        $routeProvider
-        .when('/',
-            {
-            controller: 'homeController',
-            templateUrl: 'app/home/home.html'
-        })
+ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
+    $routeProvider
+        // all routes are configured inside each module
+        .otherwise({
+            redirectTo: '/'
+      });
 
-        // *** teachers ***
-        .when('/page1', {
-            controller: 'page1Controller',
-            templateUrl: 'app/page1/page1.html',
-            title: 'Page 1'
-        })
+    $locationProvider.html5Mode(true);
+    $httpProvider.interceptors.push('authInterceptor');
+}]);
 
-        // *** contact ***
-        .when('/contact', {
-            controller: 'contactController',
-            templateUrl: 'app/contact/contact.html',
-            title: 'Contact'
-        })
-
-        // *** board ***
-        .when('/conducere', {
-            controller: 'staffController',
-            templateUrl: 'app/views/staff.html',
-            title: 'Conducere'
-        })
-
-        .otherwise({ redirectTo: '/' });
-        
-        // use the HTML5 History API - http://scotch.io/quick-tips/js/angular/pretty-urls-in-angularjs-removing-the-hashtag
-        $locationProvider.html5Mode(true);
-        
-        
-    }]);
-
-
-//app.config(['$httpProvider', function ($httpProvider) {
-//    $httpProvider.interceptors.push('authInterceptor');
-//}]);
+app.factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
+    return {
+        // Add authorization token to headers
+        request: function (config) {
+            config.headers = config.headers || {};
+            if ($cookieStore.get('token')) {
+                config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
+            }
+            return config;
+        },
+    
+        // Intercept 401s and redirect you to login
+        responseError: function(response) {
+            if(response.status === 401) {
+                $location.path('/login');
+                // remove any stale tokens
+                $cookieStore.remove('token');
+                return $q.reject(response);
+            }
+            else {
+                return $q.reject(response);
+            }
+        }
+    };
+});
+  
+app.run(function ($rootScope, $location, Auth) {
+    // Redirect to login if route requires auth and you're not logged in
+    $rootScope.$on('$routeChangeStart', function (event, next) {
+        Auth.isLoggedInAsync(function(loggedIn) {
+            if (next.authenticate && !loggedIn) {
+                event.preventDefault();
+                $location.path('/login');
+            }
+        });
+    });
+});

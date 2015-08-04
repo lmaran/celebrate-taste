@@ -1,20 +1,28 @@
 'use strict';
 
-app.controller('navbarController', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+app.controller('navbarController', ['$scope', '$location', 'Auth', function ($scope, $location, Auth) {
+           
+    $scope.menu = [{
+        'title': 'Page 1',
+        'link': '/page1'
+    }, {
+        'title': 'Contact',
+        'link': '/contact'
+    }];  
         
-        $scope.isCollapsed = true;
-                
-        $scope.menu = [{
-                'title': 'Page 1',
-                'link': '/page1'
-            }, {
-                'title': 'Contact',
-                'link': '/contact'
-            }];       
+    $scope.isCollapsed = true;
+    $scope.isLoggedIn = Auth.isLoggedIn;
+    $scope.isAdmin = Auth.isAdmin;
+    $scope.getCurrentUser = Auth.getCurrentUser;
 
-        // http://stackoverflow.com/a/18562339
-        $scope.isActive = function (route) {
-            return route === $location.path();
-        };
+    $scope.logout = function() {
+        Auth.logout();
+        $location.path('/login');
+    };             
 
-    }]);
+    // http://stackoverflow.com/a/18562339
+    $scope.isActive = function (route) {
+        return route === $location.path();
+    };
+
+}]);
