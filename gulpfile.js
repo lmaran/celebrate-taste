@@ -134,7 +134,7 @@ gulp.task('watch-server', function() {
     		script: 'server/app.js',
             //verbose: true,
     		ext: 'js html',
-            env: {'NODE_ENV':'development' },
+            //env: {'NODE_ENV':'development' }, // moved as default otion in app.js
             ignore: ['node_modules/', 'client', 'gulpfile.js']
         })
 	   .on('restart', function(){                 
