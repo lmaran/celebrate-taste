@@ -1,3 +1,4 @@
+/* global Buffer */
 'use strict';
 
 var mongoose = require('mongoose');
@@ -26,7 +27,7 @@ var UserSchema = new Schema({
  */
 UserSchema
     .virtual('password')
-        .set(function(password) {
+    .set(function(password) {
         this._password = password;
         this.salt = this.makeSalt();
         this.hashedPassword = this.encryptPassword(password);

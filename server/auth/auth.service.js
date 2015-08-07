@@ -6,7 +6,10 @@ var config = require('../config/environment');
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 var compose = require('composable-middleware');
-var User = require('../api/user/userModel');
+
+//var User = require('../api/user/userModel');
+var userService = require('../api/user/userService');
+
 var validateJwt = expressJwt({ secret: config.secrets.session });
 
 /**
@@ -25,7 +28,8 @@ function isAuthenticated() {
     })
     // Attach user to request
     .use(function(req, res, next) {
-      User.findById(req.user._id, function (err, user) {
+      //User.findById(req.user._id, function (err, user) {
+      userService.getById(req.user._id, function (err, user) {
         if (err) return next(err);
         if (!user) return res.status(401).send('Unauthorized');
 
@@ -70,7 +74,14 @@ function setTokenCookie(req, res) {
     res.redirect('/');
 }
 
-exports.isAuthenticated = isAuthenticated;
-exports.hasRole = hasRole;
-exports.signToken = signToken;
-exports.setTokenCookie = setTokenCookie;
+// exports.isAuthenticated = isAuthenticated;
+// exports.hasRole = hasRole;
+// exports.signToken = signToken;
+// exports.setTokenCookie = setTokenCookie;
+
+module.exports = {
+    isAuthenticated: isAuthenticated,
+    hasRole: hasRole,
+    signToken: signToken,
+    setTokenCookie: setTokenCookie
+}

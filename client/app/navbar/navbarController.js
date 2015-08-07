@@ -6,6 +6,9 @@ app.controller('navbarController', ['$scope', '$location', 'Auth', function ($sc
         'title': 'Page 1',
         'link': '/page1'
     }, {
+        'title': 'Customers',
+        'link': '/customers'
+    }, {        
         'title': 'Contact',
         'link': '/contact'
     }];  

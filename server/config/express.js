@@ -15,9 +15,9 @@ var errorHandler = require('errorhandler');
 var path = require('path');
 var config = require('./environment');
 var passport = require('passport');
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session); // use PascalCase to avoid an warning in VSCode
-var mongoose = require('mongoose');
+//var session = require('express-session');
+//var MongoStore = require('connect-mongo')(session); // use PascalCase to avoid an warning in VSCode
+//var mongoose = require('mongoose');
 
 module.exports = function(app) {
     var env = app.get('env');
@@ -33,15 +33,15 @@ module.exports = function(app) {
 
     // Persist sessions with mongoStore
     // We need to enable sessions for passport twitter because its an oauth 1.0 strategy
-    app.use(session({
-        secret: config.secrets.session,
-        resave: true,
-        saveUninitialized: true,
-        store: new MongoStore({
-          mongooseConnection: mongoose.connection,
-          db: 'node-fullstack'
-        })
-    }));
+    // app.use(session({
+    //     secret: config.secrets.session,
+    //     resave: true,
+    //     saveUninitialized: true,
+    //     store: new MongoStore({
+    //       mongooseConnection: mongoose.connection,
+    //       db: 'node-fullstack'
+    //     })
+    // }));
   
     if ('production' === env) {
         app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
@@ -63,6 +63,41 @@ module.exports = function(app) {
         app.use(express.static(path.join(config.root, 'client')));
         app.set('appPath', path.join(config.root, 'client'));
         app.use(morgan('dev'));
+        
+        // se pare ca orice errhandler de aici nu functioneaza
         app.use(errorHandler()); // Error handler - has to be last
+        //app.use(errorHandler({log: errorNotification}))
+        
+        //app.use(errorHandler);
+        
+        // app.use(function(err, req, res, next) {
+        //     console.error("aaa");
+        //     res.status(500).send('Something broke!');
+        // });
     }
+    
+    // function logErrors(err, req, res, next) {
+    //   console.log(123456);
+    //   next(err);
+    // }
+    // 
+    // function errorHandler(err, req, res, next) {
+    //   if (res.headersSent) {
+    //     return next(err);
+    //   };
+    //   res.status(500);
+    //   //res.render('error', { error: err });
+    //   res.send('oops! something broke');
+    // }
+    
+    // function errorNotification(err, str, req) {
+    //   var title = 'Error in ' + req.method + ' ' + req.url
+    // 
+    //     console.log(title);
+    //   // notifier.notify({
+    //     // title: title,
+    //     // message: str
+    //   // })
+    // }
+
 };
