@@ -25,7 +25,7 @@ var all = {
     ip: process.env.IP || '0.0.0.0',
     
     // Should we populate the DB with sample data?
-    seedDB: true,
+    seedDB: false,
     
     // Secret for session, you will want to change this and make it an environment variable
     secrets: {
@@ -39,7 +39,7 @@ var all = {
     mongo: {
         options: {
             db: {
-                safe: false
+                //safe: true // in Mongo 2.0 this option is 'true' by default and is equals to {w:1} - http://stackoverflow.com/a/14801527
             }
         }
     },
