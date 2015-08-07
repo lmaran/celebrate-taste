@@ -6,7 +6,6 @@ var path = require('path');
 module.exports = function(app) {
 
     // Insert routes below
-    app.use('/api/things', require('./api/thing/thingRoutes'));
     app.use('/api/users', require('./api/user/userRoutes'));
     app.use('/api/customers', require('./api/customer/customerRoutes'));
     
