@@ -1,9 +1,9 @@
 'use strict';
 
-app.config(function ($routeProvider) {
+app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
 		.when('/', {
             controller: 'homeController',
             templateUrl: 'app/home/home.html'
 		});
-});
+}]);
