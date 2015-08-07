@@ -19,7 +19,7 @@ var app = angular.module('my-app', [
     $httpProvider.interceptors.push('authInterceptor');
 }]);
 
-app.factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
+app.factory('authInterceptor', ['$rootScope', '$q', '$cookieStore', '$location', function ($rootScope, $q, $cookieStore, $location) {
     return {
         // Add authorization token to headers
         request: function (config) {
@@ -43,9 +43,9 @@ app.factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location
             }
         }
     };
-});
+}]);
   
-app.run(function ($rootScope, $location, Auth) {
+app.run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Auth) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$routeChangeStart', function (event, next) {
         Auth.isLoggedInAsync(function(loggedIn) {
@@ -55,4 +55,4 @@ app.run(function ($rootScope, $location, Auth) {
             }
         });
     });
-});
+}]);
