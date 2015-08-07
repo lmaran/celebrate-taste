@@ -44,7 +44,7 @@ module.exports = function(app) {
     // }));
   
     if ('production' === env) {
-        app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
+        app.use(favicon(path.join(config.root, 'client', 'favicon.ico')));
         
         // app.use(express.static(path.join(config.root, 'public')));
         // app.set('appPath', path.join(config.root, 'public'));
@@ -55,6 +55,7 @@ module.exports = function(app) {
     }
 
     if ('development' === env || 'test' === env) {
+        app.use(favicon(path.join(config.root, 'client', 'favicon.ico')));
         // http://stackoverflow.com/a/28091651/2726725
         // if you are happy with a browser plugin, then you don't need this middleware
         app.use(require('connect-livereload')());
