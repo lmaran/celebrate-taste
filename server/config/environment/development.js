@@ -8,5 +8,5 @@ module.exports = {
         uri: 'mongodb://localhost/celebrate-taste-dev'
     },
     
-    seedDB: true
+    seedDB: false
 };
