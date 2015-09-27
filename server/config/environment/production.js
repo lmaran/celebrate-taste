@@ -1,23 +1,10 @@
+/* global process */
 'use strict';
 
-// Production specific configuration
-// =================================
+// Production specific configuration (declared as "Env. variables" on the remote server)
 module.exports = {
-    // Server IP
-    ip:       process.env.OPENSHIFT_NODEJS_IP ||
-            process.env.IP ||
-            undefined,
-    
-    // Server port
-    port:     process.env.OPENSHIFT_NODEJS_PORT ||
-            process.env.PORT ||
-            8080,
-    
-    // MongoDB connection options
+    port: process.env.PORT,
     mongo: {
-        uri:    process.env.MONGOLAB_URI ||
-                process.env.MONGOHQ_URL ||
-                process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
-                'mongodb://localhost/celebrate-taste'
-        }
+        uri: process.env.MONGO_URI
+    }
 };

@@ -1,6 +1,0 @@
-{
-    "scripts": {
-        "start": "node server/app.js",
-        "start_windows": "set NODE_ENV=production&&node server/app.js"
-    }
-}
