@@ -1,12 +1,9 @@
 'use strict';
 
 // Development specific configuration
-// ==================================
 module.exports = {
-    // MongoDB connection options
+    port: 1410,
     mongo: {
-        uri: 'mongodb://localhost/celebrate-taste-dev'
-    },
-    
-    seedDB: false
+        uri: 'mongodb://localhost/celebrate-taste'
+    }
 };

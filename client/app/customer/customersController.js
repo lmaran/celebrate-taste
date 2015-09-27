@@ -4,6 +4,7 @@ app.controller('customersController', ['$scope', '$location', 'customerService',
     $scope.customers = [];
     $scope.errors = {};
 
+    /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined
     init();
 
     $scope.delete = function (item) {

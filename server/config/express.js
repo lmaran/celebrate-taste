@@ -1,7 +1,3 @@
-/**
- * Express configuration
- */
-
 'use strict';
 
 var express = require('express');
@@ -43,7 +39,7 @@ module.exports = function(app) {
     //     })
     // }));
   
-    if ('production' === env) {
+    if ('production' === env || 'staging' === env) {
         app.use(favicon(path.join(config.root, 'client', 'favicon.ico')));
         
         // app.use(express.static(path.join(config.root, 'public')));

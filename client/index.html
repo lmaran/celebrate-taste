@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Celebrate Taste</title>
-    <meta name="description" content="Aplicatie care gestioneaza servirea mesei la cantina">
+    <meta name="description" content="Aplicatie ce gestioneaza servirea mesei la cantina">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -14,16 +14,16 @@
     
     <!-- cdn -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     
     <!-- inject-vendor:css -->
-    <link rel="stylesheet" href="bower_components/normalize.css/normalize.css">
     <!-- endinject -->
 
     <!-- inject:css -->
     <link rel="stylesheet" href="app/app.css">
     <link rel="stylesheet" href="app/admin/admin.css">
     <link rel="stylesheet" href="app/home/home.css">
+    <link rel="stylesheet" href="app/navbar/navbar.css">
     <link rel="stylesheet" href="app/account/login/login.css">
     <!-- endinject -->
 
@@ -50,18 +50,18 @@
     </script>    
 
     <!-- cdn -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-resource.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-sanitize.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-cookies.min.js"></script>
     
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.1/ui-bootstrap-tpls.min.js"></script>    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>    
     
     <!--<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>-->
     
     <!-- inject-vendor:js -->
     <script src="bower_components/lodash/lodash.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <!-- endinject -->
 
     <!-- inject:js -->
@@ -81,6 +81,7 @@
     <script src="app/home/homeController.js"></script>
     <script src="app/home/homeRoutes.js"></script>
     <script src="app/navbar/navbarController.js"></script>
+    <script src="app/navbar/navbarService.js"></script>
     <script src="app/page1/page1Controller.js"></script>
     <script src="app/page1/page1Routes.js"></script>
     <script src="app/account/login/loginController.js"></script>

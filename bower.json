@@ -1,10 +1,6 @@
 {
-    "name": "node-demo1",
-    "dependencies": {
-    "lodash": "~3.7.0",
-        "normalize.css": "~3.0.3",
-        "angular-cookies": "~1.4.3",
-        "angular-resource": "~1.4.3",
-        "angular-sanitize": "~1.4.3"
-    }
+  "name": "Celebrate-Taste",
+  "dependencies": {
+    "lodash": "~3.7.0"
+  }
 }
