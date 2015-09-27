@@ -8,6 +8,7 @@ module.exports = function(app) {
     // Insert routes below
     app.use('/api/users', require('./api/user/userRoutes'));
     app.use('/api/customers', require('./api/customer/customerRoutes'));
+    app.use('/api/buildInfo', require('./api/buildInfo/buildInfoRoutes'));
     
     app.use('/auth', require('./auth/authAllRoutes'));
   

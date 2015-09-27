@@ -7,7 +7,8 @@ app.controller('customerController', ['$scope', '$window', '$route', 'customerSe
 
     $scope.customer = {};
    
-    if ($scope.isEditMode) {
+    if ($scope.isEditMode) {  
+        /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined     
         init(); 
     }
 

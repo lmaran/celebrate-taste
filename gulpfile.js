@@ -1,3 +1,4 @@
+/* global process */
 /* aside notes: 
     - 'livereload' works in conjunction with a node.js middleware (connect-nodemon). Alternatively, you can use a browser plugin
     - in Chrome, changes in 'less' files are visible only after you move the mouse over the browser. Works fine in IE and FF.
@@ -62,7 +63,7 @@ gulp.task('prod', function(cb) {
         ['clean-dist', 'clean-css'],
         'less',
         ['build-scripts', 'build-scripts-bower', 'build-styles', 'build-styles-bower'],
-        ['copy-server', 'copy-client', 'copy-assets', 'copy-node-modules', 'create-package.json'],
+        ['copy-server', 'copy-client', 'copy-assets', 'copy-node-modules', 'create-buildInfo.json'],
         'build-prod-html',
     cb);
 });
@@ -288,17 +289,17 @@ gulp.task('copy-node-modules', function() {
         .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('create-package.json', function() {
-    var str = 
-      '{\n' +
-      '    "scripts": {\n' +
-      '        "start": "node server/app.js",\n' +
-      '        "start_windows": "set NODE_ENV=production&&node server/app.js"\n' +
-      '    }\n' +
-    '}';
-    return file('package.json', str, { src: true })
-        .pipe(gulp.dest('./dist'));
-});
+// gulp.task('create-package.json', function() {
+//     var str = 
+//       '{\n' +
+//       '    "scripts": {\n' +
+//       '        "start": "node server/app.js",\n' +
+//       '        "start_windows": "set NODE_ENV=production&&node server/app.js"\n' +
+//       '    }\n' +
+//     '}';
+//     return file('package.json', str, { src: true })
+//         .pipe(gulp.dest('./dist'));
+// });
 
 gulp.task('build-prod-html', function(){
     var localInject = function(pathGlob, name) {
@@ -319,10 +320,21 @@ gulp.task('build-prod-html', function(){
         .pipe(gulp.dest('./dist/client/'));
 });
 
+gulp.task('create-buildInfo.json', function () {
+    var str =
+        '{\n' +
+        '   "commitId": "' + process.env['CI_COMMIT_ID'] + '",\n' +
+        '   "buildId": "' + process.env['CI_BUILD_NUMBER'] + '",\n' +
+        '   "buildDate": "' + new Date().toISOString() + '"\n' +        
+        '}';
+    return file('buildInfo.json', str, { src: true })
+        .pipe(gulp.dest('./dist'));
+});
+
 gulp.task('deploy', function() {
   return gulp.src('./dist/**/*')
     .pipe(ghPages({
         branch:'dist',
         message: 'Update ' + new Date().toISOString() + ' [skip ci]' // https://codeship.com/documentation/continuous-integration/skipping-builds/
     }));
-});
+}); 

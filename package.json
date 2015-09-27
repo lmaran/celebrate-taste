@@ -1,5 +1,5 @@
 {
-  "name": "node-demo1",
+  "name": "Celebrate-Taste",
   "version": "1.0.0",
   "private": true,
   "description": "",
@@ -13,6 +13,7 @@
     "express": "^4.12.3",
     "express-jwt": "^3.0.1",
     "handler": "^0.1.3",
+    "jade": "^1.11.0",
     "jsonwebtoken": "^5.0.4",
     "lodash": "^3.10.1",
     "method-override": "^2.3.5",
