@@ -4,12 +4,12 @@
 app.controller('navbarController', ['$scope', '$location', 'navbarService', '$window', 'Auth', function ($scope, $location, navbarService,$window, Auth) {
                
     $scope.menu = [{
-        'title': 'Page 1',
-        'link': '/page1'
-    }, {
-        'title': 'Customers',
-        'link': '/customers'
-    }, {        
+    //     'title': 'Page 1',
+    //     'link': '/page1'
+    // }, {
+    //     'title': 'Customers',
+    //     'link': '/customers'
+    // }, {        
         'title': 'Contact',
         'link': '/contact'
     }];  
