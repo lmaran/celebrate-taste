@@ -10,7 +10,7 @@ module.exports = function(app) {
     app.use('/api/customers', require('./api/customer/customerRoutes'));
     app.use('/api/buildInfo', require('./api/buildInfo/buildInfoRoutes'));
     
-    app.use('/auth', require('./auth/authAllRoutes'));
+    app.use('/auth', require('./auth/authRoutes'));
   
     // All undefined asset or api routes should return a 404
     app.route('/:url(api|auth|components|app|bower_components|assets)/*')
