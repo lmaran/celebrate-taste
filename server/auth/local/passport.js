@@ -34,10 +34,10 @@ exports.setup = function (userService, config) {
         if (err) return done(err);
 
         if (!user) {
-          return done(null, false, { message: 'This email is not registered.' });
+          return done(null, false, { message: 'Acest email nu este inregistrat.' });
         }
         if (!userService.authenticate(password, user.hashedPassword, user.salt)) {
-          return done(null, false, { message: 'This password is not correct2.' });
+          return done(null, false, { message: 'Aceasta parola este incorecta.' });
         }
         return done(null, user);
       });
