@@ -25,12 +25,16 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
 
-
                 <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/signup">Inregistrare</a></li>
                 <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/login">Autentificare</a></li>
-                <li ng-show="isLoggedIn()"><p class="navbar-text">Salut {{ getCurrentUser().name }}</p> </li>
-                <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}"><a href="/settings"><span class="glyphicon glyphicon-cog"></span></a></li>
-                <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><a href="" ng-click="logout()">Log out</a></li>
+                
+                <li ng-show="isLoggedIn()" dropdown ng-class="{active: isActive('/settings')}">
+                    <a href dropdown-toggle data-toggle="dropdown">{{ getCurrentUser().name }} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/settings">Schimba parola</a></li>
+                        <li><a href="" ng-click="logout()">Log out</a></li>
+                    </ul>
+                </li>                         
                 
                 <li ng-if="buildInfo.nodeEnv == 'staging'">
                     <a class="build-info" href="" >{{buildInfo.nodeEnv}}, {{buildInfo.buildDate | date:'dd MMM yyyy, HH:mm'}}</a>
