@@ -8,11 +8,11 @@ app.controller('settingsController', ['$scope', 'User', 'Auth', function ($scope
         if(form.$valid) {
             Auth.changePassword($scope.user.oldPassword, $scope.user.newPassword)
             .then( function() {
-                $scope.message = 'Password successfully changed.';
+                $scope.message = 'Parola a fost schimbata cu succes.';
             })
             .catch( function() {
                 form.password.$setValidity('mongoose', false);
-                $scope.errors.other = 'Incorrect password';
+                $scope.errors.other = 'Parola incorecta';
                 $scope.message = '';
             });
         }
