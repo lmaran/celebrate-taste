@@ -1,8 +1,13 @@
 'use strict';
 
-app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookieStore', '$q', function ($location, $rootScope, $http, User, $cookieStore, $q) {
+app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$q', '$rootElement', '$window', 
+    function ($location, $rootScope, $http, User, $q, $rootElement, $window) {
+    
+    var appName = $rootElement.attr('ng-app'); // http://stackoverflow.com/a/17503179
+    var tokenKey = appName + '_token';
+    
     var currentUser = {};
-    if($cookieStore.get('token')) {
+    if($window.localStorage.getItem(tokenKey)) {
         currentUser = User.get();
     }
 
@@ -24,7 +29,8 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookieStore',
                 password: user.password
             }).
             success(function(data) {
-                $cookieStore.put('token', data.token);
+                $window.localStorage.setItem(tokenKey, data.token);
+                
                 currentUser = User.get();
                 deferred.resolve(data);
                 return cb();
@@ -44,7 +50,9 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookieStore',
         * @param  {Function}
         */
         logout: function() {
-            $cookieStore.remove('token');
+            //$cookieStore.remove('token');
+            $window.localStorage.removeItem(tokenKey);
+            
             currentUser = {};
         },
 
@@ -60,7 +68,8 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookieStore',
             
             return User.save(user,
                 function(data) {
-                    $cookieStore.put('token', data.token);
+                    $window.localStorage.setItem(tokenKey, data.token);
+                    
                     currentUser = User.get();
                     return cb(user);
                 },
@@ -139,7 +148,7 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookieStore',
         * Get auth token
         */
         getToken: function() {
-            return $cookieStore.get('token');
+            return $window.localStorage.getItem(tokenKey);
         }
     };
 }]);
