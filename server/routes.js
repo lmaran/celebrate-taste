@@ -10,6 +10,8 @@ module.exports = function(app) {
     app.use('/api/customers', require('./api/customer/customerRoutes'));
     app.use('/api/buildInfo', require('./api/buildInfo/buildInfoRoutes'));
     
+    app.use('/api/dishes', require('./api/dish/dishRoutes'));
+    
     app.use('/auth', require('./auth/authRoutes'));
   
     // All undefined asset or api routes should return a 404

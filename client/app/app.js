@@ -29,4 +29,11 @@ app.run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Aut
             }
         });
     });
+    
+    // set pageFitle for each page: http://stackoverflow.com/a/22326375
+    $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+        if (current.hasOwnProperty('$$route')) {
+            $rootScope.pageTitle = current.$$route.title;
+        }
+    });
 }]);
