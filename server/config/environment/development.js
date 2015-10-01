@@ -4,6 +4,6 @@
 module.exports = {
     port: 1410,
     mongo: {
-        uri: 'mongodb://localhost/celebrate-taste'
+        uri: 'mongodb://localhost/celebrate-taste-dev'
     }
 };

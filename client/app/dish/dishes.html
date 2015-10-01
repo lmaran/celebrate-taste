@@ -2,16 +2,16 @@
 
 <div class="container-fluid">
     <h1>{{pageTitle}}</h1>
-    
+
     <div class="row toolbar">
         <div class="col-md-4">
-            <button type="button" class="btn btn-primary" ng-click="create()"> <span class="glyphicon glyphicon-plus"></span> Add new customer </button>
+            <button type="button" class="btn btn-primary" ng-click="create()"> <span class="glyphicon glyphicon-plus"></span> Adauga un nou fel </button>
             <button type="button" class="btn" ng-click="refresh()"> <span class="glyphicon glyphicon-refresh"></span> </button>
         </div>
 
         <div class="col-md-3 pull-right">
             <div class="input-group">
-                <input ng-model="search" name="newEmail" type="text" class="form-control" placeholder="Search">
+                <input ng-model="search" name="newEmail" type="text" class="form-control" placeholder="Cauta">
                 <span class="input-group-btn"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button></span>
             </div>
         </div>
@@ -23,24 +23,24 @@
         <table class="table table-responsive table-hover table-condensed">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Code</th>
-                    <th>Address</th>
-                    <th>Phone</th>
+                    <th>Nume</th>
+                    <th>DePost</th>
+                    <th>Calorii</th>
+                    <th>Descriere</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr data-ng-repeat="customer in customers | filter:search">
+                <tr data-ng-repeat="dish in dishes | filter:search">
                     <td>
-                        <a ng-href="/customers/{{customer._id}}">{{customer.name}}</a>
-                        <i class="glyphicon glyphicon-info-sign" ng-if="customer.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{customer.description}}"></i>
+                        <a ng-href="/dishes/{{dish._id}}">{{dish.name}}</a>
+                        <!--<i class="glyphicon glyphicon-info-sign" ng-if="dish.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{dish.description}}"></i>-->
                     </td>
-                    <td>{{ customer.code }}</td>
-                    <td>{{ customer.address }}</td>
-                    <td>{{ customer.phone }}</td>
+                    <td>{{ dish.isFasting }}</td>
+                    <td>{{ dish.cal }}</td>
+                    <td>{{ dish.description }}</td>
                     <td>
-                        <a ng-click="delete(customer)">delete</a>
+                        <a ng-click="delete(dish)">sterge</a>
                     </td>
                 </tr>
             </tbody>
