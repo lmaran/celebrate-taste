@@ -1,53 +1,47 @@
 <div ng-include="'app/navbar/navbar.html'"></div>
 
 <div class="container-fluid">
+    
     <h1>{{pageTitle}}</h1>
 
     <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" novalidate>
         <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
 
         <div class="form-group" ng-class="{ 'has-error' : form.name.$invalid && submitted }">
-            <label class="col-md-2 control-label">Name </label>
+            <label class="col-md-2 control-label">Nume </label>
             <div class="col-md-4">
-                <input class="form-control" ng-model="customer.name" type="text" name="name" my-focus="isFocusOnName" required />
+                <input class="form-control" ng-model="dish.name" type="text" name="name" my-focus="isFocusOnName" required />
                 <p ng-show="form.name.$invalid  && submitted" class="help-block">This field is required.</p>
             </div>
         </div>
 
         <div class="form-group" ng-class="{ 'has-error' : form.code.$invalid && submitted }">
-            <label class="col-md-2 control-label">Code </label>
+            <label class="col-md-2 control-label">DePost </label>
             <div class="col-md-4">
-                <input class="form-control" ng-model="customer.code" type="text" name="code"/>
+                <input class="form-control" ng-model="dish.isFasting" type="text" name="code"/>
                 <!--<p ng-show="form.code.$invalid  && submitted" class="help-block">This field is required.</p>-->
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-md-2 control-label">Address </label>
+            <label class="col-md-2 control-label">Calorii </label>
             <div class="col-md-4">
-                <input class="form-control" ng-model="customer.address" type="text" name="address" />
+                <input class="form-control" ng-model="dish.cal" type="text" name="address" />
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-md-2 control-label">Phone </label>
+            <label class="col-md-2 control-label">Descriere</label>
             <div class="col-md-4">
-                <input class="form-control" ng-model="customer.phone" type="text" name="phone" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label">Description</label>
-            <div class="col-md-4">
-                <textarea class="form-control" ng-model="customer.description" name="description" msd-elastic></textarea>
+                <textarea class="form-control" ng-model="dish.description" name="description" msd-elastic></textarea>
             </div>
         </div>
 
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-floppy-disk"></span> Save </button>
-                <button type="button" class="btn" ng-click="cancel()"> <span class=" glyphicon glyphicon-remove"></span> Cancel </button>
+                <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-floppy-disk"></span> Salveaza </button>
+                <button type="button" class="btn" ng-click="cancel()"> <span class=" glyphicon glyphicon-remove"></span> Renunta </button>
             </div>
         </div>
 
@@ -55,7 +49,7 @@
 
 
     <!--dotObject: <pre>{{dotObject | json}}</pre>-->
-    <!--customer: <pre>{{customer | json}}</pre>-->
+    <!--dish: <pre>{{dish | json}}</pre>-->
     <!--dotObject.selectedAttributeSet: <pre>{{dotObject.selectedAttributeSet | json}}</pre>-->
 
 
