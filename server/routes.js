@@ -11,6 +11,7 @@ module.exports = function(app) {
     app.use('/api/buildInfo', require('./api/buildInfo/buildInfoRoutes'));
     
     app.use('/api/dishes', require('./api/dish/dishRoutes'));
+    app.use('/api/customerEmployees', require('./api/customerEmployee/customerEmployeeRoutes'));
     
     app.use('/auth', require('./auth/authRoutes'));
   
