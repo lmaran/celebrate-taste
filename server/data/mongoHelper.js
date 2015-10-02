@@ -18,7 +18,8 @@
                         db: db,
                         customers: db.collection('customers'),
                         users: db.collection('users'),
-                        dishes: db.collection('dishes')
+                        dishes: db.collection('dishes'),
+                        customerEmployees: db.collection('customerEmployees')
                                             
                     };
                     next(null, theDb);
