@@ -5,17 +5,17 @@ app.config(['$routeProvider', function ($routeProvider) {
         .when('/customers', {
             controller: 'customersController',
             templateUrl: 'app/customer/customers.html',
-			title: 'Customers'
+			title: 'Clienti'
 	    })
 	    .when('/customers/create', {
 	        controller: 'customerController',
 	        templateUrl: 'app/customer/customer.html',
-	        title: 'Create Customer'
+	        title: 'Adauga client'
 	    })
 	    .when('/customers/:id', {
 	        controller: 'customerController',
 	        templateUrl: 'app/customer/customer.html',
-	        title: 'Edit Customer',
+	        title: 'Editeaza client',
 	        isEditMode: true
 	    });	
 }]);
