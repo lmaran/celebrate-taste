@@ -17,7 +17,9 @@
                     theDb = {
                         db: db,
                         customers: db.collection('customers'),
-                        users: db.collection('users')
+                        users: db.collection('users'),
+                        dishes: db.collection('dishes'),
+                        customerEmployees: db.collection('customerEmployees')
                                             
                     };
                     next(null, theDb);
