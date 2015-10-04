@@ -16,7 +16,7 @@
             </button>
             <a class="navbar-brand" href="/">Celebrate-Taste</a>
         </div>
-        <div class="collapse navbar-collapse" collapse="isCollapsed" ng-click="isCollapsed = true">
+        <div class="collapse navbar-collapse" collapse="isCollapsed">
             <ul class="nav navbar-nav">
                 <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
                     <a ng-href="{{item.link}}">{{item.title}}</a>
