@@ -16,7 +16,7 @@
             </button>
             <a class="navbar-brand" href="/">Celebrate-Taste</a>
         </div>
-        <div class="collapse navbar-collapse" collapse="isCollapsed" ng-click="isCollapsed = true">
+        <div class="collapse navbar-collapse" collapse="isCollapsed">
             <ul class="nav navbar-nav">
                 <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
                     <a ng-href="{{item.link}}">{{item.title}}</a>
@@ -42,7 +42,7 @@
                 <li ng-show="isLoggedIn()" dropdown ng-class="{active: isActive('/settings')}">
                     <a href dropdown-toggle data-toggle="dropdown">{{ getCurrentUser().name }} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/settings">Schimba parola</a></li>
+                        <li><a href="/changePassword">Schimba parola</a></li>
                         <li><a href="" ng-click="logout()">Log out</a></li>
                     </ul>
                 </li>                         
