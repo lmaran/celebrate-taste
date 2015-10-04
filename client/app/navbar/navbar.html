@@ -42,7 +42,7 @@
                 <li ng-show="isLoggedIn()" dropdown ng-class="{active: isActive('/settings')}">
                     <a href dropdown-toggle data-toggle="dropdown">{{ getCurrentUser().name }} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/settings">Schimba parola</a></li>
+                        <li><a href="/changePassword">Schimba parola</a></li>
                         <li><a href="" ng-click="logout()">Log out</a></li>
                     </ul>
                 </li>                         

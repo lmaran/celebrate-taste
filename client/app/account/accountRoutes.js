@@ -12,10 +12,20 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'app/account/signup/signup.html',
             title: 'Inregistrare'      
         })
-        .when('/settings', {
-            controller: 'settingsController',
-            templateUrl: 'app/account/settings/settings.html',
+        .when('/changePassword', {
+            controller: 'changePasswordController',
+            templateUrl: 'app/account/changePassword/changePassword.html',
             title: 'Schimba parola',      
             authenticate: true
-        });
+        })
+        .when('/resetpassword', {
+            controller: 'resetPasswordController',
+            templateUrl: 'app/account/resetPassword/forgotPassword.html',
+            title: 'Reseteaza parola'     
+        })
+        .when('/resetpassword:ptoken', {
+            controller: 'resetPasswordController',
+            templateUrl: 'app/account/resetPassword/resetPassword.html',
+            title: 'Reseteaza parola'     
+        });                 
 }]);
