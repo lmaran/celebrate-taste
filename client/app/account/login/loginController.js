@@ -21,8 +21,8 @@ app.controller('loginController', ['$scope', 'Auth', '$location', '$window', fun
         });
         }
     };
-
-    $scope.loginOauth = function(provider) {
-        $window.location.href = '/auth/' + provider;
-    };
+    
+    $scope.cancel = function () {
+        $window.history.back();
+    }
 }]);
