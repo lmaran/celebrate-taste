@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('settingsController', ['$scope', 'User', 'Auth', function ($scope, User, Auth) {
+app.controller('changePasswordController', ['$scope', 'User', 'Auth', '$window', function ($scope, User, Auth, $window) {
     $scope.errors = {};
 
     $scope.changePassword = function(form) {
@@ -17,4 +17,9 @@ app.controller('settingsController', ['$scope', 'User', 'Auth', function ($scope
             });
         }
 	};
+    
+    $scope.cancel = function () {
+        $window.history.back();
+    }
+        
 }]);

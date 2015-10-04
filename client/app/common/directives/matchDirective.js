@@ -1,3 +1,5 @@
+'use strict';
+
 // http://ngmodules.org/modules/angular-input-match
 app.directive('match', function () {
     return {
