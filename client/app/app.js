@@ -21,9 +21,9 @@ var app = angular.module('celebrate-taste', [
   
 app.run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Auth) {
     // Redirect to login if route requires auth and you're not logged in
-    $rootScope.$on('$routeChangeStart', function (event, next) {
+    $rootScope.$on('$routeChangeStart', function (event, nextRoute, currentRoute) {
         Auth.isLoggedInAsync(function(loggedIn) {
-            if (next.authenticate && !loggedIn) {
+            if (nextRoute.authenticate && !loggedIn) {
                 event.preventDefault();
                 $location.path('/login');
             }
@@ -31,9 +31,9 @@ app.run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Aut
     });
     
     // set pageFitle for each page: http://stackoverflow.com/a/22326375
-    $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-        if (current.hasOwnProperty('$$route')) {
-            $rootScope.pageTitle = current.$$route.title;
+    $rootScope.$on('$routeChangeSuccess', function (event, currentRoute, previousRoute) {
+        if (currentRoute.hasOwnProperty('$$route')) {
+            $rootScope.pageTitle = currentRoute.$$route.title;
         }
     });
 }]);

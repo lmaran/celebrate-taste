@@ -1,6 +1,11 @@
 {
   "name": "Celebrate-Taste",
   "dependencies": {
+    "angular": "~1.4.7",
+    "angular-bootstrap": "~0.13.4",
+    "angular-resource": "~1.4.7",
+    "angular-route": "~1.4.7",
+    "angular-sanitize": "~1.4.7",
     "lodash": "~3.7.0"
   }
 }
