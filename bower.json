@@ -1,27 +1,26 @@
 {
-    "name": "Celebrate-Taste",
-    "dependencies": {
-        "angular": "~1.4.7",
-        "angular-bootstrap": "~0.13.4",
-        "angular-resource": "~1.4.7",
-        "angular-route": "~1.4.7",
-        "angular-sanitize": "~1.4.7",
-        "bootstrap": "~3.3.5",
-        "font-awesome": "~4.4.0",
-        "lodash": "~3.7.0"
+  "name": "Celebrate-Taste",
+  "dependencies": {
+    "angular": "~1.4.7",
+    "angular-bootstrap": "~0.13.4",
+    "angular-resource": "~1.4.7",
+    "angular-route": "~1.4.7",
+    "angular-sanitize": "~1.4.7",
+    "bootstrap": "~3.3.5",
+    "lodash": "~3.7.0"
+  },
+  "overrides": {
+    "font-awesome": {
+      "main": [
+        "css/font-awesome.css"
+      ]
     },
-    "overrides": {
-        "font-awesome": {
-            "main": [
-                "css/font-awesome.css"
-            ]
-        },
-        "bootstrap": {
-            "main": [
-                "dist/css/bootstrap.css",
-                "less/bootstrap.less"
-            ],
-            "dependencies": []
-        }
+    "bootstrap": {
+      "main": [
+        "dist/css/bootstrap.css",
+        "less/bootstrap.less"
+      ],
+      "dependencies": []
     }
+  }
 }
