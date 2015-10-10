@@ -63,7 +63,7 @@ gulp.task('prod', function(cb) {
         ['clean-dist', 'clean-css'],
         'less',
         ['build-scripts', 'build-scripts-bower', 'build-styles', 'build-styles-bower'],
-        ['copy-server', 'copy-client', 'copy-assets', 'copy-node-modules', 'create-buildInfo.json'],
+        ['copy-server', 'copy-client', 'copy-bootstrap-fonts', 'copy-assets', 'copy-node-modules', 'create-buildInfo.json'],
         'build-prod-html',
     cb);
 });
@@ -275,8 +275,14 @@ gulp.task('copy-server', function(){
 });
  
 gulp.task('copy-client', function(){
-    return gulp.src('./client/**/**/*.+(html|txt|ico)')
+    //return gulp.src('./client/**/**/*.+(html|txt|ico)')
+    return gulp.src(['./client/**/**/*.html','./client/*.+(txt|ico)'])
         .pipe(gulp.dest('./dist/client/'));
+});
+
+gulp.task('copy-bootstrap-fonts', function(){
+    return gulp.src('./client/bower_components/bootstrap/dist/fonts/*.*')
+        .pipe(gulp.dest('./dist/client/fonts'));
 });
  
 gulp.task('copy-assets', function() {
