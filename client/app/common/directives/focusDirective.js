@@ -1,11 +1,12 @@
-﻿http://stackoverflow.com/a/17739731/2726725
+﻿// http://stackoverflow.com/a/17739731/2726725
+'use strict';
 
 app.directive('focus', ['$timeout', function($timeout) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
 
-            if (attrs.focus == "true" || attrs.focus == "") { //set focus without using a scope variable (Ex: 'focus="true"' or simply 'focus')
+            if (attrs.focus == 'true' || attrs.focus === '') { //set focus without using a scope variable (Ex: 'focus="true"' or simply 'focus')
                 $timeout(function () {
                     element[0].focus();
                 }, 0);
@@ -15,14 +16,14 @@ app.directive('focus', ['$timeout', function($timeout) {
                         if (newValue) { element[0].focus(); }
                     }, 0);
                 });
-                element.bind("blur", function (e) {
+                element.bind('blur', function (e) {
                     $timeout(function () {
                         scope.$apply(attrs.focus + "=false");
                     }, 0);
                 });
-                element.bind("focus", function (e) {
+                element.bind('focus', function (e) {
                     $timeout(function () {
-                        scope.$apply(attrs.focus + "=true");
+                        scope.$apply(attrs.focus + '=true');
                     }, 0);
                 })
             }

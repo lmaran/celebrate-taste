@@ -11,9 +11,23 @@
             <label class="col-md-2 control-label">Nume </label>
             <div class="col-md-4">
                 <input class="form-control" ng-model="dish.name" type="text" name="name" focus="isFocusOnName" required />
-                <p ng-show="form.name.$invalid  && submitted" class="help-block">This field is required.</p>
+                <p ng-show="form.name.$invalid  && submitted" class="help-block">Acest camp este obligatoriu.</p>
             </div>
-        </div>         
+        </div> 
+        
+        <div class="form-group" ng-class="{ 'has-error' : form.category.$invalid && submitted }">
+            <label class="col-md-2 control-label">Categorie</label>
+            <div class="col-md-4">
+                <select name="category" class="form-control" ng-model="dish.category" required>
+                    <option></option>
+                    <option value="1">Felul I</option>
+                    <option value="2">Felul II</option>
+                    <option value="3">Desert</option>
+                    <option value="4">Salata</option>
+                </select>
+                <p ng-show="form.category.$invalid  && submitted" class="help-block">Acest camp este obligatoriu.</p>
+            </div>
+        </div>                
 
         <div class="form-group">
             <label class="col-md-2 control-label">Calorii </label>
