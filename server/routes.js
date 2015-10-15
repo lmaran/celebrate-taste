@@ -12,6 +12,7 @@ module.exports = function(app) {
     
     app.use('/api/dishes', require('./api/dish/dishRoutes'));
     app.use('/api/customerEmployees', require('./api/customerEmployee/customerEmployeeRoutes'));
+    app.use('/api/menus', require('./api/menu/menuRoutes'));
     
     app.use('/auth', require('./auth/authRoutes'));
   

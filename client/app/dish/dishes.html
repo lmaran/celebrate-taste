@@ -24,6 +24,7 @@
             <thead>
                 <tr>
                     <th>Nume</th>
+                    <th>Categorie</th>
                     <th>DePost</th>
                     <th>Calorii</th>
                     <th>Descriere</th>
@@ -36,11 +37,17 @@
                         <a ng-href="/dishes/{{dish._id}}">{{dish.name}}</a>
                         <!--<i class="glyphicon glyphicon-info-sign" ng-if="dish.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{dish.description}}"></i>-->
                     </td>
-                    <td>{{ dish.isFasting }}</td>
-                    <td>{{ dish.cal }}</td>
+                    <td ng-switch="dish.category">
+                        <span ng-switch-when="1">Felul 1</span>
+                        <span ng-switch-when="2">Felul 2</span>
+                        <span ng-switch-when="3">Desert</span>
+                        <span ng-switch-when="4">Salata</span>
+                    </td>
+                    <td><span ng-show="dish.isFasting" class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+                    <td>{{ dish.calories }}</td>
                     <td>{{ dish.description }}</td>
                     <td>
-                        <a ng-click="delete(dish)">sterge</a>
+                        <a href ng-click="delete(dish)">sterge</a>
                     </td>
                 </tr>
             </tbody>

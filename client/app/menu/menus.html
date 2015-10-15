@@ -1,0 +1,59 @@
+<div ng-include="'app/navbar/navbar.html'"></div>
+
+<div class="container-fluid">
+    <h1>{{pageTitle}}</h1>
+
+    <div class="row toolbar">
+        <div class="col-md-4">
+            <button type="button" class="btn btn-primary" ng-click="create()"> <span class="glyphicon glyphicon-plus"></span> Adauga meniu </button>
+            <button type="button" class="btn" ng-click="refresh()"> <span class="glyphicon glyphicon-refresh"></span> </button>
+        </div>
+
+        <div class="col-md-3 pull-right">
+            <div class="input-group">
+                <input ng-model="search" name="newEmail" type="text" class="form-control" placeholder="Cauta">
+                <span class="input-group-btn"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button></span>
+            </div>
+        </div>
+
+    </div>
+    
+    <br/>
+    
+    <div ng-repeat="menu in menus | filter:search">
+        <div class="row toolbar">
+            <div class="col-md-4">{{menu.date}}</div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-responsive table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>Nume</th>
+                        <th>DePost</th>
+                        <th>Calorii</th>
+                        <th>Descriere</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="dish in menu.dishes | filter:search">
+                        <td>
+                            <a ng-href="/dish/{{dish._id}}">{{dish.name}}</a>
+                            <!--<i class="glyphicon glyphicon-info-sign" ng-if="menu.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{menu.description}}"></i>-->
+                        </td>
+                        <td>{{ dish.isFasting }}</td>
+                        <td>{{ dish.calories }}</td>
+                        <td>{{ dish.description }}</td>
+                        <td>
+                            <a ng-click="delete(menu)">sterge</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+</div>
