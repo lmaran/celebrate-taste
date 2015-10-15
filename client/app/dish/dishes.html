@@ -36,7 +36,7 @@
                         <a ng-href="/dishes/{{dish._id}}">{{dish.name}}</a>
                         <!--<i class="glyphicon glyphicon-info-sign" ng-if="dish.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{dish.description}}"></i>-->
                     </td>
-                    <td>{{ dish.isFasting }}</td>
+                    <td><span ng-show="dish.isFasting" class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
                     <td>{{ dish.calories }}</td>
                     <td>{{ dish.description }}</td>
                     <td>
