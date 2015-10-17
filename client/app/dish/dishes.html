@@ -23,6 +23,7 @@
         <table class="table table-responsive table-hover table-condensed">
             <thead>
                 <tr>
+                    <th></th>
                     <th>Nume</th>
                     <th>Categorie</th>
                     <th>DePost</th>
@@ -32,13 +33,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-ng-repeat="dish in dishes | filter:search">
+                <tr data-ng-repeat="dish in dishes | filter:search | orderBy:'category'">
+                    <td width="50"><img ng-click="showModal(product)" ng-src="{{dish.thumbUrl}}" width="40" /></td>
                     <td>
                         <a ng-href="/dishes/{{dish._id}}">{{dish.name}}</a>
                         <!--<i class="glyphicon glyphicon-info-sign" ng-if="dish.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{dish.description}}"></i>-->
                     </td>
                     <td ng-switch="dish.category">
-                        <span ng-switch-when="1">Felul 1</span>
+                        <span ng-switch-when="1">Supa</span>
                         <span ng-switch-when="2">Felul 2</span>
                         <span ng-switch-when="3">Desert</span>
                         <span ng-switch-when="4">Salata</span>
