@@ -1,7 +1,9 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('userController', ['$scope', '$window', '$route', 'userService', '$location', function ($scope, $window, $route, userService, $location) {
+app.controller('userController', ['$scope', '$window', '$route', 'userService', '$location', 
+    function ($scope, $window, $route, userService, $location) {
+        
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
 

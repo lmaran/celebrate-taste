@@ -1,6 +1,8 @@
 ﻿'use strict';
 
-app.controller('menusController', ['$scope', '$location', 'menuService', function ($scope, $location, menuService) {
+app.controller('menusController', ['$scope', '$location', 'menuService', 'modalService',
+    function ($scope, $location, menuService, modalService) {
+        
     $scope.menus = [];
     $scope.errors = {};
 
@@ -9,8 +11,11 @@ app.controller('menusController', ['$scope', '$location', 'menuService', functio
 
     $scope.delete = function (item) {
 
-        //dialogService.confirm('Are you sure you want to delete this item?', item.name).then(function () {
-
+        var modalOptions = {
+            bodyDetails: item.name,           
+        };
+        
+        modalService.confirm({}, modalOptions).then(function (result) {
             // get the index for selected item
             for (var i in $scope.menus) {
                 if ($scope.menus[i]._id === item._id) break;
@@ -24,7 +29,7 @@ app.controller('menusController', ['$scope', '$location', 'menuService', functio
                 alert($scope.errors);
             });
 
-        //});
+        });
     };
 
     $scope.create = function () {

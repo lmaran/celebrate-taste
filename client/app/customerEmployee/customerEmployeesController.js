@@ -1,6 +1,8 @@
 ﻿'use strict';
 
-app.controller('customerEmployeesController', ['$scope', '$location', 'customerEmployeeService', function ($scope, $location, customerEmployeeService) {
+app.controller('customerEmployeesController', ['$scope', '$location', 'customerEmployeeService', 'modalService', 
+    function ($scope, $location, customerEmployeeService, modalService) {
+    
     $scope.customerEmployees = [];
     $scope.errors = {};
 
@@ -9,7 +11,11 @@ app.controller('customerEmployeesController', ['$scope', '$location', 'customerE
 
     $scope.delete = function (item) {
 
-        //dialogService.confirm('Are you sure you want to delete this item?', item.name).then(function () {
+        var modalOptions = {
+            bodyDetails: item.name,           
+        };
+        
+        modalService.confirm({}, modalOptions).then(function (result) {
 
             // get the index for selected item
             for (var i in $scope.customerEmployees) {
@@ -24,7 +30,7 @@ app.controller('customerEmployeesController', ['$scope', '$location', 'customerE
                 alert($scope.errors);
             });
 
-        //});
+        });
     };
 
     $scope.create = function () {

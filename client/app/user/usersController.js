@@ -1,6 +1,7 @@
 'use strict';
 
-app.controller('usersController', ['$scope', '$http', 'Auth', 'User', function ($scope, $http, Auth, User) {
+app.controller('usersController', ['$scope', '$http', 'Auth', 'User', 'modalService', 
+    function ($scope, $http, Auth, User, modalService) {
 
     /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined
     init();
@@ -11,11 +12,17 @@ app.controller('usersController', ['$scope', '$http', 'Auth', 'User', function (
     }
 
     $scope.delete = function(user) {
-        User.remove({ id: user._id });
-        angular.forEach($scope.users, function(u, i) {
-            if (u === user) {
-                $scope.users.splice(i, 1);
-            }
+        var modalOptions = {
+            bodyDetails: user.name,           
+        };
+        
+        modalService.confirm({}, modalOptions).then(function (result) {
+            User.remove({ id: user._id });
+            angular.forEach($scope.users, function(u, i) {
+                if (u === user) {
+                    $scope.users.splice(i, 1);
+                }
+            });
         });
     };
     

@@ -1,7 +1,9 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'customerEmployeeService', '$location', function ($scope, $window, $route, customerEmployeeService, $location) {
+app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'customerEmployeeService', '$location', 
+    function ($scope, $window, $route, customerEmployeeService, $location) {
+        
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
 

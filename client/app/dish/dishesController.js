@@ -1,6 +1,8 @@
 ﻿'use strict';
 
-app.controller('dishesController', ['$scope', '$location', 'dishService', function ($scope, $location, dishService) {
+app.controller('dishesController', ['$scope', '$location', 'dishService', 'modalService', 
+    function ($scope, $location, dishService, modalService) {
+    
     $scope.dishes = [];
     $scope.errors = {};
 
@@ -11,8 +13,15 @@ app.controller('dishesController', ['$scope', '$location', 'dishService', functi
 
         //dialogService.confirm('Are you sure you want to delete this item?', item.name).then(function () {
 
+        var modalOptions = {
+            bodyDetails: item.name,           
+        };
+        
+        modalService.confirm({}, modalOptions).then(function (result) {
+        
             // get the index for selected item
-            for (var i in $scope.dishes) {
+            var i = 0;
+            for (i in $scope.dishes) {
                 if ($scope.dishes[i]._id === item._id) break;
             }
 
@@ -24,7 +33,7 @@ app.controller('dishesController', ['$scope', '$location', 'dishService', functi
                 alert($scope.errors);
             });
 
-        //});
+        });
     };
 
     $scope.create = function () {
@@ -42,6 +51,6 @@ app.controller('dishesController', ['$scope', '$location', 'dishService', functi
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
         });
-    }
+    } 
 
 }]);
