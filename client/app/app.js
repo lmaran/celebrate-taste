@@ -1,11 +1,11 @@
 'use strict';
 
 var app = angular.module('celebrate-taste', [
-    //'ngCookies',
     'ngResource',
     'ngSanitize',
     'ngRoute',
     'ui.bootstrap'
+    //'ngAnimate' // we need it if uibCollapse directive is used
 ]);
 
  app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
