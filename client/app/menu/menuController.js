@@ -1,7 +1,9 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('menuController', ['$scope', '$window', '$route', 'menuService', '$location', function ($scope, $window, $route, menuService, $location) {
+app.controller('menuController', ['$scope', '$window', '$route', 'menuService', '$location', 
+    function ($scope, $window, $route, menuService, $location) {
+        
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
 
