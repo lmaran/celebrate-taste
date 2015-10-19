@@ -14,7 +14,7 @@ app.service('modalService', ['$uibModal',function ($uibModal) {
         angular.extend(tempModalOptions, modalOptions);
 
         if (!tempModalSettings.controller) {
-            tempModalSettings.controller = function ($scope, $modalInstance) {
+            tempModalSettings.controller = ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.modalOptions = tempModalOptions;
                 $scope.modalOptions.ok = function (result) {
                     $modalInstance.close(result);
@@ -22,7 +22,7 @@ app.service('modalService', ['$uibModal',function ($uibModal) {
                 $scope.modalOptions.close = function (result) {
                     $modalInstance.dismiss('cancel');
                 };
-            }
+            }]
         }
 
         return $uibModal.open(tempModalSettings).result;

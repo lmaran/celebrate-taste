@@ -49,17 +49,7 @@ app.controller('dishesController', ['$scope', '$location', 'dishService', 'modal
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
         });
-    } 
-    
-    // Show a modal to display images
-    
-//     var myModal = $modal({ scope: $scope, template: 'app/templates/showImage.tpl.html', show: false});
-// 
-//     $scope.showModal = function (product) {
-//         $scope.selectedProduct = product;
-//         $scope.selectedImgIndex = 0;
-//         myModal.$promise.then(myModal.show);
-//     };    
+    }   
 
     $scope.showModal = function (item) {
 
@@ -68,9 +58,6 @@ app.controller('dishesController', ['$scope', '$location', 'dishService', 'modal
         };
         
         modalService.showImage(modalOptions).then(function (result) {
-        
-
-
         });
     };
 
