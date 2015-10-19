@@ -15,7 +15,7 @@ app.controller('menusController', ['$scope', '$location', 'menuService', 'modalS
             bodyDetails: item.name,           
         };
         
-        modalService.confirm({}, modalOptions).then(function (result) {
+        modalService.confirm(modalOptions).then(function (result) {
             // get the index for selected item
             for (var i in $scope.menus) {
                 if ($scope.menus[i]._id === item._id) break;

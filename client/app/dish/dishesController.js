@@ -11,13 +11,11 @@ app.controller('dishesController', ['$scope', '$location', 'dishService', 'modal
 
     $scope.delete = function (item) {
 
-        //dialogService.confirm('Are you sure you want to delete this item?', item.name).then(function () {
-
         var modalOptions = {
             bodyDetails: item.name,           
         };
         
-        modalService.confirm({}, modalOptions).then(function (result) {
+        modalService.confirm(modalOptions).then(function (result) {
         
             // get the index for selected item
             var i = 0;
@@ -52,5 +50,28 @@ app.controller('dishesController', ['$scope', '$location', 'dishService', 'modal
             alert(JSON.stringify(err, null, 4));
         });
     } 
+    
+    // Show a modal to display images
+    
+//     var myModal = $modal({ scope: $scope, template: 'app/templates/showImage.tpl.html', show: false});
+// 
+//     $scope.showModal = function (product) {
+//         $scope.selectedProduct = product;
+//         $scope.selectedImgIndex = 0;
+//         myModal.$promise.then(myModal.show);
+//     };    
+
+    $scope.showModal = function (item) {
+
+        var modalOptions = {
+            imageUrl: item.imageUrl,           
+        };
+        
+        modalService.showImage(modalOptions).then(function (result) {
+        
+
+
+        });
+    };
 
 }]);
