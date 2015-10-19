@@ -16,7 +16,7 @@ app.controller('usersController', ['$scope', '$http', 'Auth', 'User', 'modalServ
             bodyDetails: user.name,           
         };
         
-        modalService.confirm({}, modalOptions).then(function (result) {
+        modalService.confirm(modalOptions).then(function (result) {
             User.remove({ id: user._id });
             angular.forEach($scope.users, function(u, i) {
                 if (u === user) {
