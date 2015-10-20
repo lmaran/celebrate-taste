@@ -18,6 +18,13 @@ exports.getById = function (req, res) {
     });    
 };
 
+exports.getTodaysMenu = function (req, res) {
+    menuService.getTodaysMenu(req.params.today, function (err, menu) {
+        if(err) { return handleError(res, err); }
+        //if(!doc) { return res.status(404).send('Not Found'); }
+        res.json(menu);
+    });    
+};
 
 exports.create = function(req, res){
     var menu = req.body;
