@@ -1,5 +1,4 @@
 'use strict';
-
 //http://stackoverflow.com/q/24246403/2726725
 
 app.directive('googleMap', ['$rootScope', 'loadGoogleMapAPI', 
