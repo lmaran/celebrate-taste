@@ -1,4 +1,4 @@
-//http://stackoverflow.com/q/24246403/2726725
+// http://stackoverflow.com/q/24246403/2726725
 'use strict';
 
 app.directive('googleMap', ['$rootScope', 'loadGoogleMapAPI', 
