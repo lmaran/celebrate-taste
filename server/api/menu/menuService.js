@@ -22,6 +22,13 @@
             db.menus.findOne({ _id: id }, next);                           
         });
     };
+    
+    menuService.getTodaysMenu = function (today, next) { // today = "yyyy-mm-dd"
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);            
+            db.menus.findOne({ validFor: today }, next);                           
+        });
+    };    
 
     menuService.create = function (menu, next) {
         mongoHelper.getDb(function (err, db) {
