@@ -19,14 +19,23 @@
     </div>
     
     <br/>
+    <hr>
     
     <div ng-repeat="menu in menus | filter:search">
         <div class="row toolbar">
-            <div class="col-md-4">{{menu.date}}</div>
+            <div class="col-md-4">
+                <h4>Meniul pentru <strong>
+                    {{friendlyDate(menu.validFor).dayAsString}}, 
+                    {{friendlyDate(menu.validFor).dayOfMonth}} 
+                    {{friendlyDate(menu.validFor).monthAsString}}
+                    <!--{{friendlyDate(menu.validFor).year}}-->
+                </strong></h4>
+            </div>
+            <br/>            
         </div>
         <div class="table-responsive">
-            <table class="table table-responsive table-hover table-condensed">
-                <thead>
+            <table class="table table-responsive table-hover table-condensed my-borderless">
+                <!--<thead>
                     <tr>
                         <th>Nume</th>
                         <th>DePost</th>
@@ -34,15 +43,15 @@
                         <th>Descriere</th>
                         <th></th>
                     </tr>
-                </thead>
+                </thead>-->
                 <tbody>
                     <tr data-ng-repeat="dish in menu.dishes | filter:search">
                         <td>
-                            <a ng-href="/dish/{{dish._id}}">{{dish.name}}</a>
+                            <a ng-href="/dish/{{dish._id}}">{{dish.name}}</a> <span ng-if="dish.isFasting">(post)</span>
                             <!--<i class="glyphicon glyphicon-info-sign" ng-if="menu.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{menu.description}}"></i>-->
                         </td>
-                        <td>{{ dish.isFasting }}</td>
-                        <td>{{ dish.calories }}</td>
+                        <td></td>
+                        <td>{{ dish.calories }} cal.</td>
                         <td>{{ dish.description }}</td>
                         <td>
                             <a href ng-click="delete(menu)">sterge</a>
@@ -51,8 +60,9 @@
                 </tbody>
             </table>
         </div>
+        <hr>
     </div>
-
+    
 
 
 

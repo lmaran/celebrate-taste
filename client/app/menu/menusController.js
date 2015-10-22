@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-app.controller('menusController', ['$scope', '$location', 'menuService', 'modalService',
-    function ($scope, $location, menuService, modalService) {
+app.controller('menusController', ['$scope', '$location', 'menuService', 'modalService', 'dayTimeService',
+    function ($scope, $location, menuService, modalService, dayTimeService) {
         
     $scope.menus = [];
     $scope.errors = {};
@@ -39,6 +39,18 @@ app.controller('menusController', ['$scope', '$location', 'menuService', 'modalS
     $scope.refresh = function () {
         init();
     };
+    
+    $scope.friendlyDate = function(dateAsString){ // yyyy-mm-dd
+        var date = dayTimeService.getDateFromString(dateAsString);
+        var fDay = dayTimeService.getFriendlyDate(date);
+        
+        return  {
+            dayAsString: fDay.dayAsString, // Joi
+            dayOfMonth: fDay.dayOfMonth, // 07
+            monthAsString: fDay.monthAsString, // Aprilie
+            year: fDay.year // 2015
+        };
+    }
 
     function init() {
         menuService.getAll().then(function (data) {

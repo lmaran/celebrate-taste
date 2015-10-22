@@ -3,26 +3,7 @@
 app.factory('menuService', ['$http', function ($http) {
 
     var factory = {};
-    var rootUrl = '/api/menus/';
-    
-    
-    var getToday = function(){
-        // http://stackoverflow.com/a/4929629
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth()+1; //January is 0!
-        var yyyy = today.getFullYear();
-        
-        if(dd<10) {
-            dd='0'+dd
-        } 
-        
-        if(mm<10) {
-            mm='0'+mm
-        }
-        
-        return yyyy + '-' + mm + '-' + dd;
-    };    
+    var rootUrl = '/api/menus/';  
 
     factory.create = function (item) {
         return $http.post(rootUrl, item);
@@ -40,9 +21,8 @@ app.factory('menuService', ['$http', function ($http) {
         });
     };
     
-    factory.getTodaysMenu = function () {
-        var today = getToday();
-        return $http.get(rootUrl + 'today/' + today).then(function (result) {
+    factory.getMenu = function (date) { // date as "yyyy-mm-dd"
+        return $http.get(rootUrl + 'today/' + date).then(function (result) {
             return result.data;
         });
     };    
