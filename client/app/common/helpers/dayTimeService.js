@@ -29,23 +29,23 @@ app.factory('dayTimeService', [function(){
 	}; 
 	
 	factory.getFriendlyDate = function(date){ // javascript date object
-		var dd = date.getDate();
-        var mm = date.getMonth()+1; // January is 0!
+		var d = date.getDate();
+        var m = date.getMonth()+1; // January is 0!
         var yyyy = date.getFullYear();  
         
-        var dd0 = dd; 
-        if(dd0 < 10) dd0 = '0' + dd;
+        var dd = d; 
+        if(dd < 10) dd = '0' + d;
         
-        var mm0 = mm;
-        if(mm0 < 10) mm = '0' + mm; 
+        var mm = m;
+        if(mm < 10) m = '0' + m; 
 		
         return{
             dayAsString: this.getRoDay(date.getDay()), // Joi
-            dayOfMonth:dd0, // 07, 24
+            dayOfMonth:dd, // 07, 24
 
-            monthAsString:this.getRoMonth(mm), // Aprilie
+            monthAsString:this.getRoMonth(m), // Aprilie
             year:yyyy, // 2015
-			ymd: yyyy + '-' + mm0 + '-' + dd0 // 2015-07-23
+			ymd: yyyy + '-' + mm + '-' + dd // 2015-07-23
         }		
 	}
 	
@@ -58,6 +58,13 @@ app.factory('dayTimeService', [function(){
 		
 		return new Date(array[0], mm, array[2]);
 	}
+	
+	factory.getStringFromString = function(dateStr){	// "yyyy-mm-dd"
+		var date = this.getDateFromString(dateStr);
+		var f = this.getFriendlyDate(date);
+		var dateStrRo = f.dayAsString + ', ' + f.dayOfMonth + ' ' + f. monthAsString + ' ' + f.year;
+		return dateStrRo; // "Joi, 07 Aprilie 2015"
+	}	
 	
 	factory.getStringFromDate = function(date){	// javascript date object		
 		return this.getFriendlyDate(date).ymd;

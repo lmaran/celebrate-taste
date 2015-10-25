@@ -17,5 +17,11 @@ app.config(['$routeProvider', function ($routeProvider) {
 	        templateUrl: 'app/menu/menu.html',
 	        title: 'Editeaza meniu',
 	        isEditMode: true
-	    });	
+	    })
+	    .when('/menus/:id/add', {
+	        controller: 'addToMenuController',
+	        templateUrl: 'app/menu/addToMenu.html',
+	        title: 'Adauga la meniu',
+	        isEditMode: true
+	    });        
 }]);

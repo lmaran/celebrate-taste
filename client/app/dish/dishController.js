@@ -31,7 +31,8 @@ app.controller('dishController', ['$scope', '$window', '$route', 'dishService', 
             //alert(JSON.stringify($scope.dish));
             dishService.create($scope.dish)
                 .then(function (data) {
-                    $location.path('/dishes');
+                    //$location.path('/dishes');
+                    $window.history.back();
                     //Logger.info("Widget created successfully");
                 })
                 .catch(function (err) {
@@ -46,7 +47,8 @@ app.controller('dishController', ['$scope', '$window', '$route', 'dishService', 
             //alert(JSON.stringify($scope.dish));
             dishService.update($scope.dish)
                 .then(function (data) {
-                    $location.path('/dishes');
+                    //$location.path('/dishes');
+                    $window.history.back();
                     //Logger.info("Widget created successfully");
                 })
                 .catch(function (err) {
