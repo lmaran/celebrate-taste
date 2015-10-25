@@ -24,9 +24,10 @@
     };
     
     menuService.getTodaysMenu = function (today, next) { // today = "yyyy-mm-dd"
+        today = "2015-10-24"; // todo: remove it
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);            
-            db.menus.findOne({ validFor: today }, next);                           
+            db.menus.findOne({ menuDate: today }, next);                           
         });
     };    
 
