@@ -28,7 +28,7 @@ app.factory('dayTimeService', [function(){
 		else if(monthOfYear === 11) return 'Decembrie';           
 	}; 
 	
-	factory.getFriendlyDate = function(date){
+	factory.getFriendlyDate = function(date){ // javascript date object
 		var dd = date.getDate();
         var mm = date.getMonth()+1; // January is 0!
         var yyyy = date.getFullYear();  
@@ -58,6 +58,10 @@ app.factory('dayTimeService', [function(){
 		
 		return new Date(array[0], mm, array[2]);
 	}
+	
+	factory.getStringFromDate = function(date){	// javascript date object		
+		return this.getFriendlyDate(date).ymd;
+	}	
 	
 	return factory;	
 }]);
