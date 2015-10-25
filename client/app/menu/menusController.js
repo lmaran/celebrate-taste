@@ -6,47 +6,51 @@ app.controller('menusController', ['$scope', '$location', 'menuService', 'modalS
         
     $scope.menus = [];
     $scope.errors = {};
+    
+    $scope.friendlyDate = function (dateAsString) { // yyyy-mm-dd
+        return dayTimeService.getStringFromString(dateAsString);
+    }     
 
-    /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined
+    function init() {
+        menuService.getAll().then(function (data) {
+            $scope.menus = data;
+        })
+        .catch(function (err) {
+            alert(JSON.stringify(err, null, 4));
+        });
+    }
+        
     init();
 
-    $scope.deleteMenuItem = function (item) {
+    $scope.deleteDishFromMenu = function (dish, menu) {
         var modalOptions = {
-            bodyDetails: item.name,           
+            bodyDetails: dish.name,
         };
-        
-        modalService.confirm(modalOptions).then(function (result) {
-            // get the index for selected item
-            for (var i in $scope.menus) {
-                if ($scope.menus[i]._id === item._id) break;
-            }
 
-            menuService.delete(item._id).then(function () {
-                $scope.menus.splice(i, 1);
-            })
-            .catch(function (err) {
-                $scope.errors = JSON.stringify(err.data, null, 4);
-                alert($scope.errors);
+        modalService.confirm(modalOptions).then(function (result) {
+            _.remove(menu.dishes, function (item) {
+                return item.name === dish.name;
             });
 
+            menuService.update(menu)
+                .then(function (data) {
+                    $scope.refresh();
+                })
+                .catch(function (err) {
+                    alert(JSON.stringify(err.data, null, 4));
+                });
+
         });
-    };
+    };  
     
-    $scope.delete = function (item) {
-        var d = dayTimeService.getDateFromString(item.menuDate);
-        var friendlyDate = dayTimeService.getFriendlyDate(d).dayAsString + ', ' + dayTimeService.getFriendlyDate(d).dayOfMonth + ' ' + dayTimeService.getFriendlyDate(d).monthAsString + ' ' + dayTimeService.getFriendlyDate(d).year;
+    $scope.deleteMenu = function (item) {
         var modalOptions = {
-            bodyDetails: 'Meniul de ' + friendlyDate      
-        };
+            bodyDetails: 'Meniul de ' + $scope.friendlyDate(item.menuDate)     
+        }; 
         
         modalService.confirm(modalOptions).then(function (result) {
-            // get the index for selected item
-            for (var i in $scope.menus) {
-                if ($scope.menus[i]._id === item._id) break;
-            }
-
             menuService.delete(item._id).then(function () {
-                $scope.menus.splice(i, 1);
+                $scope.refresh();
             })
             .catch(function (err) {
                 $scope.errors = JSON.stringify(err.data, null, 4);
@@ -96,26 +100,9 @@ app.controller('menusController', ['$scope', '$location', 'menuService', 'modalS
     $scope.refresh = function () {
         init();
     };
-    
-    $scope.friendlyDate = function(dateAsString){ // yyyy-mm-dd
-        var date = dayTimeService.getDateFromString(dateAsString);
-        var fDay = dayTimeService.getFriendlyDate(date);
-        
-        return  {
-            dayAsString: fDay.dayAsString, // Joi
-            dayOfMonth: fDay.dayOfMonth, // 07
-            monthAsString: fDay.monthAsString, // Aprilie
-            year: fDay.year // 2015
-        };
-    }
 
-    function init() {
-        menuService.getAll().then(function (data) {
-            $scope.menus = data;
-        })
-        .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
-        });
-    }
+    $scope.addToMenu = function (menu) {       
+        $location.path('/menus/' + menu._id + '/add/');
+    }  
 
 }]);
