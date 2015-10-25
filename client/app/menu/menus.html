@@ -5,7 +5,7 @@
 
     <div class="row toolbar">
         <div class="col-md-4">
-            <button type="button" class="btn btn-primary" ng-click="create()"> <span class="glyphicon glyphicon-plus"></span> Adauga meniu </button>
+            <button type="button" class="btn btn-primary" ng-click="openCreateMenu()"> <span class="glyphicon glyphicon-plus"></span> Adauga meniu </button>
             <button type="button" class="btn" ng-click="refresh()"> <span class="glyphicon glyphicon-refresh"></span> </button>
         </div>
 
@@ -21,44 +21,46 @@
     <br/>
     <hr>
     
-    <div ng-repeat="menu in menus | filter:search">
+    <div ng-repeat="menu in menus | filter:search | orderBy:'menuDate'">
         <div class="row toolbar">
             <div class="col-md-4">
-                <h4>Meniul pentru <strong>
-                    {{friendlyDate(menu.validFor).dayAsString}}, 
-                    {{friendlyDate(menu.validFor).dayOfMonth}} 
-                    {{friendlyDate(menu.validFor).monthAsString}}
-                    <!--{{friendlyDate(menu.validFor).year}}-->
-                </strong></h4>
+                <h4>Meniul de <strong>
+                    {{friendlyDate(menu.menuDate).dayAsString}}, 
+                    {{friendlyDate(menu.menuDate).dayOfMonth}} 
+                    {{friendlyDate(menu.menuDate).monthAsString}}
+                </strong> <small style="font-size:14px"> (<a href ng-click="delete(menu)" >Sterge meniu</a>)</small></h4>
             </div>
             <br/>            
         </div>
-        <div class="table-responsive">
-            <table class="table table-responsive table-hover table-condensed my-borderless">
-                <!--<thead>
-                    <tr>
-                        <th>Nume</th>
-                        <th>DePost</th>
-                        <th>Calorii</th>
-                        <th>Descriere</th>
-                        <th></th>
-                    </tr>
-                </thead>-->
-                <tbody>
-                    <tr data-ng-repeat="dish in menu.dishes | filter:search">
-                        <td>
-                            <a ng-href="/dish/{{dish._id}}">{{dish.name}}</a> <span ng-if="dish.isFasting">(post)</span>
-                            <!--<i class="glyphicon glyphicon-info-sign" ng-if="menu.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{menu.description}}"></i>-->
-                        </td>
-                        <td></td>
-                        <td>{{ dish.calories }} cal.</td>
-                        <td>{{ dish.description }}</td>
-                        <td>
-                            <a href ng-click="delete(menu)">sterge</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="row">
+            <div class="col-md-11 col-md-offset-1">
+
+                <div class="table-responsive">
+                    <table class="table table-responsive table-hover table-condensed my-borderless">
+                        <tbody>
+                            <tr data-ng-repeat="dish in menu.dishes | filter:search | orderBy:['category', 'option']">
+                                <td>
+                                    <span ng-if="dish.option !== undefined">{{dish.option}}.</span>
+                                    <span ng-if="dish.option === undefined">&nbsp;&nbsp;&nbsp;</span>
+                                    <a ng-href="/dish/{{dish._id}}">{{dish.name}}</a> <span ng-if="dish.isFasting">(post)</span>
+                                </td>
+                                <td></td>
+                                <td>{{ dish.calories }} cal.</td>
+                                <td>{{ dish.description }}</td>
+                                <td>
+                                    <a href ng-click="deleteMenuItem(dish)">sterge</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11 col-md-offset-1">
+                <!--<button type="button" class="btn btn-primary btn-xs" ng-click="openCreateMenu()"> <span class="glyphicon glyphicon-plus"></span> Adauga un fel la meniu </button>                -->
+            </div>
         </div>
         <hr>
     </div>
