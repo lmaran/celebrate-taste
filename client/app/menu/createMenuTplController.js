@@ -1,10 +1,10 @@
 'use strict';
 
-app.controller('createMenuTplController', ['$scope', '$uibModalInstance', 'dataToModal', 'dayTimeService', 
-	function ($scope, $uibModalInstance, dataToModal, dayTimeService) {
+app.controller('createMenuTplController', ['$scope', '$uibModalInstance', 'dataToModal', 'helperService', 
+	function ($scope, $uibModalInstance, dataToModal, helperService) {
 
     if(dataToModal && dataToModal.length === 10)
-        $scope.menuDate = dayTimeService.getDateFromString(dataToModal); // "yyyy-mm-dd"
+        $scope.menuDate = helperService.getDateFromString(dataToModal); // "yyyy-mm-dd"
     else
         $scope.menuDate = new Date();
         

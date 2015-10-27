@@ -1,8 +1,9 @@
+/* global angular */
 /* global _ */
 'use strict';
 
-app.controller('addToMenuController', ['$scope', '$route', '$window', '$location', 'dayTimeService', 'dishService', 'menuService', 
-	function ($scope, $route, $window, $location, dayTimeService, dishService, menuService) {
+app.controller('addToMenuController', ['$scope', '$route', '$window', '$location', 'helperService', 'dishService', 'menuService', 
+	function ($scope, $route, $window, $location, helperService, dishService, menuService) {
                
     $scope.categories = [
         {value:0, name:'Toate felurile'},
@@ -27,7 +28,7 @@ app.controller('addToMenuController', ['$scope', '$route', '$window', '$location
     function loadMenuData() {
         menuService.getById($route.current.params.id).then(function (data) {
             $scope.menu = data;
-            $scope.roMenuDate = dayTimeService.getStringFromString(data.menuDate);
+            $scope.roMenuDate = helperService.getStringFromString(data.menuDate);
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
@@ -55,16 +56,20 @@ app.controller('addToMenuController', ['$scope', '$route', '$window', '$location
     };
 
     $scope.addToMenu = function (dish) {
+        
+        var dishClone = {};
+        angular.copy(dish, dishClone); // deep copy
+        
+        dishClone._id = helperService.makeId(6); // ex: "spr9na" (the original _id could not be unique in this menu)
         if(dish.category === '1' || dish.category === '2'){
-            dish.option = getNextChar($scope.menu, dish);
-            console.log(getNextChar($scope.menu, dish));
+            dishClone.option = getNextChar($scope.menu, dish);
+            //console.log(getNextChar($scope.menu, dish));
         }
         if($scope.menu.dishes === undefined) $scope.menu.dishes = [];
-        $scope.menu.dishes.push(dish);
+        $scope.menu.dishes.push(dishClone);
 
         menuService.update($scope.menu)
             .then(function (data) {
-                delete dish.option;
                 dish.isAddedTmp = true;
                 loadMenuData(); 
             })
@@ -75,7 +80,7 @@ app.controller('addToMenuController', ['$scope', '$route', '$window', '$location
     
     $scope.removeFromMenu = function (dish) {       
         _.remove($scope.menu.dishes, function(item){
-            return item.name === dish.name;
+            return item._id === dish._id;
         });
 
         menuService.update($scope.menu)

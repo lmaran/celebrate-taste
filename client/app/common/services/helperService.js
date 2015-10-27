@@ -1,7 +1,9 @@
 'use strict';
 
-app.factory('dayTimeService', [function(){
+app.factory('helperService', [function(){
 	var factory = {};
+	
+	// *********** date/time helpers
 	
 	factory.getRoDay = function(dayOfWeek){
 		if(dayOfWeek === 0) return 'Duminica';
@@ -69,6 +71,23 @@ app.factory('dayTimeService', [function(){
 	factory.getStringFromDate = function(date){	// javascript date object		
 		return this.getFriendlyDate(date).ymd;
 	}	
+	
+	
+	// *********** random string generator 
+	// source: http://stackoverflow.com/a/1349426
+	// alternative: https://gist.github.com/gordonbrander/2230317
+
+	factory.makeId = function(len)
+	{
+		var text = '';
+		//var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		var possible = 'abcdef0123456789';
+	
+		for( var i=0; i < len; i=i+1 )
+			text += possible.charAt(Math.floor(Math.random() * possible.length));
+	
+		return text; // ex: len=8 -> "c5de7ce4"
+	}		
 	
 	return factory;	
 }]);

@@ -1,11 +1,11 @@
 'use strict';
  
-app.controller('homeController', ['$scope', 'menuService', 'dayTimeService',
-    function ($scope, menuService, dayTimeService) {
+app.controller('homeController', ['$scope', 'menuService', 'helperService',
+    function ($scope, menuService, helperService) {
         
     $scope.todaysMenu={};
     
-    $scope.today = dayTimeService.getFriendlyDate(new Date());
+    $scope.today = helperService.getFriendlyDate(new Date());
     
     var getTodaysMenu = function(){
         var today = $scope.today.ymd; // "yyyy-mm-dd"

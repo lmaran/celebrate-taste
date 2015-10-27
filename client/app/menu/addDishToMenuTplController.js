@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('addDishToMenuTplController', ['$scope', '$uibModalInstance', 'dataToModal', 'dayTimeService', 'dishService', 
-	function ($scope, $uibModalInstance, dataToModal, dayTimeService, dishService) {
+app.controller('addDishToMenuTplController', ['$scope', '$uibModalInstance', 'dataToModal', 'helperService', 'dishService', 
+	function ($scope, $uibModalInstance, dataToModal, helperService, dishService) {
 
     $scope.dishes = [];
     
