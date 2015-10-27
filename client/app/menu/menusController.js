@@ -1,14 +1,14 @@
 ﻿/* global _ */
 'use strict';
 
-app.controller('menusController', ['$scope', '$location', 'menuService', 'modalService', 'dayTimeService', '$uibModal',
-    function ($scope, $location, menuService, modalService, dayTimeService, $uibModal) {
+app.controller('menusController', ['$scope', '$location', 'menuService', 'modalService', 'helperService', '$uibModal',
+    function ($scope, $location, menuService, modalService, helperService, $uibModal) {
         
     $scope.menus = [];
     $scope.errors = {};
     
     $scope.friendlyDate = function (dateAsString) { // yyyy-mm-dd
-        return dayTimeService.getStringFromString(dateAsString);
+        return helperService.getStringFromString(dateAsString);
     }     
 
     function init() {
@@ -29,7 +29,7 @@ app.controller('menusController', ['$scope', '$location', 'menuService', 'modalS
 
         modalService.confirm(modalOptions).then(function (result) {
             _.remove(menu.dishes, function (item) {
-                return item.name === dish.name;
+                return item._id === dish._id;
             });
 
             menuService.update(menu)
@@ -79,7 +79,7 @@ app.controller('menusController', ['$scope', '$location', 'menuService', 'modalS
         });
 
         modalInstance.result.then(function (dataFromModal) { // js date object
-            var dateAsString = dayTimeService.getStringFromDate(dataFromModal); // "yyyy-mm-dd" 
+            var dateAsString = helperService.getStringFromDate(dataFromModal); // "yyyy-mm-dd" 
             $scope.create(dateAsString);
         }, function () {
             //$log.info('Modal dismissed at: ' + new Date());
