@@ -23,5 +23,12 @@ app.config(['$routeProvider', function ($routeProvider) {
 	        templateUrl: 'app/menu/addToMenu.html',
 	        title: 'Adauga la meniu',
 	        isEditMode: true
-	    });        
+	    })
+	    .when('/menus/:menuId/dishes/:dishId', {
+        //.when('/menus2/:menuId', {
+	        controller: 'menuItemController',
+	        templateUrl: 'app/menu/menuItem.html',
+	        title: 'Editeaza produsul din meniu',
+	        isEditMode: true
+	    });                
 }]);
