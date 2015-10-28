@@ -5,7 +5,6 @@
     <h1>{{pageTitle}}</h1>
 
     <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" novalidate>
-        <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
 
         <div class="form-group" ng-class="{ 'has-error' : form.name.$invalid && submitted }">
             <label class="col-md-2 control-label">Nume </label>
@@ -13,7 +12,7 @@
                 <input class="form-control" ng-model="dish.name" type="text" name="name" lm-focus="isFocusOnName" required />
                 <p ng-show="form.name.$invalid  && submitted" class="help-block">Acest camp este obligatoriu.</p>
             </div>
-        </div> 
+        </div>       
         
         <div class="form-group" ng-class="{ 'has-error' : form.category.$invalid && submitted }">
             <label class="col-md-2 control-label">Categorie</label>
@@ -51,8 +50,14 @@
                     </label>
                 </div>
             </div>
-        </div>        
-
+        </div>             
+        
+        <div class="form-group">
+            <label class="col-md-2 control-label">Pozitia (A/B): </label>
+            <div class="col-md-4">
+                <input class="form-control" ng-model="dish.option" type="text"/>
+            </div>
+        </div>         
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -60,6 +65,7 @@
                 <button type="button" class="btn" ng-click="cancel()"> <span class=" glyphicon glyphicon-remove"></span> Renunta </button>
             </div>
         </div>
+        
 
     </form>
 
