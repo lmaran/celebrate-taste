@@ -2,25 +2,27 @@
 
 <div class="container">
 
-    <div class="starter-template">
-        <!--<h1>Home page 4</h1>-->
+    <!--<div class="starter-template">
         <img class="workingImg" src="assets/images/pagina-in-constructie.png"></img>
-    </div>
-    
-    <h4><strong>Meniul zilei de astazi</strong><span> ({{today.dayAsString}}, {{today.dayOfMonth}} {{today.monthAsString}})</span></h4>
+    </div>-->
+    <br/>
+    <h1><strong2>Meniul de astazi</strong2><small class="text-muted"> ({{today.dayAsString}}, {{today.dayOfMonth}} {{today.monthAsString}})</small></h1>
     <br/>
     
-    <div class="media" ng-repeat="dish in todaysMenu.dishes">
-        <div class="media-left media-middle">
-            <a href="#">
-                <img src="{{dish.thumbUrl}}" alt="{{dish.name}}" class="media-object img-thumbnail">
+    <div class="media" ng-repeat="dish in todaysMenu.dishes | orderBy:['category', 'option']">
+        <div class="media-left media-middle" style="min-width:100px; height:85px;">
+            <a href="#" >
+                <img ng-show="dish.thumbUrl" ng-src="{{dish.thumbUrl}}" width="85" class="media-object img-thumbnail">
             </a>
-        </div>
-        <div class="media-body">
-            <h4 class="media-heading">{{dish.name}}</h4>
+        </div>      
+        <div class="media-body" style="margin-left:75px;">        
+            <h4 class="media-heading">
+                <span ng-if="dish.option !== undefined">{{dish.option}}.</span>
+                {{dish.name}}</h4>
             <div style="color:gray">{{dish.description}}</div>
             <div style="color:gray">{{dish.calories}} calorii</div>
         </div>
+
     </div>  
 
 </div>

@@ -1,7 +1,7 @@
 <div ng-include="'app/navbar/navbar.html'"></div>
 
 <ol class="breadcrumb">
-    <li><a href="#" ng-click="goBack()"> << Inapoi</a></li>
+    <li><a href ng-click="goBack()"><span class="glyphicon glyphicon-arrow-left" style="margin-right:5px"></span>Inapoi</a></li>
     <li class="active">Meniul de <strong>{{roMenuDate}}</strong> 
         <span class="badge" data-animation="am-fade-and-scale" tooltip-placement="bottom" uib-tooltip="Meniul are {{menu.dishes.length || 0}} {{menu.dishes.length == 1 ? 'fel' : 'feluri'}} de mancare">{{menu.dishes.length || 0}}</span>
     </li>
@@ -84,5 +84,14 @@
             </tbody>
         </table>
     </div>
+    
+    <hr/>
+    <p>Produsul cautat nu este in lista? 
+        <a href="/dishes/create">Creaza produs nou</a>
+    <p>Ai adaugat toate produsele dorite? 
+        <a href ng-click="goBack()">Inapoi la meniu</a>
+    </p>
+    
+    <br/>
 
 </div>
