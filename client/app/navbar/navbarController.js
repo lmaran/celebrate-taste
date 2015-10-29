@@ -5,12 +5,9 @@ app.controller('navbarController', ['$scope', '$location', 'navbarService', '$wi
     function ($scope, $location, navbarService,$window, Auth, $rootElement) {
                
     $scope.menu = [{
-    //     'title': 'Page 1',
-    //     'link': '/page1'
-    // }, {
-    //     'title': 'Customers',
-    //     'link': '/customers'
-    // }, {        
+        'title': 'Meniurile viitoare',
+        'link': '/nextMenus'
+    }, {     
         'title': 'Contact',
         'link': '/contact'
     }];  

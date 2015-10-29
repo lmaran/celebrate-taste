@@ -25,7 +25,6 @@ app.config(['$routeProvider', function ($routeProvider) {
 	        isEditMode: true
 	    })
 	    .when('/menus/:menuId/dishes/:dishId', {
-        //.when('/menus2/:menuId', {
 	        controller: 'menuItemController',
 	        templateUrl: 'app/menu/menuItem.html',
 	        title: 'Editeaza produsul din meniu',
