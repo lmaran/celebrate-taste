@@ -1,6 +1,5 @@
 'use strict';
 
-app.factory('helperService', [function(){
 	var factory = {};
 	
 	// *********** date/time helpers
@@ -44,10 +43,10 @@ app.factory('helperService', [function(){
         return{
             dayAsString: this.getRoDay(date.getDay()), // Joi
             dayOfMonth:dd, // 07, 24
-
             monthAsString:this.getRoMonth(m-1), // Aprilie
             year:yyyy, // 2015
-			ymd: yyyy + '-' + mm + '-' + dd // 2015-07-23
+			ymd: yyyy + '-' + mm + '-' + dd, // 2015-07-23
+			dmy: dd + '.' + mm + '.' + yyyy // 23.07.2015
         }		
 	}
 	
@@ -63,6 +62,7 @@ app.factory('helperService', [function(){
 		var date = this.getDateFromString(dateStr);
 		var f = this.getFriendlyDate(date);
 		var dateStrRo = f.dayAsString + ', ' + f.dayOfMonth + ' ' + f. monthAsString + ' ' + f.year;
+		console.log(date);
 		return dateStrRo; // "Joi, 07 Aprilie 2015"
 	}	
 	
@@ -87,7 +87,4 @@ app.factory('helperService', [function(){
 		return text; // ex: len=8 -> "c5de7ce4"
 	}		
 	
-	return factory;	
-}]);
-
-
+module.exports = factory;
