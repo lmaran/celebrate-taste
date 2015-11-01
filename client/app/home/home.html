@@ -11,7 +11,7 @@
     
     <div class="media" ng-repeat="dish in todaysMenu.dishes | orderBy:['category', 'option']">
         <div class="media-left media-middle" style="min-width:100px; height:85px;">
-            <a href="#" >
+            <a ng-if="dish.thumbUrl" ng-href="/nextMenus/{{todaysMenu._id}}/dishes/{{dish._id}}" >
                 <img ng-show="dish.thumbUrl" ng-src="{{dish.thumbUrl}}" width="85" class="media-object img-thumbnail">
             </a>
         </div>      
