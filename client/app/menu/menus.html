@@ -35,10 +35,10 @@
     
     <div ng-repeat="menu in menus | filter:search | orderBy:'menuDate'">
         <div class="row toolbar">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <h4>Meniul de 
                     <strong>{{friendlyDate(menu.menuDate)}}</strong> 
-                    <small style="font-size:14px"> (<a href ng-click="deleteMenu(menu)" >sterge meniu</a>)</small>
+                    <small style="font-size:14px"> <a href ng-click="deleteMenu(menu)" >sterge meniu</a> <span style="margin:7px">|</span> <a ng-href="menus/{{menu._id}}/print" target="_self">tipareste</a></small>
                 </h4>
             </div>
             <br/>            
@@ -72,7 +72,7 @@
         </div>
         <div class="row">
             <div class="col-md-11 col-md-offset-1">
-                <button type="button" class="btn btn-primary btn-xs" ng-click="addToMenu(menu)"> <span class="glyphicon glyphicon-plus"></span> Adauga un fel la meniu </button>                
+                <button type="button" class="btn btn-primary btn-xs" ng-click="addToMenu(menu)"> <span class="glyphicon glyphicon-plus"></span> Adauga un fel la meniu </button>            
             </div>
         </div>
         <hr>

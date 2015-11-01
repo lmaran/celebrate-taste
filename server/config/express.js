@@ -44,9 +44,11 @@ module.exports = function(app) {
 
     if ('development' === env || 'test' === env) {
         app.use(favicon(path.join(config.root, 'client', 'favicon.ico')));
-        // http://stackoverflow.com/a/28091651/2726725
+
         // if you are happy with a browser plugin, then you don't need this middleware
-        app.use(require('connect-livereload')());
+        // live-reload corrupts pdf files: http://stackoverflow.com/a/28091651/2726725
+
+        app.use(require('connect-livereload')({ignore: [/print$/]})); // all that ends in 'print': https://github.com/intesso/connect-livereload#options
         
         //app.use(express.static(path.join(config.root, '.tmp')));
         app.use(express.static(path.join(config.root, 'client')));
