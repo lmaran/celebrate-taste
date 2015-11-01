@@ -55,6 +55,18 @@ exports.getById = function (req, res, next) {
   });
 };
 
+exports.update = function(req, res){
+    var user = req.body;
+    userService.update(user, function (err, response) {
+        if(err) { return handleError(res, err); }
+        if (!response.value) {
+            res.sendStatus(404); // not found
+        } else {
+            res.sendStatus(200);
+        }
+    });
+};
+
 /**
  * Deletes a user
  * restriction: 'admin'

@@ -12,12 +12,14 @@ module.exports = function(app) {
     
     app.use('/api/dishes', require('./api/dish/dishRoutes'));
     app.use('/api/customerEmployees', require('./api/customerEmployee/customerEmployeeRoutes'));
+    //app.use('/api/menus', require('./api/menu/menuRoutes'));
+    app.use(require('./api/menu/menuRoutes')); // has special routes
     
     app.use('/auth', require('./auth/authRoutes'));
   
     // All undefined asset or api routes should return a 404
     app.route('/:url(api|auth|components|app|bower_components|assets)/*')
-        .get(errors[404]);
+        .get(errors[404]);       
 
     // All other routes should redirect to the index.html
     app.route('/*')

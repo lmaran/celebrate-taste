@@ -19,7 +19,8 @@
                         customers: db.collection('customers'),
                         users: db.collection('users'),
                         dishes: db.collection('dishes'),
-                        customerEmployees: db.collection('customerEmployees')
+                        customerEmployees: db.collection('customerEmployees'),
+                        menus: db.collection('menus')
                                             
                     };
                     next(null, theDb);
