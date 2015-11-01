@@ -24,12 +24,29 @@
     };
     
     menuService.getTodaysMenu = function (today, next) { // today = "yyyy-mm-dd"
-        today = "2015-10-24"; // todo: remove it
+        //today = "2015-10-24"; // todo: remove it
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);            
             db.menus.findOne({ menuDate: today }, next);                           
         });
-    };    
+    }; 
+    
+    menuService.getFromInterval = function (firstDay, lastDay, next) { // today = "yyyy-mm-dd"
+        //today = "2015-10-24"; // todo: remove it
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null); 
+            
+            db.menus.find({
+                $and: [
+                    {"menuDate" : { $gte: firstDay}},
+                    {"menuDate" : { $lte: lastDay}}
+                ]                  
+            }).toArray(function (err, docs) {
+                if (err) return next(err, null);
+                return next(null, docs);                 
+            });                                      
+        });
+    };        
 
     menuService.create = function (menu, next) {
         mongoHelper.getDb(function (err, db) {

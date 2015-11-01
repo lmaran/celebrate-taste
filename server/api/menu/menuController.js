@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 var menuService = require('./menuService');
+var helper = require('../../data/dateTimeHelper');
 
 exports.getAll = function (req, res) {
     menuService.getAll(function (err, menus) {
@@ -109,10 +110,6 @@ exports.printById = function (req, res) {
                     .text(dishTitle, {paragraphGap:30});
             })
             .value();
-
-        // dishes.forEach(function(dish){
-        // ...
-        // });
         
         doc.fontSize(15)
             .moveDown(7)
@@ -125,6 +122,88 @@ exports.printById = function (req, res) {
         
     });    
 };
+
+exports.printCurrentWeek = function (req, res) {
+    var today = new Date();
+    var dif = (today.getDay() + 6) % 7;
+    
+    var lastMonday = new Date(today);
+    lastMonday.setDate(today.getDate() - dif);
+
+    //console.log(lastMonday);
+    //console.log(helper.getStringFromDate(lastMonday));
+    createDoc(req, res, lastMonday);
+};
+
+exports.printNextWeek = function (req, res) {
+    var today = new Date();
+    var dif = (today.getDay() + 6) % 7;
+    
+    var nextMonday = new Date(today);
+    nextMonday.setDate(today.getDate() - dif + 7);
+  
+    createDoc(req, res, nextMonday);
+};
+
+function createDoc(req, res, firstDay){
+    var lastDay = new Date(firstDay);
+    lastDay.setDate(lastDay.getDate() + 6);
+    
+    var firstDayStr = helper.getStringFromDate(firstDay);
+    var lastDayStr = helper.getStringFromDate(lastDay);
+    
+    menuService.getFromInterval(firstDayStr, lastDayStr, function (err, menus) {
+        if(err) { return handleError(res, err); }
+
+        var _ = require('lodash');
+        var PDFDocument = require('pdfkit');                  
+        var doc = new PDFDocument({margins:{top:20, bottom:10, left:72, right:50}});
+
+        doc
+            .fontSize(18)
+            .text("Meniul saptamanii", {align:'center'})
+            .fontSize(12)
+            .text(helper.getFriendlyDate(firstDay).dmy + '  -  ' + helper.getFriendlyDate(lastDay).dmy, {align:'center'});
+            
+        _.chain(menus)
+            .sortBy('menuDate')
+            .map(function(menu){
+                
+                doc
+                    .moveDown(1)
+                    .fontSize(11)
+                    .text(helper.getFriendlyDate(helper.getDateFromString(menu.menuDate)).dayAsString + menu.menuDate, {stroke:true})
+                    .moveDown(0.5);
+                    
+                _.chain(menu.dishes)
+                    .sortByAll(['category','option'])
+                    .map(function(dish){                        
+                        if(dish.option) doc.text(dish.option + '. ', {stroke:true,continued: true});
+                        doc.text(dish.name, {stroke:false, continued: true});
+                        if(dish.isFasting) doc.text(' (Post) ', {stroke:false, continued: true});
+                        if(dish.calories) doc.text(' - ' + dish.calories + ' cal.', {stroke:false});
+                        doc.text('', {continued: false}); // force a new line
+                    })
+                    .value();                
+
+            })
+            .value();
+
+        var finalMessage = "Pofta buna! ";
+        if(menus.length == 0)
+            finalMessage = "Nu exista meniuri in perioada selectata!";         
+            
+        doc.fontSize(12)
+            .moveDown(2)
+            .text(finalMessage);
+            
+        
+        res.set('Content-Type', 'application/pdf');
+        doc.pipe(res);
+        doc.end();        
+        
+    });       
+}
 
 function handleError(res, err) {
     return res.status(500).send(err);
