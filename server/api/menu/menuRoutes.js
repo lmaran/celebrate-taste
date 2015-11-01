@@ -5,16 +5,18 @@ var controller = require('./menuController');
 
 var router = express.Router();
 
-router.get('/', controller.getAll);
-router.get('/:id', controller.getById);
-router.get('/today/:today', controller.getTodaysMenu);
-router.post('/', controller.create);
+router.get('/api/menus/', controller.getAll);
+router.get('/api/menus/:id', controller.getById);
+router.get('/api/menus/today/:today', controller.getTodaysMenu);
+router.post('/api/menus/', controller.create);
 
 // router.put('/:id', controller.update);
 // router.patch('/:id', controller.update);
-router.put('/', controller.update);
-router.patch('/', controller.update);
+router.put('/api/menus/', controller.update);
+router.patch('/api/menus/', controller.update);
 
-router.delete('/:id', controller.remove);
+router.delete('/api/menus/:id', controller.remove);
+
+router.get('/menus/:id/print', controller.printById);
 
 module.exports = router;
