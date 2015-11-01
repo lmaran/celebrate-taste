@@ -172,7 +172,7 @@ function createDoc(req, res, firstDay){
                 doc
                     .moveDown(1)
                     .fontSize(11)
-                    .text(helper.getFriendlyDate(helper.getDateFromString(menu.menuDate)).dayAsString + menu.menuDate, {stroke:true})
+                    .text(helper.getFriendlyDate(helper.getDateFromString(menu.menuDate)).dayAsString, {stroke:true})
                     .moveDown(0.5);
                     
                 _.chain(menu.dishes)
