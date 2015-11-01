@@ -61,11 +61,12 @@ app.controller('menusController', ['$scope', '$location', 'menuService', 'modalS
     };    
 
     $scope.openCreateMenu = function () {
-        var lastMenuDate = _.chain($scope.menus)
+        var lastMenu = _.chain($scope.menus)
             .sortBy('menuDate')
             .last()
-            .value()
-            .menuDate;
+            .value();
+            
+        var lastMenuDate = (lastMenu && lastMenu.menuDate) || helperService.getStringFromDate(new Date());
 
         var modalInstance = $uibModal.open({
             animation:false,
