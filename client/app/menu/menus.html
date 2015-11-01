@@ -10,6 +10,18 @@
                 <div class="form-group">  
                     
                     <button type="button" class="btn btn-primary" ng-click="openCreateMenu()"> <span class="glyphicon glyphicon-plus"></span> Adauga meniu </button>
+
+                    <span class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                            <span class="glyphicon glyphicon-print"></span>
+                            Tipareste meniuri 
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="uib-dropdown-menu">
+                            <li><a ng-href="menus/currentWeek/print" target="_self">pt. sapt. curenta</a></li>
+                            <li><a ng-href="menus/nextWeek/print" target="_self">pt. sapt. viitoare</a></li>                            
+                        </ul>                    
+                    </span>                  
                     
                 </div>
             </form> 
@@ -38,7 +50,10 @@
             <div class="col-md-12">
                 <h4>Meniul de 
                     <strong>{{friendlyDate(menu.menuDate)}}</strong> 
-                    <small style="font-size:14px"> <a href ng-click="deleteMenu(menu)" >sterge meniu</a> <span style="margin:7px">|</span> <a ng-href="menus/{{menu._id}}/print" target="_self">tipareste</a></small>
+                    <small style="font-size:14px"> <a href ng-click="deleteMenu(menu)" >sterge meniu</a> 
+                        <span style="margin:7px">|</span> 
+                        <a ng-href="menus/{{menu._id}}/print" target="_self">tipareste</a>
+                    </small>
                 </h4>
             </div>
             <br/>            
@@ -54,7 +69,6 @@
                                     <span ng-if="dish.option !== undefined">{{dish.option}}.</span>
                                     <span ng-if="dish.option === undefined">&nbsp;&nbsp;&nbsp;</span>
                                     <a ng-href="/menus/{{menu._id}}/dishes/{{dish._id}}">{{dish.name}}</a> 
-                                    <!--<a ng-href="/menus2/{{menu._id}}">{{dish.name}}</a>-->
                                     <span ng-if="dish.isFasting">(post)</span>
                                 </td>
                                 <td></td>

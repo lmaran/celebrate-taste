@@ -17,6 +17,9 @@ router.patch('/api/menus/', controller.update);
 
 router.delete('/api/menus/:id', controller.remove);
 
+// keep this order
+router.get('/menus/currentWeek/print', controller.printCurrentWeek);
+router.get('/menus/nextWeek/print', controller.printNextWeek);
 router.get('/menus/:id/print', controller.printById);
 
 module.exports = router;

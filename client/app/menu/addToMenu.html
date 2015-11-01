@@ -18,7 +18,7 @@
                     
                     <label>Filtreaza:</label>
                                 
-                    <span style2="width:100%" class="btn-group" uib-dropdown is-open="status.isopen">
+                    <span class="btn-group" uib-dropdown is-open="status.isopen">
                         <button style="text-align:left; min-width:200px;" id="single-button" type="button" class="btn btn-default btn-block" uib-dropdown-toggle ng-disabled="disabled">
                             <span>{{selectedCategory.name}}</span> 
                             <span style="float:right; height:12px; margin-top: 8px;" class="caret"></span>
@@ -66,20 +66,14 @@
                     | filter:search 
                     | orderBy:'name'">                    
                     <td width="50">
-                        <a href ng-click="showModal(dish)"><img ng-src="{{dish.thumbUrl}}" width="40" /></td></a>
+                        <img ng-src="{{dish.thumbUrl}}" width="40" /></td>
                     <td>
-                        <a ng-href="/dishes/{{dish._id}}">{{dish.name}}</a>
+                        <span>{{dish.name}}</span>
                         <span ng-if="dish.isFasting"> (post) </span>
                         <i class="glyphicon glyphicon-info-sign" ng-if="dish.description" uib-tooltip="{{dish.description}}" data-animation="am-fade-and-scale"></i>
                         <button ng-if="!dish.isAddedTmp" type="button" class="btn btn-primary btn-xs" ng-click="addToMenu(dish)"> Adauga la meniu </button>
                         <button ng-if="dish.isAddedTmp" type="button" class="btn btn-success btn-xs" ng-click="removeFromMenu(dish)"> Scoate din meniu </button>                      
                     </td>
-                    <!--<td ng-switch="dish.category">
-                        <span ng-switch-when="1">Supa</span>
-                        <span ng-switch-when="2">Felul 2</span>
-                        <span ng-switch-when="3">Desert</span>
-                        <span ng-switch-when="4">Salata</span>
-                    </td>-->
                 </tr>
             </tbody>
         </table>
