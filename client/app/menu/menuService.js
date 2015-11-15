@@ -14,6 +14,12 @@ app.factory('menuService', ['$http', function ($http) {
             return result.data;
         });
     };
+    
+    factory.getNextMenus = function () {
+        return $http.get(rootUrl + 'nextMenus/').then(function (result) {
+            return result.data;
+        });
+    };    
 
     factory.getById = function (itemId) {
         return $http.get(rootUrl + encodeURIComponent(itemId)).then(function (result) {
