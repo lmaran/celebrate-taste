@@ -6,6 +6,7 @@ var controller = require('./menuController');
 var router = express.Router();
 
 router.get('/api/menus/', controller.getAll);
+router.get('/api/menus/nextMenus/', controller.getNextMenus);
 router.get('/api/menus/:id', controller.getById);
 router.get('/api/menus/today/:today', controller.getTodaysMenu);
 router.post('/api/menus/', controller.create);

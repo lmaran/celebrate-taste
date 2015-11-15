@@ -10,7 +10,6 @@ exports.getAll = function (req, res) {
     });
 };
 
-
 exports.getById = function (req, res) {
     menuService.getById(req.params.id, function (err, menu) {
         if(err) { return handleError(res, err); }
@@ -25,6 +24,14 @@ exports.getTodaysMenu = function (req, res) {
         //if(!doc) { return res.status(404).send('Not Found'); }
         res.json(menu);
     });    
+};
+
+exports.getNextMenus = function (req, res) {
+    var todayStr = helper.getStringFromDate(new Date());
+    menuService.getNextMenus(todayStr, function (err, menus) {
+        if(err) { return handleError(res, err); }
+        res.status(200).json(menus);        
+    });
 };
 
 exports.create = function(req, res){
