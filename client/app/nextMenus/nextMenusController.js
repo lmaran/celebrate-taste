@@ -11,7 +11,7 @@ app.controller('nextMenusController', ['$scope', '$location', 'menuService', 'he
     }     
 
     function init() {
-        menuService.getAll().then(function (data) {
+        menuService.getNextMenus().then(function (data) {
             $scope.menus = data;
         })
         .catch(function (err) {
