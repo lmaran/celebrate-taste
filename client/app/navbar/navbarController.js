@@ -5,6 +5,9 @@ app.controller('navbarController', ['$scope', '$location', 'navbarService', '$wi
     function ($scope, $location, navbarService,$window, Auth, $rootElement) {
                
     $scope.menu = [{
+        'title': 'Meniul de astazi',
+        'link': '/todayMenu'
+    },{
         'title': 'Meniurile viitoare',
         'link': '/nextMenus'
     }, {     

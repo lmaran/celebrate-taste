@@ -45,7 +45,7 @@ gulp.task('default',['dev:watch']);
 gulp.task('dev:watch', function(cb) {
     runSequence(
         'dev',
-        ['watch-client', 'watch-server', 'livereload'],
+        ['watch-client', 'watch-server'],
     cb);
 });
 
@@ -126,21 +126,18 @@ gulp.task('jshint', function() {
         }));         
 });
 
-gulp.task('livereload', function() {
-    livereload.listen(); // listen for changes
-});
-
 gulp.task('watch-server', function() {
+    livereload.listen(); // listen for changes
 	nodemon({ // nodemon config - http://jpsierens.com/tutorial-livereload-nodemon-gulp/
-    		script: 'server/app.js',
+    		script: 'server/app.js', // the script to run the app
             //verbose: true,
-    		ext: 'js html',
-            //env: {'NODE_ENV':'development' }, // moved as default otion in app.js
+    		ext: 'js jade html',
             ignore: ['node_modules/', 'client', 'gulpfile.js']
+            //stdout: false
         })
 	   .on('restart', function(){                 
             gulp.src('server/app.js', {read:false})
-                .pipe(livereload()); 
+                .pipe(livereload());
         });
 });
 
