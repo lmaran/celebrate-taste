@@ -20,6 +20,8 @@ module.exports = function(app) {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
     app.use(passport.initialize());
+    
+    app.locals.pretty = true; // output pretty html from jade -> http://stackoverflow.com/a/11812841/2726725
 
     // Persist sessions with mongoStore
     // We need to enable sessions for passport twitter because its an oauth 1.0 strategy
@@ -36,10 +38,10 @@ module.exports = function(app) {
     if ('production' === env || 'staging' === env) {
         app.use(favicon(path.join(config.root, 'client', 'favicon.ico')));
         
-        app.use(express.static(path.join(config.root, 'client')));
+        app.use(express.static(path.join(config.root, 'client'),{index: '_'}));
         app.set('appPath', path.join(config.root, 'client'));    
         
-        app.use(morgan('dev'));
+        app.use(morgan('dev'));   
     }
 
     if ('development' === env || 'test' === env) {
@@ -50,10 +52,12 @@ module.exports = function(app) {
 
         app.use(require('connect-livereload')({ignore: [/print$/]})); // all that ends in 'print': https://github.com/intesso/connect-livereload#options
         
-        //app.use(express.static(path.join(config.root, '.tmp')));
-        app.use(express.static(path.join(config.root, 'client')));
+        // without last argument express serves index.html even when my routing is to a different file: //http://stackoverflow.com/a/25167332/2726725
+        // It is also recommended to put static middleware first: http://stackoverflow.com/a/28143812/2726725 
+        // Have this pb. only when I try to serve another jade page as homepage
+        app.use(express.static(path.join(config.root, 'client'),{index: '_'})); 
         app.set('appPath', path.join(config.root, 'client'));
-        app.use(morgan('dev'));
+        app.use(morgan('dev')); 
         
         // se pare ca orice errhandler de aici nu functioneaza
         app.use(errorHandler()); // Error handler - has to be last
