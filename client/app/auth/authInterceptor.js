@@ -1,19 +1,14 @@
 'use strict';
 
-app.factory('authInterceptor', ['$rootScope', '$q', '$location', '$rootElement', '$window',
-    function ($rootScope, $q, $location, $rootElement, $window) {
-    
-    var appName = $rootElement.attr('ng-app'); // http://stackoverflow.com/a/17503179
-    var tokenKey = appName + '_token';
-    
+app.factory('authInterceptor', ['$rootScope', '$q', '$cookies' ,'$location',
+    function ($rootScope, $q, $cookies, $location) { 
     return {
         // Add authorization token to headers
         request: function (config) {
             config.headers = config.headers || {};        
-            var token = $window.localStorage.getItem(tokenKey);
-            if(token) {
-                config.headers.Authorization = 'Bearer ' + token;
-            }            
+            if ($cookies.get('token')) {
+            config.headers.Authorization = 'Bearer ' + $cookies.get('token');
+            }           
             return config;
         },
     
@@ -22,7 +17,7 @@ app.factory('authInterceptor', ['$rootScope', '$q', '$location', '$rootElement',
             if(response.status === 401) {
                 $location.path('/login');
                 // remove any stale tokens
-                $window.localStorage.removeItem(tokenKey);
+                $cookies.remove('token');
                 return $q.reject(response);
             }
             else {

@@ -1,14 +1,11 @@
 'use strict';
 
-app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$q', '$rootElement', '$window', 
-    function ($location, $rootScope, $http, User, $q, $rootElement, $window) {
-    
-    var appName = $rootElement.attr('ng-app'); // http://stackoverflow.com/a/17503179
-    var tokenKey = appName + '_token';
+app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookies', '$q', 
+    function ($location, $rootScope, $http, User, $cookies, $q) {
     
     var currentUser = {};
-    if($window.localStorage.getItem(tokenKey)) {
-        currentUser = User.get();
+    if($cookies.get('token')) {
+      currentUser = User.get();
     }
 
     return {
@@ -29,7 +26,10 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$q', '$rootEle
                 password: user.password
             }).
             success(function(data) {
-                $window.localStorage.setItem(tokenKey, data.token);
+                var now = new Date();
+                var exp = new Date(now.getFullYear(), now.getMonth()+6, now.getDate()); //expire after 6 months
+    
+                $cookies.put('token', data.token, {expires:exp});
                 
                 currentUser = User.get();
                 deferred.resolve(data);
@@ -50,9 +50,7 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$q', '$rootEle
         * @param  {Function}
         */
         logout: function() {
-            //$cookieStore.remove('token');
-            $window.localStorage.removeItem(tokenKey);
-            
+            $cookies.remove('token');
             currentUser = {};
         },
 
@@ -68,7 +66,10 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$q', '$rootEle
             
             return User.save(user,
                 function(data) {
-                    $window.localStorage.setItem(tokenKey, data.token);
+                    var now = new Date();
+                    var exp = new Date(now.getFullYear(), now.getMonth()+6, now.getDate()); //expire after 6 months
+        
+                    $cookies.put('token', data.token, {expires:exp});
                     
                     currentUser = User.get();
                     return cb(user);
@@ -148,7 +149,7 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$q', '$rootEle
         * Get auth token
         */
         getToken: function() {
-            return $window.localStorage.getItem(tokenKey);
+            return $cookies.get('token');
         }
     };
 }]);
