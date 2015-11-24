@@ -71,6 +71,9 @@ module.exports = function(app) {
         // });
     }
     
+    // add a second static source for static files: http://stackoverflow.com/questions/5973432/setting-up-two-different-static-directories-in-node-js-express-framework
+    app.use('/public', express.static(path.join(config.root, 'server/public'))); 
+    
     // function logErrors(err, req, res, next) {
     //   console.log(123456);
     //   next(err);
