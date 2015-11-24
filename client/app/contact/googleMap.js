@@ -23,6 +23,7 @@ app.directive('googleMap', ['$rootScope', 'loadGoogleMapAPI',
                         
                         $scope.mapOptions = {
                             zoom: 16,
+                            scrollwheel: false,
                             center: $scope.location
                                 //mapTypeId: google.maps.MapTypeId.HYBRID
                         };

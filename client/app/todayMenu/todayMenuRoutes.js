@@ -2,7 +2,7 @@
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
-		.when('/todayMenu', {
+		.when('/admin/todayMenu', {
             controller: 'todayMenuController',
             templateUrl: 'app/todayMenu/todayMenu.html'
 		});

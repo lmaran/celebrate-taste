@@ -6,13 +6,13 @@ app.controller('navbarController', ['$scope', '$location', 'navbarService', '$wi
                
     $scope.menu = [{
         'title': 'Meniul de astazi',
-        'link': '/todayMenu'
+        'link': '/admin/todayMenu'
     },{
         'title': 'Meniurile viitoare',
-        'link': '/nextMenus'
+        'link': '/admin/nextMenus'
     }, {     
         'title': 'Contact',
-        'link': '/contact'
+        'link': '/admin/contact'
     }];  
         
     $scope.isCollapsed = true;   
@@ -26,7 +26,7 @@ app.controller('navbarController', ['$scope', '$location', 'navbarService', '$wi
 
     $scope.logout = function() {
         Auth.logout();
-        $location.path('/login');
+        $location.path('/admin/login');
     };             
 
     // http://stackoverflow.com/a/18562339
