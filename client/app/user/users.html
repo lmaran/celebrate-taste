@@ -45,7 +45,7 @@
             <tbody>
                 <tr data-ng-repeat="user in users | filter:search">
                     <td>
-                        <a ng-href="/users/{{user._id}}">{{user.name}}</a>
+                        <a ng-href="/admin/users/{{user._id}}">{{user.name}}</a>
                     </td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.role }}</td>
