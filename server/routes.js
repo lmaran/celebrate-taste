@@ -26,7 +26,7 @@ module.exports = function(app) {
     app.route('/contact2')
     .get(function(req,res){
         res.render('contact');
-    });     
+    });
   
     // All undefined asset or api routes should return a 404
     app.route('/:url(api|auth|components|app|bower_components|assets)/*')
