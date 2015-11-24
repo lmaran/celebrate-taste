@@ -18,23 +18,29 @@ module.exports = function(app) {
     app.use('/auth', require('./auth/authRoutes'));
   
   
-    app.route('/aaa')
+    app.route('/')
     .get(function(req,res){
-        res.render('index',{title:'My demo page'});
+        res.render('index');
     }); 
     
-    app.route('/contact2')
+    app.route('/contact')
     .get(function(req,res){
         res.render('contact');
     });
+     
+    app.route('/admin|/admin/*')
+        .get(function(req, res) {
+          res.sendFile(path.resolve(app.get('appPath') + '/index.html')); 
+        });
   
     // All undefined asset or api routes should return a 404
     app.route('/:url(api|auth|components|app|bower_components|assets)/*')
         .get(errors[404]);       
 
-    // All other routes should redirect to the index.html
+    // All other routes should redirect to the index.jade   
     app.route('/*')
         .get(function(req, res) {
-          res.sendFile(path.resolve(app.get('appPath') + '/index.html')); 
+          //res.sendFile(path.resolve(app.get('appPath') + '/index.html')); 
+          res.render('index');
         });
 };

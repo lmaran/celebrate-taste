@@ -13,7 +13,7 @@ var app = angular.module('celebrate-taste', [
     $routeProvider
         // all routes are configured inside each module
         .otherwise({
-            redirectTo: '/'
+            redirectTo: '/admin'
       });
 
     $locationProvider.html5Mode(true);

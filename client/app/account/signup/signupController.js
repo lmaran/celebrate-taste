@@ -15,7 +15,7 @@ app.controller('signupController', ['$scope', 'Auth',  '$location', '$window', f
             })
             .then( function() {
                 // Account created, redirect to home
-                $location.path('/');
+                $location.path('/admin/');
             })
             .catch( function(err) {
                 err = err.data;
@@ -31,6 +31,6 @@ app.controller('signupController', ['$scope', 'Auth',  '$location', '$window', f
     };
 
     $scope.loginOauth = function(provider) {
-        $window.location.href = '/auth/' + provider;
+        $window.location.href = '/admin/auth/' + provider;
     };
 }]);

@@ -2,28 +2,28 @@
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
-        .when('/login', {
+        .when('/admin/login', {
             controller: 'loginController',
             templateUrl: 'app/account/login/login.html',
             title: 'Autentificare'
         })
-        .when('/signup', {
+        .when('/admin/signup', {
             controller: 'signupController',
             templateUrl: 'app/account/signup/signup.html',
             title: 'Inregistrare'      
         })
-        .when('/changePassword', {
+        .when('/admin/changePassword', {
             controller: 'changePasswordController',
             templateUrl: 'app/account/changePassword/changePassword.html',
             title: 'Schimba parola',      
             authenticate: true
         })
-        .when('/resetpassword', {
+        .when('/admin/resetpassword', {
             controller: 'resetPasswordController',
             templateUrl: 'app/account/resetPassword/forgotPassword.html',
             title: 'Reseteaza parola'     
         })
-        .when('/resetpassword:ptoken', {
+        .when('/admin/resetpassword:ptoken', {
             controller: 'resetPasswordController',
             templateUrl: 'app/account/resetPassword/resetPassword.html',
             title: 'Reseteaza parola'     
