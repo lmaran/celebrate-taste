@@ -16,7 +16,18 @@ module.exports = function(app) {
     var env = app.get('env');
     
     app.set('views', config.root + '/server/views');
-    app.set('view engine', 'jade');
+       
+    var exphbs = require('express-handlebars');
+    app.engine('.hbs', exphbs({
+        defaultLayout: 'main', 
+        extname: '.hbs',
+        // in the feature we probably don't need the next 2 lines
+        // https://github.com/ericf/express-handlebars/issues/147#issuecomment-159737839
+        layoutsDir:'server/views/layouts',
+        partialsDir:'server/views/partials'
+    }));
+    app.set('view engine', '.hbs');
+    
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
     app.use(passport.initialize());

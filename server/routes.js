@@ -17,16 +17,13 @@ module.exports = function(app) {
     
     app.use('/auth', require('./auth/authRoutes'));
   
-  
-    app.route('/')
-    .get(function(req,res){
-        res.render('index');
-    }); 
+    app.get('/',function(req,res){res.render('home');}); 
+    app.get('/contact', function(req,res){res.render('contact');});
+    app.get('/login', function(req,res){res.render('login');});
     
-    app.route('/contact')
-    .get(function(req,res){
-        res.render('contact');
-    });
+    app.post('/login', function(req,res){
+        res.json(req.body);
+    })
      
     app.route('/admin|/admin/*')
         .get(function(req, res) {
