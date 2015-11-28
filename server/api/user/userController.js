@@ -88,9 +88,9 @@ exports.changePassword = function(req, res, next) {
     var newPass = String(req.body.newPassword);
     
     userService.getByIdWithPsw(userId, function (err, user) {              
-        if(userService.authenticate(oldPass, user.hashedPassword, user.salt)) {    
+        if(userService.authenticate(oldPass, user.hashedPassword, user.salt)) { 
             user.salt = userService.makeSalt();
-            user.hashedPassword = userService.encryptPassword(newPass, user.salt);
+            user.hashedPassword = userService.encryptPassword(newPass, user.salt);           
             delete user.password;
                 
             userService.update(user, function(err, response) {

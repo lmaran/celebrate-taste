@@ -15,16 +15,16 @@ module.exports = function(app) {
     //app.use('/api/menus', require('./api/menu/menuRoutes'));
     app.use(require('./api/menu/menuRoutes')); // has special routes
     
-    app.use('/auth', require('./auth/authRoutes'));
+    app.use('/auth', require('./api/user/login/loginRoutes'));
   
     app.get('/',function(req,res){res.render('home');}); 
     app.get('/contact', function(req,res){res.render('contact');});
-    app.get('/login', function(req,res){res.render('login');});
+    app.get('/login', function(req,res){res.render('account/login');});
     
     app.post('/login', function(req,res){
         res.json(req.body);
     })
-     
+    
     app.route('/admin|/admin/*')
         .get(function(req, res) {
           res.sendFile(path.resolve(app.get('appPath') + '/index.html')); 
