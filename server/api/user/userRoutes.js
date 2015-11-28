@@ -3,7 +3,10 @@
 var express = require('express');
 var controller = require('./userController');
 var config = require('../../config/environment');
-var auth = require('../../auth/auth.service');
+
+//var auth = require('../../auth/auth.service');
+var auth = require('./login/loginService');
+
 var router = express.Router();
 
 router.get('/', auth.hasRole('admin'), controller.getAll);
