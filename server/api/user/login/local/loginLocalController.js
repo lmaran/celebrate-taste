@@ -1,14 +1,13 @@
 'use strict';
 
-var express = require('express');
 var passport = require('passport');
-var auth = require('../auth.service');
+var auth = require('../loginService');
 
-var router = express.Router();
+// Passport Configuration (once)
+require('./passportConfig');//.setup(userService, config);
 
-
-// auth with custom callback: http://passportjs.org/docs/authenticate
-router.post('/', function(req, res, next) { // actual route: /auth/local/
+exports.authenticate = function(req, res, next) {
+    // auth with custom callback: http://passportjs.org/docs/authenticate
     passport.authenticate('local', function (err, user, info) {
         var error = err || info;
         if (error) return res.status(401).json(error);
@@ -17,6 +16,4 @@ router.post('/', function(req, res, next) { // actual route: /auth/local/
         var token = auth.signToken(user._id, user.role);
         res.json({token: token});
     })(req, res, next)
-});
-
-module.exports = router;
+};
