@@ -2,8 +2,16 @@
 
 var errors = require('./components/errors');
 var path = require('path');
+var auth = require('./api/user/login/loginService');
 
 module.exports = function(app) {
+    
+    // app.use(function(req, res, next){
+    //     console.log(req.cookies);
+    //     next();
+    // });
+    
+    app.use(auth.addUserIfExist());
     
     // Insert routes below
     app.use('/api/users', require('./api/user/userRoutes'));
@@ -17,13 +25,15 @@ module.exports = function(app) {
     
     app.use('/auth', require('./api/user/login/loginRoutes'));
   
-    app.get('/',function(req,res){res.render('home');}); 
+    app.get('/',function(req,res){res.render('home', {user: req.user});}); 
     app.get('/contact', function(req,res){res.render('contact');});
-    app.get('/login', function(req,res){res.render('account/login');});
+    app.get('/login', function(req,res){res.render('account/login');});   
     
-    app.post('/login', function(req,res){
-        res.json(req.body);
-    })
+    var loginController = require('./api/user/login/local/loginLocalController');
+    app.post('/login/', loginController.authenticate);    
+    
+    var logoutController = require('./api/user/logout/logoutController');
+    app.get('/logout', logoutController.logout);
     
     app.route('/admin|/admin/*')
         .get(function(req, res) {

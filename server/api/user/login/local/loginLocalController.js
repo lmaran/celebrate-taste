@@ -14,6 +14,19 @@ exports.authenticate = function(req, res, next) {
         if (!user) return res.status(404).json({message: 'Something went wrong, please try again.'});
         
         var token = auth.signToken(user._id, user.role);
-        res.json({token: token});
+
+        var userProfile = { //exclude sensitive info
+            name:user.name,
+            email: user.email,
+            role:user.role
+        };
+
+        auth.setCookies(req, res, token, userProfile);
+        
+        if(req.is('json')){ // http://expressjs.com/api.html#req.is 
+            res.json(userProfile); // for requests that come from client-side (Angular)
+        }
+        else
+            res.redirect('/'); // for requests that come from server-side (Jade)
     })(req, res, next)
 };
