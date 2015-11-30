@@ -8,6 +8,8 @@ var errorHandler = require('errorhandler');
 var path = require('path');
 var config = require('./environment');
 var passport = require('passport');
+var cookieParser = require('cookie-parser');
+var auth = require('../api/user/login/loginService');
 //var session = require('express-session');
 //var MongoStore = require('connect-mongo')(session); // use PascalCase to avoid an warning in VSCode
 //var mongoose = require('mongoose');
@@ -30,6 +32,9 @@ module.exports = function(app) {
     
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
+    
+    app.use(cookieParser()); // Parse Cookie header and populate req.cookies with an object keyed by the cookie names
+    
     app.use(passport.initialize());
     
     app.locals.pretty = true; // output pretty html from jade -> http://stackoverflow.com/a/11812841/2726725
@@ -108,5 +113,8 @@ module.exports = function(app) {
     //     // message: str
     //   // })
     // }
+    
+   
+    app.use(auth.addUserIfExist());    
 
 };

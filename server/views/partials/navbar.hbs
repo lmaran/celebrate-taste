@@ -14,7 +14,23 @@
                 <li><a href='/contact'>Contact</a></li>
             </ul>
             <ul class='nav navbar-nav navbar-right'>
-                <li><a href='/login'>Login</a></li>
+                <li>
+                    {{#if user}}
+                    <p class="navbar-text">
+                        <!--<img src="{{user.avatar}}" width="20" height="20"> -->
+                        {{user.name}}
+                    </p>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/logout">Log Out</a>
+                </li>
+                    {{else}}
+                    <a href="/login">Sign In</a>
+                </li>
+                {{/if}}                
+                
             </ul>            
         </div>
     </div>
