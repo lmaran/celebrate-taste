@@ -1,6 +1,8 @@
 'use strict';
 
-app.controller('signupController', ['$scope', 'Auth',  '$location', '$window', function ($scope, Auth, $location, $window) {
+app.controller('registerController', ['$scope', 'userService',  '$location', '$window', 
+    function ($scope, userService, $location, $window) {
+        
     $scope.user = {};
     $scope.errors = {};
 
@@ -8,13 +10,12 @@ app.controller('signupController', ['$scope', 'Auth',  '$location', '$window', f
         $scope.submitted = true;
         
         if(form.$valid) {
-            Auth.createUser({
+            userService.create({
                 name: $scope.user.name,
                 email: $scope.user.email,
                 password: $scope.user.password
             })
             .then( function() {
-                // Account created, redirect to home
                 $location.path('/admin/');
             })
             .catch( function(err) {
@@ -30,7 +31,4 @@ app.controller('signupController', ['$scope', 'Auth',  '$location', '$window', f
         }
     };
 
-    $scope.loginOauth = function(provider) {
-        $window.location.href = '/admin/auth/' + provider;
-    };
 }]);

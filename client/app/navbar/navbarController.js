@@ -1,8 +1,8 @@
 /* global angular */
 'use strict';
 
-app.controller('navbarController', ['$scope', '$location', 'navbarService', '$window', 'Auth', '$rootElement', 
-    function ($scope, $location, navbarService,$window, Auth, $rootElement) {
+app.controller('navbarController', ['$scope', '$location', 'navbarService', '$window', 'userService', '$rootElement', 
+    function ($scope, $location, navbarService, $window, userService, $rootElement) {
                
     $scope.menu = [{
         'title': 'Meniul de astazi',
@@ -16,16 +16,16 @@ app.controller('navbarController', ['$scope', '$location', 'navbarService', '$wi
     }];  
         
     $scope.isCollapsed = true;   
-    $scope.isLoggedIn = Auth.isLoggedIn;
-    $scope.isAdmin = Auth.isAdmin;
-    $scope.getCurrentUser = Auth.getCurrentUser;
+    $scope.isLoggedIn = userService.isLoggedIn;
+    $scope.isAdmin = userService.isAdmin;
+    $scope.getCurrentUser = userService.getCurrentUser;
     $scope.buildInfo = {};
 
     /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined
     init();
 
     $scope.logout = function() {
-        Auth.logout();
+        userService.logout();
         $location.path('/admin');
     };             
 

@@ -1,6 +1,8 @@
 'use strict';
 
-app.controller('resetPasswordController', ['$scope', 'User', 'Auth', '$window', function ($scope, User, Auth, $window) {
+app.controller('resetPasswordController', ['$scope', 'userService', '$window', 
+    function ($scope, userService, $window) {
+        
     $scope.errors = {};
 
     $scope.resetPassword = function(form) {

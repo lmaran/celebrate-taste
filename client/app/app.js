@@ -20,15 +20,15 @@ var app = angular.module('celebrate-taste', [
     $httpProvider.interceptors.push('authInterceptor');
 }]);
   
-app.run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Auth) {
+app.run(['$rootScope', '$location', 'userService', function ($rootScope, $location, userService) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$routeChangeStart', function (event, nextRoute, currentRoute) {
-        Auth.isLoggedInAsync(function(loggedIn) {
-            if (nextRoute.authenticate && !loggedIn) {
+        //Auth.isLoggedInAsync(function(loggedIn) {
+            if (nextRoute.authenticate && !userService.isLoggedIn) {
                 event.preventDefault();
                 $location.path('/login');
             }
-        });
+        //});
     });
     
     // set pageFitle for each page: http://stackoverflow.com/a/22326375
