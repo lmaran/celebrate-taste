@@ -9,6 +9,7 @@ var path = require('path');
 var config = require('./environment');
 var passport = require('passport');
 var cookieParser = require('cookie-parser');
+var auth = require('../api/user/login/loginService');
 //var session = require('express-session');
 //var MongoStore = require('connect-mongo')(session); // use PascalCase to avoid an warning in VSCode
 //var mongoose = require('mongoose');
@@ -112,5 +113,8 @@ module.exports = function(app) {
     //     // message: str
     //   // })
     // }
+    
+   
+    app.use(auth.addUserIfExist());    
 
 };

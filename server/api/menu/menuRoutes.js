@@ -4,17 +4,12 @@ var express = require('express');
 var controller = require('./menuController');
 var router = express.Router();
 
-router.get('/api/menus/', controller.getAll);
-router.get('/api/menus/nextMenus/', controller.getNextMenus);
-router.get('/api/menus/:id', controller.getById);
-router.get('/api/menus/today/:today', controller.getTodaysMenu);
-router.post('/api/menus/', controller.create);
-router.put('/api/menus/', controller.update);
-router.delete('/api/menus/:id', controller.remove);
-
-// keep this order
-router.get('/menus/currentWeek/print', controller.printCurrentWeek);
-router.get('/menus/nextWeek/print', controller.printNextWeek);
-router.get('/menus/:id/print', controller.printById);
+router.get('/', controller.getAll);
+router.get('/nextMenus/', controller.getNextMenus);
+router.get('/:id', controller.getById);
+router.get('/today/:today', controller.getTodaysMenu);
+router.post('/', controller.create);
+router.put('/', controller.update);
+router.delete('/:id', controller.remove);
 
 module.exports = router;

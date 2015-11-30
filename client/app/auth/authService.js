@@ -22,7 +22,7 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookies', '$q
             var cb = callback || angular.noop;
             var deferred = $q.defer();
             
-            $http.post('/auth/local', {
+            $http.post('/login', {
                 email: user.email,
                 password: user.password
             }).
