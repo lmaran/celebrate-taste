@@ -26,7 +26,7 @@ app.controller('navbarController', ['$scope', '$location', 'navbarService', '$wi
 
     $scope.logout = function() {
         Auth.logout();
-        $location.path('/admin/login');
+        $location.path('/admin');
     };             
 
     // http://stackoverflow.com/a/18562339

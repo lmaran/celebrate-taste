@@ -4,8 +4,9 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookies', '$q
     function ($location, $rootScope, $http, User, $cookies, $q) {
     
     var currentUser = {};
-    if($cookies.get('token')) {
-      currentUser = User.get();
+    
+    if($cookies.get('user')) {
+        currentUser = angular.fromJson($cookies.get('user'));
     }
 
     return {
@@ -26,12 +27,14 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookies', '$q
                 password: user.password
             }).
             success(function(data) {
-                var now = new Date();
-                var exp = new Date(now.getFullYear(), now.getMonth()+6, now.getDate()); //expire after 6 months
-    
-                $cookies.put('token', data.token, {expires:exp});
+                // this cookie comes now from server
+                // var now = new Date();
+                // var exp = new Date(now.getFullYear(), now.getMonth()+6, now.getDate()); //expire after 6 months   
+                // $cookies.put('user', JSON.stringify(data), {expires:exp});
                 
-                currentUser = User.get();
+                //currentUser = User.get();
+                currentUser = data;
+                
                 deferred.resolve(data);
                 return cb();
             }).
@@ -50,7 +53,11 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookies', '$q
         * @param  {Function}
         */
         logout: function() {
-            $cookies.remove('token');
+            //$cookies.remove('user');
+            //currentUser = {};
+            $http.get('/logout')
+                .success(function(){})
+                .error(function(err){});
             currentUser = {};
         },
 
@@ -69,7 +76,7 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookies', '$q
                     var now = new Date();
                     var exp = new Date(now.getFullYear(), now.getMonth()+6, now.getDate()); //expire after 6 months
         
-                    $cookies.put('token', data.token, {expires:exp});
+                    $cookies.put('user', data.token, {expires:exp});
                     
                     currentUser = User.get();
                     return cb(user);
@@ -116,6 +123,7 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookies', '$q
         * @return {Boolean}
         */
         isLoggedIn: function() {
+            //console.log(currentUser);
             return currentUser.hasOwnProperty('role');
         },
         
@@ -148,8 +156,8 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookies', '$q
         /**
         * Get auth token
         */
-        getToken: function() {
-            return $cookies.get('token');
-        }
+        // getToken: function() {
+        //     return $cookies.get('access_token');
+        // }
     };
 }]);

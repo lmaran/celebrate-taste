@@ -5,10 +5,10 @@ app.factory('authInterceptor', ['$rootScope', '$q', '$cookies' ,'$location',
     return {
         // Add authorization token to headers
         request: function (config) {
-            config.headers = config.headers || {};        
-            if ($cookies.get('token')) {
-            config.headers.Authorization = 'Bearer ' + $cookies.get('token');
-            }           
+            // config.headers = config.headers || {};        
+            // if ($cookies.get('access_token')) {
+            //     config.headers.Authorization = 'Bearer ' + $cookies.get('token');
+            // }           
             return config;
         },
     
@@ -17,7 +17,7 @@ app.factory('authInterceptor', ['$rootScope', '$q', '$cookies' ,'$location',
             if(response.status === 401) {
                 $location.path('/login');
                 // remove any stale tokens
-                $cookies.remove('token');
+                $cookies.remove('user');
                 return $q.reject(response);
             }
             else {
