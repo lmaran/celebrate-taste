@@ -15,10 +15,10 @@ app.controller('userController', ['$scope', '$window', '$route', 'userService', 
     }
 
     function init() {
-        getCustomer();
+        getUser();
     } 
 
-    function getCustomer() {
+    function getUser() {
         userService.getById($route.current.params.id).then(function (data) {
             $scope.user = data;
         })
@@ -30,10 +30,9 @@ app.controller('userController', ['$scope', '$window', '$route', 'userService', 
     $scope.create = function (form) {
         $scope.submitted = true;
         if (form.$valid) {
-            //alert(JSON.stringify($scope.user));
             userService.create($scope.user)
                 .then(function (data) {
-                    $location.path('/users');
+                    $location.path('/admin/users');
                     //Logger.info("Widget created successfully");
                 })
                 .catch(function (err) {
@@ -45,10 +44,9 @@ app.controller('userController', ['$scope', '$window', '$route', 'userService', 
     $scope.update = function (form) {
         $scope.submitted = true;
         if (form.$valid) {
-            //alert(JSON.stringify($scope.user));
             userService.update($scope.user)
                 .then(function (data) {
-                    $location.path('/users');
+                    $location.path('/admin/users');
                     //Logger.info("Widget created successfully");
                 })
                 .catch(function (err) {
@@ -58,7 +56,7 @@ app.controller('userController', ['$scope', '$window', '$route', 'userService', 
     };
 
     $scope.cancel = function () {
-        //$location.path('/widgets')
+        //$location.path('/admin/users')
         $window.history.back();
     }
 

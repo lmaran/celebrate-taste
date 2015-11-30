@@ -84,6 +84,7 @@ exports.remove = function(req, res){
  */
 exports.changePassword = function(req, res, next) {
     var userId = String(req.user._id); //without 'String' the result is an Object
+    console.log('aaa' + userId);
     var oldPass = String(req.body.oldPassword);
     var newPass = String(req.body.newPassword);
     

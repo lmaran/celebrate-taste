@@ -17,5 +17,37 @@ app.config(['$routeProvider', function ($routeProvider) {
 	        templateUrl: 'app/user/user.html',
 	        title: 'Editeaza utilizator',
 	        isEditMode: true
-	    });	        
+	    })
+        
+        
+        /*
+            Security routes
+        */  
+        
+        .when('/admin/login', {
+            controller: 'loginController',
+            templateUrl: 'app/user/login/login.html',
+            title: 'Autentificare'
+        })
+        .when('/admin/register', {
+            controller: 'registerController',
+            templateUrl: 'app/user/register/register.html',
+            title: 'Inregistrare'      
+        })
+        .when('/admin/changePassword', {
+            controller: 'changePasswordController',
+            templateUrl: 'app/user/changePassword/changePassword.html',
+            title: 'Schimba parola',      
+            authenticate: true
+        })
+        .when('/admin/resetpassword', {
+            controller: 'resetPasswordController',
+            templateUrl: 'app/user/resetPassword/forgotPassword.html',
+            title: 'Reseteaza parola'     
+        })
+        .when('/admin/resetpassword:ptoken', {
+            controller: 'resetPasswordController',
+            templateUrl: 'app/user/resetPassword/resetPassword.html',
+            title: 'Reseteaza parola'     
+        });                
 }]);

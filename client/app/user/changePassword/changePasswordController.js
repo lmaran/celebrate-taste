@@ -1,12 +1,14 @@
 'use strict';
 
-app.controller('changePasswordController', ['$scope', 'User', 'Auth', '$window', function ($scope, User, Auth, $window) {
+app.controller('changePasswordController', ['$scope', '$window', 'userService', 
+    function ($scope, $window, userService) {
+        
     $scope.errors = {};
 
     $scope.changePassword = function(form) {
         $scope.submitted = true;
         if(form.$valid) {
-            Auth.changePassword($scope.user.oldPassword, $scope.user.newPassword)
+            userService.changePassword($scope.user.oldPassword, $scope.user.newPassword)
             .then( function() {
                 $scope.message = 'Parola a fost schimbata cu succes.';
             })
