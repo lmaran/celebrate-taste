@@ -14,28 +14,13 @@ var cookie = require('cookie');
  * Otherwise returns 403
  */
 function isAuthenticated() {
-    return compose()
-    // Validate jwt
-        .use(function (req, res, next) {
-            // allow access_token to be passed through query parameter as well
-            if (req.query && req.query.hasOwnProperty('access_token')) {
-                req.headers.authorization = 'Bearer ' + req.query.access_token;
-            };
-            if(req.cookies && req.cookies.hasOwnProperty('access_token')){
-                req.headers.authorization = 'Bearer ' + req.cookies.access_token;
-            }
-            validateJwt(req, res, next);
-        })
-    // Attach user to request
-        .use(function (req, res, next) {
-            userService.getById(req.user._id, function (err, user) {
-                if (err) return next(err);
-                if (!user) return res.status(401).send('Unauthorized');
-
-                req.user = user;
-                next();
-            });
-        });
+    // the logic that adds the user to the reques was moved to 'addUserIfExist' middleware
+    return function(req, res, next){
+        if(req.user)
+            next();
+        else
+            return res.status(401).send('Unauthorized');
+    }
 }
 
 function addUserIfExist() {
