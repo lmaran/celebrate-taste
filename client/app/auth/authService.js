@@ -11,13 +11,6 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookies', '$q
 
     return {
         
-        /**
-        * Authenticate user and save token
-        *
-        * @param  {Object}   user     - login info
-        * @param  {Function} callback - optional
-        * @return {Promise}
-        */
         login: function(user, callback) {
             var cb = callback || angular.noop;
             var deferred = $q.defer();
@@ -151,13 +144,7 @@ app.factory('Auth', ['$location', '$rootScope', '$http', 'User', '$cookies', '$q
         */
         isAdmin: function() {
             return currentUser.role === 'admin';
-        },
-        
-        /**
-        * Get auth token
-        */
-        // getToken: function() {
-        //     return $cookies.get('access_token');
-        // }
+        }
+
     };
 }]);
