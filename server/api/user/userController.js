@@ -96,7 +96,14 @@ exports.changePassword = function(req, res, next) {
                 
             userService.update(user, function(err, response) {
                 if (err) return validationError(res, err);
-                res.status(200).send('OK');
+                
+                if(req.is('json')){ // http://expressjs.com/api.html#req.is 
+                    res.json({}); // for requests that come from client-side (Angular)
+                }
+                else
+                    res.redirect('/'); // for requests that come from server-side (Jade)
+                
+                //res.status(200).send('OK');
             });
         } else {
             res.status(403).send('Forbidden');
