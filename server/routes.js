@@ -2,7 +2,7 @@
 
 var errors = require('./components/errors');
 var path = require('path');
-//var auth = require('./api/user/login/loginService');
+var auth = require('./api/user/login/loginService');
 
 module.exports = function(app) {
     
@@ -18,6 +18,9 @@ module.exports = function(app) {
     // RPC routes
     app.post('/login/', require('./api/user/login/local/loginLocalController').authenticate);       
     app.get('/logout', require('./api/user/logout/logoutController').logout);
+    // app.get('/me', auth.isAuthenticated(), require('./api/user/userController').me);
+    app.post('/me/changepassword', auth.isAuthenticated(), require('./api/user/userController').changePassword); 
+       
     app.get('/menus/currentWeek/print',  require('./api/menu/menuController').printCurrentWeek);
     app.get('/menus/nextWeek/print', require('./api/menu/menuController').printNextWeek);
     app.get('/menus/:id/print', require('./api/menu/menuController').printById);
@@ -25,8 +28,9 @@ module.exports = function(app) {
     
     // server-side views
     app.get('/',function(req,res){res.render('home', {user: req.user});}); 
-    app.get('/contact', function(req,res){res.render('contact');});
-    app.get('/login', function(req,res){res.render('account/login');});   
+    app.get('/contact', function(req,res){res.render('contact', {user: req.user});});
+    app.get('/login', function(req,res){res.render('user/login/login');}); 
+    app.get('/changePassword', function(req,res){res.render('user/changePassword/changePassword');});      
 
     
     // client-side views
