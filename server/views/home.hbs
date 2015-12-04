@@ -5,8 +5,37 @@
 		<h1>Servicii de catering pentru companii</h1>
 		<p>Cu o experienta de peste 5 ani in domeniu, oferim servicii complete pentru servirea mesei de pranz. Ne adresam companiilor din Satu Mare si zonele limitrofe.</p>
 		<p>
-			<span><a class='btn btn-lg btn-primary' href='/todayMenu', role='button'>Meniul de astazi &raquo;</a></span>
+			<span><a id='todaysMenuLnk' class='btn btn-lg btn-primary' href='/todaysMenu', role='button'>Meniul de astazi &raquo;</a></span>
 			<span><a class='btn btn-lg btn-default' href='/nextMenus', role='button'>Meniurile viitoare &raquo;</a></span>		
 		</p>
 	</div>
 </div>
+
+<script type="text/javascript">
+
+	(function() {	
+				
+		var dateStr = getStringFromDate(new Date()); // yyyy-mm-dd
+		
+		var link = document.getElementById("todaysMenuLnk");
+		link.setAttribute('href', "/todaysMenu?today=" + dateStr);
+		
+		
+		function getStringFromDate(date){ // javascript date object
+			var d = date.getDate();
+			var m = date.getMonth()+1; // January is 0!
+			var yyyy = date.getFullYear();  
+			
+			var dd = d; 
+			if(dd < 10) dd = '0' + d;
+			
+			var mm = m;
+			if(mm < 10) m = '0' + m; 
+			
+			return yyyy + '-' + mm + '-' + dd // 2015-07-23		
+		}
+		
+
+	})();
+
+</script>

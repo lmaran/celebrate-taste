@@ -1,0 +1,33 @@
+{{> navbar}}
+
+<div class="container">
+
+    <br/>
+    <h1>Meniul de astazi<small class="text-muted"> ({{menu.menuDate}})</small></h1>
+    <hr>
+    
+	{{#each menu.dishes}}
+		<div class="media">
+			<div class="media-left media-middle" style="min-width:100px; height:85px;">
+				{{#if thumbUrl}}
+					<a href="/nextMenus/{{_id}}/dishes/{{_id}}" >
+						<img src="{{thumbUrl}}" width="85" class="media-object img-thumbnail">
+					</a>
+				{{/if}}
+			</div>      
+			<div class="media-body" style="margin-left:75px;">        
+				<h4 class="media-heading">
+					{{#if option}}
+						<span>{{option}}.</span>
+					{{/if}}
+					{{name}}</h4>
+				<div style="color:gray">{{description}}</div>
+				<div style="color:gray">{{calories}} calorii</div>
+			</div>
+	
+		</div> 
+	{{/each}} 
+
+</div>
+
+<!--ng-repeat="dish in todaysMenu.dishes | orderBy:['category', 'option']-->
