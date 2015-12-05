@@ -31,7 +31,8 @@ module.exports = function(app) {
     app.get('/contact', function(req,res){res.render('contact/contact', {user: req.user});});
     app.get('/login', function(req,res){res.render('user/login/login');}); 
     app.get('/changePassword', function(req,res){res.render('user/changePassword/changePassword');});
-    app.get('/todaysMenu', require('./views/menu/menuController').renderTodaysMenu);       
+    app.get('/todaysMenu', require('./views/menu/menuController').renderTodaysMenu);  
+    app.get('/nextMenus', require('./views/menu/menuController').renderNextMenus);     
 
     
     // client-side views

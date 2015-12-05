@@ -3,8 +3,9 @@
 <div class="container">
 
     {{#if menuHasDishes}}
-		<h1>Meniul de astazi<small class="text-muted"> ({{menuDate}})</small></h1>
+		<h1>Meniul de astazi<small class="text-muted"> ({{today}})</small></h1>
 		<hr>
+		
 		{{#each menu.dishes}}			
 			<h4 class="media-heading">
 				{{#if option}}
@@ -20,9 +21,7 @@
 			
 		{{/each}} 	
 	{{else}}
-		<h4> Pentru astazi <span class="text-muted">({{menuDate}})</span> nu exista meniu!</h4>
+		<h4> Pentru astazi <span class="text-muted">({{today}})</span> nu exista meniu!</h4>
 	{{/if}}
 
 </div>
-
-<!--ng-repeat="dish in todaysMenu.dishes | orderBy:['category', 'option']-->
