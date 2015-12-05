@@ -4,7 +4,7 @@
     
     <h1>Login</h1>
 
-    <form action="/login" method="post" class="form-horizontal">
+    <form action="/login" method="post" class="form-horizontal" novalidate>
         <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
 
         <div class="form-group">
@@ -24,7 +24,7 @@
         <div class="form-group">
             <div class="col-md-10 col-md-offset-2">
                 <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-floppy-disk"></span> Autentifica</button>
-                <button type="button" class="btn"> <span class=" glyphicon glyphicon-remove"></span> Renunta</button>
+                <button type="button" class="btn" onclick='window.history.back();'> <span class=" glyphicon glyphicon-remove"></span> Renunta</button>
             </div>
         </div>
 
