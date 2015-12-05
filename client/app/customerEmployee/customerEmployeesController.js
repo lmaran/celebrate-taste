@@ -34,7 +34,7 @@ app.controller('customerEmployeesController', ['$scope', '$location', 'customerE
     };
 
     $scope.create = function () {
-        $location.path('/customerEmployees/create');
+        $location.path('/admin/customerEmployees/create');
     }
 
     $scope.refresh = function () {
