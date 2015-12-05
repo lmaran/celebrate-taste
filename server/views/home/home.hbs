@@ -17,7 +17,7 @@
 					<a id='todaysMenuLnk' class='btn btn-lg btn-primary btn-block' href='/todaysMenu', role='button'>Meniul de astazi &raquo;</a>
 				</div>
 				<div class='col-sm-4'>
-					<a class='btn btn-lg btn-default btn-block' href='/nextMenus', role='button'>Meniurile viitoare &raquo;</a>
+					<a id='nextMenusLnk' class='btn btn-lg btn-default btn-block' href='/nextMenus', role='button'>Meniurile viitoare &raquo;</a>
 				</div>							
 			</div>
 		</p>
@@ -31,9 +31,11 @@
 				
 		var dateStr = getStringFromDate(new Date()); // yyyy-mm-dd
 		
-		var link = document.getElementById("todaysMenuLnk");
-		link.setAttribute('href', "/todaysMenu?today=" + dateStr);
+		var link1 = document.getElementById("todaysMenuLnk");
+		link1.setAttribute('href', "/todaysMenu?today=" + dateStr);
 		
+        var link2 = document.getElementById("nextMenusLnk");
+		link2.setAttribute('href', "/nextMenus?today=" + dateStr);		
 		
 		function getStringFromDate(date){ // javascript date object
 			var d = date.getDate();
