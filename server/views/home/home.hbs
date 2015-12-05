@@ -1,3 +1,10 @@
+<style>
+	@media (max-width: 779px) {
+		.btn{
+			margin-bottom:10px;
+	}	
+</style>
+
 {{> navbar}}
 
 <div class='container'>
@@ -5,11 +12,18 @@
 		<h1>Servicii de catering pentru companii</h1>
 		<p>Cu o experienta de peste 5 ani in domeniu, oferim servicii complete pentru servirea mesei de pranz. Ne adresam companiilor din Satu Mare si zonele limitrofe.</p>
 		<p>
-			<span><a id='todaysMenuLnk' class='btn btn-lg btn-primary' href='/todaysMenu', role='button'>Meniul de astazi &raquo;</a></span>
-			<span><a class='btn btn-lg btn-default' href='/nextMenus', role='button'>Meniurile viitoare &raquo;</a></span>		
+			<div class='row'>
+				<div class='col-sm-4'>
+					<a id='todaysMenuLnk' class='btn btn-lg btn-primary btn-block' href='/todaysMenu', role='button'>Meniul de astazi &raquo;</a>
+				</div>
+				<div class='col-sm-4'>
+					<a class='btn btn-lg btn-default btn-block' href='/nextMenus', role='button'>Meniurile viitoare &raquo;</a>
+				</div>							
+			</div>
 		</p>
 	</div>
 </div>
+
 
 <script type="text/javascript">
 
