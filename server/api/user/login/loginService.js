@@ -44,6 +44,7 @@ function addUserIfExist() {
                     if (err) return next(err);
                     //if (!user) return res.status(401).send('Unauthorized');
                     if (!user) next();
+                    if (user.role.indexOf('admin') > -1) user.isAdmin = true; //add this property for navbar
                     req.user = user;
                     next();
                 });
