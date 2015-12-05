@@ -27,8 +27,8 @@ module.exports = function(app) {
     
     
     // server-side views
-    app.get('/',function(req,res){res.render('home', {user: req.user});}); 
-    app.get('/contact', function(req,res){res.render('contact', {user: req.user});});
+    app.get('/',function(req,res){res.render('home/home', {user: req.user});}); 
+    app.get('/contact', function(req,res){res.render('contact/contact', {user: req.user});});
     app.get('/login', function(req,res){res.render('user/login/login');}); 
     app.get('/changePassword', function(req,res){res.render('user/changePassword/changePassword');});
     app.get('/todaysMenu', require('./views/menu/menuController').renderTodaysMenu);       
