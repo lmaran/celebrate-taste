@@ -103,7 +103,7 @@ app.controller('menusController', ['$scope', '$location', 'menuService', 'modalS
     };
 
     $scope.addToMenu = function (menu) {       
-        $location.path('/menus/' + menu._id + '/add/');
+        $location.path('/admin/menus/' + menu._id + '/add/');
     }  
 
 }]);

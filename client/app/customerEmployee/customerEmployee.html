@@ -9,7 +9,7 @@
         <div class="form-group" ng-class="{ 'has-error' : form.name.$invalid && submitted }">
             <label class="col-md-2 control-label">Nume </label>
             <div class="col-md-4">
-                <input class="form-control" ng-model="customerEmployee.name" type="text" name="name" my-focus="isFocusOnName" required />
+                <input class="form-control" ng-model="customerEmployee.name" type="text" name="name" lm-focus="isFocusOnName" required />
                 <p ng-show="form.name.$invalid  && submitted" class="help-block">This field is required.</p>
             </div>
         </div>

@@ -33,7 +33,7 @@ app.controller('menuController', ['$scope', '$window', '$route', 'menuService', 
             //alert(JSON.stringify($scope.menu));
             menuService.create($scope.menu)
                 .then(function (data) {
-                    $location.path('/menus');          
+                    $location.path('/admin/menus');          
                     //Logger.info("Widget created successfully");
                 })
                 .catch(function (err) {
@@ -48,7 +48,7 @@ app.controller('menuController', ['$scope', '$window', '$route', 'menuService', 
             //alert(JSON.stringify($scope.menu));
             menuService.update($scope.menu)
                 .then(function (data) {
-                    $location.path('/menus');
+                    $location.path('/admin/menus');
                     //Logger.info("Widget created successfully");
                 })
                 .catch(function (err) {

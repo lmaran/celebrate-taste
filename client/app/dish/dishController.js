@@ -3,7 +3,7 @@
 
 app.controller('dishController', ['$scope', '$window', '$route', 'dishService', '$location', 
     function ($scope, $window, $route, dishService, $location) {
-        
+    
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
 
