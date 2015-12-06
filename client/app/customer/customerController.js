@@ -1,7 +1,9 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('customerController', ['$scope', '$window', '$route', 'customerService', '$location', function ($scope, $window, $route, customerService, $location) {
+app.controller('customerController', ['$scope', '$window', '$route', 'customerService', '$location', 
+    function ($scope, $window, $route, customerService, $location) {
+        
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
 
@@ -31,7 +33,7 @@ app.controller('customerController', ['$scope', '$window', '$route', 'customerSe
             //alert(JSON.stringify($scope.customer));
             customerService.create($scope.customer)
                 .then(function (data) {
-                    $location.path('/customers');
+                    $location.path('/admin/customers');
                     //Logger.info("Widget created successfully");
                 })
                 .catch(function (err) {
@@ -46,7 +48,7 @@ app.controller('customerController', ['$scope', '$window', '$route', 'customerSe
             //alert(JSON.stringify($scope.customer));
             customerService.update($scope.customer)
                 .then(function (data) {
-                    $location.path('/customers');
+                    $location.path('/admin/customers');
                     //Logger.info("Widget created successfully");
                 })
                 .catch(function (err) {

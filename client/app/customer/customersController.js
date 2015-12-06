@@ -1,6 +1,8 @@
 ﻿'use strict';
 
-app.controller('customersController', ['$scope', '$location', 'customerService', function ($scope, $location, customerService) {
+app.controller('customersController', ['$scope', '$location', 'customerService', 
+    function ($scope, $location, customerService) {
+
     $scope.customers = [];
     $scope.errors = {};
 
@@ -28,7 +30,7 @@ app.controller('customersController', ['$scope', '$location', 'customerService',
     };
 
     $scope.create = function () {
-        $location.path('/customers/create');
+        $location.path('/admin/customers/create');
     }
 
     $scope.refresh = function () {

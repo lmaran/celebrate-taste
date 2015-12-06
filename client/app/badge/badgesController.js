@@ -1,9 +1,9 @@
 ﻿'use strict';
 
-app.controller('dishesController', ['$scope', '$location', 'dishService', 'modalService', 
-    function ($scope, $location, dishService, modalService) {
-    
-    $scope.dishes = [];
+app.controller('badgesController', ['$scope', '$location', 'badgeService', 'modalService',
+    function ($scope, $location, badgeService, modalService) {
+        
+    $scope.badges = [];
     $scope.errors = {};
 
     /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined
@@ -19,12 +19,12 @@ app.controller('dishesController', ['$scope', '$location', 'dishService', 'modal
         
             // get the index for selected item
             var i = 0;
-            for (i in $scope.dishes) {
-                if ($scope.dishes[i]._id === item._id) break;
+            for (i in $scope.badges) {
+                if ($scope.badges[i]._id === item._id) break;
             }
 
-            dishService.delete(item._id).then(function () {
-                $scope.dishes.splice(i, 1);
+            badgeService.delete(item._id).then(function () {
+                $scope.badges.splice(i, 1);
             })
             .catch(function (err) {
                 $scope.errors = JSON.stringify(err.data, null, 4);
@@ -35,7 +35,7 @@ app.controller('dishesController', ['$scope', '$location', 'dishService', 'modal
     };
 
     $scope.create = function () {
-        $location.path('/admin/dishes/create');
+        $location.path('/admin/badges/create');
     }
 
     $scope.refresh = function () {
@@ -43,22 +43,12 @@ app.controller('dishesController', ['$scope', '$location', 'dishService', 'modal
     };
 
     function init() {
-        dishService.getAll().then(function (data) {
-            $scope.dishes = data;
+        badgeService.getAll().then(function (data) {
+            $scope.badges = data;
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
         });
-    }   
-
-    $scope.showModal = function (item) {
-
-        var modalOptions = {
-            imageUrl: item.imageUrl,           
-        };
-        
-        modalService.showImage(modalOptions).then(function (result) {
-        });
-    };
+    }
 
 }]);
