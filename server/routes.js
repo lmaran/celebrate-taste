@@ -9,6 +9,7 @@ module.exports = function(app) {
     // API routes
     app.use('/api/users',require('./api/user/userRoutes'));
     app.use('/api/customers', auth.hasRole('admin'), require('./api/customer/customerRoutes'));
+    app.use('/api/badges', auth.hasRole('admin'), require('./api/badge/badgeRoutes'));
     app.use('/api/buildInfo', require('./api/buildInfo/buildInfoRoutes'));   
     app.use('/api/dishes', auth.hasRole('admin'), require('./api/dish/dishRoutes'));
     app.use('/api/customerEmployees', auth.hasRole('admin'), require('./api/customerEmployee/customerEmployeeRoutes'));
@@ -36,7 +37,8 @@ module.exports = function(app) {
 
     
     // client-side views
-    app.get('/admin|/admin/*', auth.hasRole('admin'), function(req, res) {res.sendFile(path.resolve(app.get('appPath') + '/index.html'));});
+    //app.get('/admin|/admin/*', auth.hasRole('admin'), function(req, res) {res.sendFile(path.resolve(app.get('appPath') + '/index.html'));});
+    app.get('/admin|/admin/*', function(req, res) {res.sendFile(path.resolve(app.get('appPath') + '/index.html'));});
 
   
     // All undefined asset or api routes should return a 404
