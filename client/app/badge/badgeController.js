@@ -26,10 +26,12 @@ app.controller('badgeController', ['$scope', '$window', '$route', 'badgeService'
             alert(JSON.stringify(err, null, 4));
         });
     }
+    
+    $scope.isServerValidation = false;
 
     $scope.create = function (form) {
         $scope.submitted = true;
-        if (form.$valid) {
+        if (form.$valid || $scope.isServerValidation) {
             //alert(JSON.stringify($scope.badge));
             badgeService.create($scope.badge)
                 .then(function (data) {
@@ -46,11 +48,13 @@ app.controller('badgeController', ['$scope', '$window', '$route', 'badgeService'
                     // Update validity of form fields that match the mongoose errors
                     angular.forEach(err.errors, function(error, field) {
                         form[field].$setValidity('mongoose', false);
-                        $scope.errors[field] = error.message;
+                        $scope.errors[field] = error.msg;                       
                     });
+                                       
+                    $scope.isServerValidation = true;
                 });
         }
-    };
+    };   
 
     $scope.update = function (form) {
         $scope.submitted = true;
