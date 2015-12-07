@@ -22,7 +22,8 @@ exports.getById = function (req, res) {
 exports.create = function(req, res){
     var badge = req.body;
     
-    //validateBadge(badge, res);
+    var isValid = validateBadge(req, res);
+    if(!isValid) return;
     
     badgeService.create(badge, function (err, response) {
         if(err) { return handleError(res, err); }
@@ -57,10 +58,35 @@ function handleError(res, err) {
     return res.status(500).send(err);
 };
 
-function validateBadge(badge, res){
-    var msg = {errors:{
-        code:{message:'Mai exista un card cu acest cod!'},
-        name:{message:'Mai exista un card cu acest nume!'}
-    }};
-    handleError(res, msg);
+function validateBadge(req, res){           
+    // ---------------------------------
+    req.sanitize('code').trim();   
+    req.checkBody('code').notEmpty().withMessage('Acest camp este obligatoriu.');
+    if(!req.validationErrors(true)['code'])
+        req.checkBody('code').len(1,50).withMessage('Maxim 50 caractere.');
+    
+    // ---------------------------------        
+    req.sanitize('name').trim();
+    req.checkBody('name').notEmpty().withMessage('Acest camp este obligatoriu.');
+    if(!req.validationErrors(true)['name'])
+        req.checkBody('name').len(1,50).withMessage('Maxim 50 caractere.');
+    
+    // ---------------------------------                      
+    var errors = req.validationErrors(true);  // mappedErrors 
+    if (errors) {   
+        res.status(400).send({ errors : errors }); // 400 - bad request
+        return false;
+    }
+    return true;
 }
+
+ 
+    // req.validationErrors(true)        =>  (mappedErrors) - only the last validation msg / field is displayed 
+    // optional()                        =>  skip validation if the field is empty
+    // .optional({ checkFalsy: true })   =>  skip validation if the property is falsy (null, undefined etc)   
+   
+    //req.checkBody('code').len(1,50).isEmail().withMessage('Valid email required66');
+    // .optional({ checkFalsy: true }).len().withMessage('Maxim 50 caractere.'); 
+    
+    // 400 - bad request => invalid type or value out of range (inteleg cererea dar nu accept formatul)
+    // 422 - Unprocessable Entity => duplicate values (formatul e ok dar incearca alta valoare)
