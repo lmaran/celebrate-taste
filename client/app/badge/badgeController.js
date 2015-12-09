@@ -27,11 +27,11 @@ app.controller('badgeController', ['$scope', '$window', '$route', 'badgeService'
         });
     }
     
-    $scope.isServerValidation = false;
+    //$scope.serverValidation = false;
 
     $scope.create = function (form) {
         $scope.submitted = true;
-        if (form.$valid || $scope.isServerValidation) {
+        if (form.$valid || $scope.serverValidation) {
             //alert(JSON.stringify($scope.badge));
             badgeService.create($scope.badge)
                 .then(function (data) {
@@ -39,20 +39,27 @@ app.controller('badgeController', ['$scope', '$window', '$route', 'badgeService'
                     //Logger.info("Widget created successfully");
                 })
                 .catch(function (err) {
-                    //alert(JSON.stringify(err.data, null, 4));                    
-                    //$scope.errors.other = err.data.message;
-                    err = err.data;
-                    $scope.errors = {};
-                    //console.log(err.data);
-                    
-                    // Update validity of form fields that match the mongoose errors
-                    angular.forEach(err.errors, function(error, field) {
-                        form[field].$setValidity('mongoose', false);
-                        $scope.errors[field] = error.msg;                       
-                    });
-                                       
-                    $scope.isServerValidation = true;
-                });
+                    if(err.data.errors){                   
+                        // Convert server side errors to AngularJS errors.                    
+                        $scope.errors = {};
+                        
+                        // Update validity of form fields that match the server errors
+                        
+                        // angular.forEach(err.data.errors, function(error, field) {
+                        //     form[field].$setValidity('serverMessage', false);
+                        //     $scope.errors[field] = error;                       
+                        // });
+                        
+                        angular.forEach(err.data.errors, function(item, idx) {
+                            form[item.field].$setValidity('serverMessage', false);
+                            $scope.errors[item.field] = item.msg;                       
+                        });                        
+                                        
+                        $scope.serverValidation = true;
+                    } else{
+                        alert(JSON.stringify(err.data, null, 4)); 
+                    }
+                });            
         }
     };   
 
