@@ -22,6 +22,15 @@
             db.badges.findOne({ _id: id }, next);                           
         });
     };
+    
+    badgeService.getByValue = function (field, value, next) {
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            var query = {};
+            query[field] = value; // http://stackoverflow.com/a/17039560/2726725
+            db.badges.findOne(query, next);                           
+        });
+    };    
 
     badgeService.create = function (badge, next) {
         mongoHelper.getDb(function (err, db) {
