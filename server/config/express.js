@@ -10,7 +10,7 @@ var config = require('./environment');
 var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var auth = require('../api/user/login/loginService');
-var expressValidator = require('express-validator');
+
 //var session = require('express-session');
 //var MongoStore = require('connect-mongo')(session); // use PascalCase to avoid an warning in VSCode
 //var mongoose = require('mongoose');
@@ -33,8 +33,7 @@ module.exports = function(app) {
     
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
-    app.use(expressValidator()); // this line must be immediately after express.bodyParser()!
-    
+
     app.use(cookieParser()); // Parse Cookie header and populate req.cookies with an object keyed by the cookie names
     
     app.use(passport.initialize());
