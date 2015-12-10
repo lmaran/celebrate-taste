@@ -1,8 +1,8 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('badgeController', ['$scope', '$window', '$route', 'badgeService', '$location', 
-    function ($scope, $window, $route, badgeService, $location) {
+app.controller('badgeController', ['$scope', '$window', '$route', 'badgeService', '$location', 'helperService',
+    function ($scope, $window, $route, badgeService, $location, helperService) {
         
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -24,56 +24,55 @@ app.controller('badgeController', ['$scope', '$window', '$route', 'badgeService'
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
-        });
-    }
-    
-    //$scope.serverValidation = false;
+        })
+    }  
 
-    $scope.create = function (form) {
+    $scope.create = function (form) {       
         $scope.submitted = true;
-        if (form.$valid || $scope.serverValidation) {
-            //alert(JSON.stringify($scope.badge));
+        if (form.$valid || $scope.areServerErrors) {
             badgeService.create($scope.badge)
                 .then(function (data) {
                     $location.path('/admin/badges');
-                    //Logger.info("Widget created successfully");
                 })
                 .catch(function (err) {
                     if(err.data.errors){                   
-                        // Convert server side errors to AngularJS errors.                    
-                        $scope.errors = {};
-                        
-                        // Update validity of form fields that match the server errors
-                        
-                        // angular.forEach(err.data.errors, function(error, field) {
-                        //     form[field].$setValidity('serverMessage', false);
-                        //     $scope.errors[field] = error;                       
-                        // });
-                        
+                        helperService.setAllFildsAsValid(form);                       
+
+                        // Update validity of form fields that match the server errors                        
                         angular.forEach(err.data.errors, function(item, idx) {
                             form[item.field].$setValidity('serverMessage', false);
                             $scope.errors[item.field] = item.msg;                       
                         });                        
                                         
-                        $scope.serverValidation = true;
+                        $scope.areServerErrors = true;
                     } else{
                         alert(JSON.stringify(err.data, null, 4)); 
                     }
-                });            
+                })     
         }
-    };   
+    }
 
     $scope.update = function (form) {
         $scope.submitted = true;
-        if (form.$valid) {
-            //alert(JSON.stringify($scope.badge));
+        if (form.$valid || $scope.areServerErrors) {
             badgeService.update($scope.badge)
                 .then(function (data) {
                     $location.path('/admin/badges');
-                    //Logger.info("Widget created successfully");
                 })
                 .catch(function (err) {
-                    alert(JSON.stringify(err.data, null, 4));
+                    if(err.data.errors){                   
+                        helperService.setAllFildsAsValid(form);                       
+
+                        // Update validity of form fields that match the server errors                        
+                        angular.forEach(err.data.errors, function(item, idx) {
+                            form[item.field].$setValidity('serverMessage', false);
+                            $scope.errors[item.field] = item.msg;                       
+                        });                        
+                                        
+                        $scope.areServerErrors = true;
+                    } else{
+                        alert(JSON.stringify(err.data, null, 4)); 
+                    }
                 });
         }
     };
@@ -83,4 +82,4 @@ app.controller('badgeController', ['$scope', '$window', '$route', 'badgeService'
         $window.history.back();
     }
 
-}]);
+}])

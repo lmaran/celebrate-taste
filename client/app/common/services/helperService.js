@@ -85,7 +85,24 @@ app.factory('helperService', [function(){
 			text += possible.charAt(Math.floor(Math.random() * possible.length));
 	
 		return text; // ex: len=8 -> "c5de7ce4"
-	}		
+	}	
+	
+	// *********** others
+	
+	factory.setAllFildsAsValid = function(form){
+		// http://stackoverflow.com/a/31012883/2726725
+		// iterate over all from properties
+		angular.forEach(form, function(ctrl, name) {
+			// ignore angular fields and functions
+			if (name.indexOf('$') !== 0) {
+				// iterate over all $errors for each field        
+				angular.forEach(ctrl.$error, function(value, name) {
+				// set all fields as valid
+				ctrl.$setValidity(name, null);
+				});
+			}
+		}); 		
+	} 	
 	
 	return factory;	
 }]);
