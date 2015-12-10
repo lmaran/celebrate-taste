@@ -38,14 +38,21 @@ exports.create = function(req, res){
 
 exports.update = function(req, res){
     var badge = req.body;
-    badgeService.update(badge, function (err, response) {
-        if(err) { return handleError(res, err); }
-        if (!response.value) {
-            res.sendStatus(404); // not found
-        } else {
-            res.sendStatus(200);
+    badgeValidator.all(req, res, function(errors){
+        if(errors){
+            res.status(400).send({ errors : errors }); // 400 - bad request
         }
-    });
+        else{
+            badgeService.update(badge, function (err, response) {
+                if(err) { return handleError(res, err); }
+                if (!response.value) {
+                    res.sendStatus(404); // not found
+                } else {
+                    res.sendStatus(200);
+                }
+            });          
+        }
+    }); 
 };
 
 
