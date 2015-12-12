@@ -21,6 +21,7 @@ exports.getById = function (req, res) {
 
 exports.create = function(req, res){
     var customerEmployee = req.body;
+    customerEmployee.isActive = true;
     customerService.create(customerEmployee, function (err, response) {
         if(err) { return handleError(res, err); }
         res.status(201).json(response.ops[0]);

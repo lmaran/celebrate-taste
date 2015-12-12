@@ -16,16 +16,13 @@
                 if(!validator.isLength(fieldVal, 1)){
                     cb("Acest camp este obligatoriu.");
                 }
-                else cb(null, 'checkNext');
-            },
-            function(cb){
-                if(!validator.isLength(fieldVal, 1, 50)){
+                else if(!validator.isLength(fieldVal, 1, 50)){
                     cb("Maxim 50 caractere.");
                 }
-                else cb(null, 'checkNext');            
+                else cb(null, 'checkNext');  
             },
             function(cb){
-                badgeService.getByValue('code', fieldVal, function (err, existsBadge) {
+                badgeService.getByValue('code', fieldVal, req.body._id, function (err, existsBadge) {                    
                     if(err) { return handleError(res, err); }
                     if (existsBadge) { 
                         cb("Exista deja o inregistrare cu aceasta valoare."); 
@@ -51,16 +48,13 @@
                 if(!validator.isLength(fieldVal, 1)){
                     cb("Acest camp este obligatoriu.");
                 }
-                else cb(null, 'checkNext');
-            },
-            function(cb){
-                if(!validator.isLength(fieldVal, 1, 50)){
+                else if(!validator.isLength(fieldVal, 1, 50)){
                     cb("Maxim 50 caractere.");
                 }
-                else cb(null, 'checkNext');            
+                else cb(null, 'checkNext'); 
             },
             function(cb){
-                badgeService.getByValue('name', fieldVal, function (err, existsBadge) {
+                badgeService.getByValue('name', fieldVal, req.body._id, function (err, existsBadge) {
                     if(err) { return handleError(res, err); }
                     if (existsBadge) { 
                         cb("Exista deja o inregistrare cu aceasta valoare."); 
