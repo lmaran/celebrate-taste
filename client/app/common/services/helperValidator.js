@@ -58,7 +58,7 @@ app.service('helperValidator', [function () {
         if(fieldValue === undefined || fieldValue === ''){
             form[field].$setValidity('myValidation', null); // set field as valid
         }          
-        if(fieldValue.length > 50)
+        else if(fieldValue.length > 50)
             setValidity($scope, form, field, 'Maxim 50 caractere.');              
         else
             form[field].$setValidity('myValidation', null); // set field as valid
