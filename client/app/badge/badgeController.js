@@ -1,8 +1,8 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('badgeController', ['$scope', '$window', '$route', 'badgeService', '$location', 'helperService', 'helperValidator',
-    function ($scope, $window, $route, badgeService, $location, helperService, helperValidator) {
+app.controller('badgeController', ['$scope', '$window', '$route', 'badgeService', '$location', 'helperValidator',
+    function ($scope, $window, $route, badgeService, $location, helperValidator) {
         
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
