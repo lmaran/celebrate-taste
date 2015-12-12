@@ -23,11 +23,13 @@
         });
     };
     
-    badgeService.getByValue = function (field, value, next) {
+    badgeService.getByValue = function (field, value, id, next) {
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);
             var query = {};
             query[field] = value; // http://stackoverflow.com/a/17039560/2726725
+            if(id) // for update we have to exclude the existing document
+                query._id = {$ne: mongoHelper.normalizedId(id)}; //{name:'ssss', _id: {$ne:'93874502347652345'}}  
             db.badges.findOne(query, next);                           
         });
     };    
