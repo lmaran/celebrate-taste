@@ -3,31 +3,23 @@
 <div class="container-fluid">
     <h1>{{pageTitle}}</h1>
 
-    <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" novalidate>
+    <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
 
-        <div class="form-group" ng-class="{ 'has-error' : form.code.$invalid && submitted }">
+        <div class="form-group" ng-class="{ 'has-error' : form.code.$invalid}">
             <label class="col-md-2 control-label">Cod card</label>
             <div class="col-md-4">
-                <input type="text" name="code" ng-model="badge.code" class="form-control"  lm-focus="isFocusOnName" 
-                    required
-                    ng-maxlength="50"/>
+                <input type="email" stop-email-validation name="code" ng-model="badge.code" class="form-control"  lm-focus="isFocusOnName" />
                 <p class="text-muted">Ex: 28730663987622</p>
-                <p ng-show="form.code.$error.required && submitted" class="help-block">Acest camp este obligatoriu.</p>
-                <p ng-show="form.code.$error.maxlength && submitted" class="help-block">Maxim 50 caractere.</p>
-                <p ng-show="form.code.$error.serverMessage && submitted" class="help-block">{{errors.code}}</p>
+                <p ng-show="form.code.$error.myValidation" class="help-block">{{errors.code}}</p>
             </div>
         </div>        
 
-        <div class="form-group" ng-class="{ 'has-error' : form.name.$invalid && submitted }">
+        <div class="form-group" ng-class="{ 'has-error' : form.name.$invalid }">
             <label class="col-md-2 control-label">Nume card</label>
             <div class="col-md-4">
-                <input type="text" name="name" ng-model="badge.name" class="form-control" 
-                    required
-                    ng-maxlength="50" />
+                <input type="text" name="name" ng-model="badge.name" class="form-control" />
                 <p class="text-muted">Ex: Petrescu Ion / Delegat 1</p>
-                <p ng-show="form.name.$error.required && submitted" class="help-block">Acest camp este obligatoriu.</p>
-                <p ng-show="form.name.$error.maxlength && submitted" class="help-block">Maxim 50 caractere.</p>
-                <p ng-show="form.name.$error.serverMessage && submitted" class="help-block">{{ errors.name}}</p>
+                <p ng-show="form.name.$error.myValidation" class="help-block">{{errors.name}}</p>
             </div>
         </div>
         
@@ -52,10 +44,5 @@
     <p class="text-muted">
         - pentru angajatii permanenti, este recomandabil ca <strong>numele cardului</strong> sa coincida cu <strong>numele angajatului</strong>.<br/>
     </p>
-
-    <!--dotObject: <pre>{{dotObject | json}}</pre>-->
-    <!--badge: <pre>{{badge | json}}</pre>-->
-    <!--dotObject.selectedAttributeSet: <pre>{{dotObject.selectedAttributeSet | json}}</pre>-->
-
 
 </div>
