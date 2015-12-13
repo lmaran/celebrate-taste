@@ -2,10 +2,10 @@
 /*global app*/
 'use strict';
 
-app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'customerEmployeeService', '$location', 'badgeService','$q', 'helperValidator', 
-    function ($scope, $window, $route, customerEmployeeService, $location, badgeService, $q, helperValidator) {
+app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'customerEmployeeService', '$location', 'badgeService', 'teamService', '$q', 'helperValidator', 
+    function ($scope, $window, $route, customerEmployeeService, $location, badgeService, teamService, $q, helperValidator) {
        
-    var promiseToGetBadges, promiseToGetCustomerEmployee;        
+    var promiseToGetBadges, promiseToGetTeams, promiseToGetCustomerEmployee;        
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
     $scope.selectedBadge = {};
@@ -13,9 +13,11 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
     $scope.isActiveOptions = [{id: true, name: 'Da'},{id: false, name: 'Nu'}];
     $scope.customerEmployee = {};
     $scope.badges = [];
+    $scope.team = [];
     $scope.errors = {};
 
     getBadges();
+    getTeams();
    
     if ($scope.isEditMode) {  
         /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined     
@@ -32,6 +34,14 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
             }, function (reason) {
                 alert('Failed: ' + reason);
             });
+            
+        // init badge in dropdown
+        $q.all([promiseToGetCustomerEmployee, promiseToGetTeams])
+            .then(function (result) {
+                $scope.selectedTeam = _.find($scope.teams, {name : $scope.customerEmployee.team});
+            }, function (reason) {
+                alert('Failed: ' + reason);
+            });            
     } 
 
     function getCustomerEmployee() {
@@ -50,7 +60,16 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
         });
-    }    
+    } 
+    
+    function getTeams() {
+        promiseToGetTeams = teamService.getAll().then(function (data) {
+            $scope.teams = data;
+        })
+        .catch(function (err) {
+            alert(JSON.stringify(err, null, 4));
+        });
+    }         
 
     $scope.create = function (form) {
         
@@ -58,6 +77,10 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
             $scope.customerEmployee.badgeCode = $scope.selectedBadge.code;
             $scope.customerEmployee.badgeName = $scope.selectedBadge.name;
         }
+        
+        if($scope.selectedTeam){
+            $scope.customerEmployee.team = $scope.selectedTeam.name;
+        }        
 
         validateForm($scope, form);
         if (form.$invalid) return false;
@@ -81,6 +104,10 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
             $scope.customerEmployee.badgeCode = $scope.selectedBadge.code;
             $scope.customerEmployee.badgeName = $scope.selectedBadge.name;
         }
+        
+        if($scope.selectedTeam){
+            $scope.customerEmployee.team = $scope.selectedTeam.name;
+        }         
 
         validateForm($scope, form);
         if (form.$invalid) return false;
@@ -106,7 +133,7 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
     function validateForm($scope, form){ 
         var entity = 'customerEmployee'; 
         helperValidator.required50($scope, form, entity, 'name');
-        helperValidator.optional50($scope, form, entity, 'code');
+        // helperValidator.optional50($scope, form, entity, 'code');
         helperValidator.optionalEmail($scope, form, entity, 'email');
     }     
 
