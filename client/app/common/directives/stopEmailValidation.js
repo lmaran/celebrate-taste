@@ -1,3 +1,4 @@
+'use strict';
 
 // http://stackoverflow.com/a/27952712/2726725
 app.directive('stopEmailValidation', function() {
