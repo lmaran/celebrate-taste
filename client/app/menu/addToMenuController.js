@@ -105,7 +105,7 @@ app.controller('addToMenuController', ['$scope', '$route', '$window', '$location
         if(dishesInCategory === undefined || dishesInCategory.length === 0)
             return firstChar;
         else{ // dishesInCategory.length == 1
-        var existingDish = dishesInCategory[0];
+            var existingDish = dishesInCategory[0];
             if(existingDish.option === firstChar)
                 return String.fromCharCode(firstChar.charCodeAt(0) + 1);
             else
