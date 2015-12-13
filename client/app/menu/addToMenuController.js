@@ -56,14 +56,20 @@ app.controller('addToMenuController', ['$scope', '$route', '$window', '$location
     };
 
     $scope.addToMenu = function (dish) {
+        // search in the same caterory as dish
+        var dishesInCategory = _.filter($scope.menu.dishes, {category: dish.category})
+        //console.log(dishesInCategory);
+        if(dishesInCategory && dishesInCategory.length >= 2){
+            alert('Exista deja doua mancaruri din felul ' + dish.category + '.');
+            return false;
+        }
         
         var dishClone = {};
         angular.copy(dish, dishClone); // deep copy
         
-        dishClone._id = helperService.makeId(6); // ex: "spr9na" (the original _id could not be unique in this menu)
+        //dishClone._id = helperService.makeId(6); // ex: "spr9na" (the original _id could not be unique in this menu)
         if(dish.category === '1' || dish.category === '2'){
-            dishClone.option = getNextChar($scope.menu, dish);
-            //console.log(getNextChar($scope.menu, dish));
+            dishClone.option = getOptionChar(dishesInCategory, dish);
         }
         if($scope.menu.dishes === undefined) $scope.menu.dishes = [];
         $scope.menu.dishes.push(dishClone);
@@ -78,7 +84,7 @@ app.controller('addToMenuController', ['$scope', '$route', '$window', '$location
             });
     };
     
-    $scope.removeFromMenu = function (dish) {       
+    $scope.removeFromMenu = function (dish) {   
         _.remove($scope.menu.dishes, function(item){
             return item._id === dish._id;
         });
@@ -92,25 +98,24 @@ app.controller('addToMenuController', ['$scope', '$route', '$window', '$location
             });
     };    
     
-    var getNextChar = function(menu, dish){       
-        var lastItemInCategory= _.chain(menu.dishes)
-            .filter('category', dish.category)  // search in the same caterory as dish  
-            .sortBy('option')
-            .last()
-            .value();
-       
-       console.log(lastItemInCategory);
-       if(lastItemInCategory === undefined || lastItemInCategory.option === undefined){
-           return 'A';
-       }
-              
-        var lastChar = lastItemInCategory.option;          
-        return String.fromCharCode(lastChar.charCodeAt(0) + 1);           
-    }
+    var getOptionChar = function(dishesInCategory, dish){       
+        var firstChar = 'A';
+        if(dish.category === '2') firstChar = 'C';
+
+        if(dishesInCategory === undefined || dishesInCategory.length === 0)
+            return firstChar;
+        else{ // dishesInCategory.length == 1
+        var existingDish = dishesInCategory[0];
+            if(existingDish.option === firstChar)
+                return String.fromCharCode(firstChar.charCodeAt(0) + 1);
+            else
+                return String.fromCharCode(existingDish.option.charCodeAt(0) - 1);                
+        }       
+    }    
     
     $scope.goBack = function(){
         $window.history.back();
-        //$location.path('/menus/');
+        //$location.path('/admin/menus/');
     }
 
     $scope.refresh = function(){
