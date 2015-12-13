@@ -57,7 +57,7 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
         if($scope.selectedBadge){
             $scope.customerEmployee.badgeCode = $scope.selectedBadge.code;
             $scope.customerEmployee.badgeName = $scope.selectedBadge.name;
-        };
+        }
 
         validateForm($scope, form);
         if (form.$invalid) return false;
@@ -80,7 +80,7 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
         if($scope.selectedBadge){
             $scope.customerEmployee.badgeCode = $scope.selectedBadge.code;
             $scope.customerEmployee.badgeName = $scope.selectedBadge.name;
-        };
+        }
 
         validateForm($scope, form);
         if (form.$invalid) return false;
