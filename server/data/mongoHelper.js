@@ -18,6 +18,7 @@
                         db: db,
                         customers: db.collection('customers'),
                         badges: db.collection('badges'),
+                        teams: db.collection('teams'),
                         users: db.collection('users'),
                         dishes: db.collection('dishes'),
                         customerEmployees: db.collection('customerEmployees'),
