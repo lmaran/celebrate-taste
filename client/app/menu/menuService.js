@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-app.factory('menuService', ['$http', function ($http) {
+app.factory('menuService', ['$http', 'helperService', function ($http, helperService) {
 
     var factory = {};
     var rootUrl = '/api/menus/';  
@@ -17,6 +17,13 @@ app.factory('menuService', ['$http', function ($http) {
     
     factory.getNextMenus = function () {
         return $http.get(rootUrl + 'nextMenus/').then(function (result) {
+            return result.data;
+        });
+    };
+    
+    factory.getActiveMenus = function () { // yyyy-mm-dd 
+        var todayStr = helperService.getStringFromDate(new Date());            
+        return $http.get(rootUrl + 'activeMenus?today=' + todayStr).then(function (result) {
             return result.data;
         });
     };    

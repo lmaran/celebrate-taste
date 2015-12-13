@@ -12,7 +12,7 @@ app.controller('menusController', ['$scope', '$location', 'menuService', 'modalS
     }     
 
     function init() {
-        menuService.getAll().then(function (data) {
+        menuService.getActiveMenus().then(function (data) {
             $scope.menus = data;
         })
         .catch(function (err) {
