@@ -44,8 +44,9 @@
     </div>    
     
     <hr>
-    
-    <div ng-repeat="menu in menus | filter:search | orderBy:'menuDate'">
+    <!--{{menus.length}}-->
+    <h4 ng-show="menus.length == 0"> Nu exista meniuri pentru astazi sau perioada urmatoare!</h4>
+    <div ng-show="menus.length > 0"ng-repeat="menu in menus | filter:search | orderBy:'menuDate'">
         <div class="row toolbar">
             <div class="col-md-12">
                 <h4>Meniul de 

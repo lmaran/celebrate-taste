@@ -18,17 +18,26 @@ exports.getById = function (req, res) {
     });    
 };
 
-exports.getTodaysMenu = function (req, res) {
-    menuService.getTodaysMenu(req.params.today, function (err, menu) {
-        if(err) { return handleError(res, err); }
-        //if(!doc) { return res.status(404).send('Not Found'); }
-        res.json(menu);
-    });    
-};
+// exports.getTodaysMenu = function (req, res) {
+//     var todayStr = req.query.today || helper.getStringFromDate(new Date());
+//     menuService.getTodaysMenu(todayStr, function (err, menu) {
+//         if(err) { return handleError(res, err); }
+//         //if(!doc) { return res.status(404).send('Not Found'); }
+//         res.json(menu);
+//     });    
+// };
+// 
+// exports.getNextMenus = function (req, res) {
+//     var todayStr = req.query.today || helper.getStringFromDate(new Date());
+//     menuService.getNextMenus(todayStr, function (err, menus) {
+//         if(err) { return handleError(res, err); }
+//         res.status(200).json(menus);        
+//     });
+// };
 
-exports.getNextMenus = function (req, res) {
-    var todayStr = helper.getStringFromDate(new Date());
-    menuService.getNextMenus(todayStr, function (err, menus) {
+exports.getActiveMenus = function (req, res) { // today and next menus
+    var todayStr = req.query.today || helper.getStringFromDate(new Date());
+    menuService.getActiveMenus(todayStr, function (err, menus) {
         if(err) { return handleError(res, err); }
         res.status(200).json(menus);        
     });

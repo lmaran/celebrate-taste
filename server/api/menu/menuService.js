@@ -39,7 +39,17 @@
                 return next(null, docs);                 
             });
         });
-    };    
+    };
+    
+    menuService.getActiveMenus = function (today, next) {  // today = "yyyy-mm-dd"   
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            db.menus.find({"menuDate" : { $gte: today}}, {sort:'menuDate'}).toArray(function (err, docs) {
+                if (err) return next(err, null);
+                return next(null, docs);                 
+            });
+        });
+    };        
     
     menuService.getFromInterval = function (firstDay, lastDay, next) { // today = "yyyy-mm-dd"
         //today = "2015-10-24"; // todo: remove it
