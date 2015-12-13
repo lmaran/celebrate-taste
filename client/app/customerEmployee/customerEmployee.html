@@ -3,36 +3,50 @@
 <div class="container-fluid">
     <h1>{{pageTitle}}</h1>
 
-    <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" novalidate>
-        <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+    <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
 
-        <div class="form-group" ng-class="{ 'has-error' : form.name.$invalid && submitted }">
+        <div class="form-group" ng-class="{'has-error' : form.name.$invalid}">
             <label class="col-md-2 control-label">Nume </label>
             <div class="col-md-4">
-                <input class="form-control" ng-model="customerEmployee.name" type="text" name="name" my-focus="isFocusOnName" required />
-                <p ng-show="form.name.$invalid  && submitted" class="help-block">This field is required.</p>
+                <input type="text" name="name" ng-model="customerEmployee.name" class="form-control" lm-focus="isFocusOnName"/>
+                <p class="text-muted">Numele in format <strong>Nume</strong> + <strong>Prenume</strong>.</p>
+                <p ng-show="form.name.$error.myValidation" class="help-block">{{errors.name}}</p>
             </div>
         </div>
+        
+        <div class="form-group" ng-class="{'has-error' : form.code.$invalid}">
+            <label class="col-md-2 control-label">Cod </label>
+            <div class="col-md-4">
+                <input type="text" name="code" ng-model="customerEmployee.code" class="form-control"/>
+                <p class="text-muted">Codul extern al angajatului (marca Anvis) Ex: 2384.</p>
+                <p ng-show="form.code.$error.myValidation" class="help-block">{{errors.code}}</p>
+            </div>
+        </div>        
 
-        <div class="form-group" ng-class="{ 'has-error' : form.code.$invalid && submitted }">
+        <div class="form-group" ng-class="{'has-error' : form.email.$invalid}">
             <label class="col-md-2 control-label">Email </label>
             <div class="col-md-4">
-                <input class="form-control" ng-model="customerEmployee.email" type="text" name="email"/>
-                <!--<p ng-show="form.code.$invalid  && submitted" class="help-block">This field is required.</p>-->
+                <input type="email" stop-email-validation name="email" ng-model="customerEmployee.email" class="form-control"/>
+                <p class="text-muted">Necesar pt. cine doreste sa-si faca cont in aplicatie.</p>
+                <p ng-show="form.email.$error.myValidation" class="help-block">{{errors.email}}</p>
             </div>
         </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label">CardId </label>
-            <div class="col-md-4">
-                <input class="form-control" ng-model="customerEmployee.cardId" type="text" name="cardId" />
+        
+        <div class="form-group" ng-class="{'has-error' : form.badge.$invalid}">
+            <label class="col-md-2 control-label">Card</label>
+            <div class="col-md-4">        
+                <select ng-model="selectedBadge" ng-options="badge.name for badge in badges" class="form-control"></select>
+                <p class="text-muted">Cardul de acces. Ex: Petrescu Ion / Delegat 1.</p>
+                <p ng-show="form.badge.$error.myValidation" class="help-block">{{errors.badge}}</p>                
             </div>
-        </div>
+        </div> 
 
-        <div class="form-group">
+
+        <div ng-show="isEditMode" class="form-group">
             <label class="col-md-2 control-label">Activ </label>
             <div class="col-md-4">
-                <input class="form-control" ng-model="customerEmployee.isActive" type="text" name="isActive" />
+                <select class="form-control" ng-model="customerEmployee.isActive" ng-options="option.id as option.name for option in isActiveOptions"></select>
+                <p ng-show="form.isActive.$error.myValidation" class="help-block">{{errors.isActive}}</p>                 
             </div>
         </div>
 
@@ -44,11 +58,5 @@
         </div>
 
     </form>
-
-
-    <!--dotObject: <pre>{{dotObject | json}}</pre>-->
-    <!--customerEmployee: <pre>{{customerEmployee | json}}</pre>-->
-    <!--dotObject.selectedAttributeSet: <pre>{{dotObject.selectedAttributeSet | json}}</pre>-->
-
 
 </div>

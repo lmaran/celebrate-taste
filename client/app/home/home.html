@@ -5,24 +5,14 @@
     <!--<div class="starter-template">
         <img class="workingImg" src="assets/images/pagina-in-constructie.png"></img>
     </div>-->
-    <br/>
-    <h1><strong2>Meniul de astazi</strong2><small class="text-muted"> ({{today.dayAsString}}, {{today.dayOfMonth}} {{today.monthAsString}})</small></h1>
-    <br/>
     
-    <div class="media" ng-repeat="dish in todaysMenu.dishes | orderBy:['category', 'option']">
-        <div class="media-left media-middle" style="min-width:100px; height:85px;">
-            <a ng-if="dish.thumbUrl" ng-href="/nextMenus/{{todaysMenu._id}}/dishes/{{dish._id}}" >
-                <img ng-show="dish.thumbUrl" ng-src="{{dish.thumbUrl}}" width="85" class="media-object img-thumbnail">
-            </a>
-        </div>      
-        <div class="media-body" style="margin-left:75px;">        
-            <h4 class="media-heading">
-                <span ng-if="dish.option !== undefined">{{dish.option}}.</span>
-                {{dish.name}}</h4>
-            <div style="color:gray">{{dish.description}}</div>
-            <div style="color:gray">{{dish.calories}} calorii</div>
-        </div>
-
-    </div>  
-
+    
+    </br>
+    </br>
+    <p><a ng-href="/admin/users">Utilizatori</a></p>
+    <p><a ng-href="/admin/badges">Carduri</a></p>
+    <p><a ng-href="/admin/customerEmployees">Angajati client</a></p>
+    <p><a ng-href="/admin/dishes">Feluri de mancare</a></p>
+    <p><a ng-href="/admin/menus">Meniuri</a></p>
+    
 </div>

@@ -84,18 +84,26 @@ exports.remove = function(req, res){
  */
 exports.changePassword = function(req, res, next) {
     var userId = String(req.user._id); //without 'String' the result is an Object
+    console.log('aaa' + userId);
     var oldPass = String(req.body.oldPassword);
     var newPass = String(req.body.newPassword);
     
     userService.getByIdWithPsw(userId, function (err, user) {              
-        if(userService.authenticate(oldPass, user.hashedPassword, user.salt)) {    
+        if(userService.authenticate(oldPass, user.hashedPassword, user.salt)) { 
             user.salt = userService.makeSalt();
-            user.hashedPassword = userService.encryptPassword(newPass, user.salt);
+            user.hashedPassword = userService.encryptPassword(newPass, user.salt);           
             delete user.password;
                 
             userService.update(user, function(err, response) {
                 if (err) return validationError(res, err);
-                res.status(200).send('OK');
+                
+                if(req.is('json')){ // http://expressjs.com/api.html#req.is 
+                    res.json({}); // for requests that come from client-side (Angular)
+                }
+                else
+                    res.redirect('/'); // for requests that come from server-side (Jade)
+                
+                //res.status(200).send('OK');
             });
         } else {
             res.status(403).send('Forbidden');

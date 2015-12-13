@@ -1,0 +1,35 @@
+{{> navbar}}
+
+<div class="container">
+
+    {{#if areMenus}}
+		<h1>Meniurile viitoare</h1>
+		<hr>
+		
+		{{#each menus}}	
+			<h4>Meniul de 
+				<strong>{{menuDate}}</strong> 
+				<small style="font-size:14px"></small>
+			</h4>
+			
+			<ul class="list-group">
+				{{#each dishes}}
+					<li class="list-group-item" style='border: 0 none;'>	
+						{{#if option}}
+							<strong>{{option}}.</strong>
+						{{/if}}
+						<span class="text-muted">{{name}}</span>
+						{{#if isFasting}}
+							<span ng-if="dish.isFasting">(post)</span><br/>
+						{{/if}}
+						<span class="text-muted">{{description}}</span>
+					</li>
+				{{/each}}
+			</ul>					
+			<hr>				
+		{{/each}} 	
+	{{else}}
+		<h4> Nu exista meniuri pentru perioada urmatoare!</h4>
+	{{/if}}
+
+</div>

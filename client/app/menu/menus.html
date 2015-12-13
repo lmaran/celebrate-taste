@@ -44,8 +44,9 @@
     </div>    
     
     <hr>
-    
-    <div ng-repeat="menu in menus | filter:search | orderBy:'menuDate'">
+    <!--{{menus.length}}-->
+    <h4 ng-show="menus.length == 0"> Nu exista meniuri pentru astazi sau perioada urmatoare!</h4>
+    <div ng-show="menus.length > 0"ng-repeat="menu in menus | filter:search | orderBy:'menuDate'">
         <div class="row toolbar">
             <div class="col-md-12">
                 <h4>Meniul de 
@@ -68,7 +69,7 @@
                                 <td>
                                     <span ng-if="dish.option !== undefined">{{dish.option}}.</span>
                                     <span ng-if="dish.option === undefined">&nbsp;&nbsp;&nbsp;</span>
-                                    <a ng-href="/menus/{{menu._id}}/dishes/{{dish._id}}">{{dish.name}}</a> 
+                                    <a ng-href="/admin/menus/{{menu._id}}/dishes/{{dish._id}}">{{dish.name}}</a> 
                                     <span ng-if="dish.isFasting">(post)</span>
                                 </td>
                                 <td></td>

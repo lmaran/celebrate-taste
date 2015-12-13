@@ -1,0 +1,30 @@
+{{> navbar}}
+
+<div class="container-fluid">
+    <br />
+
+    <p><i class="glyphicon glyphicon-home"></i> Str. Uzinei 30, Satu Mare</p>
+    <p><i class="glyphicon glyphicon-phone-alt"></i> 0361 407 958 (fix), 0769 046 292 (mobil)</p>
+    <p><i class="glyphicon glyphicon-envelope"></i> office@celebrate-taste.ro</p>
+</div>
+<div style="width:100%; height:400px;" id="mapCT" class="google-map"></div>
+
+<script>
+    function initMap() {
+        var myLatLng = {lat: 47.781271, lng: 22.882320};
+
+        var map = new google.maps.Map(document.getElementById('mapCT'), {
+            center: myLatLng,
+            scrollwheel: false,
+            zoom: 16
+        });
+
+        var marker = new google.maps.Marker({
+            map: map,
+            position: myLatLng,
+            title: 'Celebrate Taste'
+        });
+    }
+</script>
+    
+<script src='//maps.googleapis.com/maps/api/js?sensor=false&language=en&callback=initMap',async, defer></script>

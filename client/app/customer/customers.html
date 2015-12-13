@@ -30,7 +30,7 @@
             <tbody>
                 <tr data-ng-repeat="customer in customers | filter:search">
                     <td>
-                        <a ng-href="/customers/{{customer._id}}">{{customer.name}}</a>
+                        <a ng-href="/admin/customers/{{customer._id}}">{{customer.name}}</a>
                         <i class="glyphicon glyphicon-info-sign" ng-if="customer.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{customer.description}}"></i>
                     </td>
                     <td>

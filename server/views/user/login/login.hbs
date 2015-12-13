@@ -1,0 +1,40 @@
+{{> navbar}}
+
+<div class="container-fluid">
+    
+    <h1>Login</h1>
+
+    <form action="/login" method="post" class="form-horizontal" novalidate>
+        <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Email</label>
+            <div class="col-md-4">
+                <input type="email" name="email" class="form-control"/>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-md-2 control-label">Parola </label>
+            <div class="col-md-4">
+                <input type="password" name="password" class="form-control"/>
+            </div>
+        </div>            
+
+        <div class="form-group">
+            <div class="col-md-10 col-md-offset-2">
+                <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-floppy-disk"></span> Autentifica</button>
+                <button type="button" class="btn" onclick='window.history.back();'> <span class=" glyphicon glyphicon-remove"></span> Renunta</button>
+            </div>
+        </div>
+
+    </form>
+
+    <!--<p>
+        Ti-ai uitat parola? <a href="/resetpassword">Cere o noua parola!</a>
+    </p>-->
+    <!--<p>
+        Nu ai inca un cont? <a href="/register">Inregistreaza-te!</a>
+    </p>-->
+    
+</div>

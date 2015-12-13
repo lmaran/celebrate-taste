@@ -1,0 +1,48 @@
+<div ng-include="'app/navbar/navbar.html'"></div>
+
+<div class="container-fluid">
+    
+    <h1>{{pageTitle}}</h1>
+
+    <form ng-submit="login(form)" name="form" class="form-horizontal" role="form" novalidate>
+        <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+
+        <div class="form-group" ng-class="{ 'has-error' : form.email.$invalid && submitted }">
+            <label class="col-md-2 control-label">Email</label>
+            <div class="col-md-4">
+                <input type="email" name="email" class="form-control" ng-model="user.email" required />
+                <p ng-show="form.email.$invalid  && submitted" class="help-block">Te rog sa introduci un email valid.</p>
+            </div>
+        </div>
+        
+        <div class="form-group" ng-class="{ 'has-error' : form.password.$invalid && submitted }">
+            <label class="col-md-2 control-label">Parola </label>
+            <div class="col-md-4">
+                <input type="password" name="password" class="form-control" ng-model="user.password" required />
+                <p ng-show="form.password.$invalid  && submitted" class="help-block">Acest camp este obligatoriu.</p>
+            </div>
+        </div>        
+ 
+        <div ng-show="errors.other && submitted" class="form-group has-error">
+            <div class="col-md-4 col-md-offset-2">
+                <p class="help-block">{{ errors.other }}</p>
+            </div>
+        </div>        
+
+        <div class="form-group">
+            <div class="col-md-10 col-md-offset-2">
+                <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-floppy-disk"></span> Autentifica </button>
+                <button type="button" class="btn" ng-click="cancel()"> <span class=" glyphicon glyphicon-remove"></span> Renunta </button>
+            </div>
+        </div>
+
+    </form>
+
+    <!--<p>
+        Ti-ai uitat parola? <a href="/resetpassword">Cere o noua parola!</a>
+    </p>-->
+    <!--<p>
+        Nu ai inca un cont? <a href="/register">Inregistreaza-te!</a>
+    </p>-->
+    
+</div>
