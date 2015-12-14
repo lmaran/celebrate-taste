@@ -126,14 +126,15 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
     };
 
     $scope.cancel = function () {
-        //$location.path('/widgets')
         $window.history.back();
     }
     
     function validateForm($scope, form){ 
         var entity = 'customerEmployee'; 
+        helperValidator.setAllFildsAsValid(form);
+        
+        // fields
         helperValidator.required50($scope, form, entity, 'name');
-        // helperValidator.optional50($scope, form, entity, 'code');
         helperValidator.optionalEmail($scope, form, entity, 'email');
     }     
 
