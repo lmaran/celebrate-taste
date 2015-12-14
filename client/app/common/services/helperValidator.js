@@ -11,7 +11,7 @@ app.service('helperValidator', [function () {
         $scope[entity][field] = $scope[entity][field] || '';
         var fieldValue = $scope[entity][field];
 
-        if(fieldValue === ''){
+        if(fieldValue === undefined || fieldValue === ''){
             setValidity($scope, form, field, 'Acest camp este obligatoriu.');
         }
         else if(fieldValue.length > 50)
