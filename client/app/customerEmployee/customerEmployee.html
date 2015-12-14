@@ -35,7 +35,7 @@
         <div class="form-group" ng-class="{'has-error' : form.badge.$invalid}">
             <label class="col-md-2 control-label">Card</label>
             <div class="col-md-4">        
-                <select ng-model="selectedBadge" ng-options="badge.name for badge in badges" class="form-control"></select>
+                <select ng-model="selectedBadge" ng-options="badge.name +' - ' + badge.code + '' for badge in badges" class="form-control"></select>
                 <p class="text-muted">Cardul de acces. Ex: Petrescu Ion / Delegat 1.</p>
                 <p ng-show="form.badge.$error.myValidation" class="help-block">{{errors.badge}}</p>                
             </div>
