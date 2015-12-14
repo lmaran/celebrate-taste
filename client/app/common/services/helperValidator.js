@@ -16,8 +16,6 @@ app.service('helperValidator', [function () {
         }
         else if(fieldValue.length > 50)
             setValidity($scope, form, field, 'Maxim 50 caractere.'); 
-        else
-            form[field].$setValidity('myValidation', null); // set field as valid
     }
 
     // if you use type="email" (e.g. for contextual keyboard) you must also use 'stop-email-validation' directive
@@ -32,47 +30,34 @@ app.service('helperValidator', [function () {
             setValidity($scope, form, field, 'Adresa de email invalida.'); 
         else if(fieldValue.length > 50)
             setValidity($scope, form, field, 'Maxim 50 caractere.');              
-        else
-            form[field].$setValidity('myValidation', null); // set field as valid
     } 
 
     // if you use type="email" (e.g. for contextual keyboard) you must also use 'stop-email-validation' directive
     // othewise, the field is not filled (no data binding) until data is valid
     this.optionalEmail = function($scope, form, entity, field){
         var fieldValue = $scope[entity][field];
-
-        if(fieldValue === undefined || fieldValue === ''){
-            form[field].$setValidity('myValidation', null); // set field as valid
-        }          
-        else if(!isEmail(fieldValue))
+        
+        if(fieldValue && fieldValue.length > 0 && !isEmail(fieldValue))
             setValidity($scope, form, field, 'Adresa de email invalida.'); 
-        else if(fieldValue.length > 50)
+        else if(fieldValue && fieldValue.length > 50)
             setValidity($scope, form, field, 'Maxim 50 caractere.');              
-        else
-            form[field].$setValidity('myValidation', null); // set field as valid
     } 
     
     this.optional50 = function($scope, form, entity, field){
         var fieldValue = $scope[entity][field];
-
-        if(fieldValue === undefined || fieldValue === ''){
-            form[field].$setValidity('myValidation', null); // set field as valid
-        }          
-        else if(fieldValue.length > 50)
+        
+        if(fieldValue && fieldValue.length > 50)
             setValidity($scope, form, field, 'Maxim 50 caractere.');              
-        else
-            form[field].$setValidity('myValidation', null); // set field as valid
     }     
         
     this.updateValidity = function($scope, form, errors){
-        setAllFildsAsValid(form);
         // Update validity of form fields that match the server errors                        
         angular.forEach(errors, function(item, idx) {  
             setValidity($scope, form, item.field, item.msg);                 
         })
     }
 
-	function setAllFildsAsValid(form){
+	this.setAllFildsAsValid = function(form){
 		// http://stackoverflow.com/a/31012883/2726725
 		// iterate over all from properties
 		angular.forEach(form, function(ctrl, name) {

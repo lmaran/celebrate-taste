@@ -67,6 +67,9 @@ app.controller('badgeController', ['$scope', '$window', '$route', 'badgeService'
     
     function validateForm($scope, form){ 
         var entity = 'badge'; 
+        helperValidator.setAllFildsAsValid(form);
+        
+        // fields
         helperValidator.required50($scope, form, entity, 'code');
         helperValidator.required50($scope, form, entity, 'name');         
     }    
