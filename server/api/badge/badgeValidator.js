@@ -22,9 +22,9 @@
                 else cb(null, 'checkNext');  
             },
             function(cb){
-                badgeService.getByValue('code', fieldVal, req.body._id, function (err, existsBadge) {                    
+                badgeService.getByValue('code', fieldVal, req.body._id, function (err, badge) {                    
                     if(err) { return handleError(res, err); }
-                    if (existsBadge) { 
+                    if (badge) { 
                         cb("Exista deja o inregistrare cu aceasta valoare."); 
                     }
                     else cb(null, 'checkNext');      
@@ -54,9 +54,9 @@
                 else cb(null, 'checkNext'); 
             },
             function(cb){
-                badgeService.getByValue('name', fieldVal, req.body._id, function (err, existsBadge) {
+                badgeService.getByValue('name', fieldVal, req.body._id, function (err, badge) {
                     if(err) { return handleError(res, err); }
-                    if (existsBadge) { 
+                    if (badge) { 
                         cb("Exista deja o inregistrare cu aceasta valoare."); 
                     }
                     else cb(null, 'checkNext');      

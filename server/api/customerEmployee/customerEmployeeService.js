@@ -22,6 +22,28 @@
             db.customerEmployees.findOne({ _id: id }, next);                           
         });
     };
+    
+    customerService.getByValue = function (field, value, id, next) {
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            
+            // construct the query: http://stackoverflow.com/a/17039560/2726725
+            var query = {};
+            
+            // escape special ch.: http://stackoverflow.com/a/8882749/2726725
+            // add an "\" in front of each special ch. E.g.: . ? * + ^ $ ( ) [ ] | -         
+            value = value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+                         
+            // search case insensitive: https://xuguoming.wordpress.com/2015/02/11/using-variable-regex-with-mongodb-query-in-node-js/
+            // the "start with" (^) character is important in order to hit the index"
+            query[field] = new RegExp('^' + value + '$', 'i'); 
+            
+            // for update we have to exclude the existing document
+            if(id) query._id = {$ne: mongoHelper.normalizedId(id)}; // {name: /^John$/i, _id: {$ne:'93874502347652345'}}  
+            
+            db.customerEmployees.findOne(query, next);                           
+        });
+    };     
 
     customerService.create = function (customerEmployee, next) {
         mongoHelper.getDb(function (err, db) {

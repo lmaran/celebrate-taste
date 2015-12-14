@@ -6,7 +6,7 @@
     <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
 
         <div class="form-group" ng-class="{'has-error' : form.name.$invalid}">
-            <label class="col-md-2 control-label">Nume </label>
+            <label class="col-md-2 control-label required">Nume </label>
             <div class="col-md-4">
                 <input type="text" name="name" ng-model="customerEmployee.name" class="form-control" lm-focus="isFocusOnName"/>
                 <p class="text-muted">Numele in format <strong>Nume</strong> + <strong>Prenume</strong>.</p>
@@ -17,7 +17,7 @@
         <div class="form-group" ng-class="{'has-error' : form.team.$invalid}">
             <label class="col-md-2 control-label">Echipa</label>
             <div class="col-md-4">        
-                <select ng-model="selectedTeam" ng-options="team.name for team in teams" class="form-control"></select>
+                <select name="team" ng-model="selectedTeam" ng-options="team.name for team in teams" class="form-control"></select>
                 <p class="text-muted">Ajuta la mutarea saptamanala a angajatilor.</p>
                 <p ng-show="form.team.$error.myValidation" class="help-block">{{errors.team}}</p>                
             </div>
@@ -32,12 +32,12 @@
             </div>
         </div>
         
-        <div class="form-group" ng-class="{'has-error' : form.badge.$invalid}">
+        <div class="form-group" ng-class="{'has-error' : form.badgeCode.$invalid}">
             <label class="col-md-2 control-label">Card</label>
             <div class="col-md-4">        
-                <select ng-model="selectedBadge" ng-options="badge.name for badge in badges" class="form-control"></select>
+                <select name="badgeCode" ng-model="selectedBadge" ng-options="badge.name +' - ' + badge.code + '' for badge in badges" class="form-control"></select>
                 <p class="text-muted">Cardul de acces. Ex: Petrescu Ion / Delegat 1.</p>
-                <p ng-show="form.badge.$error.myValidation" class="help-block">{{errors.badge}}</p>                
+                <p ng-show="form.badgeCode.$error.myValidation" class="help-block">{{errors.badgeCode}}</p>                
             </div>
         </div> 
 
@@ -45,7 +45,7 @@
         <div ng-show="isEditMode" class="form-group">
             <label class="col-md-2 control-label">Activ </label>
             <div class="col-md-4">
-                <select class="form-control" ng-model="customerEmployee.isActive" ng-options="option.id as option.name for option in isActiveOptions"></select>
+                <select name="isActive" class="form-control" ng-model="customerEmployee.isActive" ng-options="option.id as option.name for option in isActiveOptions"></select>
                 <p ng-show="form.isActive.$error.myValidation" class="help-block">{{errors.isActive}}</p>                 
             </div>
         </div>
