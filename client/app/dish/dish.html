@@ -8,7 +8,7 @@
         <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
 
         <div class="form-group" ng-class="{ 'has-error' : form.name.$invalid && submitted }">
-            <label class="col-md-2 control-label">Nume </label>
+            <label class="col-md-2 control-label required">Nume </label>
             <div class="col-md-4">
                 <input class="form-control" ng-model="dish.name" type="text" name="name" lm-focus="isFocusOnName" required />
                 <p ng-show="form.name.$invalid  && submitted" class="help-block">Acest camp este obligatoriu.</p>
@@ -16,7 +16,7 @@
         </div> 
         
         <div class="form-group" ng-class="{ 'has-error' : form.category.$invalid && submitted }">
-            <label class="col-md-2 control-label">Categorie</label>
+            <label class="col-md-2 control-label required">Categorie</label>
             <div class="col-md-4">
                 <select name="category" class="form-control" ng-model="dish.category" required>
                     <option></option>

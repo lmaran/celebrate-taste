@@ -6,7 +6,7 @@
     <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
 
         <div class="form-group" ng-class="{'has-error' : form.name.$invalid}">
-            <label class="col-md-2 control-label">Nume </label>
+            <label class="col-md-2 control-label required">Nume </label>
             <div class="col-md-4">
                 <input type="text" name="name" ng-model="customerEmployee.name" class="form-control" lm-focus="isFocusOnName"/>
                 <p class="text-muted">Numele in format <strong>Nume</strong> + <strong>Prenume</strong>.</p>
