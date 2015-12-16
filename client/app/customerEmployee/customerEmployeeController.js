@@ -87,7 +87,8 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
         
         customerEmployeeService.create($scope.customerEmployee)
             .then(function (data) {
-                $location.path('/admin/customerEmployees');
+                //$location.path('/admin/customerEmployees');
+                $window.history.back();
             })
             .catch(function (err) {
                 if(err.data.errors){                   
@@ -114,7 +115,8 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
             
         customerEmployeeService.update($scope.customerEmployee)
             .then(function (data) {
-                $location.path('/admin/customerEmployees');
+                //$location.path('/admin/customerEmployees');
+                $window.history.back();
             })
             .catch(function (err) {
                 if(err.data.errors){                   
