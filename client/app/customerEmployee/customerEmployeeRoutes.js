@@ -5,7 +5,10 @@ app.config(['$routeProvider', function ($routeProvider) {
         .when('/admin/customerEmployees', {
             controller: 'customerEmployeesController',
             templateUrl: 'app/customerEmployee/customerEmployees.html',
-			title: 'Angajati client'
+			title: 'Angajati client',
+	        //not reload the view if the search part of the url changes. 
+            // http://stackoverflow.com/a/14974448/2726725            
+            reloadOnSearch:false
 	    })
 	    .when('/admin/customerEmployees/create', {
 	        controller: 'customerEmployeeController',
@@ -16,6 +19,6 @@ app.config(['$routeProvider', function ($routeProvider) {
 	        controller: 'customerEmployeeController',
 	        templateUrl: 'app/customerEmployee/customerEmployee.html',
 	        title: 'Editeaza angajat',
-	        isEditMode: true
+            isEditMode: true 
 	    });	
 }]);
