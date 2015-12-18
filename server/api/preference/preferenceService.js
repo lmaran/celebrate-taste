@@ -5,15 +5,31 @@
     //var seedData = require("./seedData");
     var mongoHelper = require('../../data/mongoHelper');
  
-    preferenceService.getAll = function (next) {      
+    preferenceService.getAll = function (dateStr, next) {      
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);
-            db.preferences.find({}, {sort:'name'}).toArray(function (err, docs) {
+            db.preferences.find({date:dateStr}, {sort:'name'}).toArray(function (err, docs) {
                 if (err) return next(err, null);
                 return next(null, docs);                 
             });
         });
     };
+    
+    preferenceService.getNextDates = function (todayStr, next) {      
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            db.preferences.aggregate([
+                {$match:{date:{$gte: todayStr}}},
+                {$group:{_id:"$date"}},
+                {$sort:{_id:1}},
+                {$group:{_id:null, array:{$push:"$_id"}}},
+                {$project:{_id:0, nextDates:"$array"}}
+            ]).toArray(function (err, docs) {
+                if (err) return next(err, null);
+                return next(null, docs);                 
+            });
+        });
+    };    
 
     preferenceService.getById = function (id, next) {
         mongoHelper.getDb(function (err, db) {
