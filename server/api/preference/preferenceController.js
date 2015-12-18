@@ -2,9 +2,11 @@
 
 var preferenceService = require('./preferenceService');
 var preferenceValidator = require('./preferenceValidator');
+var helper = require('../../data/dateTimeHelper');
 
 exports.getAll = function (req, res) {
-    preferenceService.getAll(function (err, preferences) {
+    var dateStr = req.query.date; // "2015-12-03"
+    preferenceService.getAll(dateStr, function (err, preferences) {
         if(err) { return handleError(res, err); }
         res.status(200).json(preferences);        
     });
@@ -17,6 +19,20 @@ exports.getById = function (req, res) {
         res.json(preference);
     });    
 };
+
+
+// output: ["2015-12-04", "2015-12-05", "2015-12-06"]
+exports.getNextDates = function (req, res) {
+    var todayStr = req.query.date || helper.getStringFromDate(new Date()); // "2015-12-03"
+    preferenceService.getNextDates(todayStr, function (err, dates) {
+        if(err) { return handleError(res, err); }
+        var result = [];
+        if(dates.length > 0)
+            result = dates[0].nextDates;
+        res.json(result); 
+    });    
+};
+
 
 
 exports.create = function(req, res){

@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-app.factory('preferenceService', ['$http', function ($http) {
+app.factory('preferenceService', ['$http', 'helperService', function ($http, helperService) {
 
     var factory = {};
     var rootUrl = '/api/preferences/';
@@ -9,8 +9,8 @@ app.factory('preferenceService', ['$http', function ($http) {
         return $http.post(rootUrl, item);
     };
 
-    factory.getAll = function () {
-        return $http.get(rootUrl).then(function (result) {
+    factory.getAll = function (dateStr) {
+        return $http.get(rootUrl + '?date=' + dateStr).then(function (result) {
             return result.data;
         });
     };
@@ -20,6 +20,13 @@ app.factory('preferenceService', ['$http', function ($http) {
             return result.data;
         });
     };
+    
+    factory.getNextDates = function () {
+        var todayStr = helperService.getStringFromDate(new Date());
+        return $http.get(rootUrl + 'nextDates?today=' + todayStr).then(function (result) {
+            return result.data;
+        });
+    };    
 
     factory.update = function (item) {
         return $http.put(rootUrl, item);
