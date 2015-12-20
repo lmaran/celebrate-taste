@@ -2,11 +2,21 @@
 
 var preferenceService = require('./preferenceService');
 var preferenceValidator = require('./preferenceValidator');
-var helper = require('../../data/dateTimeHelper');
+//var helper = require('../../data/dateTimeHelper');
 
-exports.getAll = function (req, res) {
+exports.getByDate = function (req, res) {
     var dateStr = req.query.date; // "2015-12-03"
-    preferenceService.getAll(dateStr, function (err, preferences) {
+    preferenceService.getByDate(dateStr, function (err, preferences) {
+        if(err) { return handleError(res, err); }
+        res.status(200).json(preferences);        
+    });
+};
+
+
+exports.getNextByEmployee = function (req, res) {
+    var todayStr = req.query.today; // "2015-12-03"
+    var employeeName = req.params.employeeName;
+    preferenceService.getNextByEmployee(todayStr, employeeName, function (err, preferences) {
         if(err) { return handleError(res, err); }
         res.status(200).json(preferences);        
     });
@@ -23,7 +33,7 @@ exports.getById = function (req, res) {
 
 // output: ["2015-12-04", "2015-12-05", "2015-12-06"]
 exports.getNextDates = function (req, res) {
-    var todayStr = req.query.date || helper.getStringFromDate(new Date()); // "2015-12-03"
+    var todayStr = req.query.today;// || helper.getStringFromDate(new Date()); // "2015-12-03"
     preferenceService.getNextDates(todayStr, function (err, dates) {
         if(err) { return handleError(res, err); }
         var result = [];
@@ -48,6 +58,22 @@ exports.create = function(req, res){
             });           
         }
     });
+
+};
+
+exports.createMany = function(req, res){
+    var preferences = req.body;
+    // preferenceValidator.all(req, res, function(errors){
+    //     if(errors){
+    //         res.status(400).send({ errors : errors }); // 400 - bad request
+    //     }
+    //     else{
+             preferenceService.createMany(preferences, function (err, response) {
+                if(err) { return handleError(res, err); }
+                res.status(201).json(response.ops[0]);
+            });           
+    //     }
+    // });
 
 };
 

@@ -74,19 +74,21 @@
       
     // all validations
     preferenceValidator.all = function(req, res, cbResult){       
-        async.parallel([
-            function(cb){
-               preferenceValidator.code(req, res, cb)
-            },
-            function(cb){
-               preferenceValidator.name(req, res, cb)
-            }         
-        ],
-        function (err, results) {
-            results = _.compact(results); // remove null elements from array
-            if(results.length == 0) results = null; // return null if no errors
-            cbResult(results);        
-        }); 
+        // async.parallel([
+        //     function(cb){
+        //        preferenceValidator.code(req, res, cb)
+        //     },
+        //     function(cb){
+        //        preferenceValidator.name(req, res, cb)
+        //     }         
+        // ],
+        // function (err, results) {
+        //     results = _.compact(results); // remove null elements from array
+        //     if(results.length == 0) results = null; // return null if no errors
+        //     cbResult(results);        
+        // }); 
+        
+        cbResult(null);  // always valid      
     }
     
     

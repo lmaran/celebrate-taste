@@ -5,7 +5,9 @@ var controller = require('./preferenceController');
 var router = express.Router();
 
 router.post('/', controller.create);
-router.get('/', controller.getAll);
+router.post('/createMany', controller.createMany);
+router.get('/', controller.getByDate);
+router.get('/employee/:employeeName', controller.getNextByEmployee);
 router.get('/nextDates', controller.getNextDates); //returns a list of available dates
 router.get('/:id', controller.getById);
 router.put('/', controller.update);

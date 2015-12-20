@@ -72,6 +72,10 @@ app.service('helperValidator', [function () {
 		}) 		
 	} 
     
+    // this.setValidity = function($scope, form, field, msg){ // expose "setValidity" outside
+    //     setValidity($scope, form, field, msg);  
+    // }
+    
     function setValidity($scope, form, field, msg){
         form[field].$setValidity('myValidation', false);
         $scope.errors[field] = msg; 

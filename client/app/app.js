@@ -5,7 +5,8 @@ var app = angular.module('celebrate-taste', [
     'ngResource',
     'ngSanitize',
     'ngRoute',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ui.select'
     //'ngAnimate' // we need it if uibCollapse directive is used
 ]);
 

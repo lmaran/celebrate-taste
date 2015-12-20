@@ -1,8 +1,8 @@
 ﻿/* global app */
 'use strict';
 
-app.controller('preferencesController', ['$scope', '$location', 'preferenceService', 'modalService',
-    function ($scope, $location, preferenceService, modalService) {
+app.controller('preferencesController', ['$scope', '$location', 'preferenceService', 'modalService', 'helperService',
+    function ($scope, $location, preferenceService, modalService, helperService) {
         
     $scope.preferences = [];
     $scope.errors = {};
@@ -14,6 +14,9 @@ app.controller('preferencesController', ['$scope', '$location', 'preferenceServi
     $scope.selectDate = function(date){
         if(date !== 'Nu exista date'){
             $scope.selectedDate = date;
+            
+            console.log($scope.selectedDate);
+            
             $location.search('date', date); // add property to url
             getPreferencesByDay($scope.selectedDate);
         }
@@ -53,13 +56,7 @@ app.controller('preferencesController', ['$scope', '$location', 'preferenceServi
     };
 
     function init() {
-        // preferenceService.getAll("2015-12-19").then(function (data) {
-        //     $scope.preferences = data;
-        // })
-        // .catch(function (err) {
-        //     alert(JSON.stringify(err, null, 4));
-        // });
-        
+
         preferenceService.getNextDates().then(function (data) {
             $scope.nextDates = data;
             
@@ -84,12 +81,18 @@ app.controller('preferencesController', ['$scope', '$location', 'preferenceServi
     }
     
     var getPreferencesByDay = function(dayStr){
-        preferenceService.getAll(dayStr).then(function (data) {
+        preferenceService.getByDate(dayStr).then(function (data) {
             $scope.preferences = data;
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
         });          
     }
+    
+    
+    $scope.dt = function (dateAsString) { // yyyy-mm-dd
+        //console.log('aaa: ' + dateAsString);
+        return helperService.getObjFromString(dateAsString);
+    }     
 
 }]);
