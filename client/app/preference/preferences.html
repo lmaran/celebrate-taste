@@ -1,0 +1,114 @@
+<div ng-include="'app/navbar/navbar.html'"></div>
+
+<div class="container-fluid">
+    <h1>{{pageTitle}}</h1>
+    
+    <div class="row">
+        
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">    
+                    <button type="button" class="btn btn-primary" ng-click="create()"> 
+                        <span class="glyphicon glyphicon-plus"></span> Adauga preferinte 
+                    </button>
+                </div>
+            </form> 
+        </div>
+        
+        <div class="col-md-3">
+            <form class="form-inline">
+                <div class="form-group pull-right">                   
+                    <div class="input-group">
+
+                        <span class="btn-group" uib-dropdown is-open="status.isopen">
+                            <button type="button" class="btn btn-default btn-block" uib-dropdown-toggle style="text-align:left; min-width:200px;">
+                                <span ng-show="selectedDate">
+                                    {{selectedDate}}
+                                    
+                                    <!--todo - we have a pb. when the commented cod is active-->
+                                    
+                                    <!--<strong>{{dt(selectedDate).dayAsShortString}}</strong>, 
+                                    {{dt(selectedDate).dayOfMonth}}
+                                    {{dt(selectedDate).monthAsShortString}}
+                                    {{dt(selectedDate).year}}                                       -->
+                                </span> 
+                                <span class="caret" style="float:right; height:12px; margin-top: 8px;"></span>
+                            </button>
+                            <ul class="uib-dropdown-menu" role="menu" style="width:100%; min-width:200px" >
+                                <li role="menuitem" ng-repeat="date in nextDates">
+                                    <a href="#" ng-click="selectDate(date)">
+                                        <!--{{date}}-->
+                                        <strong>{{dt(date).dayAsShortString}}</strong>, 
+                                        {{dt(date).dayOfMonth}}
+                                        {{dt(date).monthAsShortString}}
+                                        {{dt(date).year}}                                          
+                                    </a>
+                                </li>
+                            </ul>                    
+                        </span> 
+
+                    </div>
+                </div>
+            </form>       
+        </div>         
+                
+        <div class="col-md-3">
+            <form class="form-inline">
+                <div class="form-group pull-right">                   
+                    <div class="input-group">
+                        <span style="padding-right:10px;" class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="refresh()" style="border-radius:4px; background-color:lightgray"><span class="glyphicon glyphicon-refresh"></span></button>
+                        </span>
+                        <input style="border-top-left-radius:4px; border-bottom-left-radius:4px" ng-model="search" type="text" class="form-control" placeholder="Cauta...">
+                        <span class="input-group-btn"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>       
+        </div>     
+
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-responsive table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Angajat</th>
+                    <th>Supa</th>
+                    <th>Felul 2</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat=" preference in preferences
+                        | filter: search 
+                        as results">                
+                    <td>
+                        <!--{{preference.date}}-->
+                        <strong>{{dt(preference.date).dayAsShortString}}</strong>, 
+                        {{dt(preference.date).dayOfMonth}}
+                        {{dt(preference.date).monthAsShortString}}
+                        {{dt(preference.date).year}}
+                    </td>
+                    <td>
+                        <a ng-href="/admin/preferences/{{preference._id}}">{{preference.employeeName}}</a>
+                    </td>                    
+                    <td>
+                        {{preference.option1}}
+                    </td>
+                    <td>
+                        {{preference.option2}}
+                    </td>                    
+                    <td>
+                        <a href ng-click="delete(badge)">sterge</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+    
+    <span class="label label-default" style="font-size:100%; font-weight:normal">Total:</span> {{results.length}} / {{preferences.length}}        
+
+</div>
