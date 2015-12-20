@@ -22,12 +22,27 @@
 
                         <span class="btn-group" uib-dropdown is-open="status.isopen">
                             <button type="button" class="btn btn-default btn-block" uib-dropdown-toggle style="text-align:left; min-width:200px;">
-                                <span>{{selectedDate}}</span> 
+                                <span ng-show="selectedDate">
+                                    {{selectedDate}}
+                                    
+                                    <!--todo - we have a pb. when the commented cod is active-->
+                                    
+                                    <!--<strong>{{dt(selectedDate).dayAsShortString}}</strong>, 
+                                    {{dt(selectedDate).dayOfMonth}}
+                                    {{dt(selectedDate).monthAsShortString}}
+                                    {{dt(selectedDate).year}}                                       -->
+                                </span> 
                                 <span class="caret" style="float:right; height:12px; margin-top: 8px;"></span>
                             </button>
                             <ul class="uib-dropdown-menu" role="menu" style="width:100%; min-width:200px" >
                                 <li role="menuitem" ng-repeat="date in nextDates">
-                                    <a href="#" ng-click="selectDate(date)">{{date}}</a>
+                                    <a href="#" ng-click="selectDate(date)">
+                                        <!--{{date}}-->
+                                        <strong>{{dt(date).dayAsShortString}}</strong>, 
+                                        {{dt(date).dayOfMonth}}
+                                        {{dt(date).monthAsShortString}}
+                                        {{dt(date).year}}                                          
+                                    </a>
                                 </li>
                             </ul>                    
                         </span> 
@@ -60,7 +75,7 @@
                 <tr>
                     <th>Data</th>
                     <th>Angajat</th>
-                    <th>Felul 1</th>
+                    <th>Supa</th>
                     <th>Felul 2</th>
                     <th></th>
                 </tr>
@@ -70,7 +85,11 @@
                         | filter: search 
                         as results">                
                     <td>
-                        {{preference.date}}
+                        <!--{{preference.date}}-->
+                        <strong>{{dt(preference.date).dayAsShortString}}</strong>, 
+                        {{dt(preference.date).dayOfMonth}}
+                        {{dt(preference.date).monthAsShortString}}
+                        {{dt(preference.date).year}}
                     </td>
                     <td>
                         <a ng-href="/admin/preferences/{{preference._id}}">{{preference.employeeName}}</a>
@@ -91,6 +110,5 @@
     </div>
     
     <span class="label label-default" style="font-size:100%; font-weight:normal">Total:</span> {{results.length}} / {{preferences.length}}        
-    <!--<div ng-show="preferences.length == 0" style="margin-top:30px;">Nu exista inregistrari!</div>-->
 
 </div>

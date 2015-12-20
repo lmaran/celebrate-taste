@@ -36,7 +36,7 @@
         <div class="form-group" ng-class="{ 'has-error' : form.confirmPassword.$invalid && submitted }">
             <label class="col-md-2 control-label">Confirma parola</label>
             <div class="col-md-4">
-                <input type="password" name="confirmPassword" class="form-control" ng-model="user.confirmPassword" required match="user.password" />
+                <input type="password" name="confirmPassword" class="form-control" ng-model="user.confirmPassword" required my-match="user.password" />
                 <p ng-show="form.confirmPassword.$error.required && submitted" class="help-block">Acest camp este obligatoriu.</p>
                 <p ng-show="!form.confirmPassword.$error.required && form.confirmPassword.$error.match && submitted" class="help-block">Parolele nu sunt identice.</p>
             </div>
