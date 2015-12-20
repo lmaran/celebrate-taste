@@ -15,6 +15,16 @@ app.factory('helperService', [function(){
 		else if(dayOfWeek === 6) return 'Sambata';
 	};
 	
+	factory.getRoShortDay = function(dayOfWeek){
+		if(dayOfWeek === 0) return 'Du';
+		else if(dayOfWeek === 1) return 'Lu';
+		else if(dayOfWeek === 2) return 'Ma'; 
+		else if(dayOfWeek === 3) return 'Mi'; 
+		else if(dayOfWeek === 4) return 'Jo'; 
+		else if(dayOfWeek === 5) return 'Vi'; 
+		else if(dayOfWeek === 6) return 'Sa';
+	};	
+	
 	factory.getRoMonth = function(monthOfYear){
 		if(monthOfYear === 0) return 'Ianuarie';
 		else if(monthOfYear === 1) return 'Februari';
@@ -28,7 +38,22 @@ app.factory('helperService', [function(){
 		else if(monthOfYear === 9) return 'Octombrie'; 
 		else if(monthOfYear === 10) return 'Noiembrie'; 
 		else if(monthOfYear === 11) return 'Decembrie';           
-	}; 
+	};
+	
+	factory.getRoShortMonth = function(monthOfYear){
+		if(monthOfYear === 0) return 'Ian.';
+		else if(monthOfYear === 1) return 'Feb.';
+		else if(monthOfYear === 2) return 'Mar.'; 
+		else if(monthOfYear === 3) return 'Apr.'; 
+		else if(monthOfYear === 4) return 'Mai'; 
+		else if(monthOfYear === 5) return 'Iun.'; 
+		else if(monthOfYear === 6) return 'Iul.';
+		else if(monthOfYear === 7) return 'Aug.';
+		else if(monthOfYear === 8) return 'Sep.'; 
+		else if(monthOfYear === 9) return 'Oct.'; 
+		else if(monthOfYear === 10) return 'Nov.'; 
+		else if(monthOfYear === 11) return 'Dec.';           
+	}; 	 
 	
 	factory.getFriendlyDate = function(date){ // javascript date object
 		var d = date.getDate();
@@ -43,9 +68,11 @@ app.factory('helperService', [function(){
 		
         return{
             dayAsString: this.getRoDay(date.getDay()), // Joi
+			dayAsShortString: this.getRoShortDay(date.getDay()), // Jo
             dayOfMonth:dd, // 07, 24
 
             monthAsString:this.getRoMonth(m-1), // Aprilie
+			monthAsShortString:this.getRoShortMonth(m-1), // Apr.
             year:yyyy, // 2015
 			ymd: yyyy + '-' + mm + '-' + dd // 2015-07-23
         }		
@@ -64,7 +91,20 @@ app.factory('helperService', [function(){
 		var f = this.getFriendlyDate(date);
 		var dateStrRo = f.dayAsString + ', ' + f.dayOfMonth + ' ' + f. monthAsString + ' ' + f.year;
 		return dateStrRo; // "Joi, 07 Aprilie 2015"
-	}	
+	}
+	
+	factory.getObjFromString = function(dateStr){	// "yyyy-mm-dd"
+		var date = this.getDateFromString(dateStr);
+		var f = this.getFriendlyDate(date);
+		return {
+			dayAsString:f.dayAsString, // Joi
+			dayAsShortString: f.dayAsShortString, // Jo
+			dayOfMonth:f.dayOfMonth, // 07
+			monthAsString:f.monthAsString, // Aprilie
+			monthAsShortString:f.monthAsShortString, // Apr.
+			year:f.year // 2015
+		}
+	}		
 	
 	factory.getStringFromDate = function(date){	// javascript date object		
 		return this.getFriendlyDate(date).ymd;

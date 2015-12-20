@@ -1,7 +1,7 @@
 'use strict';
 
 // http://ngmodules.org/modules/angular-input-match
-app.directive('match', function () {
+app.directive('myMatch', function () {
     return {
         require: 'ngModel',
         restrict: 'A',
