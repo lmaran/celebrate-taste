@@ -9,7 +9,9 @@
     "angular-cookies": "~1.4.8",
     "bootstrap": "~3.3.5",
     "lodash": "~3.10.1",
-    "ui-select": "angular-ui-select#~0.13.2"
+    "ui-select": "angular-ui-select#~0.13.2",
+    "angular-toastr": "~1.6.0",
+    "angular-animate": "~1.4.8"
   },
   "overrides": {
     "font-awesome": {
