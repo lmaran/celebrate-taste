@@ -2,8 +2,8 @@
 /* global _ */
 'use strict';
 
-app.controller('preferenceController', ['$scope', '$window', '$route', 'preferenceService', '$location', 'helperValidator','menuService','customerEmployeeService', 'helperService',
-    function ($scope, $window, $route, preferenceService, $location, helperValidator, menuService, customerEmployeeService, helperService) {
+app.controller('preferenceController', ['$scope', '$window', '$route', 'preferenceService', '$location', 'helperValidator','menuService','customerEmployeeService', 'helperService', 'toastr',
+    function ($scope, $window, $route, preferenceService, $location, helperValidator, menuService, customerEmployeeService, helperService, toastr) {
         
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -106,6 +106,7 @@ app.controller('preferenceController', ['$scope', '$window', '$route', 'preferen
     function getActiveMenus(){
         menuService.getActiveMenus().then(function (data) {
             $scope.menus = data;
+            $scope.menuIsReady = true; //prevent displaying a wrong message for a short time
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
@@ -139,6 +140,7 @@ app.controller('preferenceController', ['$scope', '$window', '$route', 'preferen
         
         preferenceService.createMany(preferences)
             .then(function (data) {
+                toastr.success('Inregistrarea a fost adaugata cu succes!');
                 $scope.person.selected = undefined; // clean screen
                 $scope.$broadcast('SetFocus'); // set focus on the employee field
             })
@@ -177,12 +179,14 @@ app.controller('preferenceController', ['$scope', '$window', '$route', 'preferen
         
         $scope.preferencesHaveErrors = false;
         
+        var thereArePreferences = false;
         $scope.preferences.some(function(p){       
             if(!p.alreadyAdded){ // validate only what is suposed to be saved
                 
                 // validate option1
                 var option1 = p.option1.toUpperCase();
-                if(option1.length === 1){ // something was introduced              
+                if(option1.length === 1){ // something was introduced 
+                    thereArePreferences = true;             
                     if(p.availableForOption1.indexOf(option1) === -1){
                         var fieldIdx1 = 2 * p.rowIndex;
                         var field1 = 'input' + fieldIdx1.toString();
@@ -195,7 +199,8 @@ app.controller('preferenceController', ['$scope', '$window', '$route', 'preferen
                 
                 // validate option2
                 var option2 = p.option2.toUpperCase();
-                if(option2.length === 1){ // something was introduced              
+                if(option2.length === 1){ // something was introduced 
+                    thereArePreferences = true;             
                     if(p.availableForOption2.indexOf(option2) === -1){
                         var fieldIdx2 = 2 * p.rowIndex + 1;
                         var field2 = 'input' + fieldIdx2.toString();
@@ -208,6 +213,14 @@ app.controller('preferenceController', ['$scope', '$window', '$route', 'preferen
                                 
             }
         });
+        
+        // check if there are new preferences
+        if(!thereArePreferences){
+            $scope.form.$invalid = true;
+            //form.$setValidity('myValidation', false); // ok si asta            
+            $scope.errors.preferences = 'Nu ai adaugat optiuni noi.';  
+            $scope.preferencesHaveErrors = true;             
+        }
         
         return $scope.preferencesHaveErrors;
     }  
