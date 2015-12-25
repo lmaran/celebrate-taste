@@ -21,28 +21,28 @@ exports.getById = function (req, res) {
 
 exports.create = function(req, res){
     var order = req.body;
-    orderValidator.all(req, res, function(errors){
-        if(errors){
-            res.status(400).send({ errors : errors }); // 400 - bad request
-        }
-        else{
+    // orderValidator.all(req, res, function(errors){
+    //     if(errors){
+    //         res.status(400).send({ errors : errors }); // 400 - bad request
+    //     }
+    //     else{
              orderService.create(order, function (err, response) {
                 if(err) { return handleError(res, err); }
                 res.status(201).json(response.ops[0]);
             });           
-        }
-    });
+    //     }
+    // });
 
 };
 
 
 exports.update = function(req, res){
     var order = req.body;
-    orderValidator.all(req, res, function(errors){
-        if(errors){
-            res.status(400).send({ errors : errors }); // 400 - bad request
-        }
-        else{
+    // orderValidator.all(req, res, function(errors){
+    //     if(errors){
+    //         res.status(400).send({ errors : errors }); // 400 - bad request
+    //     }
+    //     else{
             orderService.update(order, function (err, response) {
                 if(err) { return handleError(res, err); }
                 if (!response.value) {
@@ -51,8 +51,8 @@ exports.update = function(req, res){
                     res.sendStatus(200);
                 }
             });          
-        }
-    }); 
+    //     }
+    // }); 
 };
 
 

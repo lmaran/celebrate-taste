@@ -28,8 +28,8 @@ app.controller('orderController', ['$scope', '$window', '$route', 'orderService'
     }   
 
     $scope.create = function (form) { 
-        validateForm($scope, form);
-        if (form.$invalid) return false;
+        // validateForm($scope, form);
+        // if (form.$invalid) return false;
         
         orderService.create($scope.order)
             .then(function (data) {
@@ -45,8 +45,8 @@ app.controller('orderController', ['$scope', '$window', '$route', 'orderService'
     }
 
     $scope.update = function (form) {
-        validateForm($scope, form);
-        if (form.$invalid) return false;
+        // validateForm($scope, form);
+        // if (form.$invalid) return false;
             
         orderService.update($scope.order)
             .then(function (data) {
@@ -65,13 +65,13 @@ app.controller('orderController', ['$scope', '$window', '$route', 'orderService'
         $window.history.back();
     }
     
-    function validateForm($scope, form){ 
-        var entity = 'order'; 
-        helperValidator.setAllFildsAsValid(form);
-        
-        // fields
-        helperValidator.required50($scope, form, entity, 'code');
-        helperValidator.required50($scope, form, entity, 'name');         
-    }    
+    // function validateForm($scope, form){ 
+    //     var entity = 'order'; 
+    //     helperValidator.setAllFildsAsValid(form);
+    //     
+    //     // fields
+    //     helperValidator.required50($scope, form, entity, 'code');
+    //     helperValidator.required50($scope, form, entity, 'name');         
+    // }    
 
 }])
