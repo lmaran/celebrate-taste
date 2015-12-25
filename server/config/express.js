@@ -26,9 +26,10 @@ module.exports = function(app) {
         extname: '.hbs',
         // in the feature we probably don't need the next 2 lines
         // https://github.com/ericf/express-handlebars/issues/147#issuecomment-159737839
-        layoutsDir:'server/views/layouts',
-        partialsDir:'server/views/partials'
+        layoutsDir: config.root + '/server/views/layouts/',
+        partialsDir: config.root + '/server/views/partials/'     
     }));
+    
     app.set('view engine', '.hbs');
     
     app.use(bodyParser.urlencoded({ extended: false }));
