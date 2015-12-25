@@ -23,7 +23,10 @@
                         users: db.collection('users'),
                         dishes: db.collection('dishes'),
                         customerEmployees: db.collection('customerEmployees'),
-                        menus: db.collection('menus')
+                        menus: db.collection('menus'),
+                        orders: db.collection('orders'),
+                        orderDetails: db.collection('orderDetails'),
+                        deliveries: db.collection('deliveries')
                                             
                     };
                     next(null, theDb);

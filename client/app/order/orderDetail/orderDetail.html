@@ -1,0 +1,48 @@
+<div ng-include="'app/navbar/navbar.html'"></div>
+
+<div class="container-fluid">
+    <h1>{{pageTitle}}</h1>
+
+    <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
+
+        <div class="form-group" ng-class="{'has-error' : form.code.$invalid}">
+            <label class="col-md-2 control-label required">Cod card</label>
+            <div class="col-md-4">
+                <input type="text" name="code" ng-model="orderDetail.code" class="form-control"  lm-focus="isFocusOnName" />
+                <p class="text-muted">Ex: 28730663987622</p>
+                <p ng-show="form.code.$error.myValidation" class="help-block">{{errors.code}}</p>
+            </div>
+        </div>        
+
+        <div class="form-group" ng-class="{'has-error' : form.name.$invalid }">
+            <label class="col-md-2 control-label required">Nume card</label>
+            <div class="col-md-4">
+                <input type="text" name="name" ng-model="orderDetail.name" class="form-control" />
+                <p class="text-muted">Ex: Petrescu Ion / Delegat 1</p>
+                <p ng-show="form.name.$error.myValidation" class="help-block">{{errors.name}}</p>
+            </div>
+        </div>
+        
+        <div ng-show="errors.other && submitted" class="form-group has-error">
+            <div class="col-md-4 col-md-offset-2">
+                <p class="help-block">{{errors.other}}</p>
+            </div>
+        </div>         
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-floppy-disk"></span> Salveaza </button>
+                <button type="button" class="btn" ng-click="cancel()"> <span class=" glyphicon glyphicon-remove"></span> Renunta </button>
+            </div>
+        </div>
+
+    </form>
+
+    </br/>
+    </br/>
+    <p>Observatie:</p>
+    <p class="text-muted">
+        - pentru angajatii permanenti, este recomandabil ca <strong>numele cardului</strong> sa coincida cu <strong>numele angajatului</strong>.<br/>
+    </p>
+
+</div>
