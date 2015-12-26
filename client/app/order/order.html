@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <h1>{{pageTitle}}</h1>
 
-    <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
+    <!--<form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
 
         <div class="form-group" ng-class="{'has-error' : form.date.$invalid}">
             <label class="col-md-2 control-label required">Data</label>
@@ -27,7 +27,9 @@
             <div class="col-md-4 col-md-offset-2">
                 <p class="help-block">{{errors.other}}</p>
             </div>
-        </div>         
+        </div>  
+        
+                  
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -36,13 +38,15 @@
             </div>
         </div>
 
-    </form>
+    </form>-->
 
-    </br/>
+    <!--</br/>
     </br/>
     <p>Observatie:</p>
     <p class="text-muted">
         - pentru angajatii permanenti, este recomandabil ca <strong>numele cardului</strong> sa coincida cu <strong>numele angajatului</strong>.<br/>
-    </p>
+    </p>-->
+    
+    <div ng-include="'app/order/orderLine/orderLines.html'" ng-controller="orderLinesController"></div> 
 
-</div>
+</div>    

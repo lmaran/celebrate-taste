@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-app.controller('ordersController', ['$scope', '$location', 'orderService', 'modalService',
-    function ($scope, $location, orderService, modalService) {
+app.controller('ordersController', ['$scope', '$location', 'orderService', 'modalService', 'helperService', '$uibModal',
+    function ($scope, $location, orderService, modalService, helperService, $uibModal) {
         
     $scope.orders = [];
     $scope.errors = {};
@@ -33,9 +33,38 @@ app.controller('ordersController', ['$scope', '$location', 'orderService', 'moda
 
         });
     };
+    
+    $scope.openCreateOrder = function () {
+        var modalInstance = $uibModal.open({
+            animation:false,
+            templateUrl: 'app/order/createOrderTpl.html',
+            controller: 'createOrderTplController'
+        });
 
-    $scope.create = function () {
-        $location.path('/admin/orders/create');
+        modalInstance.result.then(function (dataFromModal) { // js date object
+            var dateAsString = helperService.getStringFromDate(dataFromModal); // "yyyy-mm-dd" 
+            $scope.create(dateAsString);
+        }, function () {
+            //$log.info('Modal dismissed at: ' + new Date());
+        });       
+    }    
+
+    $scope.create = function (dateAsString) {
+        //$location.path('/admin/orders/create');
+        
+        var order={date:dateAsString};
+        orderService.create(order)
+            .then(function (data) {
+                //$location.path('/admin/orders');
+                $scope.refresh();
+            })
+            .catch(function (err) {
+                if(err.data.errors){                   
+                    //helperValidator.updateValidity($scope, form, err.data.errors);
+                } else{
+                    alert(JSON.stringify(err.data, null, 4)); 
+                }
+            })         
     }
 
     $scope.refresh = function () {
