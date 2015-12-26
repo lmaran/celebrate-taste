@@ -25,7 +25,7 @@
                         customerEmployees: db.collection('customerEmployees'),
                         menus: db.collection('menus'),
                         orders: db.collection('orders'),
-                        orderDetails: db.collection('orderDetails'),
+                        orderLines: db.collection('orderLines'),
                         deliveries: db.collection('deliveries')
                                             
                     };

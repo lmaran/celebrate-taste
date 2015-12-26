@@ -1,17 +1,17 @@
 ﻿'use strict';
 
-app.factory('orderDetailService', ['$http', function ($http) {
+app.factory('orderLineService', ['$http', function ($http) {
 
     var factory = {};
     var rootUrl = '/api/orders/';
-    var detailsUrl = '/orderDetails/';
+    var orderLinesPart = '/orderLines/';
 
     factory.create = function (item) {
         return $http.post(rootUrl, item);
     };
 
     factory.getAll = function (id) {
-        return $http.get(rootUrl + id + detailsUrl).then(function (result) {
+        return $http.get(rootUrl + id + orderLinesPart).then(function (result) {
             return result.data;
         });
     };

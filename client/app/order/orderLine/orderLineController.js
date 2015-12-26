@@ -1,13 +1,13 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('orderDetailController', ['$scope', '$window', '$route', 'orderDetailService', '$location', 'helperValidator',
-    function ($scope, $window, $route, orderDetailService, $location, helperValidator) {
+app.controller('orderLineController', ['$scope', '$window', '$route', 'orderLineService', '$location', 'helperValidator',
+    function ($scope, $window, $route, orderLineService, $location, helperValidator) {
         
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
     $scope.errors = {};
-    $scope.orderDetail = {};
+    $scope.orderLine = {};
    
     if ($scope.isEditMode) {  
         /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined     
@@ -15,12 +15,12 @@ app.controller('orderDetailController', ['$scope', '$window', '$route', 'orderDe
     }
 
     function init() {
-        getorderDetail();
+        getorderLine();
     } 
 
-    function getorderDetail() {
-        orderDetailService.getById($route.current.params.id).then(function (data) {
-            $scope.orderDetail = data;
+    function getorderLine() {
+        orderLineService.getById($route.current.params.id).then(function (data) {
+            $scope.orderLine = data;
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
@@ -31,9 +31,9 @@ app.controller('orderDetailController', ['$scope', '$window', '$route', 'orderDe
         validateForm($scope, form);
         if (form.$invalid) return false;
         
-        orderDetailService.create($scope.orderDetail)
+        orderLineService.create($scope.orderLine)
             .then(function (data) {
-                $location.path('/admin/orderDetails');
+                $location.path('/admin/orderLines');
             })
             .catch(function (err) {
                 if(err.data.errors){                   
@@ -48,9 +48,9 @@ app.controller('orderDetailController', ['$scope', '$window', '$route', 'orderDe
         validateForm($scope, form);
         if (form.$invalid) return false;
             
-        orderDetailService.update($scope.orderDetail)
+        orderLineService.update($scope.orderLine)
             .then(function (data) {
-                $location.path('/admin/orderDetails');
+                $location.path('/admin/orderLines');
             })
             .catch(function (err) {
                 if(err.data.errors){                   
@@ -66,7 +66,7 @@ app.controller('orderDetailController', ['$scope', '$window', '$route', 'orderDe
     }
     
     function validateForm($scope, form){ 
-        var entity = 'orderDetail'; 
+        var entity = 'orderLine'; 
         helperValidator.setAllFildsAsValid(form);
         
         // fields

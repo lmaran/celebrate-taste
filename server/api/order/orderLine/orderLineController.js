@@ -1,32 +1,33 @@
 ﻿'use strict';
 
-var orderDetailService = require('./orderDetailService');
-var orderDetailValidator = require('./orderDetailValidator');
+var orderLineService = require('./orderLineService');
+var orderLineValidator = require('./orderLineValidator');
 
 exports.getAll = function (req, res) {
-    orderDetailService.getAll(function (err, orderDetails) {
+    var orderId = req.params.id;
+    orderLineService.getAll(orderId, function (err, orderLines) {
         if(err) { return handleError(res, err); }
-        res.status(200).json(orderDetails);        
+        res.status(200).json(orderLines);        
     });
 };
 
 
 exports.getById = function (req, res) {
-    orderDetailService.getById(req.params.id, function (err, orderDetail) {
+    orderLineService.getById(req.params.id, function (err, orderLine) {
         if(err) { return handleError(res, err); }
-        res.json(orderDetail);
+        res.json(orderLine);
     });    
 };
 
 
 exports.create = function(req, res){
-    var orderDetail = req.body;
-    orderDetailValidator.all(req, res, function(errors){
+    var orderLine = req.body;
+    orderLineValidator.all(req, res, function(errors){
         if(errors){
             res.status(400).send({ errors : errors }); // 400 - bad request
         }
         else{
-             orderDetailService.create(orderDetail, function (err, response) {
+             orderLineService.create(orderLine, function (err, response) {
                 if(err) { return handleError(res, err); }
                 res.status(201).json(response.ops[0]);
             });           
@@ -37,13 +38,13 @@ exports.create = function(req, res){
 
 
 exports.update = function(req, res){
-    var orderDetail = req.body;
-    orderDetailValidator.all(req, res, function(errors){
+    var orderLine = req.body;
+    orderLineValidator.all(req, res, function(errors){
         if(errors){
             res.status(400).send({ errors : errors }); // 400 - bad request
         }
         else{
-            orderDetailService.update(orderDetail, function (err, response) {
+            orderLineService.update(orderLine, function (err, response) {
                 if(err) { return handleError(res, err); }
                 if (!response.value) {
                     res.sendStatus(404); // not found
@@ -58,7 +59,7 @@ exports.update = function(req, res){
 
 exports.remove = function(req, res){
     var id = req.params.id;
-    orderDetailService.remove(id, function (err, response) {
+    orderLineService.remove(id, function (err, response) {
         if(err) { return handleError(res, err); }
         res.sendStatus(204);
     });

@@ -1,15 +1,15 @@
 'use strict';
 
-(function (orderDetailValidator) {
+(function (orderLineValidator) {
     
-    var orderDetailService = require('./orderDetailService');
+    var orderLineService = require('./orderLineService');
     var async = require('async');
     var validator = require('validator');  
     var _ = require('lodash');  
     
     
     // "code" validation
-    orderDetailValidator.code = function(req, res, cbResult){
+    orderLineValidator.code = function(req, res, cbResult){
         var fieldVal = validator.trim(req.body.code);     
         async.series([
             function(cb){
@@ -22,9 +22,9 @@
                 else cb(null, 'checkNext');  
             },
             function(cb){
-                orderDetailService.getByValue('code', fieldVal, req.body._id, function (err, orderDetail) {                    
+                orderLineService.getByValue('code', fieldVal, req.body._id, function (err, orderLine) {                    
                     if(err) { return handleError(res, err); }
-                    if (orderDetail) { 
+                    if (orderLine) { 
                         cb("Exista deja o inregistrare cu aceasta valoare."); 
                     }
                     else cb(null, 'checkNext');      
@@ -41,7 +41,7 @@
     
     
     // "name" validation
-    orderDetailValidator.name = function(req, res, cbResult){
+    orderLineValidator.name = function(req, res, cbResult){
         var fieldVal = validator.trim(req.body.name);     
         async.series([
             function(cb){
@@ -54,9 +54,9 @@
                 else cb(null, 'checkNext'); 
             },
             function(cb){
-                orderDetailService.getByValue('name', fieldVal, req.body._id, function (err, orderDetail) {
+                orderLineService.getByValue('name', fieldVal, req.body._id, function (err, orderLine) {
                     if(err) { return handleError(res, err); }
-                    if (orderDetail) { 
+                    if (orderLine) { 
                         cb("Exista deja o inregistrare cu aceasta valoare."); 
                     }
                     else cb(null, 'checkNext');      
@@ -73,13 +73,13 @@
     
       
     // all validations
-    orderDetailValidator.all = function(req, res, cbResult){       
+    orderLineValidator.all = function(req, res, cbResult){       
         async.parallel([
             function(cb){
-               orderDetailValidator.code(req, res, cb)
+               orderLineValidator.code(req, res, cb)
             },
             function(cb){
-               orderDetailValidator.name(req, res, cb)
+               orderLineValidator.name(req, res, cb)
             }         
         ],
         function (err, results) {
