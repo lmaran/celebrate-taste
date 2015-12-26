@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()">&times;</button>    
+    <h3 class="modal-title">Creaza comanda</h3>
+</div>
+<div class="modal-body">
+    Data comenzii: 
+    <div class="row">
+        <div class="col-md-6">
+            <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup="EEEE, dd MMMM, yyyy" ng-model="orderDate" is-open="isOpen" datepicker-options="dateOptions" ng-required="true" show-weeks="false" show-button-bar="false"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="cancel()">Renunta</button>    
+    <button class="btn btn-primary" type="button" ng-click="ok()">Salveaza</button>
+</div>
