@@ -8,7 +8,7 @@
         <div class="form-group" ng-class="{'has-error' : form.code.$invalid}">
             <label class="col-md-2 control-label required">Cod card</label>
             <div class="col-md-4">
-                <input type="text" name="code" ng-model="orderDetail.code" class="form-control"  lm-focus="isFocusOnName" />
+                <input type="text" name="code" ng-model="orderLine.code" class="form-control"  lm-focus="isFocusOnName" />
                 <p class="text-muted">Ex: 28730663987622</p>
                 <p ng-show="form.code.$error.myValidation" class="help-block">{{errors.code}}</p>
             </div>
@@ -17,7 +17,7 @@
         <div class="form-group" ng-class="{'has-error' : form.name.$invalid }">
             <label class="col-md-2 control-label required">Nume card</label>
             <div class="col-md-4">
-                <input type="text" name="name" ng-model="orderDetail.name" class="form-control" />
+                <input type="text" name="name" ng-model="orderLine.name" class="form-control" />
                 <p class="text-muted">Ex: Petrescu Ion / Delegat 1</p>
                 <p ng-show="form.name.$error.myValidation" class="help-block">{{errors.name}}</p>
             </div>

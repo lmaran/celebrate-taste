@@ -6,7 +6,7 @@ app.config(['$routeProvider', function ($routeProvider) {
             controller: 'ordersController',
             templateUrl: 'app/order/orders.html',
 			title: 'Comenzi'
-	    })
+	    })    
 	    .when('/admin/orders/create', {
 	        controller: 'orderController',
 	        templateUrl: 'app/order/order.html',

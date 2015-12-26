@@ -1,9 +1,9 @@
 ﻿'use strict';
 
-app.controller('orderDetailsController', ['$scope', '$location', 'orderDetailService', 'modalService',
-    function ($scope, $location, orderDetailService, modalService) {
+app.controller('orderLinesController', ['$scope', '$location', 'orderLineService', 'modalService', '$route',
+    function ($scope, $location, orderLineService, modalService, $route) {
         
-    $scope.orderDetails = [];
+    $scope.orderLines = [];
     $scope.errors = {};
 
     /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined
@@ -19,12 +19,12 @@ app.controller('orderDetailsController', ['$scope', '$location', 'orderDetailSer
         
             // get the index for selected item
             var i = 0;
-            for (i in $scope.orderDetails) {
-                if ($scope.orderDetails[i]._id === item._id) break;
+            for (i in $scope.orderLines) {
+                if ($scope.orderLines[i]._id === item._id) break;
             }
 
-            orderDetailService.delete(item._id).then(function () {
-                $scope.orderDetails.splice(i, 1);
+            orderLineService.delete(item._id).then(function () {
+                $scope.orderLines.splice(i, 1);
             })
             .catch(function (err) {
                 $scope.errors = JSON.stringify(err.data, null, 4);
@@ -35,7 +35,7 @@ app.controller('orderDetailsController', ['$scope', '$location', 'orderDetailSer
     };
 
     $scope.create = function () {
-        $location.path('/admin/orderDetails/create');
+        $location.path('/admin/orders/' + $route.current.params.id + '/orderLines/create');
     }
 
     $scope.refresh = function () {
@@ -43,8 +43,8 @@ app.controller('orderDetailsController', ['$scope', '$location', 'orderDetailSer
     };
 
     function init() {
-        orderDetailService.getAll().then(function (data) {
-            $scope.orderDetails = data;
+        orderLineService.getAll($route.current.params.id).then(function (data) {
+            $scope.orderLines = data;
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
