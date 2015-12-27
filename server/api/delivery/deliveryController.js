@@ -4,7 +4,7 @@ var deliveryService = require('./deliveryService');
 var deliveryValidator = require('./deliveryValidator');
 
 exports.getAll = function (req, res) {
-    deliveryService.getAll(function (err, deliverys) {
+    deliveryService.getAll(req, function (err, deliverys) {
         if(err) { return handleError(res, err); }
         res.status(200).json(deliverys);        
     });

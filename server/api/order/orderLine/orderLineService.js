@@ -4,11 +4,12 @@
     
     //var seedData = require("./seedData");
     var mongoHelper = require('../../../data/mongoHelper');
+    var collection = 'orderLines';
  
     orderLineService.getAll = function (orderId, next) {     
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);
-            db.orderLines.find({orderId:orderId}, {sort:'employeeName'}).toArray(function (err, docs) {
+            db.collection(collection).find({orderId:orderId}, {sort:'employeeName'}).toArray(function (err, docs) {
                 if (err) return next(err, null);
                 return next(null, docs);                 
             });
@@ -19,7 +20,7 @@
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);
             id = mongoHelper.normalizedId(id);
-            db.orderLines.findOne({ _id: id }, next);                           
+            db.collection(collection).findOne({ _id: id }, next);                           
         });
     };
     
@@ -41,14 +42,14 @@
             // for update we have to exclude the existing document
             if(id) query._id = {$ne: mongoHelper.normalizedId(id)}; // {name: /^John$/i, _id: {$ne:'93874502347652345'}}  
             
-            db.orderLines.findOne(query, next);                           
+            db.collection(collection).findOne(query, next);                           
         });
     };    
 
     orderLineService.create = function (orderLine, next) {
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);
-            db.orderLines.insertOne(orderLine, next);      
+            db.collection(collection).insertOne(orderLine, next);      
         });
     };
 
@@ -57,7 +58,7 @@
             if (err) return next(err, null);
             orderLine._id = mongoHelper.normalizedId(orderLine._id);
             // returnOriginal: (default:true) Set to false if you want to return the modified object rather than the original
-            db.orderLines.findOneAndUpdate({_id:orderLine._id}, orderLine, {returnOriginal: false}, next);
+            db.collection(collection).findOneAndUpdate({_id:orderLine._id}, orderLine, {returnOriginal: false}, next);
         });
     };  
 
@@ -65,7 +66,7 @@
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);
             id = mongoHelper.normalizedId(id);               
-            db.orderLines.findOneAndDelete({_id:id}, next);
+            db.collection(collection).findOneAndDelete({_id:id}, next);
         });
     };
     
