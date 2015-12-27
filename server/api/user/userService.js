@@ -13,6 +13,8 @@
     userService.getAll = function (req, next) {
            
         var query = mongoService.getQuery(req);
+        if(query.$sort === undefined) query.$sort = {name: 1}; // sort by name (asc)
+        
         query.$select = query.$select || {};
         
         // v1:

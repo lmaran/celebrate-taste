@@ -45,7 +45,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-ng-repeat="dish in dishes | filter:search | orderBy:['category','name']">
+                <tr data-ng-repeat="dish in dishes | filter:search ">
                     <td width="50">
                         <a href ng-click="showModal(dish)"><img ng-src="{{dish.thumbUrl}}" width="40" /></td></a>
                     <td>
