@@ -4,7 +4,7 @@ var teamService = require('./teamService');
 var teamValidator = require('./teamValidator');
 
 exports.getAll = function (req, res) {
-    teamService.getAll(function (err, teams) {
+    teamService.getAll(req, function (err, teams) {
         if(err) { return handleError(res, err); }
         res.status(200).json(teams);        
     });

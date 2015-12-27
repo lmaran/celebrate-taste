@@ -3,7 +3,7 @@
 var customerService = require('./customerService');
 
 exports.getAll = function (req, res) {
-    customerService.getAll(function (err, customers) {
+    customerService.getAll(req, function (err, customers) {
         if(err) { return handleError(res, err); }
         res.status(200).json(customers);        
     });

@@ -4,7 +4,7 @@ var orderService = require('./orderService');
 var orderValidator = require('./orderValidator');
 
 exports.getAll = function (req, res) {
-    orderService.getAll(function (err, orders) {
+    orderService.getAll(req, function (err, orders) {
         if(err) { return handleError(res, err); }
         res.status(200).json(orders);        
     });
