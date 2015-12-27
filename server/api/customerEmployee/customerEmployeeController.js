@@ -4,7 +4,7 @@ var customerEmployeeService = require('./customerEmployeeService');
 var customerEmployeeValidator = require('./customerEmployeeValidator');
 
 exports.getAll = function (req, res) {
-    customerEmployeeService.getAll(function (err, customerEmployees) {
+    customerEmployeeService.getAll(req, function (err, customerEmployees) {
         if(err) { return handleError(res, err); }
         res.status(200).json(customerEmployees);        
     });

@@ -16,7 +16,7 @@ var validationError = function(res, err) {
  * restriction: 'admin'
  */
 exports.getAll = function(req, res) {
-    userService.getAll(function (err, users) {
+    userService.getAll(req, function (err, users) {
         if(err) { return handleError(res, err); }
         res.status(200).json(users);        
     });    
@@ -48,7 +48,7 @@ exports.create = function (req, res, next) {
 exports.getById = function (req, res, next) {
   var userId = req.params.id;
 
-  userService.getById(userId, function (err, user) {
+  userService.getByIdWithoutPsw(userId, function (err, user) {
     if (err) return next(err);
     if (!user) return res.status(401).send('Unauthorized');
     res.json(user);
@@ -88,7 +88,7 @@ exports.changePassword = function(req, res, next) {
     var oldPass = String(req.body.oldPassword);
     var newPass = String(req.body.newPassword);
     
-    userService.getByIdWithPsw(userId, function (err, user) {              
+    userService.getById(userId, function (err, user) {              
         if(userService.authenticate(oldPass, user.hashedPassword, user.salt)) { 
             user.salt = userService.makeSalt();
             user.hashedPassword = userService.encryptPassword(newPass, user.salt);           
@@ -117,7 +117,7 @@ exports.changePassword = function(req, res, next) {
  */
 exports.me = function(req, res, next) {
   var userId = req.user._id.toString(); 
-  userService.getById(userId, function(err, user) { // don't ever give out the password or salt
+  userService.getByIdWithoutPsw(userId, function(err, user) { // don't ever give out the password or salt
     if (err) return next(err);
     if (!user) return res.status(401).send('Unauthorized');
     res.json(user);

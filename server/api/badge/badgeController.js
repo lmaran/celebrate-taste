@@ -1,10 +1,11 @@
 'use strict';
 
 var badgeService = require('./badgeService');
+//var mongoService = require('../../data/mongoService');
 var badgeValidator = require('./badgeValidator');
 
-exports.getAll = function (req, res) {
-    badgeService.getAll(function (err, badges) {
+exports.getAll = function (req, res) {   
+    badgeService.getAll(req, function (err, badges) {
         if(err) { return handleError(res, err); }
         res.status(200).json(badges);        
     });

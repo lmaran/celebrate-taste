@@ -4,7 +4,7 @@ var menuService = require('./menuService');
 var helper = require('../../data/dateTimeHelper');
 
 exports.getAll = function (req, res) {
-    menuService.getAll(function (err, menus) {
+    menuService.getAll(req, function (err, menus) {
         if(err) { return handleError(res, err); }
         res.status(200).json(menus);        
     });

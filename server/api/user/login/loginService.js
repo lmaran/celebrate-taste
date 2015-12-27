@@ -40,7 +40,7 @@ function addUserIfExist() {
     // Attach user to request
         .use(function (req, res, next) {
             if(req.user)
-                userService.getById(req.user._id, function (err, user) {
+                userService.getByIdWithoutPsw(req.user._id, function (err, user) {
                     if (err) return next(err);
                     //if (!user) return res.status(401).send('Unauthorized');
                     if (!user) next();
