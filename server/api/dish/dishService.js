@@ -9,6 +9,7 @@
     // ---------- OData ----------
     dishService.getAll = function (req, next) {  
         var query = mongoService.getQuery(req);
+        if(query.$sort === undefined) query.$sort = {category: 1, name: 1}; // sort by catgeory and name
         mongoService.getAll(collection, query, next);
     };
 
