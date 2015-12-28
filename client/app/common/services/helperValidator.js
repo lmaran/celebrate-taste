@@ -11,7 +11,7 @@ app.service('helperValidator', [function () {
         $scope[entity][field] = $scope[entity][field] || '';
         var fieldValue = $scope[entity][field];
 
-        if(fieldValue === undefined || fieldValue === ''){
+        if(isEmpty(fieldValue)){
             setValidity($scope, form, field, 'Acest camp este obligatoriu.');
         }
         else if(fieldValue.length > 50)
@@ -23,7 +23,7 @@ app.service('helperValidator', [function () {
     this.requiredEmail = function($scope, form, entity, field){
         var fieldValue = $scope[entity][field];
 
-        if(fieldValue === undefined || fieldValue === ''){
+        if(isEmpty(fieldValue)){
             setValidity($scope, form, field, 'Acest camp este obligatoriu.');
         }          
         else if(!isEmail(fieldValue))
@@ -48,7 +48,18 @@ app.service('helperValidator', [function () {
         
         if(fieldValue && fieldValue.length > 50)
             setValidity($scope, form, field, 'Maxim 50 caractere.');              
-    }     
+    }  
+    
+    this.requiredDate = function($scope, form, entity, field){
+        var fieldValue = $scope[entity][field];
+        if(isEmpty(fieldValue)){
+            setValidity($scope, form, field, 'Acest camp este obligatoriu.');
+        }          
+        else if(fieldValue instanceof Date === false)
+            setValidity($scope, form, field, 'Data invalida.'); 
+        else if(fieldValue.length > 50)
+            setValidity($scope, form, field, 'Maxim 50 caractere.');              
+    }        
         
     this.updateValidity = function($scope, form, errors){
         // Update validity of form fields that match the server errors                        
@@ -86,6 +97,11 @@ app.service('helperValidator', [function () {
 		// http://stackoverflow.com/a/46181/2726725
 		var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(email);
+	}
+    
+    function isEmpty(field) {
+        // http://stackoverflow.com/a/5515349
+        return(field === undefined || field === '' || field === null);
 	}
     
     

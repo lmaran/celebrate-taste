@@ -28,6 +28,12 @@ app.factory('orderService', ['$http', function ($http) {
     factory.delete = function (itemId) {
         return $http.delete(rootUrl + encodeURIComponent(itemId));
     };
+    
+    factory.count = function(field, value){
+        return $http.get(rootUrl + '$count?$filter=' + field + ' eq ' + '\'' + value + '\'').then(function (result) {
+            return result.data;
+        });        
+    }
 
     return factory;
 }]);

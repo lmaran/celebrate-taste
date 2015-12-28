@@ -21,6 +21,7 @@ exports.getById = function (req, res) {
 
 exports.create = function(req, res){
     var order = req.body;
+    order.status = "Initiala";
     // orderValidator.all(req, res, function(errors){
     //     if(errors){
     //         res.status(400).send({ errors : errors }); // 400 - bad request

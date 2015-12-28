@@ -41,31 +41,13 @@ app.controller('ordersController', ['$scope', '$location', 'orderService', 'moda
             controller: 'createOrderTplController'
         });
 
-        modalInstance.result.then(function (dataFromModal) { // js date object
-            var dateAsString = helperService.getStringFromDate(dataFromModal); // "yyyy-mm-dd" 
-            $scope.create(dateAsString);
+        modalInstance.result.then(function () { // "yyyy-mm-dd" 
+            $scope.refresh();
         }, function () {
             //$log.info('Modal dismissed at: ' + new Date());
         });       
     }    
 
-    $scope.create = function (dateAsString) {
-        //$location.path('/admin/orders/create');
-        
-        var order={date:dateAsString};
-        orderService.create(order)
-            .then(function (data) {
-                //$location.path('/admin/orders');
-                $scope.refresh();
-            })
-            .catch(function (err) {
-                if(err.data.errors){                   
-                    //helperValidator.updateValidity($scope, form, err.data.errors);
-                } else{
-                    alert(JSON.stringify(err.data, null, 4)); 
-                }
-            })         
-    }
 
     $scope.refresh = function () {
         init();
