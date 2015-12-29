@@ -21,14 +21,17 @@ exports.getById = function (req, res) {
 
 exports.create = function(req, res){
     var order = req.body;
-    order.status = "Initiala";
     // orderValidator.all(req, res, function(errors){
     //     if(errors){
     //         res.status(400).send({ errors : errors }); // 400 - bad request
     //     }
     //     else{
-             orderService.create(order, function (err, response) {
+            order.status = "Initiala";
+            order.createBy = req.user.name;    
+            order.createdOn = new Date();        
+            orderService.create(order, function (err, response) {                 
                 if(err) { return handleError(res, err); }
+                res.location(req.originalUrl + response.insertedId);
                 res.status(201).json(response.ops[0]);
             });           
     //     }
@@ -44,6 +47,8 @@ exports.update = function(req, res){
     //         res.status(400).send({ errors : errors }); // 400 - bad request
     //     }
     //     else{
+            order.modifiedBy = req.user.name;    
+            order.modifiedOn = new Date();         
             orderService.update(order, function (err, response) {
                 if(err) { return handleError(res, err); }
                 if (!response.value) {

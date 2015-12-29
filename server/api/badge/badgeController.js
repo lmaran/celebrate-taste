@@ -27,8 +27,11 @@ exports.create = function(req, res){
             res.status(400).send({ errors : errors }); // 400 - bad request
         }
         else{
-             badgeService.create(badge, function (err, response) {
-                if(err) { return handleError(res, err); }
+            badge.createBy = req.user.name;
+            badge.createdOn = new Date();            
+            badgeService.create(badge, function (err, response) {
+                if (err) { return handleError(res, err); }
+                res.location(req.originalUrl + response.insertedId);
                 res.status(201).json(response.ops[0]);
             });           
         }
@@ -44,6 +47,8 @@ exports.update = function(req, res){
             res.status(400).send({ errors : errors }); // 400 - bad request
         }
         else{
+            badge.modifiedBy = req.user.name;              
+            badge.modifiedOn = new Date();          
             badgeService.update(badge, function (err, response) {
                 if(err) { return handleError(res, err); }
                 if (!response.value) {
