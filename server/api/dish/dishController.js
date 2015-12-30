@@ -3,7 +3,7 @@
 var dishService = require('./dishService');
 
 exports.getAll = function (req, res) {
-    dishService.getAll(function (err, dishes) {
+    dishService.getAll(req, function (err, dishes) {
         if(err) { return handleError(res, err); }
         res.status(200).json(dishes);        
     });
@@ -21,6 +21,10 @@ exports.getById = function (req, res) {
 
 exports.create = function(req, res){
     var dish = req.body;
+    
+    dish.createBy = req.user.name;    
+    dish.createdOn = new Date(); 
+                
     dishService.create(dish, function (err, response) {
         if(err) { return handleError(res, err); }
         res.status(201).json(response.ops[0]);
@@ -28,8 +32,12 @@ exports.create = function(req, res){
 };
 
 
-exports.update = function(req, res){
+exports.update = function(req, res){    
     var dish = req.body;
+    
+    dish.modifiedBy = req.user.name;    
+    dish.modifiedOn = new Date();     
+    
     dishService.update(dish, function (err, response) {
         if(err) { return handleError(res, err); }
         if (!response.value) {

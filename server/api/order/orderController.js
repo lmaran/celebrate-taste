@@ -4,7 +4,7 @@ var orderService = require('./orderService');
 var orderValidator = require('./orderValidator');
 
 exports.getAll = function (req, res) {
-    orderService.getAll(function (err, orders) {
+    orderService.getAll(req, function (err, orders) {
         if(err) { return handleError(res, err); }
         res.status(200).json(orders);        
     });
@@ -26,8 +26,14 @@ exports.create = function(req, res){
     //         res.status(400).send({ errors : errors }); // 400 - bad request
     //     }
     //     else{
-             orderService.create(order, function (err, response) {
+        
+            order.status = "Initiala";
+            order.createBy = req.user.name;    
+            order.createdOn = new Date();  
+                  
+            orderService.create(order, function (err, response) {                 
                 if(err) { return handleError(res, err); }
+                res.location(req.originalUrl + response.insertedId);
                 res.status(201).json(response.ops[0]);
             });           
     //     }
@@ -43,6 +49,10 @@ exports.update = function(req, res){
     //         res.status(400).send({ errors : errors }); // 400 - bad request
     //     }
     //     else{
+        
+            order.modifiedBy = req.user.name;    
+            order.modifiedOn = new Date(); 
+                    
             orderService.update(order, function (err, response) {
                 if(err) { return handleError(res, err); }
                 if (!response.value) {

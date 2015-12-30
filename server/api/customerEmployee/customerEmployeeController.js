@@ -4,7 +4,7 @@ var customerEmployeeService = require('./customerEmployeeService');
 var customerEmployeeValidator = require('./customerEmployeeValidator');
 
 exports.getAll = function (req, res) {
-    customerEmployeeService.getAll(function (err, customerEmployees) {
+    customerEmployeeService.getAll(req, function (err, customerEmployees) {
         if(err) { return handleError(res, err); }
         res.status(200).json(customerEmployees);        
     });
@@ -26,7 +26,10 @@ exports.create = function(req, res){
         }
         else{
             var customerEmployee = req.body;
+            
             customerEmployee.isActive = true;
+            customerEmployee.createBy = req.user.name;    
+            customerEmployee.createdOn = new Date();              
             
             customerEmployeeService.create(customerEmployee, function (err, response) {
             if(err) { return handleError(res, err); }
@@ -44,6 +47,10 @@ exports.update = function(req, res){
             res.status(400).send({ errors : errors }); // 400 - bad request
         }
         else{
+            
+            customerEmployee.modifiedBy = req.user.name;    
+            customerEmployee.modifiedOn = new Date();  
+            
             customerEmployeeService.update(customerEmployee, function (err, response) {
                 if(err) { return handleError(res, err); }
                 if (!response.value) {

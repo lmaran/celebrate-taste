@@ -52,7 +52,11 @@ exports.create = function(req, res){
             res.status(400).send({ errors : errors }); // 400 - bad request
         }
         else{
-             preferenceService.create(preference, function (err, response) {
+            
+            preference.createBy = req.user.name;    
+            preference.createdOn = new Date();  
+                        
+            preferenceService.create(preference, function (err, response) {
                 if(err) { return handleError(res, err); }
                 res.status(201).json(response.ops[0]);
             });           
@@ -85,6 +89,10 @@ exports.update = function(req, res){
             res.status(400).send({ errors : errors }); // 400 - bad request
         }
         else{
+            
+            preference.modifiedBy = req.user.name;    
+            preference.modifiedOn = new Date();             
+            
             preferenceService.update(preference, function (err, response) {
                 if(err) { return handleError(res, err); }
                 if (!response.value) {

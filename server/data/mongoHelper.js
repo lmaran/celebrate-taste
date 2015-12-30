@@ -13,29 +13,30 @@
                 if (err) {
                     next(err, null);
                 } else {
-                    // Shawn recommends that we wrap the db in an object so we can extend it easily later.
-                    theDb = {
-                        db: db,
-                        customers: db.collection('customers'),
-                        badges: db.collection('badges'),
-                        preferences: db.collection('preferences'),
-                        teams: db.collection('teams'),
-                        users: db.collection('users'),
-                        dishes: db.collection('dishes'),
-                        customerEmployees: db.collection('customerEmployees'),
-                        menus: db.collection('menus'),
-                        orders: db.collection('orders'),
-                        orderDetails: db.collection('orderDetails'),
-                        deliveries: db.collection('deliveries')
-                                            
-                    };
-                    next(null, theDb);
+                    // // Shawn recommends that we wrap the db in an object so we can extend it easily later.
+                    // theDb = {
+                    //     db: db,
+                    //     customers: db.collection('customers'),
+                    //     badges: db.collection('badges'),
+                    //     preferences: db.collection('preferences'),
+                    //     teams: db.collection('teams'),
+                    //     users: db.collection('users'),
+                    //     dishes: db.collection('dishes'),
+                    //     customerEmployees: db.collection('customerEmployees'),
+                    //     menus: db.collection('menus'),
+                    //     orders: db.collection('orders'),
+                    //     orderLines: db.collection('orderLines'),
+                    //     deliveries: db.collection('deliveries')
+                    //                         
+                    // };
+                    // next(null, theDb);
+                    next(null, db);
                 }
             });
         } else { // db already exists...
             next(null, theDb);// no error              
         }
-    };                               
+    };                                  
                         
     mongoHelper.normalizedId = function(id){
         if (ObjectID.isValid(id)) return new ObjectID(id);
