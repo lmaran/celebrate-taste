@@ -26,7 +26,11 @@ exports.create = function(req, res){
             res.status(400).send({ errors : errors }); // 400 - bad request
         }
         else{
-             deliveryService.create(delivery, function (err, response) {
+            
+            delivery.createBy = req.user.name;    
+            delivery.createdOn = new Date(); 
+                        
+            deliveryService.create(delivery, function (err, response) {
                 if(err) { return handleError(res, err); }
                 res.status(201).json(response.ops[0]);
             });           
@@ -43,6 +47,10 @@ exports.update = function(req, res){
             res.status(400).send({ errors : errors }); // 400 - bad request
         }
         else{
+            
+            delivery.modifiedBy = req.user.name;    
+            delivery.modifiedOn = new Date(); 
+                        
             deliveryService.update(delivery, function (err, response) {
                 if(err) { return handleError(res, err); }
                 if (!response.value) {

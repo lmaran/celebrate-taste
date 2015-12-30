@@ -26,9 +26,11 @@ exports.create = function(req, res){
     //         res.status(400).send({ errors : errors }); // 400 - bad request
     //     }
     //     else{
+        
             order.status = "Initiala";
             order.createBy = req.user.name;    
-            order.createdOn = new Date();        
+            order.createdOn = new Date();  
+                  
             orderService.create(order, function (err, response) {                 
                 if(err) { return handleError(res, err); }
                 res.location(req.originalUrl + response.insertedId);
@@ -47,8 +49,10 @@ exports.update = function(req, res){
     //         res.status(400).send({ errors : errors }); // 400 - bad request
     //     }
     //     else{
+        
             order.modifiedBy = req.user.name;    
-            order.modifiedOn = new Date();         
+            order.modifiedOn = new Date(); 
+                    
             orderService.update(order, function (err, response) {
                 if(err) { return handleError(res, err); }
                 if (!response.value) {

@@ -45,6 +45,10 @@ exports.getActiveMenus = function (req, res) { // today and next menus
 
 exports.create = function(req, res){
     var menu = req.body;
+    
+    menu.createBy = req.user.name;    
+    menu.createdOn = new Date();     
+    
     menuService.create(menu, function (err, response) {
         if(err) { return handleError(res, err); }
         res.status(201).json(response.ops[0]);
@@ -54,6 +58,10 @@ exports.create = function(req, res){
 
 exports.update = function(req, res){
     var menu = req.body;
+    
+    menu.modifiedBy = req.user.name;    
+    menu.modifiedOn = new Date();     
+    
     menuService.update(menu, function (err, response) {
         if(err) { return handleError(res, err); }
         if (!response.value) {

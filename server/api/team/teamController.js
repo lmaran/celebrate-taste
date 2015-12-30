@@ -26,7 +26,11 @@ exports.create = function(req, res){
             res.status(400).send({ errors : errors }); // 400 - bad request
         }
         else{
-             teamService.create(team, function (err, response) {
+            
+            team.createBy = req.user.name;    
+            team.createdOn = new Date();             
+            
+            teamService.create(team, function (err, response) {
                 if(err) { return handleError(res, err); }
                 res.status(201).json(response.ops[0]);
             });           
@@ -43,6 +47,10 @@ exports.update = function(req, res){
             res.status(400).send({ errors : errors }); // 400 - bad request
         }
         else{
+            
+            team.modifiedBy = req.user.name;    
+            team.modifiedOn = new Date();          
+            
             teamService.update(team, function (err, response) {
                 if(err) { return handleError(res, err); }
                 if (!response.value) {

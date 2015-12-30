@@ -27,13 +27,14 @@ exports.getAll = function(req, res) {
  */
 exports.create = function (req, res, next) {
     var user = req.body;
+
     user.provider = 'local';
     user.role = 'user';
-    
-    var password = user.password;
     user.salt = userService.makeSalt();
-    user.hashedPassword = userService.encryptPassword(password, user.salt);
+    user.hashedPassword = userService.encryptPassword(user.password, user.salt);
     delete user.password;
+    user.createBy = req.user.name;    
+    user.createdOn = new Date();     
     
     userService.create(user, function (err, response) {
         if (err) return validationError(res, err);
@@ -57,6 +58,10 @@ exports.getById = function (req, res, next) {
 
 exports.update = function(req, res){
     var user = req.body;
+    
+    user.modifiedBy = req.user.name;    
+    user.modifiedOn = new Date();     
+    
     userService.update(user, function (err, response) {
         if(err) { return handleError(res, err); }
         if (!response.value) {
