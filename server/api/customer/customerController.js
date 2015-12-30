@@ -21,6 +21,10 @@ exports.getById = function (req, res) {
 
 exports.create = function(req, res){
     var customer = req.body;
+    
+    customer.createBy = req.user.name;    
+    customer.createdOn = new Date(); 
+        
     customerService.create(customer, function (err, response) {
         if(err) { return handleError(res, err); }
         res.status(201).json(response.ops[0]);
@@ -30,6 +34,10 @@ exports.create = function(req, res){
 
 exports.update = function(req, res){
     var customer = req.body;
+    
+    customer.modifiedBy = req.user.name;    
+    customer.modifiedOn = new Date();
+         
     customerService.update(customer, function (err, response) {
         if(err) { return handleError(res, err); }
         if (!response.value) {
