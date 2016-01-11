@@ -1,8 +1,9 @@
 'use strict';
-
+    
 var express = require('express');
 var favicon = require('serve-favicon');
-var morgan = require('morgan');
+var morgan = require('morgan'); // http logger
+var logger = require("../utils/logger"); // app logger
 var bodyParser = require('body-parser');
 var errorHandler = require('errorhandler');
 var path = require('path');
@@ -16,10 +17,10 @@ var auth = require('../api/user/login/loginService');
 //var mongoose = require('mongoose');
 
 module.exports = function(app) {
-    var env = app.get('env');
+    var env = app.get('env');   
     
     app.set('views', config.root + '/server/views');
-       
+    
     var exphbs = require('express-handlebars');
     app.engine('.hbs', exphbs({
         defaultLayout: 'main', 
@@ -40,6 +41,8 @@ module.exports = function(app) {
     app.use(passport.initialize());
     
     app.locals.pretty = true; // output pretty html from jade -> http://stackoverflow.com/a/11812841/2726725
+    
+    app.locals.gaCode = config.gaCode; // google Analytics code (e.g. 'UA-72165579-1'); http://stackoverflow.com/a/25097453
 
     // Persist sessions with mongoStore
     // We need to enable sessions for passport twitter because its an oauth 1.0 strategy
@@ -52,14 +55,14 @@ module.exports = function(app) {
     //       db: 'node-fullstack'
     //     })
     // }));
-  
+
     if ('production' === env || 'staging' === env) {
         app.use(favicon(path.join(config.root, 'client', 'favicon.ico')));
         
         app.use(express.static(path.join(config.root, 'client'),{index: '_'}));
         app.set('appPath', path.join(config.root, 'client'));    
         
-        app.use(morgan('dev'));   
+        //app.use(morgan('dev'));  
     }
 
     if ('development' === env || 'test' === env) {
@@ -75,10 +78,24 @@ module.exports = function(app) {
         // Have this pb. only when I try to serve another jade page as homepage
         app.use(express.static(path.join(config.root, 'client'),{index: '_'})); 
         app.set('appPath', path.join(config.root, 'client'));
-        app.use(morgan('dev')); 
+        app.use(morgan('dev'));
+        //app.use(morgan('tiny'));
+        // app.use(morgan('dev', { //'combined'
+        //     //skip: function(req, res) { return res.statusCode < 400 },
+        //     stream: logger.stream })); 
+            
+        // app.use(morgan('{"remote_addr": ":remote-addr", "remote_user": ":remote-user", "date": ":date[clf]", "method": ":method", "url": ":url", "http_version": ":http-version", "status": ":status", "result_length": ":res[content-length]", "referrer": ":referrer", "user_agent": ":user-agent", "response_time": ":response-time"}', {stream: logger.stream}));
+
         
         // se pare ca orice errhandler de aici nu functioneaza
-        app.use(errorHandler()); // Error handler - has to be last
+        // todo: incearca sa pui acest handler dupa rute...vezi si aici: https://github.com/cwbuecheler/node-tutorial-2-restful-app/blob/master/app.js
+        // "You define error-handling middleware last, after other app.use() and routes calls;" - http://expressjs.com/en/guide/error-handling.html
+        
+        
+        
+        /////// app.use(errorHandler()); // Error handler - has to be last
+        
+        
         //app.use(errorHandler({log: errorNotification}))
         
         //app.use(errorHandler);
@@ -88,6 +105,24 @@ module.exports = function(app) {
         //     res.status(500).send('Something broke!');
         // });
     }
+    
+    
+    //     // Rollbar: https://rollbar.com/docs/notifier/node_rollbar/
+    //     
+    //     
+    // // app.get('/', function(req, res) {
+    // //   req.user_id = "test-user";
+    // //   throw new Error('Hello World 3');
+    // // });
+    //     
+    //     app.use(rollbar.errorHandler('c40dd41c292340419923230eed1d0d61'));
+    //     //app.use(rollbar.errorHandler('c40dd41c292340419923230eed1d0d61',{environment: 'env'}));        
+    //     
+    // app.get('/', function(req, res) {
+    //   req.user_id = "test-user";
+    //   throw new Error('Hello World 4');
+    // });    
+    
     
     // add a second static source for static files: http://stackoverflow.com/questions/5973432/setting-up-two-different-static-directories-in-node-js-express-framework
     app.use('/public', express.static(path.join(config.root, 'server/public'))); 
@@ -116,7 +151,7 @@ module.exports = function(app) {
     //   // })
     // }
     
-   
+
     app.use(auth.addUserIfExist());    
 
 };
