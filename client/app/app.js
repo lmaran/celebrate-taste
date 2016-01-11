@@ -22,7 +22,7 @@ var app = angular.module('celebrate-taste', [
     $httpProvider.interceptors.push('authInterceptor');
 }]);
   
-app.run(['$rootScope', '$location', 'userService', function ($rootScope, $location, userService) {
+app.run(['$rootScope', '$location', 'userService', '$window', function ($rootScope, $location, userService, $window) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$routeChangeStart', function (event, nextRoute, currentRoute) {
         //Auth.isLoggedInAsync(function(loggedIn) {
@@ -33,10 +33,18 @@ app.run(['$rootScope', '$location', 'userService', function ($rootScope, $locati
         //});
     });
     
-    // set pageFitle for each page: http://stackoverflow.com/a/22326375
+    // set pageTitle for each page: http://stackoverflow.com/a/22326375
     $rootScope.$on('$routeChangeSuccess', function (event, currentRoute, previousRoute) {
         if (currentRoute.hasOwnProperty('$$route')) {
             $rootScope.pageTitle = currentRoute.$$route.title;
+        }
+        
+        // send data to Google Analytics whenever a route is changing
+        if ($window.ga) {
+            $window.ga('send', 'pageview', {
+                page: $location.path(),
+                title: $rootScope.pageTitle
+            });
         }
     });
 }]);

@@ -6,5 +6,6 @@ module.exports = {
     port: process.env.PORT,
     mongo: {
         uri: process.env.MONGO_URI
-    }
+    },
+    gaCode: 'UA-72165579-3'    
 };

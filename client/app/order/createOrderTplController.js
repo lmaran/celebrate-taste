@@ -68,7 +68,7 @@ app.controller('createOrderTplController', ['$scope', '$uibModalInstance', 'help
             if(count > 0){
                 var errors = [{field:'date', msg:'Exista deja o comanda pentru aceasta data.'}];
                 helperValidator.updateValidity($scope, form, errors);
-            };
+            }
             deferred.resolve();
         })
         .catch(function (err) {
