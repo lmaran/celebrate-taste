@@ -22,7 +22,7 @@ var gulp = require('gulp'), // task runner
     minifyCSS = require('gulp-minify-css'), // css minification
     rev = require('gulp-rev'), // add a unique id at the end of app.js (ex: app-f4446a9c.js) to prevent browser caching
     filter = require('gulp-filter'), // filter files in a stream  
-    notify = require('gulp-notify'),  // display a message inside the pipeline  Ex: .pipe(notify('some message'))  
+    //notify = require('gulp-notify'),  // display a message inside the pipeline  Ex: .pipe(notify('some message'))  
     gutil = require('gulp-util'), // colorful logs and ather stuff
     path = require('path'); // handling file path
     //var debug = require('gulp-debug'); // => display files that run through your pipeline Ex: .pipe(debug())
@@ -110,20 +110,20 @@ gulp.task('build-dev-html', function(){
 });
 
 gulp.task('jshint', function() { 
+    var err = false;
     return gulp.src('./client/app/**/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter(stylish)) // defines how errors are displayed      
         .pipe(jshint.reporter('fail')) // throw an error if there are errors in jshint. Catch it with 'plumber' or 'on error' event    
         .on('error', function(error){
+            err = true;
             gutil.log(gutil.colors.red('JSHINT failed!'));
             this.emit('end'); // end the current task so that 'passed' msg is no longer displayed
         })
-        .pipe(notify({ // hack - 'notify' is used just as a wrapper to run regular code into the pipeline
-            onLast: true, // notification should only happen for the last file of the stream
-            message: function(){
+        .on('end', function(error){
+            if(!err)
                 gutil.log(gutil.colors.green('JSHINT passed!'));
-            }
-        }));         
+        });                        
 });
 
 gulp.task('watch-server', function() {

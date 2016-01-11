@@ -32,15 +32,28 @@
     <!-- endinject -->
     <meta name="detectify-verification" content="6900c1e4cf9c18d3ad8869e560d178cc" />
     
-<!--Start of Zopim Live Chat Script-->
-<script type="text/javascript">
-    window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-    d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-    _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
-    $.src="//v2.zopim.com/?3a0fIhokQAb8DSpfColqeyj8MIJZLUzP";z.t=+new Date;$.
-    type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
-</script>
-<!--End of Zopim Live Chat Script-->    
+    <!-- Zopim Live Chat -->
+    <script type="text/javascript">
+        window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+        d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+        _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+        $.src="//v2.zopim.com/?3a0fIhokQAb8DSpfColqeyj8MIJZLUzP";z.t=+new Date;$.
+        type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+    </script>
+
+    <!-- Google Analytics -->
+    <script>
+        var gaCode = 'UA-72165579-1'; // dev
+        if (window.location.host == 'celebrate-taste.ro') gaCode = 'UA-72165579-2'; // stg
+        else if (window.location.host == 'stg.celebrate-taste.ro') gaCode = 'UA-72165579-1'; // prod
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', gaCode, 'auto');
+        //ga('send', 'pageview'); // set in app.js
+    </script>
+
 </head>
 
 <body  ng-app=celebrate-taste>  
@@ -50,18 +63,6 @@
 
     <ng-view></ng-view>
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-    <!--<script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-        ga('create', 'UA-XXXXX-X');
-        ga('send', 'pageview');
-    </script>    -->
 
     <!-- cdn -->
     <!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
