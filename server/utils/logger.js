@@ -1,13 +1,12 @@
+/* global process */
 'use strict';
 
-// https://github.com/imperugo/NodeJs-Sample/blob/master/Logging/WinstonSample/utils/logger.js
 var winston = require('winston');
 var rollbar = require('rollbar');
-
 var config = require('../config/environment');
-
 var util = require('util');
 
+// ## Custom Winston transport -> Rollbar
 var CustomLogger = winston.transports.CustomLogger = function (options) {
     this.name = 'customLogger';
     this.level = options.level || 'info';
@@ -16,54 +15,83 @@ var CustomLogger = winston.transports.CustomLogger = function (options) {
 
 util.inherits(CustomLogger, winston.Transport);
 
+// credit to: https://github.com/Ideame/winston-rollbar; 
+// https://github.com/winstonjs/winston#adding-custom-transports
 CustomLogger.prototype.log = function (level, msg, meta, callback) {
-    var errObj = JSON.parse(msg);
-    var err = new Error(errObj.message);
-    err.stack = errObj.stack;   
+    
+    //console.log(msg);   
+    
+    //if (['warn','error'].indexOf(level) > -1 && (msg instanceof Error || meta instanceof Error)) {
+        
+    if(level === 'error'){
+        //console.log('isErr');
+        var errObj = JSON.parse(msg);  
+        
+        var err = new Error();      
+        err.message =errObj.message;
+        err.stack = errObj.stack;  
+        
+        rollbar.handleError(err, meta); 
+        
+        console.log(err);        
+    } else {
+        rollbar.reportMessage(msg, level); 
+    }
+    
+//     if(typeof msg === 'string'){ // msg.hasOwnProperty('stack')
+//         console.log(msg);
+//     } else {
+// 
+//     }
+ 
      
-    rollbar.handleError(err, meta);   
+      
     
     callback(null, true);
 };
+// ## Custom Winston transport (end)
+
 
 winston.emitErrs = true;
 
-var logger = new winston.Logger({
-    transports: [
-        // new winston.transports.File({
-        //     level: 'info',
-        //     filename: './logs/all-logs.log',
-        //     handleExceptions: true,
-        //     json: true,
-        //     //eol: 'eol', // 'rn' for Windows, or `eol: ‘n’,` for *NIX OSs
-        //     //timestamp: true,
-        //     maxsize: 5242880, //5MB
-        //     maxFiles: 5,
-        //     colorize: true
-        // }),
-        
-        // new winston.transports.Console({
-        //     level: 'debug',
-        //     //handleExceptions: true,
-        //     json: false,
-        //     colorize: true
-        //     //humanReadableUnhandledException: true
-        // }),
-        
-        
-        new winston.transports.CustomLogger({
+var logger = new winston.Logger();
+
+// Winston && Rollbar: debug > info > warning > error
+// E.g. 'info' level catches also 'warning' or 'error' but not 'debug'
+
+if (config.env === 'production' || config.env === 'staging') {
+    logger.add(winston.transports.CustomLogger, {
             colorize: false,
-            //handleExceptions: true,
-            level: 'info', // default 'warn'            
+            level: 'info',          
             rollbarAccessToken: config.rollbarToken,
-            // metadataAsRequest: true,
             rollbarConfig: {
                 environment: config.env
             }
-        })                    
-    ],
-    exitOnError: false
-});
+            //handleExceptions: true,
+        });
+} else { // development
+    // logger.add(winston.transports.Console, {
+    //         level: 'debug',
+    //         json: false,
+    //         colorize: true
+    //         //handleExceptions: true,
+    //         //humanReadableUnhandledException: true
+    //     });
+
+    // just for testing remote logging        
+    logger.add(winston.transports.CustomLogger, {
+            colorize: false,
+            level: 'info',            
+            rollbarAccessToken: config.rollbarToken,
+            rollbarConfig: {
+                environment: config.env
+            }
+            //handleExceptions: true,
+        });  
+}
+
+//     exitOnError: false
+
 
 module.exports = logger;
 module.exports.stream = {
