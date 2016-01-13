@@ -7,6 +7,7 @@ var logger = require("./utils/logger");
 
 module.exports = function(app) {
     
+    // ## test only (start)
     app.get('/error', function (req, res, next) {
         // here we cause an error in the pipeline so we see express-winston in action.
         return next(new Error("This is an error and it should be logged to the console"));
@@ -19,15 +20,10 @@ module.exports = function(app) {
 
     app.get("/test", function(req, res, next) {
         //logger.info('hit test page');
-        
-        console.log("----------------------------------------------------------------------");
-
-
         res.json('This is a normal request, it should be logged to the console too');
-        //res.end();
         return next();
     });
-    
+    // ## test only (end)
     
     // API routes
     app.use('/api/users',require('./api/user/userRoutes'));
