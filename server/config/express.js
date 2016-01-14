@@ -79,7 +79,7 @@ module.exports = function(app) {
         app.use(express.static(path.join(config.root, 'client'),{index: '_'})); 
         app.set('appPath', path.join(config.root, 'client'));
 
-        app.use(morgan('tiny', { stream: logger.stream })); 
+        //app.use(morgan('dev', { stream: logger.stream })); 
     }
 
     // add a second static source for static files: http://stackoverflow.com/questions/5973432/setting-up-two-different-static-directories-in-node-js-express-framework

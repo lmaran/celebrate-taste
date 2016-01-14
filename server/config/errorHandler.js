@@ -35,12 +35,24 @@ module.exports = function(app) {
         //res.status(err.status || 500);
         //logger.error('Internal error(%d): %s',res.statusCode,err.message);
         
-        var newErr = {message:err.message, stack:err.stack};
+        var newErr = JSON.stringify({message:err.message, stack:err.stack});
+        
+        // required properties: https://github.com/rollbar/node_rollbar#the-request-object
+        var newReq = {
+            headers: req.headers,
+            protocol: req.protocol,
+            url: req.url,
+            method: req.method,
+            body: req.body,
+            route: req.route,
+            user: req.user,
+            ip: req.ip
+        };        
 
-        logger.log('error', JSON.stringify(newErr), req);
-        //logger.log('error', err, req);
+        logger.error(newErr, newReq);
 
-        next(err);  
+        next(err);
+        //next();  
     });
 
 
