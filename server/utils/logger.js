@@ -73,40 +73,72 @@ if (config.env === 'production' || config.env === 'staging') {
         });
 } else { // development
     logger.add(winston.transports.Console, {
-            level: 'info',
+            level: 'debug',
             json: false,
             colorize: true,
-      timestamp: function() {
-        return Date.now();
-      },            
-      formatter: formatterFunc
-            //handleExceptions: true,
-            //humanReadableUnhandledException: true
-        });
+        timestamp: function() {
+            return Date.now();
+        },            
+        formatter: formatterFunc
+                //handleExceptions: true,
+                //humanReadableUnhandledException: true
+    });
+       
 
-    // // just for testing remote logging        
-    // logger.add(winston.transports.CustomLogger, {
-    //         colorize: false,
-    //         level: 'info',            
-    //         rollbarAccessToken: config.rollbarToken,
-    //         rollbarConfig: {
-    //             environment: config.env
-    //         }
-    //         //handleExceptions: true,
-    //     });  
+    // just for testing remote logging        
+    logger.add(winston.transports.CustomLogger, {
+            colorize: false,
+            level: 'info',            
+            rollbarAccessToken: config.rollbarToken,
+            rollbarConfig: {
+                environment: config.env
+            }
+            //handleExceptions: true,
+        });  
 }
 
 //     exitOnError: false
 
 function formatterFunc(options) {
     // // Return string will be passed to logger.
-    console.log('bbb');
+    //console.log(options);
+    var meta = options.meta;
+    var msg = '';
     
-    return options.timestamp() +' '+ winston.config.colorize(options.level) +' '+ (undefined !== options.message ? options.message : '') +
-        (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );    
+    if(options.level === 'info')
+        if(meta && meta.hasOwnProperty('headers')){ // meta is a 'request' object
+            msg = msg + meta.method + ' ' + meta.url ;
+        } else {
+            msg = msg + (undefined !== options.message ? options.message : '');
+            if(meta && Object.keys(meta).length > 0){
+                msg = msg + '\n' + JSON.stringify(meta, null, 4);
+            }
+        }
+
+    else if(options.level === 'error'){
+        
+        if(meta && meta.hasOwnProperty('headers')){ // meta is a 'request' object
+            msg = msg + meta.method + meta.url;
+        }      
+        
+        var errObj = JSON.parse(options.message);  
+        
+        var err = new Error();      
+        err.message =errObj.message;
+        err.stack = errObj.stack;  
+        
+        //var msgObj = (undefined !== options.message ? options.message : undefined);
+        msg = msg + (undefined !== err.message ? err.message : '');   
+        msg = msg + '\n' + err.stack;     
+    }
+    
+    return winston.config.colorize(options.level) +' '+ msg;
+    
+    // return winston.config.colorize(options.level) + ' ' + (undefined !== options.message ? options.message : '') +
+    //     (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );    
     
 
-    // return winston.config.colorize(options.level, options.level.toUpperCase())
+    // return winston.config.colorize(options.level)
     //     + ": [" + this.timestamp() + "| " + options.meta.codePath + "] "
     //     + options.message + " " + JSON.stringify(options.meta);
     
