@@ -59,6 +59,8 @@ var logger = new winston.Logger();
 // Winston && Rollbar: debug > info > warning > error
 // E.g. 'info' level catches also 'warning' or 'error' but not 'debug'
 
+
+
 if (config.env === 'production' || config.env === 'staging') {
     logger.add(winston.transports.CustomLogger, {
             colorize: false,
@@ -70,27 +72,46 @@ if (config.env === 'production' || config.env === 'staging') {
             //handleExceptions: true,
         });
 } else { // development
-    // logger.add(winston.transports.Console, {
-    //         level: 'debug',
-    //         json: false,
-    //         colorize: true
-    //         //handleExceptions: true,
-    //         //humanReadableUnhandledException: true
-    //     });
-
-    // just for testing remote logging        
-    logger.add(winston.transports.CustomLogger, {
-            colorize: false,
-            level: 'info',            
-            rollbarAccessToken: config.rollbarToken,
-            rollbarConfig: {
-                environment: config.env
-            }
+    logger.add(winston.transports.Console, {
+            level: 'info',
+            json: false,
+            colorize: true,
+      timestamp: function() {
+        return Date.now();
+      },            
+      formatter: formatterFunc
             //handleExceptions: true,
-        });  
+            //humanReadableUnhandledException: true
+        });
+
+    // // just for testing remote logging        
+    // logger.add(winston.transports.CustomLogger, {
+    //         colorize: false,
+    //         level: 'info',            
+    //         rollbarAccessToken: config.rollbarToken,
+    //         rollbarConfig: {
+    //             environment: config.env
+    //         }
+    //         //handleExceptions: true,
+    //     });  
 }
 
 //     exitOnError: false
+
+function formatterFunc(options) {
+    // // Return string will be passed to logger.
+    console.log('bbb');
+    
+    return options.timestamp() +' '+ winston.config.colorize(options.level) +' '+ (undefined !== options.message ? options.message : '') +
+        (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );    
+    
+
+    // return winston.config.colorize(options.level, options.level.toUpperCase())
+    //     + ": [" + this.timestamp() + "| " + options.meta.codePath + "] "
+    //     + options.message + " " + JSON.stringify(options.meta);
+    
+    //return 'aaa';
+};
 
 
 module.exports = logger;
