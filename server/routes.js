@@ -19,10 +19,33 @@ module.exports = function(app) {
     });    
 
     app.get("/test", function(req, res, next) {
-        //logger.info('hit test page');
+        logger.info('hit test page');
         res.json('This is a normal request, it should be logged to the console too');
         return next();
     });
+    
+    app.get("/testmeta", function(req, res, next) {
+        logger.info('hit test page (with meta)', {some:'optional metadata'});
+        res.json('This is a normal request (with meta), it should be logged to the console too');
+        return next();
+    });
+    
+    app.get("/testreq", function(req, res, next) {
+        var newReq = {
+            headers: req.headers,
+            protocol: req.protocol,
+            url: req.url,
+            method: req.method,
+            body: req.body,
+            route: req.route,
+            user: req.user,
+            ip: req.ip
+        }; 
+        
+        logger.info('hit test page (with req)', newReq);
+        res.json('This is a normal request (with reg), it should be logged to the console too');
+        return next();
+    });       
     // ## test only (end)
     
     // API routes
