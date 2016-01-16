@@ -68,9 +68,10 @@ module.exports = function(app) {
 
         //app.use(morgan('dev', { stream: logger.stream })); 
         //app.use(morgan('dev'));
-        app.use(httpLogHandler());
-        
     }
+    
+    // log all http requests (like morgan)
+    app.use(httpLogHandler());
 
     // add a second static source for static files: http://stackoverflow.com/questions/5973432/setting-up-two-different-static-directories-in-node-js-express-framework
     app.use('/public', express.static(path.join(config.root, 'server/public'))); 
