@@ -3,7 +3,8 @@
 var errors = require('./components/errors');
 var path = require('path');
 var auth = require('./api/user/login/loginService');
-var logger = require("./utils/logger");
+var logger = require("./logging/logger");
+var reqHelper = require("./logging/reqHelper");
 
 module.exports = function(app) {
     
@@ -30,19 +31,8 @@ module.exports = function(app) {
         return next();
     });
     
-    app.get("/testreq", function(req, res, next) {
-        var newReq = {
-            headers: req.headers,
-            protocol: req.protocol,
-            url: req.url,
-            method: req.method,
-            body: req.body,
-            route: req.route,
-            user: req.user,
-            ip: req.ip
-        }; 
-        
-        logger.info('hit test page (with req)', newReq);
+    app.get("/testreq", function(req, res, next) {        
+        logger.info('hit test page (with req)', reqHelper.getShortReq(req));
         res.json('This is a normal request (with reg), it should be logged to the console too');
         return next();
     });       
