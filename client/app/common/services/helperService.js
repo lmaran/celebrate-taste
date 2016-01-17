@@ -62,10 +62,10 @@ app.factory('helperService', [function(){
         
         var dd = d; 
         if(dd < 10) dd = '0' + d;
-        
+
         var mm = m;
-        if(mm < 10) m = '0' + m; 
-		
+        if(mm < 10) mm = '0' + m;
+        
         return{
             dayAsString: this.getRoDay(date.getDay()), // Joi
 			dayAsShortString: this.getRoShortDay(date.getDay()), // Jo
@@ -102,7 +102,8 @@ app.factory('helperService', [function(){
 			dayOfMonth:f.dayOfMonth, // 07
 			monthAsString:f.monthAsString, // Aprilie
 			monthAsShortString:f.monthAsShortString, // Apr.
-			year:f.year // 2015
+			year:f.year, // 2015
+            dateAsShortString: f.dayOfMonth + ' ' + f.monthAsShortString + ' ' + f.year // 07 Apr. 2015
 		}
 	}		
 	

@@ -25,10 +25,10 @@ app.factory('orderLineService', ['$http', function ($http) {
 //     factory.update = function (item) {
 //         return $http.put(rootUrl, item);
 //     };
-// 
-//     factory.delete = function (itemId) {
-//         return $http.delete(rootUrl + encodeURIComponent(itemId));
-//     };
+
+    factory.delete = function (orderId, itemId) {
+        return $http.delete(rootUrl + orderId + orderLinesPart + encodeURIComponent(itemId));
+    };
 
     return factory;
 }]);

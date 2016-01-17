@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-app.controller('ordersController', ['$scope', '$location', 'orderService', 'modalService', 'helperService', '$uibModal',
-    function ($scope, $location, orderService, modalService, helperService, $uibModal) {
+app.controller('ordersController', ['$scope', '$window', '$location', 'orderService', 'modalService', 'helperService', '$uibModal',
+    function ($scope, $window, $location, orderService, modalService, helperService, $uibModal) {
         
     $scope.orders = [];
     $scope.errors = {};
@@ -52,6 +52,10 @@ app.controller('ordersController', ['$scope', '$location', 'orderService', 'moda
     $scope.refresh = function () {
         init();
     };
+    
+    $scope.goBack = function () {
+        $window.history.back();
+    }    
 
     function init() {
         orderService.getAll().then(function (data) {

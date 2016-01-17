@@ -22,6 +22,9 @@ exports.getById = function (req, res) {
 
 exports.create = function(req, res){
     var orderLine = req.body;
+    orderLine.createBy = req.user.name;    
+    orderLine.createdOn = new Date(); 
+                
     orderLineValidator.all(req, res, function(errors){
         if(errors){
             res.status(400).send({ errors : errors }); // 400 - bad request
@@ -58,8 +61,8 @@ exports.update = function(req, res){
 
 
 exports.remove = function(req, res){
-    var id = req.params.id;
-    orderLineService.remove(id, function (err, response) {
+    var orderLineId = req.params.orderLineId;
+    orderLineService.remove(orderLineId, function (err, response) {
         if(err) { return handleError(res, err); }
         res.sendStatus(204);
     });

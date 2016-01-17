@@ -1,10 +1,17 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('orderLineController', ['$scope', '$window', '$route', 'orderLineService', '$location', 'helperValidator', 'customerEmployeeService',
-    function ($scope, $window, $route, orderLineService, $location, helperValidator, customerEmployeeService) {
+app.controller('orderLineController', ['$scope', '$window', '$route', 'orderLineService', '$location', 'helperValidator', 'customerEmployeeService', 'helperService',
+    function ($scope, $window, $route, orderLineService, $location, helperValidator, customerEmployeeService, helperService) {
 
-    var orderId = $route.current.params.id;        
+    $scope.orderId = $route.current.params.id; 
+
+    var searchObject = $location.search();
+    if(searchObject.orderDate){
+        $scope.orderDate = searchObject.orderDate;
+        $scope.orderDateAsString = dt(searchObject.orderDate).dateAsShortString;
+    }
+           
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
     $scope.errors = {};
@@ -30,7 +37,7 @@ app.controller('orderLineController', ['$scope', '$window', '$route', 'orderLine
     } 
 
     function getorderLine() {
-        orderLineService.getById(orderId).then(function (data) {
+        orderLineService.getById($scope.orderId).then(function (data) {
             $scope.orderLine = data;
         })
         .catch(function (err) {
@@ -51,11 +58,12 @@ app.controller('orderLineController', ['$scope', '$window', '$route', 'orderLine
         validateForm($scope, form);
         if (form.$invalid) return false;
         
-        $scope.orderLine.orderId = orderId;
+        $scope.orderLine.orderId = $scope.orderId;
+        $scope.orderLine.orderDate = $scope.orderDate;
         
-        orderLineService.create(orderId, $scope.orderLine)
+        orderLineService.create($scope.orderId, $scope.orderLine)
             .then(function (data) {
-                $location.path('/admin/orders/' + orderId);
+                $location.path('/admin/orders/' + $scope.orderId);
             })
             .catch(function (err) {
                 if(err.data.errors){                   
@@ -94,6 +102,15 @@ app.controller('orderLineController', ['$scope', '$window', '$route', 'orderLine
         // fields
         helperValidator.required50($scope, form, entity, 'employeeName');
         helperValidator.required50($scope, form, entity, 'eatSeries');         
-    }    
+    }
+    
+    $scope.goBack = function(){
+        $window.history.back();
+        //$location.path('/admin/menus/');
+    } 
+    
+    function dt(dateAsString) { // yyyy-mm-dd
+        return helperService.getObjFromString(dateAsString);
+    }            
 
 }])

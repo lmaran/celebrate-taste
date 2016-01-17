@@ -59,7 +59,7 @@ app.controller('customerEmployeesController', ['$scope', '$location', 'customerE
 
             var searchObject = $location.search();
             if(searchObject.team)
-                $scope.selectedTeam = searchObject.team ;  
+                $scope.selectedTeam = searchObject.team;  
             else
                 $scope.selectedTeam = 'Toate echipele';
         })

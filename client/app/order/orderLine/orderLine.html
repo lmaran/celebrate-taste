@@ -1,5 +1,17 @@
 ﻿<div ng-include="'app/navbar/navbar.html'"></div>
 
+<ol class="breadcrumb">
+    <li>
+        <button ng-click="goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+            <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
+        </button>
+        <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
+    </li>
+    <li><a href="/admin/orders">Comenzi</a></li>
+    <li><a ng-href="/admin/orders/{{orderId}}">Comanda: {{orderDateAsString}}</a></li>
+    <li class="active">Adauga</li>
+</ol>
+
 <div class="container-fluid">
     <h1>{{pageTitle}}</h1>
 

@@ -1,8 +1,8 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('orderController', ['$scope', '$window', '$route', 'orderService', '$location', 'helperValidator',
-    function ($scope, $window, $route, orderService, $location, helperValidator) {
+app.controller('orderController', ['$scope', '$window', '$route', 'orderService', '$location', 'helperValidator', 'helperService',
+    function ($scope, $window, $route, orderService, $location, helperValidator, helperService) {
         
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -21,6 +21,7 @@ app.controller('orderController', ['$scope', '$window', '$route', 'orderService'
     function getorder() {
         orderService.getById($route.current.params.id).then(function (data) {
             $scope.order = data;
+            $scope.dateAsShortString = dt($scope.order.date).dateAsShortString;
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
@@ -61,9 +62,13 @@ app.controller('orderController', ['$scope', '$window', '$route', 'orderService'
             });
     };
 
-    $scope.cancel = function () {
+    $scope.goBack = function () {
         $window.history.back();
     }
+    
+    function dt(dateAsString) { // yyyy-mm-dd
+        return helperService.getObjFromString(dateAsString);
+    }        
     
     // function validateForm($scope, form){ 
     //     var entity = 'order'; 

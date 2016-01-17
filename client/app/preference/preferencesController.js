@@ -89,9 +89,7 @@ app.controller('preferencesController', ['$scope', '$location', 'preferenceServi
         });          
     }
     
-    
     $scope.dt = function (dateAsString) { // yyyy-mm-dd
-        //console.log('aaa: ' + dateAsString);
         return helperService.getObjFromString(dateAsString);
     }     
 
