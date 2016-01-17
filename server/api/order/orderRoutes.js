@@ -11,6 +11,10 @@ router.get('/\\$count', function(req, res) {req.params.$count = true; controller
 router.get('/:id', controller.getById);
 router.put('/', controller.update);
 router.delete('/:id', controller.remove);
+
+router.post('/:id/orderLines', orderLineController.create);
 router.get('/:id/orderLines', orderLineController.getAll);
+router.put('/:id/orderLines', orderLineController.update);
+router.put('/:id/orderLines/:id2', orderLineController.remove);
 
 module.exports = router;
