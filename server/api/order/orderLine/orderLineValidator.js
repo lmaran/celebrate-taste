@@ -8,9 +8,9 @@
     var _ = require('lodash');  
     
     
-    // "code" validation
-    orderLineValidator.code = function(req, res, cbResult){
-        var fieldVal = validator.trim(req.body.code);     
+    // "employeeName" validation
+    orderLineValidator.employeeName = function(req, res, cbResult){
+        var fieldVal = validator.trim(req.body.employeeName);     
         async.series([
             function(cb){
                 if(!validator.isLength(fieldVal, 1)){
@@ -22,7 +22,7 @@
                 else cb(null, 'checkNext');  
             },
             function(cb){
-                orderLineService.getByValue('code', fieldVal, req.body._id, function (err, orderLine) {                    
+                orderLineService.getByValue(req.body.orderId, 'employeeName', fieldVal, req.body._id, function (err, orderLine) {                    
                     if(err) { return handleError(res, err); }
                     if (orderLine) { 
                         cb("Exista deja o inregistrare cu aceasta valoare."); 
@@ -35,14 +35,14 @@
             if(err == null) // no validation errors
                 cbResult(null, null);
             else    
-                cbResult(null, {field:'code', msg: err});
+                cbResult(null, {field:'employeeName', msg: err});
         });
     };  
     
     
-    // "name" validation
-    orderLineValidator.name = function(req, res, cbResult){
-        var fieldVal = validator.trim(req.body.name);     
+    // "eatSeries" validation
+    orderLineValidator.eatSeries = function(req, res, cbResult){
+        var fieldVal = validator.trim(req.body.eatSeries);     
         async.series([
             function(cb){
                 if(!validator.isLength(fieldVal, 1)){
@@ -52,22 +52,13 @@
                     cb("Maxim 50 caractere.");
                 }
                 else cb(null, 'checkNext'); 
-            },
-            function(cb){
-                orderLineService.getByValue('name', fieldVal, req.body._id, function (err, orderLine) {
-                    if(err) { return handleError(res, err); }
-                    if (orderLine) { 
-                        cb("Exista deja o inregistrare cu aceasta valoare."); 
-                    }
-                    else cb(null, 'checkNext');      
-                });  
-            }        
+            }       
         ],
         function(err, results){
             if(err == null) 
                 cbResult(null, null); // return null if no error
             else    
-                cbResult(null, {field:'name', msg: err});
+                cbResult(null, {field:'eatSeries', msg: err});
         });
     };    
     
@@ -76,10 +67,10 @@
     orderLineValidator.all = function(req, res, cbResult){       
         async.parallel([
             function(cb){
-               orderLineValidator.code(req, res, cb)
+               orderLineValidator.employeeName(req, res, cb)
             },
             function(cb){
-               orderLineValidator.name(req, res, cb)
+               orderLineValidator.eatSeries(req, res, cb)
             }         
         ],
         function (err, results) {

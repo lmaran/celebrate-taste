@@ -87,9 +87,7 @@
                     <td>
                         <!--{{preference.date}}-->
                         <strong>{{dt(preference.date).dayAsShortString}}</strong>, 
-                        {{dt(preference.date).dayOfMonth}}
-                        {{dt(preference.date).monthAsShortString}}
-                        {{dt(preference.date).year}}
+                        {{dt(preference.date).dateAsShortString}}
                     </td>
                     <td>
                         <a ng-href="/admin/preferences/{{preference._id}}">{{preference.employeeName}}</a>

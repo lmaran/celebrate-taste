@@ -41,7 +41,7 @@
     preferenceService.getByDate = function (dateStr, next) {      
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);
-            db.collection(collection).find({date:dateStr}, {sort:'name'}).toArray(function (err, docs) {
+            db.collection(collection).find({date:dateStr}, {sort:'employeeName'}).toArray(function (err, docs) {
                 if (err) return next(err, null);
                 return next(null, docs);                 
             });
