@@ -2,15 +2,16 @@
     
 var express = require('express');
 var favicon = require('serve-favicon');
-var morgan = require('morgan'); // http logger
-var logger = require("../utils/logger"); // app logger
+//var morgan = require('morgan'); // http logger
+//var logger = require("../logging/logger"); // app logger
 var bodyParser = require('body-parser');
-var errorHandler = require('errorhandler');
+//var errorHandler = require('errorhandler');
 var path = require('path');
 var config = require('./environment');
 var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var auth = require('../api/user/login/loginService');
+var httpLogHandler = require("../logging/httpLogHandler"); // custom error handler
 
 //var session = require('express-session');
 //var MongoStore = require('connect-mongo')(session); // use PascalCase to avoid an warning in VSCode
@@ -32,45 +33,31 @@ module.exports = function(app) {
     }));
     
     app.set('view engine', '.hbs');
-    
+
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
     app.use(cookieParser()); // Parse Cookie header and populate req.cookies with an object keyed by the cookie names
     
     app.use(passport.initialize());
-    
-    app.locals.pretty = true; // output pretty html from jade -> http://stackoverflow.com/a/11812841/2726725
-    
+
     app.locals.gaCode = config.gaCode; // google Analytics code (e.g. 'UA-72165579-1'); http://stackoverflow.com/a/25097453
 
-    // Persist sessions with mongoStore
-    // We need to enable sessions for passport twitter because its an oauth 1.0 strategy
-    // app.use(session({
-    //     secret: config.secrets.session,
-    //     resave: true,
-    //     saveUninitialized: true,
-    //     store: new MongoStore({
-    //       mongooseConnection: mongoose.connection,
-    //       db: 'node-fullstack'
-    //     })
-    // }));
-
-    if ('production' === env || 'staging' === env) {
+    if (env === 'production' || env === 'staging') {
         app.use(favicon(path.join(config.root, 'client', 'favicon.ico')));
         
         app.use(express.static(path.join(config.root, 'client'),{index: '_'}));
         app.set('appPath', path.join(config.root, 'client'));    
-        
-        //app.use(morgan('dev'));  
-    }
 
-    if ('development' === env || 'test' === env) {
+        // app.use(morgan('tiny', { // like 'dev' but no colors
+        //     //skip: function(req, res) { return res.statusCode < 400 },
+        //     stream: logger.stream })); 
+                      
+    } else { // development
         app.use(favicon(path.join(config.root, 'client', 'favicon.ico')));
 
         // if you are happy with a browser plugin, then you don't need this middleware
         // live-reload corrupts pdf files: http://stackoverflow.com/a/28091651/2726725
-
         app.use(require('connect-livereload')({ignore: [/print$/]})); // all that ends in 'print': https://github.com/intesso/connect-livereload#options
         
         // without last argument express serves index.html even when my routing is to a different file: //http://stackoverflow.com/a/25167332/2726725
@@ -78,80 +65,16 @@ module.exports = function(app) {
         // Have this pb. only when I try to serve another jade page as homepage
         app.use(express.static(path.join(config.root, 'client'),{index: '_'})); 
         app.set('appPath', path.join(config.root, 'client'));
-        app.use(morgan('dev'));
-        //app.use(morgan('tiny'));
-        // app.use(morgan('dev', { //'combined'
-        //     //skip: function(req, res) { return res.statusCode < 400 },
-        //     stream: logger.stream })); 
-            
-        // app.use(morgan('{"remote_addr": ":remote-addr", "remote_user": ":remote-user", "date": ":date[clf]", "method": ":method", "url": ":url", "http_version": ":http-version", "status": ":status", "result_length": ":res[content-length]", "referrer": ":referrer", "user_agent": ":user-agent", "response_time": ":response-time"}', {stream: logger.stream}));
 
-        
-        // se pare ca orice errhandler de aici nu functioneaza
-        // todo: incearca sa pui acest handler dupa rute...vezi si aici: https://github.com/cwbuecheler/node-tutorial-2-restful-app/blob/master/app.js
-        // "You define error-handling middleware last, after other app.use() and routes calls;" - http://expressjs.com/en/guide/error-handling.html
-        
-        
-        
-        /////// app.use(errorHandler()); // Error handler - has to be last
-        
-        
-        //app.use(errorHandler({log: errorNotification}))
-        
-        //app.use(errorHandler);
-        
-        // app.use(function(err, req, res, next) {
-        //     console.error("aaa");
-        //     res.status(500).send('Something broke!');
-        // });
+        //app.use(morgan('dev', { stream: logger.stream })); 
+        //app.use(morgan('dev'));
     }
     
-    
-    //     // Rollbar: https://rollbar.com/docs/notifier/node_rollbar/
-    //     
-    //     
-    // // app.get('/', function(req, res) {
-    // //   req.user_id = "test-user";
-    // //   throw new Error('Hello World 3');
-    // // });
-    //     
-    //     app.use(rollbar.errorHandler('c40dd41c292340419923230eed1d0d61'));
-    //     //app.use(rollbar.errorHandler('c40dd41c292340419923230eed1d0d61',{environment: 'env'}));        
-    //     
-    // app.get('/', function(req, res) {
-    //   req.user_id = "test-user";
-    //   throw new Error('Hello World 4');
-    // });    
-    
-    
+    // log all http requests (like morgan)
+    app.use(httpLogHandler());
+
     // add a second static source for static files: http://stackoverflow.com/questions/5973432/setting-up-two-different-static-directories-in-node-js-express-framework
     app.use('/public', express.static(path.join(config.root, 'server/public'))); 
-    
-    // function logErrors(err, req, res, next) {
-    //   console.log(123456);
-    //   next(err);
-    // }
-    // 
-    // function errorHandler(err, req, res, next) {
-    //   if (res.headersSent) {
-    //     return next(err);
-    //   };
-    //   res.status(500);
-    //   //res.render('error', { error: err });
-    //   res.send('oops! something broke');
-    // }
-    
-    // function errorNotification(err, str, req) {
-    //   var title = 'Error in ' + req.method + ' ' + req.url
-    // 
-    //     console.log(title);
-    //   // notifier.notify({
-    //     // title: title,
-    //     // message: str
-    //   // })
-    // }
-    
 
     app.use(auth.addUserIfExist());    
-
 };

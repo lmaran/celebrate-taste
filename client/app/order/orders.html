@@ -1,5 +1,15 @@
 <div ng-include="'app/navbar/navbar.html'"></div>
 
+<ol class="breadcrumb">
+    <li class2="active">
+        <button ng-click="goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+            <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
+        </button>
+        <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
+    </li>
+    <li class="active">Comenzi</li>
+</ol>
+
 <div class="container-fluid">
     <h1>{{pageTitle}}</h1>
     
@@ -31,7 +41,7 @@
             <tbody>
                 <tr data-ng-repeat="order in orders | filter:search">
                     <td>
-                        <a ng-href="/admin/orders/{{order._id}}">{{order.date}}</a>
+                        <a ng-href="/admin/orders/{{order._id}}">Comanda: {{order.date}}</a>
                     </td>                    
                     <td>
                         {{order.status}}

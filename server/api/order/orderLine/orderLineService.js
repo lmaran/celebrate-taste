@@ -24,7 +24,7 @@
         });
     };
     
-    orderLineService.getByValue = function (field, value, id, next) {
+    orderLineService.getByValue = function (orderId, field, value, id, next) {
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);
             
@@ -41,6 +41,7 @@
             
             // for update we have to exclude the existing document
             if(id) query._id = {$ne: mongoHelper.normalizedId(id)}; // {name: /^John$/i, _id: {$ne:'93874502347652345'}}  
+            query.orderId = orderId;
             
             db.collection(collection).findOne(query, next);                           
         });

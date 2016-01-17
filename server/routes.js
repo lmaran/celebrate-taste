@@ -3,10 +3,12 @@
 var errors = require('./components/errors');
 var path = require('path');
 var auth = require('./api/user/login/loginService');
-var logger = require("./utils/logger");
+var logger = require("./logging/logger");
+var reqHelper = require("./logging/reqHelper");
 
 module.exports = function(app) {
     
+    // ## test only (start)
     app.get('/error', function (req, res, next) {
         // here we cause an error in the pipeline so we see express-winston in action.
         return next(new Error("This is an error and it should be logged to the console"));
@@ -18,16 +20,23 @@ module.exports = function(app) {
     });    
 
     app.get("/test", function(req, res, next) {
-        //logger.info('hit test page');
-        
-        console.log("----------------------------------------------------------------------");
-
-
+        logger.info('hit test page');
         res.json('This is a normal request, it should be logged to the console too');
-        //res.end();
         return next();
     });
     
+    app.get("/testmeta", function(req, res, next) {
+        logger.info('hit test page (with meta)', {some:'optional metadata'});
+        res.json('This is a normal request (with meta), it should be logged to the console too');
+        return next();
+    });
+    
+    app.get("/testreq", function(req, res, next) {        
+        logger.info('hit test page (with req)', reqHelper.getShortReq(req));
+        res.json('This is a normal request (with reg), it should be logged to the console too');
+        return next();
+    });       
+    // ## test only (end)
     
     // API routes
     app.use('/api/users',require('./api/user/userRoutes'));

@@ -67,6 +67,14 @@ exports.create = function(req, res){
 
 exports.createMany = function(req, res){
     var preferences = req.body;
+    
+    preferences.forEach(function(preference) {
+        preference.createBy = req.user.name;    
+        preference.createdOn = new Date();        
+    });
+    
+    
+       
     // preferenceValidator.all(req, res, function(errors){
     //     if(errors){
     //         res.status(400).send({ errors : errors }); // 400 - bad request
