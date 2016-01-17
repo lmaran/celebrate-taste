@@ -3,13 +3,10 @@
 app.controller('createMenuTplController', ['$scope', '$uibModalInstance', 'dataToModal', 'helperService', 
 	function ($scope, $uibModalInstance, dataToModal, helperService) {
 
-    if(dataToModal && dataToModal.length === 10)
-        $scope.menuDate = helperService.getDateFromString(dataToModal); // "yyyy-mm-dd"
-    else
-        $scope.menuDate = new Date();
-        
+    $scope.menuDate = helperService.getDateFromString(dataToModal); // "yyyy-mm-dd"
+ 
     $scope.menuDate.setDate($scope.menuDate.getDate() + 1); // increment date
-    
+
     $scope.ok = function () {
         $uibModalInstance.close($scope.menuDate);        
     };

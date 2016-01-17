@@ -15,6 +15,6 @@ router.delete('/:id', controller.remove);
 router.post('/:id/orderLines', orderLineController.create);
 router.get('/:id/orderLines', orderLineController.getAll);
 router.put('/:id/orderLines', orderLineController.update);
-router.put('/:id/orderLines/:id2', orderLineController.remove);
+router.delete('/:id/orderLines/:orderLineId', orderLineController.remove);
 
 module.exports = router;

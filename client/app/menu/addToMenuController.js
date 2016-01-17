@@ -112,12 +112,11 @@ app.controller('addToMenuController', ['$scope', '$route', '$window', '$location
                 return String.fromCharCode(existingDish.option.charCodeAt(0) - 1);                
         }       
     }    
-    
+
     $scope.goBack = function(){
         $window.history.back();
         //$location.path('/admin/menus/');
     }
-
     $scope.refresh = function(){
         init();
     }

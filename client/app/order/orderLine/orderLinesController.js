@@ -2,7 +2,8 @@
 
 app.controller('orderLinesController', ['$scope', '$location', 'orderLineService', 'modalService', '$route',
     function ($scope, $location, orderLineService, modalService, $route) {
-        
+
+    $scope.orderId = $route.current.params.id;        
     $scope.orderLines = [];
     $scope.errors = {};
 
@@ -23,7 +24,7 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
                 if ($scope.orderLines[i]._id === item._id) break;
             }
 
-            orderLineService.delete(item._id).then(function () {
+            orderLineService.delete($scope.orderId, item._id).then(function () {
                 $scope.orderLines.splice(i, 1);
             })
             .catch(function (err) {
@@ -35,7 +36,8 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
     };
 
     $scope.create = function () {
-        $location.path('/admin/orders/' + $route.current.params.id + '/orderLines/create');
+        $location.path('/admin/orders/' + $scope.orderId + '/orderLines/create');
+        $location.search('orderDate', $scope.order.date); // add property to url
     }
 
     $scope.refresh = function () {
@@ -43,7 +45,7 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
     };
 
     function init() {
-        orderLineService.getAll($route.current.params.id).then(function (data) {
+        orderLineService.getAll($scope.orderId).then(function (data) {
             $scope.orderLines = data;
         })
         .catch(function (err) {
