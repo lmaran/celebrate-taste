@@ -6,12 +6,12 @@ app.factory('orderLineService', ['$http', function ($http) {
     var rootUrl = '/api/orders/';
     var orderLinesPart = '/orderLines/';
 
-    factory.create = function (item) {
-        return $http.post(rootUrl, item);
+    factory.create = function (orderId, orderLine) {
+        return $http.post(rootUrl + orderId + orderLinesPart, orderLine);
     };
 
-    factory.getAll = function (id) {
-        return $http.get(rootUrl + id + orderLinesPart).then(function (result) {
+    factory.getAll = function (orderId) {
+        return $http.get(rootUrl + orderId + orderLinesPart).then(function (result) {
             return result.data;
         });
     };

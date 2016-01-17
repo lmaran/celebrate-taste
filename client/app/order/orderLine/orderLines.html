@@ -24,7 +24,6 @@
             <thead>
                 <tr>
                     <th>Angajat</th>
-                    <th>Team</th>
                     <th>Masa</th>
                     <th></th>
                 </tr>
@@ -35,10 +34,7 @@
                         <a ng-href="/admin/orderLines/{{orderLine._id}}">{{orderLine.employeeName}}</a>
                     </td>                    
                     <td>
-                        {{orderLine.team}}
-                    </td>
-                    <td>
-                        Seria {{orderLine.eatSeries}}
+                        {{orderLine.eatSeries}}
                     </td>                    
                     <td>
                         <a href ng-click="delete(orderLine)">sterge</a>
