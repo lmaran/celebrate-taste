@@ -1,5 +1,9 @@
 // http://stackoverflow.com/a/31296619
 // https://github.com/bithavoc/express-winston/blob/master/index.js
+
+// this middleware act as a replacement for Morgan
+// Morgan does not let you log req/res body: http://stackoverflow.com/a/30227670
+
 'use strict'
 
 var winston = require('winston'); // for transports.Console
