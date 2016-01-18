@@ -33,7 +33,7 @@
             <tbody>
                 <tr data-ng-repeat="orderLine in orderLines | filter:search">
                     <td>
-                        <a ng-href="/admin/orders/{{orderId}}/orderLines/{{orderLine._id}}?orderDate={{order.date}}">{{orderLine.employeeName}}</a>
+                        <a ng-href="/admin/orders/{{orderId}}/orderLines/{{orderLine._id}}">{{orderLine.employeeName}}</a>
                     </td>                    
                     <td>
                         {{orderLine.eatSeries}}
