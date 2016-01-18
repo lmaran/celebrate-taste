@@ -57,7 +57,7 @@ app.controller('orderLineImportController', ['$scope', '$route', 'orderLineServi
         // 'orderId' and 'orderDate' properties were added before
         orderLineService.import($scope.orderId, $scope.importData)
             .then(function (data) {
-                //$location.path('/admin/orders/' + $scope.orderId);
+                $location.path('/admin/orders/' + $scope.orderId);
             })
             .catch(function (err) {
                 if(err.data.errors){                   

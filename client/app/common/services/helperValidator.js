@@ -13,7 +13,7 @@ app.service('helperValidator', [function () {
 
         if(isEmpty(fieldValue)){
             setValidity($scope, form, field, 'Acest camp este obligatoriu.');
-        };
+        }
     }
     
     this.required50 = function($scope, form, entity, field){
