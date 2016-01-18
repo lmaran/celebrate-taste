@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('resetPasswordController', ['$scope', 'userService', '$window', 
-    function ($scope, userService, $window) {
+app.controller('resetPasswordController', ['$scope', 'userService',
+    function ($scope, userService) {
         
     $scope.errors = {};
 
@@ -19,8 +19,5 @@ app.controller('resetPasswordController', ['$scope', 'userService', '$window',
             //     });
         //}
 	};
-    
-    $scope.cancel = function () {
-        $window.history.back();
-    }
+
 }]);

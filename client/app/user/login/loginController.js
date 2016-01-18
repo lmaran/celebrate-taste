@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('loginController', ['$scope', 'userService', '$location', '$window', 
-    function ($scope, userService, $location, $window) {
+app.controller('loginController', ['$scope', 'userService', '$location',
+    function ($scope, userService, $location) {
         
     $scope.user = {};
     $scope.errors = {};
@@ -22,8 +22,5 @@ app.controller('loginController', ['$scope', 'userService', '$location', '$windo
         });
         }
     };
-    
-    $scope.cancel = function () {
-        $window.history.back();
-    }
+
 }]);

@@ -2,8 +2,8 @@
 /* global _ */
 'use strict';
 
-app.controller('preferenceController', ['$scope', '$window', '$route', 'preferenceService', '$location', 'helperValidator','menuService','customerEmployeeService', 'helperService', 'toastr',
-    function ($scope, $window, $route, preferenceService, $location, helperValidator, menuService, customerEmployeeService, helperService, toastr) {
+app.controller('preferenceController', ['$scope', '$route', 'preferenceService', '$location', 'helperValidator','menuService','customerEmployeeService', 'helperService', 'toastr',
+    function ($scope, $route, preferenceService, $location, helperValidator, menuService, customerEmployeeService, helperService, toastr) {
         
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -169,10 +169,6 @@ app.controller('preferenceController', ['$scope', '$window', '$route', 'preferen
                 }
             });
     };
-
-    $scope.cancel = function () {
-        $window.history.back();
-    }
     
     function validateForm($scope, form){ 
         helperValidator.setAllFildsAsValid(form);

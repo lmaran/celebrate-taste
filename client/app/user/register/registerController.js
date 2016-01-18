@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('registerController', ['$scope', 'userService',  '$location', '$window', 
-    function ($scope, userService, $location, $window) {
+app.controller('registerController', ['$scope', 'userService',  '$location', 
+    function ($scope, userService, $location) {
         
     $scope.user = {};
     $scope.errors = {};

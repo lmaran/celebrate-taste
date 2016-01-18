@@ -2,8 +2,8 @@
 /* global _ */
 'use strict';
 
-app.controller('menuItemController', ['$scope', '$window', '$route', 'menuService', 
-    function ($scope, $window, $route, menuService) {
+app.controller('menuItemController', ['$scope', '$route', 'menuService', 
+    function ($scope, $route, menuService) {
         
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -38,7 +38,7 @@ app.controller('menuItemController', ['$scope', '$window', '$route', 'menuServic
 //             dishService.create($scope.dish)
 //                 .then(function (data) {
 //                     //$location.path('/dishes');
-//                     $window.history.back();
+//                     $scope.goBack(); // it comes from rootScope
 //                     //Logger.info("Widget created successfully");
 //                 })
 //                 .catch(function (err) {
@@ -54,18 +54,12 @@ app.controller('menuItemController', ['$scope', '$window', '$route', 'menuServic
             menuService.update($scope.menu)
                 .then(function (data) {
                     //$location.path('/dishes');
-                    $window.history.back();
-                    //Logger.info("Widget created successfully");
+                    $scope.goBack(); // it comes from rootScope
                 })
                 .catch(function (err) {
                     alert(JSON.stringify(err.data, null, 4));
                 });
         }
     };
-
-    $scope.cancel = function () {
-        //$location.path('/widgets')
-        $window.history.back();
-    }
 
 }]);

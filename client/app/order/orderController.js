@@ -1,8 +1,8 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('orderController', ['$scope', '$window', '$route', 'orderService', '$location', 'helperValidator', 'helperService',
-    function ($scope, $window, $route, orderService, $location, helperValidator, helperService) {
+app.controller('orderController', ['$scope', '$route', 'orderService', '$location', 'helperValidator', 'helperService',
+    function ($scope, $route, orderService, $location, helperValidator, helperService) {
         
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -61,10 +61,6 @@ app.controller('orderController', ['$scope', '$window', '$route', 'orderService'
                 }
             });
     };
-
-    $scope.goBack = function () {
-        $window.history.back();
-    }
     
     function dt(dateAsString) { // yyyy-mm-dd
         return helperService.getObjFromString(dateAsString);
