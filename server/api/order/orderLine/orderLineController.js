@@ -2,6 +2,7 @@
 
 var orderLineService = require('./orderLineService');
 var orderLineValidator = require('./orderLineValidator');
+var importDataValidator = require('./importDataValidator');
 
 exports.getAll = function (req, res) {
     var orderId = req.params.id;
@@ -72,6 +73,42 @@ exports.remove = function(req, res){
         if(err) { return handleError(res, err); }
         res.sendStatus(204);
     });
+};
+
+
+exports.import = function(req, res){   
+        
+    var importData = req.body;
+    
+    // transform the string in array + remove empty lines: http://stackoverflow.com/a/19888749
+    importData.employeesName = importData.employeesName.split('\n').filter(Boolean); 
+          
+    importDataValidator.all(req, res, function(errors){
+        if(errors){
+            res.status(400).send({ errors : errors }); // 400 - bad request
+        }
+        else{
+            // create a new record for each received name
+            var orderLines = [];
+
+            importData.employeesName.forEach(function(employeeName){
+                orderLines.push({
+                    orderId: importData.orderId,
+                    orderDate: importData.orderDate,
+                    eatSeries: importData.eatSeries,
+                    employeeName: employeeName,
+                    createBy: req.user.name,
+                    createdOn: new Date()
+                });
+            });
+                
+            orderLineService.createMany(orderLines, function (err, response) {
+                if(err) { return handleError(res, err); }
+                res.status(201).json(response.ops[0]);
+            });           
+        }
+    });
+
 };
 
 

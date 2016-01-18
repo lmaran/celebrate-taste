@@ -71,4 +71,11 @@
         });
     };
     
+    orderLineService.createMany = function (orderLines, next) {
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            db.collection(collection).insertMany(orderLines, next);      
+        });
+    };    
+    
 })(module.exports);
