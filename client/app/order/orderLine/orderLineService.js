@@ -22,8 +22,8 @@ app.factory('orderLineService', ['$http', function ($http) {
         });
     };
 
-    factory.update = function (item) {
-        return $http.put(rootUrl, item);
+    factory.update = function (orderId, orderLine) {
+        return $http.put(rootUrl + orderId + orderLinesPart, orderLine);
     };
 
     factory.delete = function (orderId, orderLineId) {
