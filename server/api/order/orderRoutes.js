@@ -17,5 +17,6 @@ router.get('/:id/orderLines', orderLineController.getAll);
 router.get('/:id/orderLines/:orderLineId', orderLineController.getById);
 router.put('/:id/orderLines', orderLineController.update);
 router.delete('/:id/orderLines/:orderLineId', orderLineController.remove);
+router.post('/:id/orderLines/import', orderLineController.import);
 
 module.exports = router;

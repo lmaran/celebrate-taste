@@ -8,7 +8,7 @@ app.factory('orderLineService', ['$http', function ($http) {
 
     factory.create = function (orderId, orderLine) {
         return $http.post(rootUrl + orderId + orderLinesPart, orderLine);
-    };
+    };   
 
     factory.getAll = function (orderId) {
         return $http.get(rootUrl + orderId + orderLinesPart).then(function (result) {
@@ -29,6 +29,10 @@ app.factory('orderLineService', ['$http', function ($http) {
     factory.delete = function (orderId, orderLineId) {
         return $http.delete(rootUrl + orderId + orderLinesPart + orderLineId);
     };
+    
+    factory.import = function (orderId, importData) {
+        return $http.post(rootUrl + orderId + orderLinesPart + 'import', importData);
+    };     
 
     return factory;
 }]);
