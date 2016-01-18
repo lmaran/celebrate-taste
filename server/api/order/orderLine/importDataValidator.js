@@ -2,33 +2,45 @@
 
 (function (importDataValidator) {
     
-    var orderLineService = require('./orderLineService');
+    //var orderLineService = require('./orderLineService');
+    var customerEmployeeService = require('../../customerEmployee/customerEmployeeService');
     var async = require('async');
     var validator = require('validator');  
     var _ = require('lodash');  
     
     
     // "employeeName" validation
-    importDataValidator.employeeName = function(req, res, cbResult){
-        var fieldVal = validator.trim(req.body.employeeName);     
+    importDataValidator.employeesName = function(req, res, cbResult){
+        var fieldVal = validator.trim(req.body.employeesName); // array of names 
         async.series([
             function(cb){
                 if(!validator.isLength(fieldVal, 1)){
                     cb("Acest camp este obligatoriu.");
                 }
-                else if(!validator.isLength(fieldVal, 1, 50)){
-                    cb("Maxim 50 caractere.");
-                }
+                // else if(!validator.isLength(fieldVal, 1, 50)){
+                //     cb("Maxim 50 caractere.");
+                // }
                 else cb(null, 'checkNext');  
             },
             function(cb){
-                orderLineService.getByValue(req.body.orderId, 'employeeName', fieldVal, req.body._id, function (err, orderLine) {                    
-                    if(err) { return handleError(res, err); }
-                    if (orderLine) { 
-                        cb("Exista deja o inregistrare cu aceasta valoare."); 
-                    }
-                    else cb(null, 'checkNext');      
-                });  
+                // main
+                
+                // orderLineService.getByValue(req.body.orderId, 'employeeName', fieldVal, req.body._id, function (err, orderLine) {                    
+                //     if(err) { return handleError(res, err); }
+                //     if (orderLine) { 
+                //         cb("Exista deja o inregistrare cu aceasta valoare."); 
+                //     }
+                //     else cb(null, 'checkNext');      
+                // }); 
+                
+                    customerEmployeeService.getAll(req, function (err, customerEmployees) {
+                        if(err) { return handleError(res, err); }
+                        // if (orderLine) { 
+                        //     cb("Exista deja o inregistrare cu aceasta valoare."); 
+                        // }
+                        // else 
+                            cb(null, 'checkNext');      
+                    });
             }        
         ],
         function(err, results){            
@@ -67,7 +79,7 @@
     importDataValidator.all = function(req, res, cbResult){       
         // async.parallel([
         //     function(cb){
-        //        importDataValidator.employeeName(req, res, cb)
+        //        importDataValidator.employeesName(req, res, cb)
         //     },
         //     function(cb){
         //        importDataValidator.eatSeries(req, res, cb)
@@ -79,7 +91,7 @@
         //     cbResult(results);        
         // });
         
-        cbResult(null);
+        cbResult(null); // no err
     }
     
     
