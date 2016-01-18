@@ -83,8 +83,8 @@
         <table class="table table-responsive table-hover table-condensed">
             <thead>
                 <tr>
-                    <th>Data</th>
-                    <th>Angajat</th>
+                    <th>Data / Angajat</th>
+                    <!--<th>Angajat</th>-->
                     <th>Supa</th>
                     <th>Felul 2</th>
                     <th></th>
@@ -96,12 +96,14 @@
                         as results">                
                     <td>
                         <!--{{preference.date}}-->
-                        <strong>{{dt(preference.date).dayAsShortString}}</strong>, 
-                        {{dt(preference.date).dateAsShortString}}
+                        <a ng-href="/admin/preferences/{{preference._id}}">
+                            <strong>{{dt(preference.date).dayAsShortString}}</strong>, 
+                                {{dt(preference.date).dateAsShortString}} / {{preference.employeeName}}
+                        </a>
                     </td>
-                    <td>
+                    <!--<td>
                         {{preference.employeeName}}
-                    </td>                    
+                    </td>                    -->
                     <td>
                         {{preference.option1}}
                     </td>
@@ -109,8 +111,9 @@
                         {{preference.option2}}
                     </td>                    
                     <td class2="text-right">
-                        <a href ng-click="delete(preference)">sterge</a> <spa class="text-muted"> | </spa> 
-                        <a ng-href="/admin/preferences/{{preference._id}}">modifica</a>
+                        <a href ng-click="delete(preference)">sterge</a> 
+                        <!--<spa class="text-muted"> | </spa> 
+                        <a ng-href="/admin/preferences/{{preference._id}}">modifica</a>-->
                     </td>
                 </tr>
             </tbody>

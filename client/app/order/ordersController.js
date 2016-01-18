@@ -61,5 +61,9 @@ app.controller('ordersController', ['$scope', '$location', 'orderService', 'moda
             alert(JSON.stringify(err, null, 4));
         });
     }
+    
+    $scope.dt = function (dateAsString) { // yyyy-mm-dd
+        return helperService.getObjFromString(dateAsString);
+    }    
 
 }]);
