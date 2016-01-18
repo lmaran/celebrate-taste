@@ -2,8 +2,8 @@
 /* global _ */
 'use strict';
 
-app.controller('addToMenuController', ['$scope', '$route', '$window', '$location', 'helperService', 'dishService', 'menuService', 
-	function ($scope, $route, $window, $location, helperService, dishService, menuService) {
+app.controller('addToMenuController', ['$scope', '$route', '$location', 'helperService', 'dishService', 'menuService', 
+	function ($scope, $route, $location, helperService, dishService, menuService) {
                
     $scope.categories = [
         {value:0, name:'Toate felurile'},
@@ -113,10 +113,6 @@ app.controller('addToMenuController', ['$scope', '$route', '$window', '$location
         }       
     }    
 
-    $scope.goBack = function(){
-        $window.history.back();
-        //$location.path('/admin/menus/');
-    }
     $scope.refresh = function(){
         init();
     }

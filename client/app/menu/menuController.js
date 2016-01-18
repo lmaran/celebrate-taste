@@ -1,8 +1,8 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('menuController', ['$scope', '$window', '$route', 'menuService', '$location', 
-    function ($scope, $window, $route, menuService, $location) {
+app.controller('menuController', ['$scope', '$route', 'menuService', '$location', 
+    function ($scope, $route, menuService, $location) {
         
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -56,10 +56,5 @@ app.controller('menuController', ['$scope', '$window', '$route', 'menuService', 
                 });
         }
     };
-
-    $scope.cancel = function () {
-        //$location.path('/widgets')
-        $window.history.back();
-    }
 
 }]);

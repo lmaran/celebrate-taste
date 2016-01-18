@@ -1,8 +1,8 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('badgeController', ['$scope', '$window', '$route', 'badgeService', '$location', 'helperValidator',
-    function ($scope, $window, $route, badgeService, $location, helperValidator) {
+app.controller('badgeController', ['$scope', '$route', 'badgeService', '$location', 'helperValidator',
+    function ($scope, $route, badgeService, $location, helperValidator) {
         
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -60,10 +60,6 @@ app.controller('badgeController', ['$scope', '$window', '$route', 'badgeService'
                 }
             });
     };
-
-    $scope.cancel = function () {
-        $window.history.back();
-    }
     
     function validateForm($scope, form){ 
         var entity = 'badge'; 

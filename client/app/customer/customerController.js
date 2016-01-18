@@ -1,8 +1,8 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('customerController', ['$scope', '$window', '$route', 'customerService', '$location', 
-    function ($scope, $window, $route, customerService, $location) {
+app.controller('customerController', ['$scope', '$route', 'customerService', '$location', 
+    function ($scope, $route, customerService, $location) {
         
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -56,10 +56,5 @@ app.controller('customerController', ['$scope', '$window', '$route', 'customerSe
                 });
         }
     };
-
-    $scope.cancel = function () {
-        //$location.path('/widgets')
-        $window.history.back();
-    }
 
 }]);

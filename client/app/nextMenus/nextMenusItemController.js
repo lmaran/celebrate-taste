@@ -2,8 +2,8 @@
 
 'use strict';
 
-app.controller('nextMenusItemController', ['$scope', '$window', '$route', 'menuService', 
-    function ($scope, $window, $route, menuService) {
+app.controller('nextMenusItemController', ['$scope', '$route', 'menuService', 
+    function ($scope, $route, menuService) {
 
     $scope.menu = {};
     $scope.dish = {};

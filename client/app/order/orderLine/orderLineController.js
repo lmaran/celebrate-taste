@@ -1,8 +1,8 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('orderLineController', ['$scope', '$window', '$route', 'orderLineService', '$location', 'helperValidator', 'customerEmployeeService', 'helperService',
-    function ($scope, $window, $route, orderLineService, $location, helperValidator, customerEmployeeService, helperService) {
+app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '$location', 'helperValidator', 'customerEmployeeService', 'helperService',
+    function ($scope, $route, orderLineService, $location, helperValidator, customerEmployeeService, helperService) {
 
     $scope.orderId = $route.current.params.id; 
 
@@ -90,10 +90,6 @@ app.controller('orderLineController', ['$scope', '$window', '$route', 'orderLine
                 }
             });
     };
-
-    $scope.cancel = function () {
-        $window.history.back();
-    }
     
     function validateForm($scope, form){       
         var entity = 'orderLine'; 
@@ -103,11 +99,6 @@ app.controller('orderLineController', ['$scope', '$window', '$route', 'orderLine
         helperValidator.required50($scope, form, entity, 'employeeName');
         helperValidator.required50($scope, form, entity, 'eatSeries');         
     }
-    
-    $scope.goBack = function(){
-        $window.history.back();
-        //$location.path('/admin/menus/');
-    } 
     
     function dt(dateAsString) { // yyyy-mm-dd
         return helperService.getObjFromString(dateAsString);

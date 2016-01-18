@@ -2,8 +2,8 @@
 /*global app*/
 'use strict';
 
-app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'customerEmployeeService', '$location', 'badgeService', 'teamService', '$q', 'helperValidator', 
-    function ($scope, $window, $route, customerEmployeeService, $location, badgeService, teamService, $q, helperValidator) {
+app.controller('customerEmployeeController', ['$scope', '$route', 'customerEmployeeService', '$location', 'badgeService', 'teamService', '$q', 'helperValidator', 
+    function ($scope, $route, customerEmployeeService, $location, badgeService, teamService, $q, helperValidator) {
        
     var promiseToGetBadges, promiseToGetTeams, promiseToGetCustomerEmployee;        
     $scope.isEditMode = $route.current.isEditMode;
@@ -88,7 +88,7 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
         customerEmployeeService.create($scope.customerEmployee)
             .then(function (data) {
                 //$location.path('/admin/customerEmployees');
-                $window.history.back();
+                $scope.goBack(); // it comes from rootScope
             })
             .catch(function (err) {
                 if(err.data.errors){                   
@@ -116,7 +116,7 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
         customerEmployeeService.update($scope.customerEmployee)
             .then(function (data) {
                 //$location.path('/admin/customerEmployees');
-                $window.history.back();
+                $scope.goBack(); // it comes from rootScope
             })
             .catch(function (err) {
                 if(err.data.errors){                   
@@ -126,10 +126,6 @@ app.controller('customerEmployeeController', ['$scope', '$window', '$route', 'cu
                 }
             });
     };
-
-    $scope.cancel = function () {
-        $window.history.back();
-    }
     
     function validateForm($scope, form){ 
         var entity = 'customerEmployee'; 

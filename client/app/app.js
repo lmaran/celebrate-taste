@@ -48,4 +48,10 @@ app.run(['$rootScope', '$location', 'userService', '$window', function ($rootSco
             });
         }
     });
+    
+    // "polluting"" the root scope
+    $rootScope.goBack = function() {
+        $window.history.back();
+    };
+
 }]);
