@@ -76,6 +76,13 @@
             if (err) return next(err, null);
             db.collection(collection).insertMany(orderLines, next);      
         });
-    };    
+    }; 
+    
+    orderLineService.removeMany = function (id, next) { 
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null); 
+            db.collection(collection).deleteMany({orderId:id}, next);
+        });
+    };       
     
 })(module.exports);
