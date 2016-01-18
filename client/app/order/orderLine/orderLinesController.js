@@ -41,6 +41,11 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
         $location.path('/admin/orders/' + $scope.orderId + '/orderLines/create');
         $location.search('orderDate', $scope.order.date); // add property to url
     }
+    
+    $scope.import = function () {
+        $location.path('/admin/orders/' + $scope.orderId + '/orderLines/import');
+        $location.search('orderDate', $scope.order.date); // add property to url
+    }    
 
     $scope.refresh = function () {
         init();

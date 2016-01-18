@@ -6,6 +6,15 @@
 // !!! remember to deactivate all angular validations (e.g: required, minlength etc)
 
 app.service('helperValidator', [function () {       
+
+    this.required = function($scope, form, entity, field){
+        $scope[entity][field] = $scope[entity][field] || '';
+        var fieldValue = $scope[entity][field];
+
+        if(isEmpty(fieldValue)){
+            setValidity($scope, form, field, 'Acest camp este obligatoriu.');
+        };
+    }
     
     this.required50 = function($scope, form, entity, field){
         $scope[entity][field] = $scope[entity][field] || '';
@@ -100,7 +109,7 @@ app.service('helperValidator', [function () {
 	}
     
     function isEmpty(field) {
-        // http://stackoverflow.com/a/5515349
+        // http://stackoverflow.com/a/5515349       
         return(field === undefined || field === '' || field === null);
 	}
     
