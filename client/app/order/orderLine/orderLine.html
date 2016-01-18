@@ -9,7 +9,7 @@
     </li>
     <li><a href="/admin/orders">Comenzi</a></li>
     <li><a ng-href="/admin/orders/{{orderId}}">Comanda: {{orderDateAsString}}</a></li>
-    <li class="active">Adauga</li>
+    <li class="active">{{orderLine.employeeName || 'Adauga'}}</li>
 </ol>
 
 <div class="container-fluid">
