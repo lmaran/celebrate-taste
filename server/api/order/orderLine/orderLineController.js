@@ -13,7 +13,8 @@ exports.getAll = function (req, res) {
 
 
 exports.getById = function (req, res) {
-    orderLineService.getById(req.params.id, function (err, orderLine) {
+    var orderLineId = req.params.orderLineId;
+    orderLineService.getById(orderLineId, function (err, orderLine) {
         if(err) { return handleError(res, err); }
         res.json(orderLine);
     });    

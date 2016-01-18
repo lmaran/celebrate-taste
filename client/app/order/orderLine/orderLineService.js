@@ -16,18 +16,18 @@ app.factory('orderLineService', ['$http', function ($http) {
         });
     };
 
-//     factory.getById = function (itemId) {
-//         return $http.get(rootUrl + encodeURIComponent(itemId)).then(function (result) {
-//             return result.data;
-//         });
-//     };
-// 
-//     factory.update = function (item) {
-//         return $http.put(rootUrl, item);
-//     };
+    factory.getById = function (orderId, orderLineId) {
+        return $http.get(rootUrl + orderId + orderLinesPart + orderLineId).then(function (result) {
+            return result.data;
+        });
+    };
 
-    factory.delete = function (orderId, itemId) {
-        return $http.delete(rootUrl + orderId + orderLinesPart + encodeURIComponent(itemId));
+    factory.update = function (item) {
+        return $http.put(rootUrl, item);
+    };
+
+    factory.delete = function (orderId, orderLineId) {
+        return $http.delete(rootUrl + orderId + orderLinesPart + orderLineId);
     };
 
     return factory;

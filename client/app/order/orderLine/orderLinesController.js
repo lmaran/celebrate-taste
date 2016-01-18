@@ -6,6 +6,8 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
     $scope.orderId = $route.current.params.id;        
     $scope.orderLines = [];
     $scope.errors = {};
+    
+    // $scope.order is defined in orderControler and available here as we are into a partial view
 
     /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined
     init();
