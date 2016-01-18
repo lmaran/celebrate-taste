@@ -5,6 +5,7 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
     function ($scope, $route, orderLineService, $location, helperValidator, customerEmployeeService, helperService) {
 
     $scope.orderId = $route.current.params.id; 
+    $scope.orderLineId = $route.current.params.id2; 
 
     var searchObject = $location.search();
     if(searchObject.orderDate){
@@ -33,11 +34,11 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
     getCustomerEmployees();
 
     function init() {
-        getorderLine();
+        getOrderLine();
     } 
 
-    function getorderLine() {
-        orderLineService.getById($scope.orderId).then(function (data) {
+    function getOrderLine() {
+        orderLineService.getById($scope.orderId, $scope.orderLineId).then(function (data) {
             $scope.orderLine = data;
         })
         .catch(function (err) {
