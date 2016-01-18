@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 var orderService = require('./orderService');
+var orderLineService = require('./orderLine/orderLineService');
 var orderValidator = require('./orderValidator');
 
 exports.getAll = function (req, res) {
@@ -72,6 +73,12 @@ exports.remove = function(req, res){
         if(err) { return handleError(res, err); }
         res.sendStatus(204);
     });
+    
+    // need to wait for complete? run both within a promise?
+    orderLineService.removeMany(id, function (err, response) {
+        if(err) { return handleError(res, err); }
+        //res.sendStatus(204);
+    });   
 };
 
 
