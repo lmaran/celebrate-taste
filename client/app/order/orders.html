@@ -1,7 +1,7 @@
 <div ng-include="'app/navbar/navbar.html'"></div>
 
 <ol class="breadcrumb">
-    <li class2="active">
+    <li>
         <button ng-click="goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
             <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
         </button>
@@ -41,13 +41,21 @@
             <tbody>
                 <tr data-ng-repeat="order in orders | filter:search">
                     <td>
-                        <a ng-href="/admin/orders/{{order._id}}">Comanda: {{order.date}}</a>
+                        <a ng-href="/admin/orders/{{order._id}}">
+                            <strong>{{dt(order.date).dayAsShortString}}</strong>, 
+                                {{dt(order.date).dateAsShortString}} 
+                        </a>
                     </td>                    
                     <td>
                         {{order.status}}
                     </td>
                     <td>
-                        <a href ng-click="delete(order)">sterge</a>
+                        <span ng-if="order.status !== 'Finalizat'">
+                            <a href ng-click="delete(order)">sterge</a>
+                        </span>
+                        <span ng-if="order.status === 'Finalizat'" class="text-muted" title="Nu poti sterge comenzile finalizate!">
+                            sterge
+                        </span>
                     </td>
                 </tr>
             </tbody>
