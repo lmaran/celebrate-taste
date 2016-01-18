@@ -2,8 +2,8 @@
 /* global _ */
 'use strict';
 
-app.controller('menuItemController', ['$scope', '$route', 'menuService', 
-    function ($scope, $route, menuService) {
+app.controller('menuItemController', ['$scope', '$route', 'menuService', 'helperService',
+    function ($scope, $route, menuService, helperService) {
         
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -24,6 +24,7 @@ app.controller('menuItemController', ['$scope', '$route', 'menuService',
     function getMenu() {
         menuService.getById($route.current.params.menuId).then(function (data) {
             $scope.menu = data;
+            $scope.menuDateAsString = dt($scope.menu.menuDate).dateAsShortString;
             $scope.dish = _.find(data.dishes, '_id', $route.current.params.dishId);
         })
         .catch(function (err) {
@@ -61,5 +62,9 @@ app.controller('menuItemController', ['$scope', '$route', 'menuService',
                 });
         }
     };
+    
+    function dt(dateAsString) { // yyyy-mm-dd
+        return helperService.getObjFromString(dateAsString);
+    }  
 
 }]);
