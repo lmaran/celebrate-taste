@@ -111,7 +111,6 @@
                         <a href ng-click="showModal(dish)"><img ng-src="{{dish.thumbUrl}}" width="40" /></td></a>
                     <td>
                         <a ng-href="/dishes/{{dish._id}}">{{dish.name}}</a>
-                        <!--<i class="glyphicon glyphicon-info-sign" ng-if="dish.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{dish.description}}"></i>-->
                     </td>
                     <td ng-switch="dish.category">
                         <span ng-switch-when="1">Supa</span>

@@ -121,24 +121,7 @@
 
                 });
             });            
-            
-            
-            
-            
-            // db.collection('badges').find(query, {sort:'name'}).toArray(function (err, docs) {
-            //     if (err) return next(err, null);
-            //     return next(null, docs);                 
-            // });
-            
-              
-            // mongoHelper.getDb(function (err, db) {
-            //     if (err) return next(err, null);
-            //     db.collection('users').find({}, {salt:0, hashedPassword:0}).toArray(function (err, docs) { // exclude 'salt' and 'psw'
-            //         if (err) return next(err, null);
-            //         return next(null, docs);                 
-            //     });
-            // });            
-            
+
         });
     };
     
