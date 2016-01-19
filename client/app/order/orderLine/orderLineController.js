@@ -1,8 +1,8 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '$location', 'helperValidator', 'customerEmployeeService', 'helperService',
-    function ($scope, $route, orderLineService, $location, helperValidator, customerEmployeeService, helperService) {
+app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '$location', 'helperValidator', 'customerEmployeeService', 'helperService', 'preferenceService',
+    function ($scope, $route, orderLineService, $location, helperValidator, customerEmployeeService, helperService, preferenceService) {
 
     $scope.orderId = $route.current.params.id; 
     $scope.orderLineId = $route.current.params.id2; 
@@ -84,8 +84,12 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
     $scope.update = function (form) {
         validateForm($scope, form);
         if (form.$invalid) return false;
+        
+        var orderLine = $scope.orderLine;
+        if(orderLine.option1) orderLine.option1 = orderLine.option1.toUpperCase();
+        if(orderLine.option2) orderLine.option2 = orderLine.option2.toUpperCase();
             
-        orderLineService.update($scope.orderId, $scope.orderLine)
+        orderLineService.update($scope.orderId, orderLine)
             .then(function (data) {
                 $location.path('/admin/orders/' + $scope.orderId);
             })
@@ -100,7 +104,20 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
     
     $scope.selectEmployee = function(item, model){
         $scope.orderLine.employeeName = $scope.obj.selectedEmployee.name;
-        $scope.orderLine.badgeCode = $scope.obj.selectedEmployee.badgeCode;        
+        $scope.orderLine.badgeCode = $scope.obj.selectedEmployee.badgeCode; 
+        preferenceService.getByEmployeeAndDate($scope.orderLine.employeeName, $scope.orderLine.orderDate)
+            .then(function(preferences){
+                if(preferences.length === 1){                    
+                    $scope.orderLine.option1 = preferences[0].option1;
+                    $scope.orderLine.option2 = preferences[0].option2;
+                } else{
+                    $scope.orderLine.option1 = undefined;
+                    $scope.orderLine.option2 = undefined;                    
+                }
+            })
+            .catch(function (err) {
+                alert(JSON.stringify(err, null, 4));
+            })                  
     }
     
     function validateForm($scope, form){       
