@@ -7,6 +7,16 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
     $scope.orderLines = [];
     $scope.errors = {};
     
+    $scope.selectEatSeries = function(eatSeries){
+        if(eatSeries === 'Toate seriile'){
+            $scope.selectedEatSeries = 'Toate seriile';
+            $location.search('eatSeries', null); // delete property from url
+        } else {
+            $scope.selectedEatSeries = eatSeries;
+            $location.search('eatSeries', eatSeries); // add property to url
+        }
+    }     
+    
     // $scope.order is defined in orderControler and available here as we are into a partial view
 
     /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined
@@ -54,6 +64,14 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
     function init() {
         orderLineService.getAll($scope.orderId).then(function (data) {
             $scope.orderLines = data;
+            
+            $scope.eatSeriesList = _.chain($scope.orderLines).pluck('eatSeries').uniq().sortBy().value();
+            
+            var searchObject = $location.search();
+            if(searchObject.eatSeries)
+                $scope.selectedEatSeries = searchObject.eatSeries;  
+            else
+                $scope.selectedEatSeries = 'Toate seriile';            
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
