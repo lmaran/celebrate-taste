@@ -6,6 +6,8 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
 
     $scope.orderId = $route.current.params.id; 
     $scope.orderLineId = $route.current.params.id2; 
+    
+    $scope.obj = {}; //just a wrapper
 
     var searchObject = $location.search();
           
@@ -44,6 +46,8 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
             $scope.orderLine = data;
             if($scope.orderLine.orderDate)
                 $scope.orderDateAsString = dt($scope.orderLine.orderDate).dateAsShortString;
+
+            $scope.selectedEmployee = $scope.customerEmployees[2];                
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
@@ -59,10 +63,10 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
         });
     }     
 
-    $scope.create = function (form) { 
+    $scope.create = function (form) {        
         validateForm($scope, form);
         if (form.$invalid) return false;
-        
+  
         // 'orderId' and 'orderDate' properties were added before
         orderLineService.create($scope.orderId, $scope.orderLine)
             .then(function (data) {
@@ -93,6 +97,11 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
                 }
             });
     };
+    
+    $scope.selectEmployee = function(item, model){
+        $scope.orderLine.employeeName = $scope.obj.selectedEmployee.name;
+        $scope.orderLine.badgeCode = $scope.obj.selectedEmployee.badgeCode;        
+    }
     
     function validateForm($scope, form){       
         var entity = 'orderLine'; 

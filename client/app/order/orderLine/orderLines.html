@@ -41,6 +41,7 @@
             <thead>
                 <tr>
                     <th>Angajat</th>
+                    <th>Card</th>
                     <th>Masa</th>
                     <th></th>
                 </tr>
@@ -49,13 +50,10 @@
                 <tr data-ng-repeat="orderLine in orderLines | filter:search">
                     <td>
                         <a ng-href="/admin/orders/{{orderId}}/orderLines/{{orderLine._id}}">{{orderLine.employeeName}}</a>
-                    </td>                    
-                    <td>
-                        {{orderLine.eatSeries}}
-                    </td>                    
-                    <td>
-                        <a href ng-click="delete(orderLine)">sterge</a>
                     </td>
+                    <td>{{orderLine.badgeCode}}</td>                    
+                    <td>{{orderLine.eatSeries}}</td>                    
+                    <td><a href ng-click="delete(orderLine)">sterge</a></td>
                 </tr>
             </tbody>
         </table>
