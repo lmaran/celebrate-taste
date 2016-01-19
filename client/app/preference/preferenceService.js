@@ -14,7 +14,8 @@ app.factory('preferenceService', ['$http', 'helperService', function ($http, hel
     };    
 
     factory.getByDate = function (dateStr) {
-        return $http.get(rootUrl + '?date=' + dateStr).then(function (result) {
+        // OData query
+        return $http.get(rootUrl + '?$filter=date eq ' +  '\'' + dateStr + '\'').then(function (result) {            
             return result.data;
         });
     };
@@ -34,7 +35,9 @@ app.factory('preferenceService', ['$http', 'helperService', function ($http, hel
     
     factory.getNextByEmployee = function (employeeName) {
         var todayStr = helperService.getStringFromDate(new Date());
-        return $http.get(rootUrl + 'employee/' + encodeURIComponent(employeeName) + '?today=' + todayStr).then(function (result) {
+        var query = "?$filter=employeeName eq '" +  employeeName +  "' and date gt '" + todayStr + "'";
+        //query += "&$orderby=date"
+        return $http.get(rootUrl + query).then(function (result) {                
             return result.data;
         });
     };         

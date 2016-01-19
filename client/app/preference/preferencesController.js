@@ -14,9 +14,7 @@ app.controller('preferencesController', ['$scope', '$location', 'preferenceServi
     $scope.selectDate = function(date){
         if(date !== 'Nu exista date'){
             $scope.selectedDate = date;
-            
-            console.log($scope.selectedDate);
-            
+
             $location.search('date', date); // add property to url
             getPreferencesByDay($scope.selectedDate);
         }
