@@ -1,4 +1,5 @@
-﻿'use strict';
+﻿/*global _*/
+'use strict';
 
 app.controller('orderLinesController', ['$scope', '$location', 'orderLineService', 'modalService', '$route',
     function ($scope, $location, orderLineService, modalService, $route) {
@@ -15,7 +16,19 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
             $scope.selectedEatSeries = eatSeries;
             $location.search('eatSeries', eatSeries); // add property to url
         }
+    }
+    
+    $scope.selectPreference = function(preference){
+        if(preference === 'Toate pref.'){
+            $scope.selectPreference = 'Toate pref.';
+            $location.search('preference', null); // delete property from url
+        } else {
+            $scope.selectPreference = preference;
+            $location.search('preference', preference); // add property to url
+        }
     }     
+    
+    $scope.preferences=['A', 'B', 'C', 'D'];    
     
     // $scope.order is defined in orderControler and available here as we are into a partial view
 
@@ -71,11 +84,28 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
             if(searchObject.eatSeries)
                 $scope.selectedEatSeries = searchObject.eatSeries;  
             else
-                $scope.selectedEatSeries = 'Toate seriile';            
+                $scope.selectedEatSeries = 'Toate seriile';  
+                
+            if(searchObject.preference)
+                $scope.selectedPreference = searchObject.preference;  
+            else
+                $scope.selectedPreference = 'Toate pref.';                           
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
         });
+    }
+    
+    $scope.preferencesFilter = function(preference){
+        if($scope.selectedPreference === 'Toate pref.'){
+            return true;
+        } else if ($scope.selectedPreference === 'A' || $scope.selectedPreference === 'B'){
+            return preference.option1 === $scope.selectedPreference;
+        } else if ($scope.selectedPreference === 'C' || $scope.selectedPreference === 'D'){
+            return preference.option2 === $scope.selectedPreference;
+        } else if($scope.selectedPreference === 'Fara pref.'){
+            return !(preference.option1 && preference.option2);
+        }
     }
 
 }]);

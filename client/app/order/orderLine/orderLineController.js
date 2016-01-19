@@ -1,9 +1,12 @@
 ﻿/*global app*/
+/*global _*/
 'use strict';
 
-app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '$location', 'helperValidator', 'customerEmployeeService', 'helperService', 'preferenceService',
-    function ($scope, $route, orderLineService, $location, helperValidator, customerEmployeeService, helperService, preferenceService) {
+app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '$location', 'helperValidator', 'customerEmployeeService', 'helperService', 'preferenceService', '$q',
+    function ($scope, $route, orderLineService, $location, helperValidator, customerEmployeeService, helperService, preferenceService, $q) {
 
+    var promiseToGetCustomerEmployees, promiseToGetOrderLine;
+    
     $scope.orderId = $route.current.params.id; 
     $scope.orderLineId = $route.current.params.id2; 
     
@@ -23,7 +26,9 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
         {name: 'Seria 2'},
         {name: 'Seria 3'}
     ];
-   
+
+    getCustomerEmployees(); // should be before init()
+      
     if ($scope.isEditMode) {  
         /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined     
         init(); 
@@ -34,20 +39,25 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
             $scope.orderDateAsString = dt(searchObject.orderDate).dateAsShortString;
         }
     }
-    
-    getCustomerEmployees();
 
     function init() {
         getOrderLine();
+        
+        // init customer in dropdown; promises should be already declared in this phase
+        $q.all([promiseToGetCustomerEmployees, promiseToGetOrderLine])
+            .then(function (result) {
+                $scope.obj.selectedEmployee = _.find($scope.customerEmployees, {name : $scope.orderLine.employeeName});
+            }, function (reason) {
+                alert('Failed: ' + reason);
+            });        
     } 
 
     function getOrderLine() {
-        orderLineService.getById($scope.orderId, $scope.orderLineId).then(function (data) {
+        promiseToGetOrderLine = orderLineService.getById($scope.orderId, $scope.orderLineId).then(function (data) {
             $scope.orderLine = data;
-            if($scope.orderLine.orderDate)
+            if($scope.orderLine.orderDate){
                 $scope.orderDateAsString = dt($scope.orderLine.orderDate).dateAsShortString;
-
-            $scope.selectedEmployee = $scope.customerEmployees[2];                
+            }         
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
@@ -55,7 +65,7 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
     }  
     
     function getCustomerEmployees(){
-        customerEmployeeService.getAll().then(function (data) {
+        promiseToGetCustomerEmployees = customerEmployeeService.getAll().then(function (data) {
             $scope.customerEmployees = data;
         })
         .catch(function (err) {
@@ -66,6 +76,8 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
     $scope.create = function (form) {        
         validateForm($scope, form);
         if (form.$invalid) return false;
+        
+        capitalizeOptions($scope.orderLine.option1, $scope.orderLine.option2);
   
         // 'orderId' and 'orderDate' properties were added before
         orderLineService.create($scope.orderId, $scope.orderLine)
@@ -85,11 +97,9 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
         validateForm($scope, form);
         if (form.$invalid) return false;
         
-        var orderLine = $scope.orderLine;
-        if(orderLine.option1) orderLine.option1 = orderLine.option1.toUpperCase();
-        if(orderLine.option2) orderLine.option2 = orderLine.option2.toUpperCase();
+        capitalizeOptions($scope.orderLine.option1, $scope.orderLine.option2);
             
-        orderLineService.update($scope.orderId, orderLine)
+        orderLineService.update($scope.orderId, $scope.orderLine)
             .then(function (data) {
                 $location.path('/admin/orders/' + $scope.orderId);
             })
@@ -131,6 +141,13 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
     
     function dt(dateAsString) { // yyyy-mm-dd
         return helperService.getObjFromString(dateAsString);
+    }
+    
+    function capitalizeOptions(option1, option2){
+        if($scope.orderLine.option1) 
+            $scope.orderLine.option1 = $scope.orderLine.option1.toUpperCase();
+        if($scope.orderLine.option2) 
+            $scope.orderLine.option2 = $scope.orderLine.option2.toUpperCase();
     }            
 
 }])
