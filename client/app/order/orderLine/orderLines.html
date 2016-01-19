@@ -43,6 +43,7 @@
                     <th>Angajat</th>
                     <th>Card</th>
                     <th>Masa</th>
+                    <th>Preferinte</th>
                     <th></th>
                 </tr>
             </thead>
@@ -52,7 +53,8 @@
                         <a ng-href="/admin/orders/{{orderId}}/orderLines/{{orderLine._id}}">{{orderLine.employeeName}}</a>
                     </td>
                     <td>{{orderLine.badgeCode}}</td>                    
-                    <td>{{orderLine.eatSeries}}</td>                    
+                    <td>{{orderLine.eatSeries}}</td>    
+                    <td>{{orderLine.option1 || '-'}} / {{orderLine.option2 || '-'}}</td>                
                     <td><a href ng-click="delete(orderLine)">sterge</a></td>
                 </tr>
             </tbody>

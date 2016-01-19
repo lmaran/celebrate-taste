@@ -40,7 +40,15 @@ app.factory('preferenceService', ['$http', 'helperService', function ($http, hel
         return $http.get(rootUrl + query).then(function (result) {                
             return result.data;
         });
-    };         
+    };
+    
+    factory.getByEmployeeAndDate = function (employeeName, dateStr) {
+        var query = "?$filter=employeeName eq '" +  employeeName +  "' and date eq '" + dateStr + "'";
+        //query += "&$orderby=date"
+        return $http.get(rootUrl + query).then(function (result) {                
+            return result.data; // normaly it shoud return an array with 0 or 1 elements
+        });
+    };              
 
     factory.update = function (item) {
         return $http.put(rootUrl, item);
