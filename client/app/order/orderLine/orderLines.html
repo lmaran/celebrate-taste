@@ -6,7 +6,7 @@
     
     <div class="row">
         
-        <div class="col-md-9">
+        <div class="col-md-5">
             <form class="form-inline">
                 <div class="form-group">  
                     <button type="button" class="btn btn-primary" ng-click="create()"> 
@@ -18,6 +18,56 @@
                 </div>
             </form> 
         </div>
+        
+        <div class="col-md-2">
+            <form class="form-inline">
+                <div class="form-group pull-right">                 
+                    <div class="input-group">
+                        <span class="btn-group" uib-dropdown>
+                            <button style="text-align:left; min-width:120px;" type="button" class="btn btn-default btn-block" uib-dropdown-toggle ng-disabled="disabled">
+                                <span>{{selectedEatSeries}}</span> 
+                                <span style="float:right; height:12px; margin-top: 8px;" class="caret"></span>
+                            </button>
+                            <ul style="width:100%; min-width:120px" class="uib-dropdown-menu" role="menu">
+                                <li>
+                                    <a href="#" ng-click="selectEatSeries('Toate seriile')">Toate seriile</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li ng-repeat="eatSeries in eatSeriesList">
+                                    <a href="#" ng-click="selectEatSeries(eatSeries)">{{eatSeries}}</a>
+                                </li>
+                            </ul>                    
+                        </span>                       
+                    </div>                        
+                    
+                </div>             
+            </form>       
+        </div> 
+        
+        <div class="col-md-2">
+            <form class="form-inline">
+                <div class="form-group pull-right">                
+                    <div class="input-group">
+                        <span class="btn-group" uib-dropdown>
+                            <button style="text-align:left; min-width:120px;" type="button" class="btn btn-default btn-block" uib-dropdown-toggle ng-disabled="disabled">
+                                <span>{{selectedPreference}}</span> 
+                                <span style="float:right; height:12px; margin-top: 8px;" class="caret"></span>
+                            </button>
+                            <ul style="width:100%; min-width:120px" class="uib-dropdown-menu" role="menu">
+                                <li role="menuitem">
+                                    <a href="#" ng-click="selectPreference('Toate pref.')">Toate pref.</a>
+                                    <a href="#" ng-click="selectPreference('Fara pref.')">Fara pref.</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li role="menuitem" ng-repeat="preference in preferences">
+                                    <a href="#" ng-click="selectPreference(preference)">{{preference}}</a>
+                                </li>
+                            </ul>                    
+                        </span>                       
+                    </div>                                         
+                </div>           
+            </form>       
+        </div>                             
                 
         <div class="col-md-3">
             <form class="form-inline">
@@ -41,24 +91,30 @@
             <thead>
                 <tr>
                     <th>Angajat</th>
+                    <th>Card</th>
                     <th>Masa</th>
+                    <th>Preferinte</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr data-ng-repeat="orderLine in orderLines | filter:search">
+                <tr data-ng-repeat="orderLine in orderLines 
+                        | filter: (selectedEatSeries !== 'Toate seriile' || '') && {eatSeries:selectedEatSeries} 
+                        | filter: preferencesFilter
+                        | filter: search 
+                        as results">
                     <td>
                         <a ng-href="/admin/orders/{{orderId}}/orderLines/{{orderLine._id}}">{{orderLine.employeeName}}</a>
-                    </td>                    
-                    <td>
-                        {{orderLine.eatSeries}}
-                    </td>                    
-                    <td>
-                        <a href ng-click="delete(orderLine)">sterge</a>
                     </td>
+                    <td>{{orderLine.badgeCode}}</td>                    
+                    <td>{{orderLine.eatSeries}}</td>    
+                    <td>{{orderLine.option1 || '-'}} / {{orderLine.option2 || '-'}}</td>                
+                    <td><a href ng-click="delete(orderLine)">sterge</a></td>
                 </tr>
             </tbody>
         </table>
     </div>
+    
+    <span class="label label-default" style="font-size:100%; font-weight:normal">Total:</span> {{results.length}} / {{orderLines.length}}
 
 <!--</div>-->

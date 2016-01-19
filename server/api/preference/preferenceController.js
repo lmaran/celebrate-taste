@@ -4,19 +4,8 @@ var preferenceService = require('./preferenceService');
 var preferenceValidator = require('./preferenceValidator');
 //var helper = require('../../data/dateTimeHelper');
 
-exports.getByDate = function (req, res) {
-    var dateStr = req.query.date; // "2015-12-03"
-    preferenceService.getByDate(dateStr, function (err, preferences) {
-        if(err) { return handleError(res, err); }
-        res.status(200).json(preferences);        
-    });
-};
-
-
-exports.getNextByEmployee = function (req, res) {
-    var todayStr = req.query.today; // "2015-12-03"
-    var employeeName = req.params.employeeName;
-    preferenceService.getNextByEmployee(todayStr, employeeName, function (err, preferences) {
+exports.getAll = function (req, res) {
+    preferenceService.getAll(req, function (err, preferences) {
         if(err) { return handleError(res, err); }
         res.status(200).json(preferences);        
     });

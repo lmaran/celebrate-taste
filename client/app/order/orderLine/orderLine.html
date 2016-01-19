@@ -25,18 +25,42 @@
                      https://github.com/angular-ui/ui-select/issues/850#issuecomment-167680690  -->
                 <input type="text" style="display: none" name="employeeName" ng-model="orderLine.employeeName"/>
                 
-                <ui-select ng-model="orderLine.employeeName" autofocus="true" focus-on='SetFocus' on-select="selectEmployee($item, $model)">
+                <ui-select ng-model="obj.selectedEmployee" autofocus="true" focus-on='SetFocus' on-select="selectEmployee($item, $model)">
                     <ui-select-match>
                         <span ng-bind="$select.selected.name"></span>
                     </ui-select-match>
-                    <ui-select-choices repeat="item.name as item in customerEmployees | filter: {name:$select.search}">
+                    <ui-select-choices repeat="item in (customerEmployees | filter: {name:$select.search}) track by item._id">
                         <span ng-bind-html="item.name | highlight: $select.search"></span>
                     </ui-select-choices>
                 </ui-select>                
                 <p class="text-muted">Tip: Poti cauta si dupa fragmente de text. </p>
                 <p ng-show="form.employeeName.$error.myValidation" class="help-block">{{errors.employeeName}}</p>
             </div>
+                        
         </div>
+        
+        <div class="form-group" ng-class="{'has-error' : form.badgeCode.$invalid }">
+            <label class="col-md-2 control-label">Card</label>
+            <div class="col-md-4">
+                <input type="text" name="badgeCode" ng-model="orderLine.badgeCode" class="form-control"/>
+                <!--<p class="text-muted">Ex: Petrescu Ion / Delegat 1</p>-->
+                <p ng-show="form.badgeCode.$error.myValidation" class="help-block">{{errors.badgeCode}}</p>
+            </div>
+        </div> 
+        
+        <div class="form-group" ng-class="{'has-error' : form.badgeCode.$invalid }">
+            <label class="col-md-2 control-label">Preferinte</label>
+            <div class="col-md-2">
+                <input type="text" name="badgeCode" ng-model="orderLine.option1" class="form-control text-uppercase" maxlength="1"/>
+                <p class="text-muted">Supa (Ex: A/B)</p>
+                <p ng-show="form.badgeCode.$error.myValidation" class="help-block">{{errors.badgeCode}}</p>
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="badgeCode" ng-model="orderLine.option2" class="form-control text-uppercase" maxlength="1"/>
+                <p class="text-muted">Felul 2 (Ex: C/D)</p>
+                <p ng-show="form.badgeCode.$error.myValidation" class="help-block">{{errors.badgeCode}}</p>
+            </div>            
+        </div>               
         
         <div class="form-group" ng-class="{'has-error' : form.eatSeries.$invalid}">
             <label class="col-md-2 control-label required">Masa</label>

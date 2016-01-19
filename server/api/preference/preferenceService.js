@@ -10,6 +10,7 @@
     // ---------- OData ----------
     preferenceService.getAll = function (req, next) {  
         var query = mongoService.getQuery(req);
+        if(query.$sort === undefined) query.$sort = {name: 1}; // sort by employee name (asc)
         mongoService.getAll(collection, query, next);
     };
 
@@ -47,16 +48,7 @@
             });
         });
     };
-    
-    preferenceService.getNextByEmployee = function (todayStr, employeeName, next) {      
-        mongoHelper.getDb(function (err, db) {
-            if (err) return next(err, null);
-            db.collection(collection).find({date:{$gte: todayStr}, employeeName: employeeName}, {sort:'date'}).toArray(function (err, docs) {
-                if (err) return next(err, null);
-                return next(null, docs);                 
-            });
-        });
-    };    
+  
     
     preferenceService.getNextDates = function (todayStr, next) {      
         mongoHelper.getDb(function (err, db) {
