@@ -36,10 +36,12 @@ function getIp(req) {
         || (req.connection && req.connection.remoteAddress)
         || undefined;
     
-    var parts = ip.split(':');
+    if(ip){
+        var parts = ip.split(':');
 
-    // IPv6 -> IPv4 ("::ffff:127.0.0.1" -> "127.0.0.1")    
-    return parts[parts.length-1];
+        // IPv6 -> IPv4 ("::ffff:127.0.0.1" -> "127.0.0.1")    
+        return parts[parts.length-1];
+    } else return '';
 }
 
 module.exports.getShortReq = getShortReq;

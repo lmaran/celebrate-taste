@@ -74,7 +74,8 @@ app.factory('helperService', [function(){
             monthAsString:this.getRoMonth(m-1), // Aprilie
 			monthAsShortString:this.getRoShortMonth(m-1), // Apr.
             year:yyyy, // 2015
-			ymd: yyyy + '-' + mm + '-' + dd // 2015-07-23
+			ymd: yyyy + '-' + mm + '-' + dd, // 2015-07-23
+            dmy: dd + '.' + mm + '.' + yyyy // 23.07.2015
         }		
 	}
 	
