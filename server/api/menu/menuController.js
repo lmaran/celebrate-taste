@@ -4,7 +4,10 @@ var menuService = require('./menuService');
 var helper = require('../../data/dateTimeHelper');
 
 exports.getAll = function (req, res) {
-    menuService.getAll(req, function (err, menus) {
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+        
+    menuService.getAll(odataQuery, function (err, menus) {
         if(err) { return handleError(res, err); }
         res.status(200).json(menus);        
     });

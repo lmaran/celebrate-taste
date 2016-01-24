@@ -10,9 +10,8 @@
     var collection = 'users';
     
    // ---------- OData ----------
-    userService.getAll = function (req, next) {
-           
-        var query = mongoService.getQuery(req);
+    userService.getAll = function (odataQuery, next) {  
+        var query = mongoService.getQuery(odataQuery);
         if(query.$sort === undefined) query.$sort = {name: 1}; // sort by name (asc)
         
         query.$select = query.$select || {};

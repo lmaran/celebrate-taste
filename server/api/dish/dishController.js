@@ -3,7 +3,10 @@
 var dishService = require('./dishService');
 
 exports.getAll = function (req, res) {
-    dishService.getAll(req, function (err, dishes) {
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+        
+    dishService.getAll(odataQuery, function (err, dishes) {
         if(err) { return handleError(res, err); }
         res.status(200).json(dishes);        
     });
