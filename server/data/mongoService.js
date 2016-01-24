@@ -5,7 +5,7 @@
     //var seedData = require("./seedData");
     var mongoHelper = require('./mongoHelper');
     
-    mongoService.getQuery = function(req){
+    mongoService.getQuery = function(odataQuery){
         //console.log(req.params);
         var parser = require("odata-parser");
         var queryTransform = require("./queryTransform.js");
@@ -13,75 +13,51 @@
         
         var queryOptions = { $filter: {}};
 
-        if(req.query){
-            var query = req.query;
-            
-            // lm: select only odata parameters
-            var fixedQS = {};
-            if (query.$) fixedQS.$ = query.$;
-            if (query.$expand) fixedQS.$expand = query.$expand;
-            if (query.$filter) fixedQS.$filter = query.$filter;
-            if (query.$format) fixedQS.$format = query.$format;
-            if (query.$inlinecount) fixedQS.$inlinecount = query.$inlinecount;
-            if (query.$select) fixedQS.$select = query.$select;
-            if (query.$skip) fixedQS.$skip = query.$skip;
-            if (query.$top) fixedQS.$top = query.$top;
-            if (query.$orderby) fixedQS.$orderby = query.$orderby;
+        // lm: extract only odata parameters
+        var fixedQS = {};
+        if (odataQuery.$) fixedQS.$ = odataQuery.$;
+        if (odataQuery.$expand) fixedQS.$expand = odataQuery.$expand;
+        if (odataQuery.$filter) fixedQS.$filter = odataQuery.$filter;
+        if (odataQuery.$format) fixedQS.$format = odataQuery.$format;
+        if (odataQuery.$inlinecount) fixedQS.$inlinecount = odataQuery.$inlinecount; // only for compatibility. Use $count=true instead
+        if (odataQuery.$select) fixedQS.$select = odataQuery.$select;
+        if (odataQuery.$skip) fixedQS.$skip = odataQuery.$skip;
+        if (odataQuery.$top) fixedQS.$top = odataQuery.$top;
+        if (odataQuery.$orderby) fixedQS.$orderby = odataQuery.$orderby;
 
-
+        if(Object.keys(fixedQS).length > 0){
             var encodedQS = decodeURIComponent(querystring.stringify(fixedQS));
             if (encodedQS) {
                 queryOptions = queryTransform(parser.parse(encodedQS));
             }
-            if (query.$count) {
-                queryOptions.$inlinecount = true;
-            }
-            
-            // console.log('-----------------------------------------------------------------Initial query');
-            // console.log(query);
-            // console.log('-----------------------------------------------------------------Initial');
-            // console.log(fixedQS);
-            // console.log('-----------------------------------------------------------------Stringify');
-            // console.log(querystring.stringify(fixedQS));
-            // console.log('-----------------------------------------------------------------Decoded');
-            // console.log(encodedQS);
-            // console.log('-----------------------------------------------------------------Parsed');
-            // console.log(JSON.stringify(parser.parse(encodedQS), null, 4));
-            // console.log('-----------------------------------------------------------------Transformed');
-            // console.log(queryOptions.$filter);
-            
         }
 
-        //queryOptions.collection = req.params.collection;
-
-        if (req.params.$count) {
-            queryOptions.$count = true;
-        }
-
-        // if (req.params.id) {
-        //     req.params.id = req.params.id.replace(/\"/g, "").replace(/'/g, "");
-        //     queryOptions.$filter = { _id: req.params.id};
-        // } 
+        // count inline with '...&$inlinecount=allvalues' (odata V2) or '...&$count=true (odata V4)
+        // added later because 'parse' does not recognize them
+        if (odataQuery.$count) queryOptions.$inlinecount = true;
+        if (odataQuery.hasCountSegment) queryOptions.hasCountSegment = true;   
+    
+        // console.log('-----------------------------------------------------------------Initial query');
+        // console.log(query);
+        // console.log('-----------------------------------------------------------------Initial');
+        // console.log(fixedQS);
+        // console.log('-----------------------------------------------------------------Stringify');
+        // console.log(querystring.stringify(fixedQS));
+        // console.log('-----------------------------------------------------------------Decoded');
+        // console.log(encodedQS);
+        // console.log('-----------------------------------------------------------------Parsed');
+        // console.log(JSON.stringify(parser.parse(encodedQS), null, 4));
+        // console.log('-----------------------------------------------------------------Transformed');
+        // console.log(queryOptions.$filter);
         
         return queryOptions;         
     }
  
     mongoService.getAll = function (collection, query, next) {  
         // https://github.com/pofider/node-simple-odata-server/blob/master/lib/mongoAdapter.js
-        mongoHelper.getDb(function (err, db) {
-            // var Logger = require('mongodb').Logger;
-            // Logger.setLevel('debug');
-            // //Logger.filter('class', ['Db']);
-            
-            //console.log(db.db.logger);
-            
+        mongoHelper.getDb(function (err, db) {            
             if (err) return next(err, null);
-            
-            
-            //db.collection('badges').find().explain();
-            
-            //var query = getQuery();
-             
+
             var qr = db.collection(collection).find(query.$filter, query.$select || {});
 
             if (query.$sort) {
@@ -94,17 +70,17 @@
                 qr = qr.limit(query.$limit);
             }
  
-            // count
-            if (query.$count) {
+            // count (by '/$count' url segment)     -> returns a Number
+            if (query.hasCountSegment) {
                 return qr.count(next);
             }
   
-            // result
+            // result                               -> returns an Array
             if (!query.$inlinecount) {
                 return qr.toArray(next);
             }
 
-            // count + result
+            // count + result                       -> returns an Object
             qr.toArray(function(err, res) {
                 if (err)
                     return next(err);

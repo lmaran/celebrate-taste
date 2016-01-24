@@ -3,7 +3,10 @@
 var customerService = require('./customerService');
 
 exports.getAll = function (req, res) {
-    customerService.getAll(req, function (err, customers) {
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+        
+    customerService.getAll(odataQuery, function (err, customers) {
         if(err) { return handleError(res, err); }
         res.status(200).json(customers);        
     });
