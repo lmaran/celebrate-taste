@@ -16,7 +16,10 @@ var validationError = function(res, err) {
  * restriction: 'admin'
  */
 exports.getAll = function(req, res) {
-    userService.getAll(req, function (err, users) {
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+        
+    userService.getAll(odataQuery, function (err, users) {
         if(err) { return handleError(res, err); }
         res.status(200).json(users);        
     });    

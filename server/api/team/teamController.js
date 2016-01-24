@@ -4,7 +4,10 @@ var teamService = require('./teamService');
 var teamValidator = require('./teamValidator');
 
 exports.getAll = function (req, res) {
-    teamService.getAll(req, function (err, teams) {
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+        
+    teamService.getAll(odataQuery, function (err, teams) {
         if(err) { return handleError(res, err); }
         res.status(200).json(teams);        
     });

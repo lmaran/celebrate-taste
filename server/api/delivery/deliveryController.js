@@ -4,7 +4,10 @@ var deliveryService = require('./deliveryService');
 var deliveryValidator = require('./deliveryValidator');
 
 exports.getAll = function (req, res) {
-    deliveryService.getAll(req, function (err, deliverys) {
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+        
+    deliveryService.getAll(odataQuery, function (err, deliverys) {
         if(err) { return handleError(res, err); }
         res.status(200).json(deliverys);        
     });

@@ -4,7 +4,10 @@ var customerEmployeeService = require('./customerEmployeeService');
 var customerEmployeeValidator = require('./customerEmployeeValidator');
 
 exports.getAll = function (req, res) {
-    customerEmployeeService.getAll(req, function (err, customerEmployees) {
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+        
+    customerEmployeeService.getAll(odataQuery, function (err, customerEmployees) {
         if(err) { return handleError(res, err); }
         res.status(200).json(customerEmployees);        
     });

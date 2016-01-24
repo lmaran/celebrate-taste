@@ -4,8 +4,11 @@ var orderService = require('./orderService');
 var orderLineService = require('./orderLine/orderLineService');
 var orderValidator = require('./orderValidator');
 
-exports.getAll = function (req, res) {
-    orderService.getAll(req, function (err, orders) {
+exports.getAll = function (req, res) { 
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+    
+    orderService.getAll(odataQuery, function (err, orders) {
         if(err) { return handleError(res, err); }
         res.status(200).json(orders);        
     });
