@@ -7,6 +7,7 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
     $scope.orderId = $route.current.params.id;        
     $scope.orderLines = [];
     $scope.errors = {};
+    $scope.obj = {};
     
     $scope.selectEatSeries = function(eatSeries){
         if(eatSeries === 'Toate seriile'){
@@ -107,5 +108,12 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
             return !(preference.option1 && preference.option2);
         }
     }
+    
+    $scope.obj.onlyNoBadges = false;
+    $scope.badgesFilter = function(orderLine){
+        if($scope.obj.onlyNoBadges){
+            return !orderLine.badgeCode;
+        } else return true;
+    }    
 
 }]);
