@@ -90,9 +90,9 @@
         <table class="table table-responsive table-hover table-condensed">
             <thead>
                 <tr>
+                    <th>Masa</th>                    
                     <th>Angajat</th>
-                    <th>Card</th>
-                    <th>Masa</th>
+                    <th>Card</th>                    
                     <th>Preferinte</th>
                     <th></th>
                 </tr>
@@ -103,11 +103,13 @@
                         | filter: preferencesFilter
                         | filter: search 
                         as results">
+                    <td>{{orderLine.eatSeries}}</td>                     
                     <td>
                         <a ng-href="/admin/orders/{{orderId}}/orderLines/{{orderLine._id}}">{{orderLine.employeeName}}</a>
-                    </td>
-                    <td>{{orderLine.badgeCode}}</td>                    
-                    <td>{{orderLine.eatSeries}}</td>    
+                    </td>                     
+                    <td>{{orderLine.badgeCode}}
+                        <span ng-if="!orderLine.badgeCode" style="color:red">Lipsa card!</span>
+                    </td>                      
                     <td>{{orderLine.option1 || '-'}} / {{orderLine.option2 || '-'}}</td>                
                     <td><a href ng-click="delete(orderLine)">sterge</a></td>
                 </tr>
