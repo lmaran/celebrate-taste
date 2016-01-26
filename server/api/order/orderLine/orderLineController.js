@@ -3,6 +3,10 @@
 var orderLineService = require('./orderLineService');
 var orderLineValidator = require('./orderLineValidator');
 var importDataValidator = require('./importDataValidator');
+var customerEmployeeService = require('../../customerEmployee/customerEmployeeService');
+var preferenceService = require('../../preference/preferenceService');
+var async = require('async');
+var _ = require('lodash'); 
 
 exports.getAll = function (req, res) {
     var orderId = req.params.id;
@@ -80,32 +84,66 @@ exports.import = function(req, res){
         
     var importData = req.body;
     
-    // transform the string in array + remove empty lines: http://stackoverflow.com/a/19888749
-    importData.employeesName = importData.employeesName.split('\n').filter(Boolean); 
-          
     importDataValidator.all(req, res, function(errors){
         if(errors){
             res.status(400).send({ errors : errors }); // 400 - bad request
         }
-        else{
-            // create a new record for each received name
-            var orderLines = [];
-
-            importData.employeesName.forEach(function(employeeName){
-                orderLines.push({
-                    orderId: importData.orderId,
-                    orderDate: importData.orderDate,
-                    eatSeries: importData.eatSeries,
-                    employeeName: employeeName,
-                    createBy: req.user.name,
-                    createdOn: new Date()
-                });
-            });
+        else{                     
+            // get 'customerEmployees' and 'prefeences'
+            async.parallel([
+                function(callback){
+                    var odataQuery1 = {$filter:"isActive eq true"};
+                    customerEmployeeService.getAll(odataQuery1, callback);                    
+                },
+                function(callback){
+                    var odataQuery2 = {$filter:"date eq '" + importData.orderDate + "'"};
+                    preferenceService.getAll(odataQuery2, callback);
+                }
+            ],
+            function(err, results){
+                // here we have the results
                 
-            orderLineService.createMany(orderLines, function (err, response) {
                 if(err) { return handleError(res, err); }
-                res.status(201).json(response.ops[0]);
-            });           
+
+                var employees = results[0];
+                var preferences = results[1];
+                var orderLines = [];
+                
+                // transform the string in array + remove empty lines: http://stackoverflow.com/a/19888749
+                var employeesName = req.body.employeesName.split('\n').filter(Boolean);  
+                
+                // create a new record for each received name
+                employeesName.forEach(function(employeeName){
+                    var preference = _.find(preferences, function(item){
+                        return item.employeeName.toLowerCase() == employeeName.toLowerCase();
+                    });
+                    var employee = _.find(employees, function(item){
+                        return item.name.toLowerCase() == employeeName.toLowerCase();
+                    });                                  
+                    
+                    var orderLine = {
+                        orderId: importData.orderId,
+                        orderDate: importData.orderDate,
+                        eatSeries: importData.eatSeries,
+                        employeeName: employee ? employee.name : employeeName, // better formatting
+                        createBy: req.user.name,
+                        createdOn: new Date()
+                    };
+                    
+                    if(employee && employee.badgeCode) orderLine.badgeCode = employee.badgeCode;
+                    if(preference && preference.option1) orderLine.option1 = preference.option1;
+                    if(preference && preference.option2) orderLine.option2 = preference.option2;
+                    
+                    orderLines.push(orderLine);
+                });
+                
+                // save to db
+                orderLineService.createMany(orderLines, function (err, response) {
+                    if(err) { return handleError(res, err); }
+                    res.status(201).json(response.ops[0]);
+                }); 
+                                                           
+            });             
         }
     });
 

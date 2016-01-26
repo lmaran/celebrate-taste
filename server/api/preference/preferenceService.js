@@ -8,8 +8,8 @@
  
  
     // ---------- OData ----------
-    preferenceService.getAll = function (req, next) {  
-        var query = mongoService.getQuery(req);
+    preferenceService.getAll = function (odataQuery, next) {  
+        var query = mongoService.getQuery(odataQuery);
         if(query.$sort === undefined) query.$sort = {name: 1}; // sort by employee name (asc)
         mongoService.getAll(collection, query, next);
     };

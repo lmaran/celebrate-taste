@@ -7,8 +7,8 @@
  
  
     // ---------- OData ----------
-    customerService.getAll = function (req, next) {  
-        var query = mongoService.getQuery(req);
+    customerService.getAll = function (odataQuery, next) {  
+        var query = mongoService.getQuery(odataQuery);
         mongoService.getAll(collection, query, next);
     };
 

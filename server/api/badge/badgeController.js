@@ -4,8 +4,11 @@ var badgeService = require('./badgeService');
 //var mongoService = require('../../data/mongoService');
 var badgeValidator = require('./badgeValidator');
 
-exports.getAll = function (req, res) {   
-    badgeService.getAll(req, function (err, badges) {
+exports.getAll = function (req, res) {
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+        
+    badgeService.getAll(odataQuery, function (err, badges) {
         if(err) { return handleError(res, err); }
         res.status(200).json(badges);        
     });

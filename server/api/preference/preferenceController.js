@@ -5,7 +5,10 @@ var preferenceValidator = require('./preferenceValidator');
 //var helper = require('../../data/dateTimeHelper');
 
 exports.getAll = function (req, res) {
-    preferenceService.getAll(req, function (err, preferences) {
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+        
+    preferenceService.getAll(odataQuery, function (err, preferences) {
         if(err) { return handleError(res, err); }
         res.status(200).json(preferences);        
     });
