@@ -149,6 +149,45 @@ exports.import = function(req, res){
 
 };
 
+exports.print = function (req, res) {
+    var orderId = req.params.id;
+    var opCode = req.params.opCode;
+    // orderLineService.getById(orderLineId, function (err, orderLine) {
+    //     if(err) { return handleError(res, err); }
+    //     res.json(orderLine);
+    // });
+     
+
+    
+    if(opCode == 'seria1') printSeries(req, res, 'Seria 1');
+    if(opCode == 'seria2') printSeries(req, res, 'Seria 2');
+    if(opCode == 'seria3') printSeries(req, res, 'Seria 3');
+    if(opCode == 'summary') printSummary(req, res);
+    
+    // 
+    // orderLineService.getById(orderId, function (err, order) {
+    //     if(err) { return handleError(res, err); }
+    //     
+    // });          
+    // 
+           
+};
+
+function printSeries(req, res, seriesName){
+    
+    orderLineService.getAll(orderId, function (err, orderLines) {
+        if(err) { return handleError(res, err); }
+        res.status(200).json(orderLines);        
+    });    
+    
+    console.log(seriesName);
+    res.json(seriesName);    
+}
+
+function printSummary(req, res){
+    console.log('symmary');
+    res.json('symmary');    
+}
 
 function handleError(res, err) {
     return res.status(500).send(err);

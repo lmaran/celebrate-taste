@@ -15,6 +15,16 @@
             });
         });
     };
+    
+    orderLineService.getByOrderIdAndSeries = function (orderId, next) {     
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            db.collection(collection).find({orderId:orderId}, {sort:{eatSeries:1, employeeName:1}}).toArray(function (err, docs) {
+                if (err) return next(err, null);
+                return next(null, docs);                 
+            });
+        });
+    };    
 
     orderLineService.getById = function (id, next) {
         mongoHelper.getDb(function (err, db) {
