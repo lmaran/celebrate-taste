@@ -14,7 +14,7 @@
 
             var menuHasDishes = menu && menu.dishes && (menu.dishes.length > 0);
             if(menuHasDishes){                
-                menu.dishes = _.sortByAll(menu.dishes, ['category', 'option']);
+                menu.dishes = _.sortBy(menu.dishes, ['category', 'option']);
             };
             
             var context = {
@@ -35,7 +35,7 @@
 
             menus = _.map(menus, function(menu){
                 menu.menuDate = helper.getStringFromString(menu.menuDate);
-                menu.dishes =  _.sortByAll(menu.dishes, ['category', 'option']);
+                menu.dishes =  _.sortBy(menu.dishes, ['category', 'option']);
                 return menu;
             });
 

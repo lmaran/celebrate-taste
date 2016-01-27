@@ -125,7 +125,7 @@ exports.printById = function (req, res) {
                     
         
         _.chain(menu.dishes)
-            .sortByAll(['category','option'])
+            .sortBy(['category','option'])
             .map(function(dish){
                 var dishTitle = dish.name;
                 
@@ -203,7 +203,7 @@ function createDoc(req, res, firstDay){
                     .moveDown(0.5);
                     
                 _.chain(menu.dishes)
-                    .sortByAll(['category','option'])
+                    .sortBy(['category','option'])
                     .map(function(dish){                        
                         if(dish.option) doc.text(dish.option + '. ', {stroke:true,continued: true});
                         doc.text(dish.name, {stroke:false, continued: true});
