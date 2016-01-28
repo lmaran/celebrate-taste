@@ -109,6 +109,9 @@ exports.import = function(req, res){
                 var preferences = results[1];
                 var orderLines = [];
                 
+                var availableOptions1 = getAvailableOptions(preferences, 'option1'); // => ['A', 'B']
+                var availableOptions2 = getAvailableOptions(preferences, 'option2'); // => ['C', 'D']
+
                 // transform the string in array + remove empty lines: http://stackoverflow.com/a/19888749
                 var employeesName = req.body.employeesName.split('\n').filter(Boolean);  
                 
@@ -133,22 +136,22 @@ exports.import = function(req, res){
                     if(employee && employee.badgeCode) orderLine.badgeCode = employee.badgeCode;
                     if(preference && preference.option1){ 
                         orderLine.option1 = preference.option1;
+                        orderLine.fromOwnerOpt1 = true;
                     } else {
-                        // TODO
-                        // orderLine.option1 = getOption1();
-                        // orderLine.option1IsAuto = true;
-                    }
+                        // get a random value
+                        orderLine.option1 = getOption(availableOptions1);
+                    };
                     if(preference && preference.option2) {
                         orderLine.option2 = preference.option2;
+                        orderLine.fromOwnerOpt2 = true;
                     } else {
-                        // TODO
-                        // orderLine.option2 = getOption2();
-                        // orderLine.option1IsAuto = true;                        
+                        // get a random value
+                        orderLine.option2 = getOption(availableOptions2);                       
                     }
                     
                     orderLines.push(orderLine);
-                });
-                
+                });   
+
                 // save to db
                 orderLineService.createMany(orderLines, function (err, response) {
                     if(err) { return handleError(res, err); }
@@ -176,39 +179,44 @@ function printSeries(req, res, eatSeries){
     orderLineService.getByOrderIdAndSeries(orderId, eatSeries, function (err, orderLines) {
         if(err) { return handleError(res, err); }
         
-        var orderDate = orderLines[0].orderDate;
-        var eatSeries = orderLines[0].eatSeries;
-        
-        //res.status(200).json(orderLines);
-        
         var _ = require('lodash');
         var PDFDocument = require('pdfkit'); 
         var helper = require('../../../data/dateTimeHelper');                 
 
         var doc = new PDFDocument();
         
-        doc.fontSize(30)
-            .fontSize(18)
-            .text("Comanda pentru " + eatSeries, {align:'center'})
-            .fontSize(12)
-            //.text(helper.getFriendlyDate(firstDay).dmy + '  -  ' + helper.getFriendlyDate(lastDay).dmy, {align:'center'});
-            .text(helper.getStringFromString(orderDate), {align:'center'})
-            .moveDown(2);
-                    
+        if(orderLines.length == 0){
+            doc.fontSize(12)
+                .moveDown(2)
+                .text("Nu exista date!");
+        } else{
+            var orderDate = orderLines[0].orderDate;
+            var eatSeries = orderLines[0].eatSeries;
+                
         
-        _.chain(orderLines)
-            .map(function(orderLine, idx){
-                var orderLineTxt = orderLine.employeeName;
-                var idxCol = _.padEnd(idx + 1 + '.', 6);
-                // 
-                // if(dish.option) dishTitle = dish.option + '. ' + dish.name;  
-                // if(dish.isFasting) dishTitle = dishTitle + ' (Post)'; 
-                // if(dish.calories) dishTitle = dishTitle + ' - ' + dish.calories + ' calorii';         
-                doc.text(idxCol , {continued: true});
-                doc.text(orderLineTxt, {paragraphGap:8, continued: true});
-                doc.text(', ' + (orderLine.option1 || '-') + ' / ' + (orderLine.option2 || '-'));
-            })
-            .value();
+            doc.fontSize(30)
+                .fontSize(18)
+                .text("Comanda pentru " + eatSeries, {align:'center'})
+                .fontSize(12)
+                //.text(helper.getFriendlyDate(firstDay).dmy + '  -  ' + helper.getFriendlyDate(lastDay).dmy, {align:'center'});
+                .text(helper.getStringFromString(orderDate), {align:'center'})
+                .moveDown(2);
+                        
+            
+            _.chain(orderLines)
+                .map(function(orderLine, idx){
+                    var orderLineTxt = orderLine.employeeName;
+                    var idxCol = _.padEnd(idx + 1 + '.', 6);
+                    // 
+                    // if(dish.option) dishTitle = dish.option + '. ' + dish.name;  
+                    // if(dish.isFasting) dishTitle = dishTitle + ' (Post)'; 
+                    // if(dish.calories) dishTitle = dishTitle + ' - ' + dish.calories + ' calorii';         
+                    doc.text(idxCol , {continued: true});
+                    doc.text(orderLineTxt, {paragraphGap:8, continued: true});
+                    doc.text(', ' + (orderLine.option1 || '-') + ' / ' + (orderLine.option2 || '-'));
+                })
+                .value();
+        };
         
         // doc.fontSize(15)
         //     .moveDown(7)
@@ -217,9 +225,7 @@ function printSeries(req, res, eatSeries){
         
         res.set('Content-Type', 'application/pdf');
         doc.pipe(res);
-        doc.end(); 
-        
-        getOption1();                  
+        doc.end();                       
     });    
     
     // console.log(seriesName);
@@ -227,29 +233,38 @@ function printSeries(req, res, eatSeries){
 }
 
 function printSummary(req, res){
-    console.log('symmary');
-    res.json('symmary');    
+    console.log('comming soon');
+    res.json('comming soon');    
 }
 
 
-function getOption1(){
-    // TODO
-    //http://www.javascriptkit.com/javatutors/weighrandom2.shtml 
-    var fruits=["Apples", "Oranges", "Grapes", "Bananas"]
-    var fruitweight=[2, 3, 1, 4] //weight of each element above
-    var totalweight=eval(fruitweight.join("+")) //get total weight (in this case, 10)
-    var weighedfruits=new Array() //new array to hold "weighted" fruits
-    var currentfruit=0
-    
-    while (currentfruit<fruits.length){ //step through each fruit[] element
-        for (var i=0; i<fruitweight[currentfruit]; i++)
-            weighedfruits[weighedfruits.length]=fruits[currentfruit]
-        currentfruit++
+function getOption(availableOptions){ // => ['A', 'B']
+    if(availableOptions.length == 0) return null;
+    if(availableOptions.length == 1) return availableOptions[0];
+
+    var weightedOptions=[];
+
+    for(var i=0; i<3; i++){ // A: 30%
+        weightedOptions.push(availableOptions[0]); // => ['A','A','A']
     }
-    console.log(weighedfruits);
-    var randomnumber=Math.floor(Math.random()*totalweight);
-    console.log(randomnumber);
-    console.log(weighedfruits[randomnumber]);
+    
+    for(var i=0; i<7; i++){ // B: 70%
+        weightedOptions.push(availableOptions[1]) // => ['A','A','A','B','B','B','B','B','B','B']
+    }    
+
+    var randomNr=Math.floor(Math.random() * weightedOptions.length); // random nr. [0..9]
+
+    return weightedOptions[randomNr]; // => 'A' or 'B' with probability: A: 30%, B: 70%
+}
+
+function getAvailableOptions(preferences, optionName){
+    return _.chain(preferences)
+        .map(function(item){
+            return item[optionName]
+        })
+        .uniq()
+        .sortBy()
+        .value(); // => ['A', 'B']
 }
 
 function handleError(res, err) {
