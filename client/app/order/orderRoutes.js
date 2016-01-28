@@ -15,7 +15,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 	    .when('/admin/orders/:id', {
 	        controller: 'orderController',
 	        templateUrl: 'app/order/order.html',
-	        title: 'Editeaza comanda',
+	        title: 'Comanda',
 	        isEditMode: true
 	    });	
 }]);
