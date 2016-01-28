@@ -8,7 +8,6 @@ app.controller('preferencesController', ['$scope', '$location', 'preferenceServi
     $scope.errors = {};
     $scope.nextDates=[]; 
 
-    /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined
     init();
     
     $scope.selectDate = function(date){
