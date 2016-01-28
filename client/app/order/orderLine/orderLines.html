@@ -142,7 +142,10 @@
                     <td>{{orderLine.badgeCode}}
                         <span ng-if="!orderLine.badgeCode" style="color:red">Lipsa card!</span>
                     </td>                      
-                    <td>{{orderLine.option1 || '-'}} / {{orderLine.option2 || '-'}}</td>                
+                    <td>
+                        <span ng-style="orderLine.fromOwnerOpt1 && {'background-color':'lightgreen'}">{{orderLine.option1 || '-'}}</span> / 
+                        <span ng-style="orderLine.fromOwnerOpt2 && {'background-color':'lightgreen'}">{{orderLine.option2 || '-'}}</span>
+                    </td>                
                     <td><a href ng-click="delete(orderLine)">sterge</a></td>
                 </tr>
             </tbody>
