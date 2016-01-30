@@ -75,7 +75,6 @@ app.controller('customerEmployeeController', ['$scope', '$route', 'customerEmplo
         
         if($scope.selectedBadge){
             $scope.customerEmployee.badgeCode = $scope.selectedBadge.code;
-            $scope.customerEmployee.badgeName = $scope.selectedBadge.name;
         }
         
         if($scope.selectedTeam){
@@ -103,7 +102,6 @@ app.controller('customerEmployeeController', ['$scope', '$route', 'customerEmplo
         
         if($scope.selectedBadge){
             $scope.customerEmployee.badgeCode = $scope.selectedBadge.code;
-            $scope.customerEmployee.badgeName = $scope.selectedBadge.name;
         }
         
         if($scope.selectedTeam){
