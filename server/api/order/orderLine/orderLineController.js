@@ -119,10 +119,10 @@ exports.import = function(req, res){
                 // create a new record for each received name
                 employeesName.forEach(function(employeeName){
                     var preference = _.find(preferences, function(item){
-                        return item.employeeName.toLowerCase() == employeeName.toLowerCase();
+                        return item.employeeName.toLowerCase().replace(/-/g , " ") == employeeName.toLowerCase().replace(/-/g , " ");
                     });
                     var employee = _.find(employees, function(item){
-                        return item.name.toLowerCase() == employeeName.toLowerCase();
+                        return item.name.toLowerCase().replace(/-/g , " ") == employeeName.toLowerCase().replace(/-/g , " ");
                     });                                  
                     
                     var orderLine = {
