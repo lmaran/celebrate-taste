@@ -205,7 +205,7 @@ function createDoc(req, res, firstDay){
                 _.chain(menu.dishes)
                     .sortBy(['category','option'])
                     .map(function(dish){                        
-                        if(dish.option) doc.text(dish.option + '. ', {stroke:true,continued: true});
+                        if(dish.option) doc.text(dish.option + '. ', {stroke:true, continued: true});
                         doc.text(dish.name, {stroke:false, continued: true});
                         if(dish.isFasting) doc.text(' (Post) ', {stroke:false, continued: true});
                         if(dish.calories) doc.text(' - ' + dish.calories + ' cal.', {stroke:false});

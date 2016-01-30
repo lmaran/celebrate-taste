@@ -127,7 +127,6 @@
                 if(fieldVal)
                     customerEmployeeService.getByValue('badgeCode', fieldVal, req.body._id, function (err, customerEmployee) {
                         if(err) { return handleError(res, err); }
-                        console.log(customerEmployee);
                         if (customerEmployee) { 
                             cb("Acest card este deja alocat la o alta persoana."); 
                         }
@@ -142,26 +141,7 @@
             else    
                 cbResult(null, {field:'badgeCode', msg: err});
         });
-    }; 
-    
-    // optional50
-    customerEmployeeValidator.badgeName = function(req, res, cbResult){
-        var fieldVal = req.body.badgeName;     
-        async.series([
-            function(cb){
-                if(fieldVal && fieldVal.length > 50){
-                    cb("Maxim 50 caractere.");
-                }
-                else cb(null, 'checkNext');  
-            }       
-        ],
-        function(err, results){            
-            if(err == null) // no validation errors
-                cbResult(null, null);
-            else    
-                cbResult(null, {field:'badgeName', msg: err});
-        });
-    };                  
+    };                
           
     // all validations
     customerEmployeeValidator.all = function(req, res, cbResult){       
@@ -180,10 +160,7 @@
             },
             function(cb){
                customerEmployeeValidator.badgeCode(req, res, cb);
-            },    
-            function(cb){
-               customerEmployeeValidator.badgeName(req, res, cb);
-            }                                                   
+            }                                                 
         ],
         function (err, results) {
             results = _.compact(results); // remove null elements from array

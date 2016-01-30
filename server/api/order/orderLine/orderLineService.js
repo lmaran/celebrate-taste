@@ -93,6 +93,43 @@
             if (err) return next(err, null); 
             db.collection(collection).deleteMany({orderId:id}, next);
         });
-    };       
+    };   
+    
+    // ---------- Misc ----------    
+    
+    orderLineService.getSummary = function (orderId, next) {      
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            db.collection(collection).aggregate([
+                { $match: { orderId:orderId } },
+                { $group: {
+                    _id: {orderDate: '$orderDate', eatSeries:'$eatSeries', option1:'$option1'},
+                    count1: { $sum: 1 },
+                    options2:{$push:'$option2'}
+                }},
+                { $unwind:'$options2'},
+                { $group: {
+                    _id: {orderDate: '$_id.orderDate', eatSeries:'$_id.eatSeries', option2:'$options2'},
+                    count2: { $sum: 1},
+                    options1:{$push:{value:'$_id.option1', count:'$count1'}}
+                }},
+                { $unwind:'$options1'},
+                { $group:{
+                    _id:'$_id.eatSeries',
+                    orderDate: {$max: '$_id.orderDate'},
+                    eatSeries: {$max: '$_id.eatSeries'},
+                    options1:{$addToSet:'$options1'},
+                    options2:{$addToSet:{value:'$_id.option2', count:'$count2'}}
+                    
+                }},
+                { $project: { _id:0, orderDate: '$orderDate', eatSeries:'$eatSeries', options: { $setUnion: [ "$options1", "$options2" ] }} },
+                { $sort:{ eatSeries:1 }}
+
+            ]).toArray(function (err, docs) {
+                if (err) return next(err, null);
+                return next(null, docs);                 
+            });
+        });
+    }; 
     
 })(module.exports);
