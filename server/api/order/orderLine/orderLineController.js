@@ -5,6 +5,7 @@ var orderLineValidator = require('./orderLineValidator');
 var importDataValidator = require('./importDataValidator');
 var customerEmployeeService = require('../../customerEmployee/customerEmployeeService');
 var preferenceService = require('../../preference/preferenceService');
+var menuService = require('../../menu/menuService');
 var async = require('async');
 var _ = require('lodash'); 
 
@@ -183,7 +184,7 @@ function printSeries(req, res, eatSeries){
         var PDFDocument = require('pdfkit'); 
         var helper = require('../../../data/dateTimeHelper');                 
 
-        var doc = new PDFDocument();
+        var doc = new PDFDocument({margins:{top:20, bottom:10, left:72, right:50}});
         
         if(orderLines.length == 0){
             doc.fontSize(12)
@@ -194,8 +195,7 @@ function printSeries(req, res, eatSeries){
             var eatSeries = orderLines[0].eatSeries;
                 
         
-            doc.fontSize(30)
-                .fontSize(18)
+            doc.fontSize(18)
                 .text("Comanda pentru " + eatSeries, {align:'center'})
                 .fontSize(12)
                 //.text(helper.getFriendlyDate(firstDay).dmy + '  -  ' + helper.getFriendlyDate(lastDay).dmy, {align:'center'});
@@ -206,35 +206,98 @@ function printSeries(req, res, eatSeries){
             _.chain(orderLines)
                 .map(function(orderLine, idx){
                     var orderLineTxt = orderLine.employeeName;
-                    var idxCol = _.padEnd(idx + 1 + '.', 6);
-                    // 
-                    // if(dish.option) dishTitle = dish.option + '. ' + dish.name;  
-                    // if(dish.isFasting) dishTitle = dishTitle + ' (Post)'; 
-                    // if(dish.calories) dishTitle = dishTitle + ' - ' + dish.calories + ' calorii';         
+                    var idxCol = _.padEnd(idx + 1 + '.', 6);     
                     doc.text(idxCol , {continued: true});
                     doc.text(orderLineTxt, {paragraphGap:8, continued: true});
                     doc.text(', ' + (orderLine.option1 || '-') + ' / ' + (orderLine.option2 || '-'));
                 })
                 .value();
         };
-        
-        // doc.fontSize(15)
-        //     .moveDown(7)
-        //     .text("Va dorim pofta buna! ", {align:'right'});
 
-        
         res.set('Content-Type', 'application/pdf');
         doc.pipe(res);
         doc.end();                       
     });    
-    
-    // console.log(seriesName);
-    // res.json(seriesName);    
+  
 }
 
 function printSummary(req, res){
-    console.log('comming soon');
-    res.json('comming soon');    
+    var orderId = req.params.id;
+    
+    orderLineService.getSummary(orderId, function (err, summary) {
+        if(err) { return handleError(res, err); }
+        
+        var _ = require('lodash');
+        var PDFDocument = require('pdfkit'); 
+        var helper = require('../../../data/dateTimeHelper');                 
+
+        var doc = new PDFDocument({margins:{top:40, bottom:10, left:72, right:50}});
+        
+        if(summary.length == 0){
+            doc.fontSize(12)
+                .moveDown(2)
+                .text("Nu exista date!");
+                
+            res.set('Content-Type', 'application/pdf');
+            doc.pipe(res);
+            doc.end();                 
+        } else {
+            var orderDate = summary[0].orderDate;
+            
+            menuService.getTodaysMenu(orderDate, function (err, menu) {
+                if(err) { return handleError(res, err); }
+                
+                doc.fontSize(18)
+                    .text("Centralizator comanda", {align:'center'})
+                    .fontSize(12)
+                    .text(helper.getStringFromString(orderDate), {align:'center'})
+                    .moveDown(3);
+                
+                var total = [];          
+                summary.forEach(function(summaryLine) {
+                    doc.text(summaryLine.eatSeries + ':' , {stroke:true});
+                    doc.moveDown(0.5); 
+                    var options = _.sortBy(summaryLine.options, 'value');
+                    options.forEach(function(option) {
+                        
+                        // produce a list with acumulated values:
+                        // total = [{'A':107}, {'B':223}, {'C':106}, {'D':224}]
+                        var t = {};
+                        var key = option.value; // => 'A'
+                        t[key] = option.count; // => 24
+                        var existingOption = _.find(total, key);
+                        if(existingOption){ // if object exists => keep the existing element but update "total count"
+                            var sum = parseInt(existingOption[key]) + parseInt(option.count);
+                            existingOption[key] = sum;
+                        } else {
+                            total.push(t);
+                        }
+                        
+                        doc.text('     ' + key , {paragraphGap:3, continued: true});
+                        doc.text(': ' + option.count + ' portii  -  ' + _.find(menu.dishes, {option: key}).name);                
+                    });
+                    doc.moveDown(2);                          
+                });
+                
+                doc.text('Total:' , {stroke:true});
+                doc.moveDown(0.5); 
+                
+                // total = [{'A':107}, {'B':223}, {'C':106}, {'D':224}]
+                total.forEach(function(totalLine){
+                    var key = Object.keys(totalLine)[0]; // => 'A'
+                    doc.text('     ' + key , {paragraphGap:3, continued: true});
+                    doc.text(': ' + totalLine[key] + ' portii  -  ' + _.find(menu.dishes, {option: key}).name);                 
+                });  
+                
+                res.set('Content-Type', 'application/pdf');
+                doc.pipe(res);
+                doc.end();                                
+                
+            }); // end 'menuService'
+
+        };
+             
+    });  // end 'orderLineService'
 }
 
 
@@ -247,13 +310,11 @@ function getOption(availableOptions){ // => ['A', 'B']
     for(var i=0; i<3; i++){ // A: 30%
         weightedOptions.push(availableOptions[0]); // => ['A','A','A']
     }
-    
     for(var i=0; i<7; i++){ // B: 70%
         weightedOptions.push(availableOptions[1]) // => ['A','A','A','B','B','B','B','B','B','B']
     }    
 
     var randomNr=Math.floor(Math.random() * weightedOptions.length); // random nr. [0..9]
-
     return weightedOptions[randomNr]; // => 'A' or 'B' with probability: A: 30%, B: 70%
 }
 
