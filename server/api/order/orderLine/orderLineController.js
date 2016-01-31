@@ -154,10 +154,10 @@ exports.import = function(req, res){
                     employeeName = employeeName.trim();
                     
                     var preference = _.find(preferences, function(item){
-                        return item.employeeName.toLowerCase().replace(/-/g , " ") == employeeName.toLowerCase().replace(/-/g , " ");
+                        return normalize(item.employeeName) == normalize(employeeName);
                     });
                     var employee = _.find(employees, function(item){
-                        return item.name.toLowerCase().replace(/-/g , " ") == employeeName.toLowerCase().replace(/-/g , " ");
+                        return normalize(item.name) == normalize(employeeName);
                     });                                  
                     
                     var orderLine = {
@@ -367,7 +367,11 @@ function handleError(res, err) {
     return res.status(500).send(err);
 };
 
-
+function normalize(str){
+    return str.toLowerCase()
+        .replace(/-/g , ' ') // replace dash with one space
+        .replace(/ {2,}/g,' '); // replace multiple spaces with a single space
+}
   
   
  
