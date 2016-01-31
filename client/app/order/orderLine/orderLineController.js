@@ -6,6 +6,7 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
     function ($scope, $route, orderLineService, $location, helperValidator, customerEmployeeService, helperService, preferenceService, $q) {
 
     var promiseToGetCustomerEmployees, promiseToGetOrderLine;
+    var userPref = {}; // user preferences
     
     $scope.orderId = $route.current.params.id; 
     $scope.orderLineId = $route.current.params.id2; 
@@ -78,6 +79,12 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
         if (form.$invalid) return false;
         
         capitalizeOptions($scope.orderLine.option1, $scope.orderLine.option2);
+        
+        // set if preferences come from owner                   
+        if(userPref && $scope.orderLine.option1 && $scope.orderLine.option1.toLowerCase() === userPref.option1.toLowerCase())
+            $scope.orderLine.fromOwnerOpt1 = true;
+        if(userPref && $scope.orderLine.option2 && $scope.orderLine.option2.toLowerCase() === userPref.option2.toLowerCase())
+            $scope.orderLine.fromOwnerOpt2 = true;
   
         // 'orderId' and 'orderDate' properties were added before
         orderLineService.create($scope.orderId, $scope.orderLine)
@@ -120,6 +127,7 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
                 if(preferences.length === 1){                    
                     $scope.orderLine.option1 = preferences[0].option1;
                     $scope.orderLine.option2 = preferences[0].option2;
+                    userPref = preferences[0]; // preserve user preferences for later use
                 } else{
                     $scope.orderLine.option1 = undefined;
                     $scope.orderLine.option2 = undefined;                    

@@ -38,10 +38,39 @@ exports.create = function(req, res){
             res.status(400).send({ errors : errors }); // 400 - bad request
         }
         else{
-             orderLineService.create(orderLine, function (err, response) {
-                if(err) { return handleError(res, err); }
-                res.status(201).json(response.ops[0]);
-            });           
+            if(orderLine.option1 === undefined || orderLine.option1.trim() === '' 
+            || orderLine.option2 === undefined || orderLine.option2.trim() === ''){
+                
+                // get available options
+                menuService.getTodaysMenu(orderLine.orderDate, function (err, menu) {
+                    if(err) { return handleError(res, err); }
+
+                    var availableOptions1 = getAvailableOptions(menu, '1'); // => ['A', 'B']
+                    var availableOptions2 = getAvailableOptions(menu, '2'); // => ['C', 'D']
+                    
+                    if(orderLine.option1 === undefined || orderLine.option1.trim() === ''){
+                        orderLine.option1 = getOption(availableOptions1);
+                    };
+                    if(orderLine.option2 === undefined || orderLine.option2.trim() === ''){
+                        orderLine.option2 = getOption(availableOptions2);
+                    };
+                    
+                    // save orderLine
+                    orderLineService.create(orderLine, function (err, response) {
+                        if(err) { return handleError(res, err); }
+                        res.status(201).json(response.ops[0]);
+                    });                     
+                });            
+                
+
+            } else {
+                // save orderLine
+                orderLineService.create(orderLine, function (err, response) {
+                    if(err) { return handleError(res, err); }
+                    res.status(201).json(response.ops[0]);
+                });                  
+            }
+
         }
     });
 
@@ -99,7 +128,10 @@ exports.import = function(req, res){
                 function(callback){
                     var odataQuery2 = {$filter:"date eq '" + importData.orderDate + "'"};
                     preferenceService.getAll(odataQuery2, callback);
-                }
+                },
+                function(callback){
+                    menuService.getTodaysMenu(importData.orderDate, callback);
+                }                
             ],
             function(err, results){
                 // here we have the results
@@ -108,10 +140,11 @@ exports.import = function(req, res){
 
                 var employees = results[0];
                 var preferences = results[1];
+                var menu = results[2];
                 var orderLines = [];
                 
-                var availableOptions1 = getAvailableOptions(preferences, 'option1'); // => ['A', 'B']
-                var availableOptions2 = getAvailableOptions(preferences, 'option2'); // => ['C', 'D']
+                var availableOptions1 = getAvailableOptions(menu, '1'); // => ['A', 'B']
+                var availableOptions2 = getAvailableOptions(menu, '2'); // => ['C', 'D']
 
                 // transform the string in array + remove empty lines: http://stackoverflow.com/a/19888749
                 var employeesName = req.body.employeesName.split('\n').filter(Boolean);  
@@ -318,12 +351,12 @@ function getOption(availableOptions){ // => ['A', 'B']
     return weightedOptions[randomNr]; // => 'A' or 'B' with probability: A: 30%, B: 70%
 }
 
-function getAvailableOptions(preferences, optionName){
-    return _.chain(preferences)
+function getAvailableOptions(menu, category){
+    return _.chain(menu.dishes)
+        .filter({category: category})
         .map(function(item){
-            return item[optionName]
+            return item.option;
         })
-        .uniq()
         .sortBy()
         .value(); // => ['A', 'B']
 }
