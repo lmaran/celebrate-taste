@@ -8,6 +8,17 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
     $scope.orderLines = [];
     $scope.errors = {};
     $scope.obj = {};
+    $scope.obj.onlyNoBadges = false;    
+    
+    $scope.selectOnlyNoBadges = function(){
+        if($scope.obj.onlyNoBadges === false){
+            $scope.obj.onlyNoBadges === true;
+            $location.search('onlyNoBadges', null); // delete property from url
+        } else {
+            $scope.obj.onlyNoBadges === false;
+            $location.search('onlyNoBadges', true); // add property to url
+        }
+    }    
     
     $scope.selectEatSeries = function(eatSeries){
         if(eatSeries === 'Toate seriile'){
@@ -90,7 +101,12 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
             if(searchObject.preference)
                 $scope.selectedPreference = searchObject.preference;  
             else
-                $scope.selectedPreference = 'Toate pref.';                           
+                $scope.selectedPreference = 'Toate pref.'; 
+                
+            if(searchObject.onlyNoBadges)
+                $scope.obj.onlyNoBadges = true;  
+            else
+                $scope.obj.onlyNoBadges = false;                                            
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
@@ -109,7 +125,6 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
         }
     }
     
-    $scope.obj.onlyNoBadges = false;
     $scope.badgesFilter = function(orderLine){
         if($scope.obj.onlyNoBadges){
             return !orderLine.badgeCode;
