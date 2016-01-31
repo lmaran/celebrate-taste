@@ -10,11 +10,26 @@
             <form class="form-inline">
                 <div class="form-group">  
                     <button type="button" class="btn btn-primary" ng-click="create()"> 
-                        <span class="glyphicon glyphicon-plus"></span> Adauga linie  
+                        <span class="glyphicon glyphicon-plus"></span> Adauga  
                     </button> 
                     <button type="button" class="btn btn-primary" ng-click="import()"> 
                         <span class="glyphicon glyphicon-import"></span> Import  
-                    </button>                                   
+                    </button> 
+                    
+                    <span class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                            <span class="glyphicon glyphicon-print"></span>
+                             
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="uib-dropdown-menu">
+                            <li><a ng-href="api/orders/{{orderId}}/seria1/print" target="_self">Seria 1</a></li>
+                            <li><a ng-href="api/orders/{{orderId}}/seria2/print" target="_self">Seria 2</a></li>
+                            <li><a ng-href="api/orders/{{orderId}}/seria3/print" target="_self">Seria 3</a></li>
+                            <li><a ng-href="api/orders/{{orderId}}/summary/print" target="_self">Centralizator</a></li>                            
+                        </ul>                    
+                    </span>
+                                                                          
                 </div>
             </form> 
         </div>
@@ -127,7 +142,10 @@
                     <td>{{orderLine.badgeCode}}
                         <span ng-if="!orderLine.badgeCode" style="color:red">Lipsa card!</span>
                     </td>                      
-                    <td>{{orderLine.option1 || '-'}} / {{orderLine.option2 || '-'}}</td>                
+                    <td>
+                        <span ng-style="orderLine.fromOwnerOpt1 && {'background-color':'lightgreen'}">{{orderLine.option1 || '-'}}</span> / 
+                        <span ng-style="orderLine.fromOwnerOpt2 && {'background-color':'lightgreen'}">{{orderLine.option2 || '-'}}</span>
+                    </td>                
                     <td><a href ng-click="delete(orderLine)">sterge</a></td>
                 </tr>
             </tbody>

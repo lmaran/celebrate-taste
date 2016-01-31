@@ -3,6 +3,7 @@
 (function (badgeService) {
     
     var mongoService = require('../../data/mongoService');
+    var mongoHelper = require('../../data/mongoHelper');
     var collection = 'badges';
  
  
@@ -35,6 +36,13 @@
     // ---------- Misc ----------    
     badgeService.getByValue = function (field, value, id, next) {
         mongoService.getByValue(collection, field, value, id, next);
-    };      
+    };
+    
+    badgeService.findOneAndUpdate = function (filter, update, next) {
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            db.collection(collection).findOneAndUpdate(filter, update, next);                           
+        });
+    };          
     
 })(module.exports);

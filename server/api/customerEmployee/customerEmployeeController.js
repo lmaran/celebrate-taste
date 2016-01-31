@@ -2,6 +2,8 @@
 
 var customerEmployeeService = require('./customerEmployeeService');
 var customerEmployeeValidator = require('./customerEmployeeValidator');
+var badgeService = require('../badge/badgeService');
+var preferenceService = require('../preference/preferenceService');
 
 exports.getAll = function (req, res) {
     var odataQuery = req.query;
@@ -54,14 +56,38 @@ exports.update = function(req, res){
             customerEmployee.modifiedBy = req.user.name;    
             customerEmployee.modifiedOn = new Date();  
             
+            // update customer
             customerEmployeeService.update(customerEmployee, function (err, response) {
                 if(err) { return handleError(res, err); }
                 if (!response.value) {
                     res.sendStatus(404); // not found
                 } else {
+    
+                    var originalCustomerName = response.value.name;
+                    if(originalCustomerName !== customerEmployee.name){
+                        
+                        // update badge name
+                        var filter = {name: originalCustomerName};
+                        var update = {$set: {
+                            name : customerEmployee.name
+                        }};
+                        badgeService.findOneAndUpdate(filter, update, function(err, response){
+                            if(err) { return handleError(res, err); }
+                        });
+                        
+                        // update preferences
+                        var filter2 = {employeeName: originalCustomerName};
+                        var update2 = {$set: {
+                            employeeName : customerEmployee.name
+                        }};
+                        preferenceService.updateMany(filter2, update2, function(err, response){
+                            if(err) { return handleError(res, err); }
+                        });                                             
+                    }   
+                    
                     res.sendStatus(200);
                 }
-            });          
+            });
         }
     });
 };
