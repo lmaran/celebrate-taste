@@ -151,6 +151,8 @@ exports.import = function(req, res){
                 
                 // create a new record for each received name
                 employeesName.forEach(function(employeeName){
+                    employeeName = employeeName.trim();
+                    
                     var preference = _.find(preferences, function(item){
                         return item.employeeName.toLowerCase().replace(/-/g , " ") == employeeName.toLowerCase().replace(/-/g , " ");
                     });
