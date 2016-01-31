@@ -118,12 +118,12 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
         capitalizeOptions($scope.orderLine.option1, $scope.orderLine.option2);
 
         // check (and set accordingly) if preferences come from owner                   
-        if(userPref && $scope.orderLine.option1 && $scope.orderLine.option1.toLowerCase() === userPref.option1.toLowerCase())
+        if(userPref && userPref.option1 && $scope.orderLine.option1 && $scope.orderLine.option1.toLowerCase() === userPref.option1.toLowerCase())
             $scope.orderLine.fromOwnerOpt1 = true;
         else
             delete $scope.orderLine.fromOwnerOpt1;
         
-        if(userPref && $scope.orderLine.option2 && $scope.orderLine.option2.toLowerCase() === userPref.option2.toLowerCase())
+        if(userPref && userPref.option1 && $scope.orderLine.option2 && $scope.orderLine.option2.toLowerCase() === userPref.option2.toLowerCase())
             $scope.orderLine.fromOwnerOpt2 = true; 
         else
             delete $scope.orderLine.fromOwnerOpt2;                   
