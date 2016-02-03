@@ -18,7 +18,8 @@ if (config.env === 'production' || config.env === 'staging') {
         rollbarAccessToken: config.rollbarToken,
         rollbarConfig: {
             environment: config.env,
-            scrubFields:scrubFields
+            scrubFields:scrubFields,
+            enabled: false // Sets whether reporting of errors to Rollbar is enabled (default true)
         }
     });
 } else { // development
