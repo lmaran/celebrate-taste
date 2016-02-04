@@ -21,13 +21,19 @@ module.exports = function(app) {
 
     app.get("/test", function(req, res, next) {
         logger.info('hit test page');
-        res.json('This is a normal request, it should be logged to the console too');
+        res.json('This is an info request');
         return next();
     });
     
+    app.get("/warning", function(req, res, next) {
+        logger.info('hit warning page');
+        res.json('This is a warning request.');
+        return next();
+    });    
+    
     app.get("/testmeta", function(req, res, next) {
         logger.info('hit test page (with meta)', {some:'optional metadata'});
-        res.json('This is a normal request (with meta), it should be logged to the console too');
+        res.json('This is a normal request (with meta)');
         return next();
     });
     

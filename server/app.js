@@ -22,7 +22,7 @@ app.use(errorLogHandler());
 
 // Start server
 app.listen(config.port, config.ip, function () {
-    logger.info('Express server listening on %d in %s mode', config.port, config.env);
+    logger.warn('Express server listening on %d in %s mode', config.port, config.env);
 });
 
 // Expose app
