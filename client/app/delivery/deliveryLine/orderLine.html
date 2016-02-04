@@ -1,0 +1,96 @@
+﻿<div ng-include="'app/navbar/navbar.html'"></div>
+
+<ol class="breadcrumb">
+    <li>
+        <button ng-click="goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+            <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
+        </button>
+        <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
+    </li>
+    <li><a href="/admin/orders">Comenzi</a></li>
+    <li><a ng-href="/admin/orders/{{orderId}}">Comanda: {{orderDateAsString}}</a></li>
+    <li class="active">{{orderLine.employeeName || 'Adauga'}}</li>
+</ol>
+
+<div class="container-fluid">
+    <h1>{{pageTitle}}</h1>
+
+    <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
+
+        <div class="form-group" ng-class="{'has-error' : form.employeeName.$invalid}">
+            <label class="col-md-2 control-label required">Angajat</label>
+            <div class="col-md-4">
+                
+                <!-- workaround to add the ui-select value to the form - useful for validation
+                     https://github.com/angular-ui/ui-select/issues/850#issuecomment-167680690  -->
+                <input type="text" style="display: none" name="employeeName" ng-model="orderLine.employeeName"/>
+                
+                <ui-select ng-model="obj.selectedEmployee" autofocus="true" focus-on='SetFocus' on-select="selectEmployee($item, $model)">
+                    <ui-select-match>
+                        <span ng-bind="$select.selected.name"></span>
+                    </ui-select-match>
+                    <ui-select-choices repeat="item in (customerEmployees | filter: {name:$select.search}) track by item._id">
+                        <span ng-bind-html="item.name | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>                
+                <p class="text-muted">Tip: Poti cauta si dupa fragmente de text. </p>
+                <p ng-show="form.employeeName.$error.myValidation" class="help-block">{{errors.employeeName}}</p>
+            </div>
+                        
+        </div>
+        
+        <div class="form-group" ng-class="{'has-error' : form.badgeCode.$invalid }">
+            <label class="col-md-2 control-label">Card</label>
+            <div class="col-md-4">
+                <input type="text" name="badgeCode" ng-model="orderLine.badgeCode" class="form-control"/>
+                <!--<p class="text-muted">Ex: Petrescu Ion / Delegat 1</p>-->
+                <p ng-show="form.badgeCode.$error.myValidation" class="help-block">{{errors.badgeCode}}</p>
+            </div>
+        </div> 
+        
+        <div class="form-group" ng-class="{'has-error' : form.badgeCode.$invalid }">
+            <label class="col-md-2 control-label">Preferinte</label>
+            <div class="col-md-2">
+                <input type="text" name="badgeCode" ng-model="orderLine.option1" class="form-control text-uppercase" maxlength="1"/>
+                <p class="text-muted">Supa (Ex: A/B)</p>
+                <p ng-show="form.badgeCode.$error.myValidation" class="help-block">{{errors.badgeCode}}</p>
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="badgeCode" ng-model="orderLine.option2" class="form-control text-uppercase" maxlength="1"/>
+                <p class="text-muted">Felul 2 (Ex: C/D)</p>
+                <p ng-show="form.badgeCode.$error.myValidation" class="help-block">{{errors.badgeCode}}</p>
+            </div>            
+        </div>               
+        
+        <div class="form-group" ng-class="{'has-error' : form.eatSeries.$invalid}">
+            <label class="col-md-2 control-label required">Masa</label>
+            <div class="col-md-4">        
+                <select name="eatSeries" ng-model="orderLine.eatSeries" ng-options="eatSeries.name as eatSeries.name for eatSeries in eatSeriesList" class="form-control"></select>
+                <p class="text-muted">Seria in care angajatul urmeaza sa manance.</p>
+                <p ng-show="form.eatSeries.$error.myValidation" class="help-block">{{errors.eatSeries}}</p>                
+            </div>
+        </div>         
+        
+        <div ng-show="errors.other && submitted" class="form-group has-error">
+            <div class="col-md-4 col-md-offset-2">
+                <p class="help-block">{{errors.other}}</p>
+            </div>
+        </div>         
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-floppy-disk"></span> Salveaza </button>
+                <button type="button" class="btn" ng-click="goBack()"> <span class=" glyphicon glyphicon-remove"></span> Renunta </button>
+            </div>
+        </div>
+
+    </form>
+
+    <!--</br/>
+    </br/>
+    <p>Observatie:</p>
+    <p class="text-muted">
+        - pentru angajatii permanenti, este recomandabil ca <strong>numele cardului</strong> sa coincida cu <strong>numele angajatului</strong>.<br/>
+    </p>-->
+
+</div>
