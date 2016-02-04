@@ -5,6 +5,7 @@ var winston = require('winston');
 var config = require('../config/environment');
 var chalk = require('chalk');
 require('./rollbarTransport'); // init Rollbar transport for Winston
+require('winston-loggly'); // init Loggly transport for Winston
 
 var logger = new winston.Logger();
 var scrubFields = ['password', 'oldPassword', 'newPassword', 'hashedPassword', 'salt']
@@ -14,19 +15,28 @@ var scrubFields = ['password', 'oldPassword', 'newPassword', 'hashedPassword', '
 
 if (config.env === 'production' || config.env === 'staging') {
     logger.add(winston.transports.RollbarLogger, {
-        level: 'debug',  // catches all messages      
+        level: 'warn',  // catches just errors and warnings      
         rollbarAccessToken: config.rollbarToken,
         rollbarConfig: {
             environment: config.env,
-            scrubFields:scrubFields,
-            enabled: false // Sets whether reporting of errors to Rollbar is enabled (default true)
+            scrubFields:scrubFields
+            //enabled: false // Sets whether reporting of errors to Rollbar is enabled (default true)
         }
-    });
+    }); 
+    
+    logger.add(winston.transports.Loggly, {
+        token: config.logglyToken,
+        subdomain: config.logglySubdomain,
+        tags: [config.env],
+        json:true
+    });     
 } else { // development
     logger.add(winston.transports.Console, {
         level: 'debug', // catches all messages           
         formatter: formatterFunc
     });
+    
+     
 
     // // we don't need that for dev (only for testing)
     // //  ** do not remove it **       
@@ -45,7 +55,7 @@ function formatterFunc(options) {
     var meta = options.meta;
     var msg = '';
     
-    if(options.level === 'info')
+    if(options.level === 'info' || options.level === 'warn')
         if(meta && meta.hasOwnProperty('req')){ 
             msg = msg + meta.req.method + ' ' + meta.req.url;
             if(meta.res){
