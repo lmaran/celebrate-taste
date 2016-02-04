@@ -21,7 +21,7 @@ util.inherits(RollbarLogger, winston.Transport);
 RollbarLogger.prototype.log = function (level, msg, meta, callback) {
 
     //if (['warn','error'].indexOf(level) > -1 && (msg instanceof Error || meta instanceof Error)) {
-        
+
     if(level === 'error'){
         rollbar.handleError(meta.err, meta.req);       
     } else {                    
