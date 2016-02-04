@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()">&times;</button>    
+    <h3 class="modal-title">Creaza comanda</h3>
+</div>
+
+<form ng-submit="create(form)" name="form" class="form-horizontal" role="form" autocomplete="off" novalidate>
+    
+    <div class="modal-body">
+        <div class="form-group" ng-class="{'has-error' : form.date.$invalid}">
+            <label class="col-md-3 control-label required">Data comenzii</label>
+            <div class="col-md-6">
+                
+                <div class="input-group">
+                    <input type="text" name="date" ng-model="order.date" class="form-control" uib-datepicker-popup="EEEE, dd MMMM, yyyy" is-open="isOpen" datepicker-options="dateOptions" show-weeks="false" show-button-bar="false" min-date="minDate" readonly />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>                
+                
+                <!--<input type="text" name="code" ng-model="badge.code" class="form-control"  lm-focus="isFocusOnName" />-->
+                <!--<p class="text-muted">Ex: 28730663987622</p>-->
+                <p ng-show="form.date.$error.myValidation" class="help-block">{{errors.date}}</p>
+            </div>
+        </div>        
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="cancel()">Renunta</button>    
+        <button class="btn btn-primary" type="submit" ng-click2="ok()">Salveaza</button>
+    </div>
+    
+</form>  
