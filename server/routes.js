@@ -26,7 +26,7 @@ module.exports = function(app) {
     });
     
     app.get("/warning", function(req, res, next) {
-        logger.info('hit warning page');
+        logger.warn('hit warning page');
         res.json('This is a warning request.');
         return next();
     });    

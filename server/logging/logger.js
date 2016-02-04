@@ -15,7 +15,7 @@ var scrubFields = ['password', 'oldPassword', 'newPassword', 'hashedPassword', '
 
 if (config.env === 'production' || config.env === 'staging') {
     logger.add(winston.transports.RollbarLogger, {
-        level: 'warning',  // catches just errors and warnings      
+        level: 'warn',  // catches just errors and warnings      
         rollbarAccessToken: config.rollbarToken,
         rollbarConfig: {
             environment: config.env,
@@ -55,7 +55,7 @@ function formatterFunc(options) {
     var meta = options.meta;
     var msg = '';
     
-    if(options.level === 'info')
+    if(options.level === 'info' || options.level === 'warn')
         if(meta && meta.hasOwnProperty('req')){ 
             msg = msg + meta.req.method + ' ' + meta.req.url;
             if(meta.res){
