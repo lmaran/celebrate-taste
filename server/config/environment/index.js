@@ -37,7 +37,9 @@ var all = {
         }
     },
 
-    rollbarToken: 'c40dd41c292340419923230eed1d0d61'
+    rollbarToken: 'c40dd41c292340419923230eed1d0d61',
+    logglyToken: 'ffa32efd-fe1b-4de4-99c2-9c0d6b1f07bc',
+    logglySubdomain: 'lmaran'
 };
 
 // Export the config object based on the NODE_ENV
