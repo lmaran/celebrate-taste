@@ -12,10 +12,10 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
     
     $scope.selectOnlyNoBadges = function(){
         if($scope.obj.onlyNoBadges === false){
-            $scope.obj.onlyNoBadges === true;
+            $scope.obj.onlyNoBadges = true;
             $location.search('onlyNoBadges', null); // delete property from url
         } else {
-            $scope.obj.onlyNoBadges === false;
+            $scope.obj.onlyNoBadges = false;
             $location.search('onlyNoBadges', true); // add property to url
         }
     }    
