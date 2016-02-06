@@ -14,6 +14,7 @@ router.delete('/:id', controller.remove);
 
 router.post('/:id/orderLines', orderLineController.create);
 router.get('/:id/orderLines', orderLineController.getAll);
+router.get('/:id/orderLines/getEatSeriesList', orderLineController.getEatSeriesList);
 router.get('/:id/orderLines/:orderLineId', orderLineController.getById);
 router.put('/:id/orderLines', orderLineController.update);
 router.delete('/:id/orderLines/:orderLineId', orderLineController.remove);

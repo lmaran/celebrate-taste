@@ -18,6 +18,22 @@ exports.getAll = function (req, res) {
 };
 
 
+exports.getEatSeriesList = function (req, res) {
+    var orderId = req.params.id;
+    orderLineService.getEatSeriesList(orderId, function (err, eatSeriesList) {
+        if(err) { return handleError(res, err); }
+        
+        // in:  [{eatSeries: "Seria 1"}, {eatSeries: "Seria 2"}, {eatSeries: "Seria 3"}]
+        // out: ["Seria 1", "Seria 2", "Seria 3"]
+        var eatSeriesListNew = _.map(eatSeriesList, function(eatSeries){
+            return eatSeries.eatSeries;
+        });
+        
+        res.status(200).json(eatSeriesListNew);        
+    });
+};
+
+
 exports.getById = function (req, res) {
     var orderLineId = req.params.orderLineId;
     orderLineService.getById(orderLineId, function (err, orderLine) {

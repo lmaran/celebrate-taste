@@ -130,6 +130,21 @@
                 return next(null, docs);                 
             });
         });
-    }; 
+    };
+    
+    orderLineService.getEatSeriesList = function (orderId, next) {      
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            db.collection(collection).aggregate([
+                { $match: { orderId:orderId } },
+                { $group: {_id:{eatSeries:'$eatSeries'} } },	
+                { $project: {_id:0, eatSeries:'$_id.eatSeries'} },
+                { $sort: {'eatSeries':1} }
+            ]).toArray(function (err, docs) {
+                if (err) return next(err, null);
+                return next(null, docs);                 
+            });
+        });
+    };      
     
 })(module.exports);

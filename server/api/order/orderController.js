@@ -31,7 +31,7 @@ exports.create = function(req, res){
     //     }
     //     else{
         
-            order.status = "Initiala";
+            order.status = "open";
             order.createBy = req.user.name;    
             order.createdOn = new Date();  
                   

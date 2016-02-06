@@ -6,6 +6,7 @@ app.factory('orderLineService', ['$http', function ($http) {
     var rootUrl = '/api/orders/';
     var orderLinesPart = '/orderLines/';
 
+    // ---------- CRUD ----------
     factory.create = function (orderId, orderLine) {
         return $http.post(rootUrl + orderId + orderLinesPart, orderLine);
     };   
@@ -30,9 +31,17 @@ app.factory('orderLineService', ['$http', function ($http) {
         return $http.delete(rootUrl + orderId + orderLinesPart + orderLineId);
     };
     
+    
+    // ---------- Misc ----------
     factory.import = function (orderId, importData) {
         return $http.post(rootUrl + orderId + orderLinesPart + 'import', importData);
-    };     
+    }; 
+    
+    factory.getEatSeriesList = function (orderId) {
+        return $http.get(rootUrl + orderId + orderLinesPart + 'getEatSeriesList').then(function (result) {
+            return result.data;
+        });
+    };          
 
     return factory;
 }]);
