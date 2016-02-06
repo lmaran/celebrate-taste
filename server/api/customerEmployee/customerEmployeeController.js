@@ -2,7 +2,6 @@
 
 var customerEmployeeService = require('./customerEmployeeService');
 var customerEmployeeValidator = require('./customerEmployeeValidator');
-var badgeService = require('../badge/badgeService');
 var preferenceService = require('../preference/preferenceService');
 
 exports.getAll = function (req, res) {
@@ -65,15 +64,6 @@ exports.update = function(req, res){
     
                     var originalCustomerName = response.value.name;
                     if(originalCustomerName !== customerEmployee.name){
-                        
-                        // update badge name
-                        var filter = {name: originalCustomerName};
-                        var update = {$set: {
-                            name : customerEmployee.name
-                        }};
-                        badgeService.findOneAndUpdate(filter, update, function(err, response){
-                            if(err) { return handleError(res, err); }
-                        });
                         
                         // update preferences
                         var filter2 = {employeeName: originalCustomerName};

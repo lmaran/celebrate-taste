@@ -1,23 +1,20 @@
-﻿/* global _ */
-/*global app*/
+﻿/*global app*/
 'use strict';
 
-app.controller('customerEmployeeController', ['$scope', '$route', 'customerEmployeeService', '$location', 'badgeService', 'teamService', '$q', 'helperValidator', 
-    function ($scope, $route, customerEmployeeService, $location, badgeService, teamService, $q, helperValidator) {
+app.controller('customerEmployeeController', ['$scope', '$route', 'customerEmployeeService', '$location', 'teamService', '$q', 'helperValidator', 
+    function ($scope, $route, customerEmployeeService, $location, teamService, $q, helperValidator) {
        
-    var promiseToGetBadges, promiseToGetTeams, promiseToGetCustomerEmployee;        
+    //var promiseToGetTeams;
+    var promiseToGetCustomerEmployee;        
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
-    $scope.selectedBadge = {};
     
     $scope.isActiveOptions = [{id: true, name: 'Da'},{id: false, name: 'Nu'}];
     $scope.customerEmployee = {};
-    $scope.badges = [];
-    $scope.team = [];
+    //$scope.team = [];
     $scope.errors = {};
 
-    getBadges();
-    getTeams();
+    //getTeams();
    
     if ($scope.isEditMode) {  
         /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined     
@@ -26,22 +23,14 @@ app.controller('customerEmployeeController', ['$scope', '$route', 'customerEmplo
 
     function init() {
         getCustomerEmployee();
-        
-        // init badge in dropdown
-        $q.all([promiseToGetCustomerEmployee, promiseToGetBadges])
-            .then(function (result) {
-                $scope.selectedBadge = _.find($scope.badges, {code : $scope.customerEmployee.badgeCode});
-            }, function (reason) {
-                alert('Failed: ' + reason);
-            });
             
-        // init badge in dropdown
-        $q.all([promiseToGetCustomerEmployee, promiseToGetTeams])
-            .then(function (result) {
-                $scope.selectedTeam = _.find($scope.teams, {name : $scope.customerEmployee.team});
-            }, function (reason) {
-                alert('Failed: ' + reason);
-            });            
+        // // init team in dropdown
+        // $q.all([promiseToGetCustomerEmployee, promiseToGetTeams])
+        //     .then(function (result) {
+        //         $scope.selectedTeam = _.find($scope.teams, {name : $scope.customerEmployee.team});
+        //     }, function (reason) {
+        //         alert('Failed: ' + reason);
+        //     });            
     } 
 
     function getCustomerEmployee() {
@@ -53,33 +42,20 @@ app.controller('customerEmployeeController', ['$scope', '$route', 'customerEmplo
         });
     }
     
-    function getBadges() {
-        promiseToGetBadges = badgeService.getAll().then(function (data) {
-            $scope.badges = data;
-        })
-        .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
-        });
-    } 
-    
-    function getTeams() {
-        promiseToGetTeams = teamService.getAll().then(function (data) {
-            $scope.teams = data;
-        })
-        .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
-        });
-    }         
+    // function getTeams() {
+    //     promiseToGetTeams = teamService.getAll().then(function (data) {
+    //         $scope.teams = data;
+    //     })
+    //     .catch(function (err) {
+    //         alert(JSON.stringify(err, null, 4));
+    //     });
+    // }         
 
     $scope.create = function (form) {
         
-        if($scope.selectedBadge){
-            $scope.customerEmployee.badgeCode = $scope.selectedBadge.code;
-        }
-        
-        if($scope.selectedTeam){
-            $scope.customerEmployee.team = $scope.selectedTeam.name;
-        }        
+        // if($scope.selectedTeam){
+        //     $scope.customerEmployee.team = $scope.selectedTeam.name;
+        // }        
 
         validateForm($scope, form);
         if (form.$invalid) return false;
@@ -100,13 +76,9 @@ app.controller('customerEmployeeController', ['$scope', '$route', 'customerEmplo
 
     $scope.update = function (form) {
         
-        if($scope.selectedBadge){
-            $scope.customerEmployee.badgeCode = $scope.selectedBadge.code;
-        }
-        
-        if($scope.selectedTeam){
-            $scope.customerEmployee.team = $scope.selectedTeam.name;
-        }         
+        // if($scope.selectedTeam){
+        //     $scope.customerEmployee.team = $scope.selectedTeam.name;
+        // }         
 
         validateForm($scope, form);
         if (form.$invalid) return false;
