@@ -2,6 +2,7 @@
 
 (function (deliveryService) {
     
+    var mongoHelper = require('../../data/mongoHelper');
     var mongoService = require('../../data/mongoService');
     var collection = 'deliveries';
  
@@ -34,6 +35,13 @@
     // ---------- Misc ----------    
     deliveryService.getByValue = function (field, value, id, next) {
         mongoService.getByValue(collection, field, value, id, next);
-    };  
+    };
+    
+    deliveryService.createMany = function (deliveries, next) {
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            db.collection(collection).insertMany(deliveries, next);      
+        });
+    };    
     
 })(module.exports);

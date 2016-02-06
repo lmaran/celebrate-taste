@@ -24,11 +24,11 @@ exports.getById = function (req, res) {
 
 exports.create = function(req, res){
     var delivery = req.body;
-    deliveryValidator.all(req, res, function(errors){
-        if(errors){
-            res.status(400).send({ errors : errors }); // 400 - bad request
-        }
-        else{
+    // deliveryValidator.all(req, res, function(errors){
+    //     if(errors){
+    //         res.status(400).send({ errors : errors }); // 400 - bad request
+    //     }
+    //     else{
             
             delivery.createBy = req.user.name;    
             delivery.createdOn = new Date(); 
@@ -37,8 +37,52 @@ exports.create = function(req, res){
                 if(err) { return handleError(res, err); }
                 res.status(201).json(response.ops[0]);
             });           
-        }
-    });
+    //     }
+    // });
+
+};
+
+exports.createMany = function(req, res){
+    var delivery = req.body;
+    var eatSeriesList = delivery.eatSeriesList;
+       
+    var createdOn = new Date();
+    
+
+    var deliveries = [];
+    if(eatSeriesList){
+        eatSeriesList.forEach(function(eatSeries) {
+            delivery.eatSeries = eatSeries;            
+            deliveries.push({
+                orderId: delivery.orderId,
+                orderDate: delivery.orderDate,
+                eatSeries:eatSeries,
+                createBy: req.user.name,
+                createdOn: createdOn,
+                status: 'open'
+            }); 
+        });
+    }
+    
+    //console.log(deliveries);    
+    
+    // TODO - move to validation
+    if(deliveries.length === 0){
+        res.status(400).send({error:"lipsa eatSeries"}); // 400 - bad request
+        return false;
+    }
+       
+    // preferenceValidator.all(req, res, function(errors){
+    //     if(errors){
+    //         res.status(400).send({ errors : errors }); // 400 - bad request
+    //     }
+    //     else{
+             deliveryService.createMany(deliveries, function (err, response) {
+                if(err) { return handleError(res, err); }
+                res.status(201).json(response.ops[0]);
+            });           
+    //     }
+    // });
 
 };
 

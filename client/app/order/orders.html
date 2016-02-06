@@ -60,13 +60,14 @@
                         </a>
                     </td>                    
                     <td>
-                        {{order.status}}
+                        <span ng-if="order.status==='open'">deschisa</span>
+                        <span ng-if="order.status==='completed'" style="color:green">finalizata</span>
                     </td>
                     <td>
-                        <span ng-if="order.status !== 'Finalizat'">
+                        <span ng-if="order.status !== 'completed'">
                             <a href ng-click="delete(order)">sterge</a>
                         </span>
-                        <span ng-if="order.status === 'Finalizat'" class="text-muted" title="Nu poti sterge comenzile finalizate!">
+                        <span ng-if="order.status === 'completed'" class="text-muted" title="Nu poti sterge comenzile finalizate!">
                             sterge
                         </span>
                     </td>
