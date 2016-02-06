@@ -1,27 +1,42 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()">&times;</button>    
-    <h3 class="modal-title">Creaza comanda</h3>
+    <h3 class="modal-title">Creaza o cerere de livrare</h3>
 </div>
 
 <form ng-submit="create(form)" name="form" class="form-horizontal" role="form" autocomplete="off" novalidate>
     
     <div class="modal-body">
-        <div class="form-group" ng-class="{'has-error' : form.date.$invalid}">
-            <label class="col-md-3 control-label required">Data comenzii</label>
-            <div class="col-md-6">
-                
-                <div class="input-group">
-                    <input type="text" name="date" ng-model="order.date" class="form-control" uib-datepicker-popup="EEEE, dd MMMM, yyyy" is-open="isOpen" datepicker-options="dateOptions" show-weeks="false" show-button-bar="false" min-date="minDate" readonly />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>                
-                
-                <!--<input type="text" name="code" ng-model="badge.code" class="form-control"  lm-focus="isFocusOnName" />-->
-                <!--<p class="text-muted">Ex: 28730663987622</p>-->
-                <p ng-show="form.date.$error.myValidation" class="help-block">{{errors.date}}</p>
+               
+        <div ng-show="!noOrders">
+            <div class="form-group" ng-class="{'has-error': form.order.$invalid}">
+                <label class="col-md-3 control-label">Comanda:</label>
+                <div class="col-md-6">        
+                    <select name="order" ng-model="selectedOrder" ng-options="order.date for order in orders" class="form-control"></select>
+                    <p class="text-muted">Comanda in baza careia se face livrarea.</p>
+                    <p ng-show="form.order.$error.myValidation" class="help-block">{{errors.order}}</p>                
+                </div>
+            </div>         
+            
+            <div class="form-group" ng-class="{ 'has-error': form.code.$invalid}">
+                <div class="col-md-9 col-md-offset-3">
+                    <div class="checkbox">
+                        <!--<div>{{eatSeriesList}}</div>-->
+                        <span ng-repeat="eatSeries in eatSeriesList">
+                            <label style="margin-right:30px">
+                                <input type="checkbox"  ng-model = "eatSeries.selected"> {{eatSeries.name}}
+                            </label>
+                        </span>                                    
+                    </div>
+                    <p class="text-muted">Genereaza cate o cerere pt. fiecare serie.</p>
+                    <p ng-show="form.order.$error.myValidation" class="help-block">{{errors.order}}</p>                      
+                </div>
             </div>
+        </div> 
+        
+        <div ng-show="noOrders">
+            Nu exista comenzi disponibile pentru livrare!
         </div>        
+                     
     </div>
 
     <div class="modal-footer">

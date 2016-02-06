@@ -5,6 +5,7 @@ var controller = require('./deliveryController');
 var router = express.Router();
 
 router.post('/', controller.create);
+router.post('/createMany', controller.createMany);
 router.get('/', controller.getAll);
 router.get('/\\$count', controller.getAll);
 router.get('/:id', controller.getById);

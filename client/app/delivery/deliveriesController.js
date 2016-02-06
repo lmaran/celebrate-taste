@@ -34,11 +34,11 @@ app.controller('deliveriesController', ['$scope', '$location', 'deliveryService'
         });
     };
     
-    $scope.openCreateOrder = function () {
+    $scope.openCreateDelivery = function () {
         var modalInstance = $uibModal.open({
             animation:false,
-            templateUrl: 'app/delivery/createOrderTpl.html',
-            controller: 'createOrderTplController'
+            templateUrl: 'app/delivery/createDeliveryTpl.html',
+            controller: 'createDeliveryTplController'
         });
 
         modalInstance.result.then(function () { // "yyyy-mm-dd" 

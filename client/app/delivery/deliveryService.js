@@ -8,6 +8,10 @@ app.factory('deliveryService', ['$http', function ($http) {
     factory.create = function (item) {
         return $http.post(rootUrl, item);
     };
+    
+    factory.createMany = function (items) {
+        return $http.post(rootUrl + 'createMany', items);
+    };     
 
     factory.getAll = function () {
         return $http.get(rootUrl).then(function (result) {

@@ -5,6 +5,7 @@ app.factory('orderService', ['$http', function ($http) {
     var factory = {};
     var rootUrl = '/api/orders/';
 
+    // ---------- CRUD ----------
     factory.create = function (item) {
         return $http.post(rootUrl, item);
     };
@@ -29,11 +30,20 @@ app.factory('orderService', ['$http', function ($http) {
         return $http.delete(rootUrl + encodeURIComponent(itemId));
     };
     
+    
+    // ---------- Misc ----------
     factory.count = function(field, value){
         return $http.get(rootUrl + '$count?$filter=' + field + ' eq ' + '\'' + value + '\'').then(function (result) {
             return result.data;
         });        
     }
+        
+    factory.getAllOpen = function () {
+        var query = "?$filter=status eq 'open'";
+        return $http.get(rootUrl + query).then(function (result) {                
+            return result.data; // normaly it shoud return an array with 0 or 1 elements
+        });
+    };   
 
     return factory;
 }]);
