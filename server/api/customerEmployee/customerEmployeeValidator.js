@@ -38,24 +38,24 @@
         });
     };    
     
-    // optional50
-    customerEmployeeValidator.team = function(req, res, cbResult){
-        var fieldVal = req.body.team;     
-        async.series([
-            function(cb){
-                if(fieldVal && fieldVal.length > 50){
-                    cb("Maxim 50 caractere.");
-                }
-                else cb(null, 'checkNext');  
-            }       
-        ],
-        function(err, results){            
-            if(err == null) // no validation errors
-                cbResult(null, null);
-            else    
-                cbResult(null, {field:'team', msg: err});
-        });
-    }; 
+    // // optional50
+    // customerEmployeeValidator.team = function(req, res, cbResult){
+    //     var fieldVal = req.body.team;     
+    //     async.series([
+    //         function(cb){
+    //             if(fieldVal && fieldVal.length > 50){
+    //                 cb("Maxim 50 caractere.");
+    //             }
+    //             else cb(null, 'checkNext');  
+    //         }       
+    //     ],
+    //     function(err, results){            
+    //         if(err == null) // no validation errors
+    //             cbResult(null, null);
+    //         else    
+    //             cbResult(null, {field:'team', msg: err});
+    //     });
+    // }; 
     
     // optionalAndUniqueEmail
     customerEmployeeValidator.email = function(req, res, cbResult){
@@ -149,9 +149,9 @@
             function(cb){
                customerEmployeeValidator.name(req, res, cb);
             },
-            function(cb){
-               customerEmployeeValidator.team(req, res, cb);
-            },
+            // function(cb){
+            //    customerEmployeeValidator.team(req, res, cb);
+            // },
             function(cb){
                customerEmployeeValidator.email(req, res, cb);
             },

@@ -71,7 +71,7 @@
             <thead>
                 <tr>
                     <th>Nume</th>
-                    <th>Echipa</th>
+                    <!--<th>Echipa</th>-->
                     <th>Email</th>
                     <th>Card</th>
                     <th>Activ</th>
@@ -87,7 +87,7 @@
                         <a ng-href="/admin/customerEmployees/{{customerEmployee._id}}">{{customerEmployee.name}}</a>
                         <i class="glyphicon glyphicon-info-sign" ng-if="customerEmployee.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{customerEmployee.description}}"></i>
                     </td>
-                    <td>{{ customerEmployee.team }}</td>
+                    <!--<td>{{ customerEmployee.team }}</td>-->
                     <td>{{ customerEmployee.email }}</td>
                     <td>{{ customerEmployee.badgeCode }}</td>
                     <td><span ng-show="customerEmployee.isActive" class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
