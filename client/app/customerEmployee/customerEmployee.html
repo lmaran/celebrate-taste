@@ -25,14 +25,14 @@
             </div>
         </div>
         
-        <div class="form-group" ng-class="{'has-error' : form.team.$invalid}">
+        <!--<div class="form-group" ng-class="{'has-error' : form.team.$invalid}">
             <label class="col-md-2 control-label">Echipa</label>
             <div class="col-md-4">        
                 <select name="team" ng-model="selectedTeam" ng-options="team.name for team in teams" class="form-control"></select>
                 <p class="text-muted">Ajuta la mutarea saptamanala a angajatilor.</p>
                 <p ng-show="form.team.$error.myValidation" class="help-block">{{errors.team}}</p>                
             </div>
-        </div>         
+        </div>         -->
 
         <div class="form-group" ng-class="{'has-error' : form.email.$invalid}">
             <label class="col-md-2 control-label">Email </label>
@@ -46,8 +46,9 @@
         <div class="form-group" ng-class="{'has-error' : form.badgeCode.$invalid}">
             <label class="col-md-2 control-label">Card</label>
             <div class="col-md-4">        
-                <select name="badgeCode" ng-model="selectedBadge" ng-options="badge.name +' - ' + badge.code + '' for badge in badges" class="form-control"></select>
-                <p class="text-muted">Cardul de acces. Ex: Petrescu Ion / Delegat 1.</p>
+                <!--<select name="badgeCode" ng-model="selectedBadge" ng-options="badge.name +' - ' + badge.code + '' for badge in badges" class="form-control"></select>-->
+                <input type="text" name="badgeCode" ng-model="customerEmployee.badgeCode" class="form-control"/>                
+                <p class="text-muted">Cardul de acces. Ex: 00025:94062</p>
                 <p ng-show="form.badgeCode.$error.myValidation" class="help-block">{{errors.badgeCode}}</p>                
             </div>
         </div> 
