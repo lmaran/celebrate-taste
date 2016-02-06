@@ -63,10 +63,10 @@
                         {{delivery.status}}
                     </td>
                     <td>
-                        <span ng-if="delivery.status !== 'Finalizat'">
+                        <span ng-if="delivery.status !== 'completed'">
                             <a href ng-click="delete(delivery)">sterge</a>
                         </span>
-                        <span ng-if="delivery.status === 'Finalizat'" class="text-muted" title="Nu poti sterge comenzile finalizate!">
+                        <span ng-if="delivery.status === 'completed'" class="text-muted" title="Nu poti sterge livrarile finalizate!">
                             sterge
                         </span>
                     </td>
