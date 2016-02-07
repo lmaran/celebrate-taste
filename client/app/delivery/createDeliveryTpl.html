@@ -11,7 +11,7 @@
             <div class="form-group" ng-class="{'has-error': form.order.$invalid}">
                 <label class="col-md-3 control-label">Comanda:</label>
                 <div class="col-md-6">        
-                    <select name="order" ng-model="selectedOrder" ng-options="order.date for order in orders" class="form-control"></select>
+                    <select name="order" ng-model="selectedOrder" ng-options="order.date for order in orders" ng-change="selectOrder()" class="form-control"></select>
                     <p class="text-muted">Comanda in baza careia se face livrarea.</p>
                     <p ng-show="form.order.$error.myValidation" class="help-block">{{errors.order}}</p>                
                 </div>
@@ -22,8 +22,13 @@
                     <div class="checkbox">
                         <!--<div>{{eatSeriesList}}</div>-->
                         <span ng-repeat="eatSeries in eatSeriesList">
-                            <label style="margin-right:30px">
-                                <input type="checkbox"  ng-model = "eatSeries.selected"> {{eatSeries.name}}
+                            <label style="margin-right:30px" 
+                                ng-style="{color: eatSeries.disabled ? 'gray' : 'black'}"
+                                ng-attr-title="{{eatSeries.disabled ? 'Aceasta serie a mai fost introdusa!' : ''}}">
+                                <input type="checkbox" 
+                                    ng-model="eatSeries.selected"
+                                    ng-disabled="eatSeries.disabled"> 
+                                    {{eatSeries.name}}
                             </label>
                         </span>                                    
                     </div>
@@ -41,7 +46,7 @@
 
     <div class="modal-footer">
         <button class="btn btn-default" type="button" ng-click="cancel()">Renunta</button>    
-        <button class="btn btn-primary" type="submit" ng-click2="ok()">Salveaza</button>
+        <button class="btn btn-primary" type="submit" ng-disabled="!existNewSeries" ng-attr-title="{{!existNewSeries ? 'Aceasta comanda a mai fost introdusa!' : ''}}">Salveaza</button>
     </div>
     
 </form>  

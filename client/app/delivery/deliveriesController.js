@@ -38,7 +38,12 @@ app.controller('deliveriesController', ['$scope', '$location', 'deliveryService'
         var modalInstance = $uibModal.open({
             animation:false,
             templateUrl: 'app/delivery/createDeliveryTpl.html',
-            controller: 'createDeliveryTplController'
+            controller: 'createDeliveryTplController',
+            resolve: {
+                dataToModal: function () {
+                    return $scope.deliveries;
+                }
+            }            
         });
 
         modalInstance.result.then(function () { // "yyyy-mm-dd" 

@@ -1,7 +1,8 @@
+/* global _ */
 'use strict';
 
-app.controller('createDeliveryTplController', ['$scope', '$uibModalInstance', 'helperService', 'deliveryService', 'helperValidator', '$q', 'orderService', 'orderLineService',
-	function ($scope, $uibModalInstance, helperService, deliveryService, helperValidator, $q, orderService, orderLineService) {
+app.controller('createDeliveryTplController', ['$scope', '$uibModalInstance', 'helperService', 'deliveryService', 'helperValidator', '$q', 'orderService', 'orderLineService', 'dataToModal',
+	function ($scope, $uibModalInstance, helperService, deliveryService, helperValidator, $q, orderService, orderLineService, dataToModal) {
 
     $scope.errors = {};
     $scope.noOrders = false; 
@@ -13,20 +14,35 @@ app.controller('createDeliveryTplController', ['$scope', '$uibModalInstance', 'h
         $scope.orders = data;
         if($scope.orders.length > 0){         
             $scope.selectedOrder = data[0];
-            
-            orderLineService.getEatSeriesList($scope.selectedOrder._id).then(function (eatSeriesList) {
-                $scope.eatSeriesList = _.map(eatSeriesList, function(eatSeries){
-                    return { name:eatSeries, selected:true };
-                });
-            })            
-                         
+            createEatSeriesList();                      
         } else{
             $scope.noOrders =  true;
         }
     })
     .catch(function (err) {
         alert(JSON.stringify(err, null, 4));
-    });  
+    }); 
+    
+    
+    function createEatSeriesList(){
+        $scope.existNewSeries = false; 
+        
+        orderLineService.getEatSeriesList($scope.selectedOrder._id).then(function (eatSeriesList) {
+            $scope.eatSeriesList = _.map(eatSeriesList, function(eatSeries){
+                var alreadyExists = _.some(dataToModal, {orderId: $scope.selectedOrder._id, eatSeries: eatSeries}) ? true : false;
+                if (!alreadyExists) $scope.existNewSeries = true;
+                return { 
+                    name:eatSeries, 
+                    selected:alreadyExists ? false : true,
+                    disabled: alreadyExists
+                };
+            });
+        })         
+    } 
+    
+    $scope.selectOrder = function(){
+        createEatSeriesList();
+    }
          
     
     $scope.create = function (form) {
@@ -43,14 +59,10 @@ app.controller('createDeliveryTplController', ['$scope', '$uibModalInstance', 'h
             .pluck('name')
             .sortBy()
             .value();
-        //console.log($scope.delivery.eatSeriesList);   
-        
-        //console.log($scope.delivery);
-        //return false;
+
         //validateFormAsync($scope, form)
             //.then(function(){
                 //if (form.$invalid) return false;
-                console.log('222');
                 //$scope.delivery.date = helperService.getStringFromDate($scope.delivery.date); // "yyyy-mm-dd"
                 
                 deliveryService.createMany($scope.delivery)
