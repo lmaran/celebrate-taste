@@ -11,7 +11,17 @@ var _ = require('lodash');
 
 exports.getAll = function (req, res) {
     var orderId = req.params.id;
-    orderLineService.getAll(orderId, function (err, orderLines) {
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+  
+    // add orderId to OData query
+    if(odataQuery.$filter){
+        odataQuery.$filter = "orderId eq '" + orderId + "' and " + odataQuery.$filter;
+    } else{
+        odataQuery.$filter = "orderId eq '" + orderId + "'";
+    }    
+        
+    orderLineService.getAll(odataQuery, function (err, orderLines) {
         if(err) { return handleError(res, err); }
         res.status(200).json(orderLines);        
     });

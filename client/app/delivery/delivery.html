@@ -7,57 +7,123 @@
         </button>
         <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
     </li>
-    <li><a href="/admin/orders">Comenzi</a></li>
-    <li class="active">Comanda: {{dateAsShortString}}</li>
+    <li><a href="/admin/deliveries">Livrari</a></li>
+    <li class="active">Livrare: {{dateAsShortString}} / {{delivery.eatSeries}}</li>
 </ol>
 
 <div class="container-fluid">
-    <h1>{{pageTitle}}: {{dateAsShortString}}</h1>
+    <h1>{{pageTitle}}: {{dateAsShortString}} / {{delivery.eatSeries}}</h1>
 
-    <!--<form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
-
-        <div class="form-group" ng-class="{'has-error' : form.date.$invalid}">
-            <label class="col-md-2 control-label required">Data</label>
-            <div class="col-md-4">
-                <input type="text" name="date" ng-model="order.date" class="form-control"  lm-focus="isFocusOnName" />
-                <p class="text-muted">Ex: 28730663987622</p>
-                <p ng-show="form.date.$error.myValidation" class="help-block">{{errors.date}}</p>
-            </div>
-        </div>        
-
-        <div class="form-group" ng-class="{'has-error' : form.status.$invalid }">
-            <label class="col-md-2 control-label required">Status</label>
-            <div class="col-md-4">
-                <input type="text" name="status" ng-model="order.status" class="form-control" />
-                <p class="text-muted">Ex: Petrescu Ion / Delegat 1</p>
-                <p ng-show="form.status.$error.myValidation" class="help-block">{{errors.status}}</p>
-            </div>
-        </div>
+    <div class="row">
         
-        <div ng-show="errors.other && submitted" class="form-group has-error">
-            <div class="col-md-4 col-md-offset-2">
-                <p class="help-block">{{errors.other}}</p>
-            </div>
-        </div>  
+        <!--<div class="col-md-3">
+            <form class="form-inline">
+                <div class="form-group">  
+                    <button type="button" class="btn btn-primary" ng-click="create()"> 
+                        <span class="glyphicon glyphicon-plus"></span> Adauga  
+                    </button> 
+                    <button type="button" class="btn btn-primary" ng-click="import()"> 
+                        <span class="glyphicon glyphicon-import"></span> Import  
+                    </button> 
+                    
+                    <span class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                            <span class="glyphicon glyphicon-print"></span>
+                             
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="uib-dropdown-menu">
+                            <li><a ng-href="api/orders/{{orderId}}/seria1/print" target="_self">Seria 1</a></li>
+                            <li><a ng-href="api/orders/{{orderId}}/seria2/print" target="_self">Seria 2</a></li>
+                            <li><a ng-href="api/orders/{{orderId}}/seria3/print" target="_self">Seria 3</a></li>
+                            <li><a ng-href="api/orders/{{orderId}}/summary/print" target="_self">Centralizator</a></li>                            
+                        </ul>                    
+                    </span>
+                                                                          
+                </div>
+            </form> 
+        </div>-->
         
-                  
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-floppy-disk"></span> Salveaza </button>
-                <button type="button" class="btn" ng-click="goBack()"> <span class=" glyphicon glyphicon-remove"></span> Renunta </button>
-            </div>
-        </div>
-
-    </form>-->
-
-    <!--</br/>
-    </br/>
-    <p>Observatie:</p>
-    <p class="text-muted">
-        - pentru angajatii permanenti, este recomandabil ca <strong>numele cardului</strong> sa coincida cu <strong>numele angajatului</strong>.<br/>
-    </p>-->
+        
+        <!--<div class="col-md-2">
+            <form class="form-inline">
+                <div class="form-group pull-right">                
+                    <div class="input-group">
+                        <span class="btn-group" uib-dropdown>
+                            <button style="text-align:left; min-width:120px;" type="button" class="btn btn-default btn-block" uib-dropdown-toggle ng-disabled="disabled">
+                                <span>{{selectedPreference}}</span> 
+                                <span style="float:right; height:12px; margin-top: 8px;" class="caret"></span>
+                            </button>
+                            <ul style="width:100%; min-width:120px" class="uib-dropdown-menu" role="menu">
+                                <li role="menuitem">
+                                    <a href="#" ng-click="selectPreference('Toate pref.')">Toate pref.</a>
+                                    <a href="#" ng-click="selectPreference('Fara pref.')">Fara pref.</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li role="menuitem" ng-repeat="preference in preferences">
+                                    <a href="#" ng-click="selectPreference(preference)">{{preference}}</a>
+                                </li>
+                            </ul>                    
+                        </span>                       
+                    </div>                                         
+                </div>           
+            </form>       
+        </div>                             -->
+                
+        <div class="col-md-12">
+            <form class="form-inline">
+                <div class="form-group pull-right">                   
+                    <div class="input-group">
+                        <span style="padding-right:10px;" class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="refresh()" style="border-radius:4px; background-color:lightgray"><span class="glyphicon glyphicon-refresh"></span></button>
+                        </span>
+                        <input style="border-top-left-radius:4px; border-bottom-left-radius:4px" ng-model="search" type="text" class="form-control" placeholder="Cauta...">
+                        <span class="input-group-btn"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>       
+        </div> 
     
-    <div ng-include="'app/order/orderLine/orderLines.html'" ng-controller="orderLinesController"></div> 
+    </div>    
+
+
+    <div class="table-responsive">
+        <table class="table table-responsive table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>Masa</th>                    
+                    <th>Angajat</th>
+                    <th>Card</th>                    
+                    <th>Preferinte</th>
+                    <!--<th></th>-->
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="orderLine in orderLines 
+                        | filter: (selectedEatSeries !== 'Toate seriile' || '') && {eatSeries:selectedEatSeries} 
+                        | filter: preferencesFilter
+                        | filter: badgesFilter                        
+                        | filter: search 
+                        as results">
+                    <td>{{orderLine.eatSeries}}</td>                     
+                    <td>
+                        <a ng-href="/admin/orders/{{orderId}}/orderLines/{{orderLine._id}}">{{orderLine.employeeName}}</a>
+                    </td>                     
+                    <td>{{orderLine.badgeCode}}
+                        <span ng-if="!orderLine.badgeCode" style="color:red">Lipsa card!</span>
+                    </td>                      
+                    <td>
+                        <span ng-style="orderLine.fromOwnerOpt1 && {'background-color':'lightgreen'}">{{orderLine.option1 || '-'}}</span> / 
+                        <span ng-style="orderLine.fromOwnerOpt2 && {'background-color':'lightgreen'}">{{orderLine.option2 || '-'}}</span>
+                    </td>                
+                    <!--<td><a href ng-click="delete(orderLine)">sterge</a></td>-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <span class="label label-default" style="font-size:100%; font-weight:normal">Total:</span> {{results.length}} / {{orderLines.length}}
+
+
 
 </div>    
