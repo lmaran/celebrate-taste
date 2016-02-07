@@ -23,11 +23,11 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
     $httpProvider.interceptors.push('authInterceptor');
 }]);
 
-app.config(function (toastrConfig) {
+app.config(['toastrConfig',function (toastrConfig) {
     angular.extend(toastrConfig, {
         positionClass: 'toast-top-center',
     });
-});
+}]);
   
 app.run(['$rootScope', '$location', 'userService', '$window', function ($rootScope, $location, userService, $window) {
     // Redirect to login if route requires auth and you're not logged in
