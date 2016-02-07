@@ -3,7 +3,7 @@
     <h3 class="modal-title">Creaza o cerere de livrare</h3>
 </div>
 
-<form ng-submit="create(form)" name="form" class="form-horizontal" role="form" autocomplete="off" novalidate>
+<form ng-submit="update(form)" name="form" class="form-horizontal" role="form" autocomplete="off" novalidate>
     
     <div class="modal-body">
                
@@ -20,7 +20,6 @@
             <div class="form-group" ng-class="{ 'has-error': form.code.$invalid}">
                 <div class="col-md-9 col-md-offset-3">
                     <div class="checkbox">
-                        <!--<div>{{eatSeriesList}}</div>-->
                         <span ng-repeat="eatSeries in eatSeriesList">
                             <label style="margin-right:30px" 
                                 ng-style="{color: eatSeries.disabled ? 'gray' : 'black'}"
