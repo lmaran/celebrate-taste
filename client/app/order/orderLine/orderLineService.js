@@ -23,8 +23,8 @@ app.factory('orderLineService', ['$http', function ($http) {
         });
     };
 
-    factory.update = function (orderId, orderLine) {
-        return $http.put(rootUrl + orderId + orderLinesPart, orderLine);
+    factory.update = function (orderLine) {
+        return $http.put(rootUrl + orderLine.orderId + orderLinesPart, orderLine);
     };
 
     factory.delete = function (orderId, orderLineId) {

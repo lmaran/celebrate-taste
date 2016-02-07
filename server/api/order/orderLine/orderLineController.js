@@ -57,7 +57,8 @@ exports.create = function(req, res){
     var orderLine = req.body;
     
     orderLine.createBy = req.user.name;    
-    orderLine.createdOn = new Date(); 
+    orderLine.createdOn = new Date();
+    orderLine.status = 'open';
                 
     orderLineValidator.all(req, res, function(errors){
         if(errors){
@@ -192,7 +193,8 @@ exports.import = function(req, res){
                         eatSeries: importData.eatSeries,
                         employeeName: employee ? employee.name : employeeName, // better formatting
                         createBy: req.user.name,
-                        createdOn: new Date()
+                        createdOn: new Date(),
+                        status: 'open'
                     };
                     
                     if(employee && employee.badgeCode) orderLine.badgeCode = employee.badgeCode;

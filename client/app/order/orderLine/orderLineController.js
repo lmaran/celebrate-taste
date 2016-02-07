@@ -128,7 +128,7 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
         else
             delete $scope.orderLine.fromOwnerOpt2;                   
             
-        orderLineService.update($scope.orderId, $scope.orderLine)
+        orderLineService.update($scope.orderLine)
             .then(function (data) {
                 $location.path('/admin/orders/' + $scope.orderId);
             })

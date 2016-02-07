@@ -15,60 +15,6 @@
     <h1>{{pageTitle}}: {{dateAsShortString}} / {{delivery.eatSeries}}</h1>
 
     <div class="row">
-        
-        <!--<div class="col-md-3">
-            <form class="form-inline">
-                <div class="form-group">  
-                    <button type="button" class="btn btn-primary" ng-click="create()"> 
-                        <span class="glyphicon glyphicon-plus"></span> Adauga  
-                    </button> 
-                    <button type="button" class="btn btn-primary" ng-click="import()"> 
-                        <span class="glyphicon glyphicon-import"></span> Import  
-                    </button> 
-                    
-                    <span class="btn-group" uib-dropdown>
-                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <span class="glyphicon glyphicon-print"></span>
-                             
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="uib-dropdown-menu">
-                            <li><a ng-href="api/orders/{{orderId}}/seria1/print" target="_self">Seria 1</a></li>
-                            <li><a ng-href="api/orders/{{orderId}}/seria2/print" target="_self">Seria 2</a></li>
-                            <li><a ng-href="api/orders/{{orderId}}/seria3/print" target="_self">Seria 3</a></li>
-                            <li><a ng-href="api/orders/{{orderId}}/summary/print" target="_self">Centralizator</a></li>                            
-                        </ul>                    
-                    </span>
-                                                                          
-                </div>
-            </form> 
-        </div>-->
-        
-        
-        <!--<div class="col-md-2">
-            <form class="form-inline">
-                <div class="form-group pull-right">                
-                    <div class="input-group">
-                        <span class="btn-group" uib-dropdown>
-                            <button style="text-align:left; min-width:120px;" type="button" class="btn btn-default btn-block" uib-dropdown-toggle ng-disabled="disabled">
-                                <span>{{selectedPreference}}</span> 
-                                <span style="float:right; height:12px; margin-top: 8px;" class="caret"></span>
-                            </button>
-                            <ul style="width:100%; min-width:120px" class="uib-dropdown-menu" role="menu">
-                                <li role="menuitem">
-                                    <a href="#" ng-click="selectPreference('Toate pref.')">Toate pref.</a>
-                                    <a href="#" ng-click="selectPreference('Fara pref.')">Fara pref.</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li role="menuitem" ng-repeat="preference in preferences">
-                                    <a href="#" ng-click="selectPreference(preference)">{{preference}}</a>
-                                </li>
-                            </ul>                    
-                        </span>                       
-                    </div>                                         
-                </div>           
-            </form>       
-        </div>                             -->
                 
         <div class="col-md-12">
             <form class="form-inline">
@@ -90,12 +36,10 @@
     <div class="table-responsive">
         <table class="table table-responsive table-hover table-condensed">
             <thead>
-                <tr>
-                    <th>Masa</th>                    
+                <tr>                   
                     <th>Angajat</th>
-                    <th>Card</th>                    
                     <th>Preferinte</th>
-                    <!--<th></th>-->
+                    <th>Stare</th>
                 </tr>
             </thead>
             <tbody>
@@ -104,19 +48,16 @@
                         | filter: preferencesFilter
                         | filter: badgesFilter                        
                         | filter: search 
-                        as results">
-                    <td>{{orderLine.eatSeries}}</td>                     
+                        as results">                  
                     <td>
-                        <a ng-href="/admin/orders/{{orderId}}/orderLines/{{orderLine._id}}">{{orderLine.employeeName}}</a>
+                        <a href ng-click="openDeliveryLine(orderLine)">{{orderLine.employeeName}}</a>
+                        <span ng-if="!orderLine.badgeCode" style="color:red"> - lipsa card </span>
                     </td>                     
-                    <td>{{orderLine.badgeCode}}
-                        <span ng-if="!orderLine.badgeCode" style="color:red">Lipsa card!</span>
-                    </td>                      
                     <td>
                         <span ng-style="orderLine.fromOwnerOpt1 && {'background-color':'lightgreen'}">{{orderLine.option1 || '-'}}</span> / 
                         <span ng-style="orderLine.fromOwnerOpt2 && {'background-color':'lightgreen'}">{{orderLine.option2 || '-'}}</span>
                     </td>                
-                    <!--<td><a href ng-click="delete(orderLine)">sterge</a></td>-->
+                    <td>{{orderLine.status}}</td>
                 </tr>
             </tbody>
         </table>
