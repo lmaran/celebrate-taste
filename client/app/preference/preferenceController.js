@@ -56,8 +56,8 @@ app.controller('preferenceController', ['$scope', '$route', 'preferenceService',
                 var existingPreference = _.find(data, {date: menu.menuDate}); // returns the first matched element, else undefined.
                 var alreadyAdded = (existingPreference)? true : false;
 
-                var availableForOption1 = _.chain(menu.dishes).where({category:'1'}).pluck('option').uniq().sortBy().value();
-                var availableForOption2 = _.chain(menu.dishes).where({category:'2'}).pluck('option').uniq().sortBy().value();
+                var availableForOption1 = _.chain(menu.dishes).filter({category:'1'}).map('option').uniq().sortBy().value();
+                var availableForOption2 = _.chain(menu.dishes).filter({category:'2'}).map('option').uniq().sortBy().value();
                 
                 var isFocusOnOption1 = false;
                 var isFocusOnOption2 = false;

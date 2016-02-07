@@ -35,7 +35,8 @@ app.factory('menuService', ['$http', 'helperService', function ($http, helperSer
     };
     
     factory.getMenu = function (date) { // date as "yyyy-mm-dd"
-        return $http.get(rootUrl + 'today/' + date).then(function (result) {
+        var query = "?$filter=menuDate eq '" +  date +  "'";
+        return $http.get(rootUrl + query).then(function (result) {
             return result.data;
         });
     };    

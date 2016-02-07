@@ -7,9 +7,8 @@
     
     <div class="modal-body">
         {{orderLine.employeeName}}
-        <div ng-show="orderLine.status !== 'completed'">Nelivrat</div>
+        <div ng-show="orderLine.status !== 'completed'"></div>
         <div ng-show="orderLine.status === 'completed'">
-            Livrat
             <a href ng-click="revoke(orderLine)">Anuleaza livrarea!</a>
         </div>      
               

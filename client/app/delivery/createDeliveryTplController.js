@@ -56,7 +56,7 @@ app.controller('createDeliveryTplController', ['$scope', '$uibModalInstance', 'h
         // out: ['Seria 1', 'Seria 3'];
         $scope.delivery.eatSeriesList = _.chain($scope.eatSeriesList)
             .filter({selected:true})
-            .pluck('name')
+            .map('name')
             .sortBy()
             .value();
 

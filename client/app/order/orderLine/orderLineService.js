@@ -49,7 +49,14 @@ app.factory('orderLineService', ['$http', function ($http) {
         return $http.get(rootUrl + orderId + orderLinesPart + query).then(function (result) {
             return result.data;
         });
-    };             
+    }; 
+    
+    factory.getOrderLinesByBadge = function (orderId, eatSeries, badgeCode) {
+        var query = "?$filter=eatSeries eq '" +  eatSeries +  "' and badgeCode eq '" + encodeURIComponent(badgeCode) + "'";
+        return $http.get(rootUrl + orderId + orderLinesPart + query).then(function (result) {
+            return result.data;
+        });
+    };                 
 
     return factory;
 }]);
