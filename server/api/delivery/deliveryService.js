@@ -10,6 +10,7 @@
     // ---------- OData ----------
     deliveryService.getAll = function (odataQuery, next) {  
         var query = mongoService.getQuery(odataQuery);
+        if(query.$sort === undefined) query.$sort = {orderDate: 1, eatSeries: 1}; // sort by employee name (asc)
         mongoService.getAll(collection, query, next);
     };
 

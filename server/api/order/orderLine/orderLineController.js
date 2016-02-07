@@ -11,7 +11,17 @@ var _ = require('lodash');
 
 exports.getAll = function (req, res) {
     var orderId = req.params.id;
-    orderLineService.getAll(orderId, function (err, orderLines) {
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+  
+    // add orderId to OData query
+    if(odataQuery.$filter){
+        odataQuery.$filter = "orderId eq '" + orderId + "' and " + odataQuery.$filter;
+    } else{
+        odataQuery.$filter = "orderId eq '" + orderId + "'";
+    }    
+        
+    orderLineService.getAll(odataQuery, function (err, orderLines) {
         if(err) { return handleError(res, err); }
         res.status(200).json(orderLines);        
     });
@@ -47,7 +57,8 @@ exports.create = function(req, res){
     var orderLine = req.body;
     
     orderLine.createBy = req.user.name;    
-    orderLine.createdOn = new Date(); 
+    orderLine.createdOn = new Date();
+    orderLine.status = 'open';
                 
     orderLineValidator.all(req, res, function(errors){
         if(errors){
@@ -182,7 +193,8 @@ exports.import = function(req, res){
                         eatSeries: importData.eatSeries,
                         employeeName: employee ? employee.name : employeeName, // better formatting
                         createBy: req.user.name,
-                        createdOn: new Date()
+                        createdOn: new Date(),
+                        status: 'open'
                     };
                     
                     if(employee && employee.badgeCode) orderLine.badgeCode = employee.badgeCode;
