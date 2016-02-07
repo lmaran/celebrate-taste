@@ -9,10 +9,8 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
     $scope.errors = {};
     $scope.delivery = {};
    
-    //if ($scope.isEditMode) {  
-        /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined     
-        init(); 
-    //}
+    /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined     
+    init();     
 
     function init() {
         getDelivery();
@@ -65,6 +63,14 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
     
     function dt(dateAsString) { // yyyy-mm-dd
         return helperService.getObjFromString(dateAsString);
-    }          
+    } 
+    
+    $scope.statusFilter = function(orderLine){
+        return orderLine.status === $scope.selectedStatus;
+    }
+    
+    $scope.selectStatus = function(status){
+        $scope.selectedStatus = status;
+    }             
 
 }])
