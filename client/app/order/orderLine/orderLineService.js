@@ -41,7 +41,15 @@ app.factory('orderLineService', ['$http', function ($http) {
         return $http.get(rootUrl + orderId + orderLinesPart + 'getEatSeriesList').then(function (result) {
             return result.data;
         });
-    };          
+    };     
+    
+    factory.getEatSeriesDetails = function (orderId, eatSeries) {
+        var query = "?$filter=eatSeries eq '" +  eatSeries +  "'";
+        //query += "&$orderby=date"
+        return $http.get(rootUrl + orderId + orderLinesPart + query).then(function (result) {
+            return result.data;
+        });
+    };             
 
     return factory;
 }]);

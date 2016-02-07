@@ -4,17 +4,15 @@
     
     //var seedData = require("./seedData");
     var mongoHelper = require('../../../data/mongoHelper');
+    var mongoService = require('../../../data/mongoService');
     var collection = 'orderLines';
- 
-    orderLineService.getAll = function (orderId, next) {     
-        mongoHelper.getDb(function (err, db) {
-            if (err) return next(err, null);
-            db.collection(collection).find({orderId:orderId}, {sort:{eatSeries:1, employeeName:1}}).toArray(function (err, docs) {
-                if (err) return next(err, null);
-                return next(null, docs);                 
-            });
-        });
-    };
+    
+    // ---------- OData ----------
+    orderLineService.getAll = function (odataQuery, next) {  
+        var query = mongoService.getQuery(odataQuery);
+        if(query.$sort === undefined) query.$sort = {eatSeries: 1, employeeName:1};
+        mongoService.getAll(collection, query, next);
+    };    
     
     orderLineService.getByOrderIdAndSeries = function (orderId, eatSeries, next) {     
         mongoHelper.getDb(function (err, db) {
