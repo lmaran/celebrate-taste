@@ -90,7 +90,7 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
         orderLineService.getAll($scope.orderId).then(function (data) {
             $scope.orderLines = data;
             
-            $scope.eatSeriesList = _.chain($scope.orderLines).pluck('eatSeries').uniq().sortBy().value();
+            $scope.eatSeriesList = _.chain($scope.orderLines).map('eatSeries').uniq().sortBy().value();
             
             var searchObject = $location.search();
             if(searchObject.eatSeries)

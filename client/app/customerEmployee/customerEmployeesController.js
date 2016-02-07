@@ -55,7 +55,7 @@ app.controller('customerEmployeesController', ['$scope', '$location', 'customerE
         customerEmployeeService.getAll().then(function (data) {
             $scope.customerEmployees = data;
             
-            $scope.teams = _.chain($scope.customerEmployees).pluck('team').uniq().sortBy().value();
+            $scope.teams = _.chain($scope.customerEmployees).map('team').uniq().sortBy().value();
 
             var searchObject = $location.search();
             if(searchObject.team)

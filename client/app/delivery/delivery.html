@@ -13,32 +13,71 @@
 
 <div class="container-fluid">
     <h1>{{pageTitle}}: {{dateAsShortString}} / {{delivery.eatSeries}}</h1>
-
     <uib-tabset>
         <!--tab 1-->
-        <uib-tab select="alertMe()">
+        <uib-tab select="selectTab1()">
             <uib-tab-heading>
                 <i class="glyphicon glyphicon-credit-card"></i> Livreaza cu cardul
             </uib-tab-heading>
 
-            <div class="row top-margin-15">     
-                <div class="col-md-12">
-                    I've got an HTML heading, and a select callback. Pretty cool!
-       
+            <div class2="row top-margin-15" style="margin-top:80px"> 
+                <div class="col-md-2"></div>    
+                <div class="col-md-8 col-md-10-offset-2">
+                    <form name="form" class="form-horizontal" ng-submit="deliverByBadge(form)" novalidate autocomplete="off"> 
+                        <div class="input-group input-group-lg" >
+                            <input name="badge" ng-model="obj.badgeCode" type="text" class="form-control" placeholder="Scaneaza cardul..." lm-focus="obj.isFocusOnBadge">
+                            <span class="input-group-btn"><button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span></button></span>
+                        </div>                        
+                    </form>
+                    
+                    </br>
+                    </br>
+                    
+                    <div ng-show="!errorValidation && orderLine">
+                        <h2 class2="text-muted">{{orderLine.employeeName}}</h2>
+                        <hr/>
+                        <h2>
+                            <span ng-style="orderLine.fromOwnerOpt1 && {'background-color':'lightgreen'}">
+                                &nbsp;{{orderLine.option1 || '-'}} </span>
+                            <span class="text-muted">&nbsp;- {{option1.name}}</span>                          
+                        </h2>
+                        <h2>
+                            <span ng-style="orderLine.fromOwnerOpt2 && {'background-color':'lightgreen'}">
+                                &nbsp;{{orderLine.option2 || '-'}} </span>
+                            <span class="text-muted">&nbsp;- {{option2.name}}</span>
+                        </h2>
+                    </div>
+                    
+                    <div ng-show="errorValidation">
+                        <h2 class="text-muted">{{errorMessage}}</h2>
+                    </div>                                        
+                    
                 </div> 
             </div> 
         </uib-tab>                
         
         <!--tab 2-->
-        <uib-tab select="selectStatus('open')">
+        <uib-tab select="selectTab23('open')">
             <uib-tab-heading>
                 <i class="glyphicon glyphicon-eye-open"></i> Livreaza manual
             </uib-tab-heading>
 
-            <div class="row top-margin-15">     
+            <div class="row top-margin-15"> 
+  
                 <div class="col-md-12">
-                    <form class="form-inline">
-                        <div class="form-group pull-right">                   
+                    <form class="form-inline">                  
+                        
+                        <div class="form-group pull-right"> 
+                            
+                            <div class="input-group" style="margin-right: 15px">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="obj.onlyNoBadges"> 
+                                        Fara card
+                                    </label>
+                                </div>                     
+                            </div>                            
+                                              
                             <div class="input-group">
                                 <span style="padding-right:10px;" class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="refresh()" style="border-radius:4px; background-color:lightgray"><span class="glyphicon glyphicon-refresh"></span></button>
@@ -47,8 +86,10 @@
                                 <span class="input-group-btn"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button></span>
                             </div>
                         </div>
+                        
                     </form>       
-                </div> 
+                </div>
+                 
             </div>    
 
 
@@ -63,12 +104,14 @@
                     </thead>
                     <tbody>
                         <tr data-ng-repeat="orderLine in orderLines 
-                                | filter: statusFilter                        
+                                | filter: statusFilter 
+                                | filter: badgesFilter                       
                                 | filter: search 
                                 as results">                  
                             <td>
                                 <a href ng-click="openDeliveryLine(orderLine)">{{orderLine.employeeName}}</a>
-                                <span ng-if="!orderLine.badgeCode" style="color:red"> - lipsa card </span>
+                                <span ng-if="!orderLine.badgeCode" style="color:red"> - lipsa card </span> 
+                                <!--{{orderLine.badgeCode}}-->
                             </td>                     
                             <td>
                                 <span ng-style="orderLine.fromOwnerOpt1 && {'background-color':'lightgreen'}">{{orderLine.option1 || '-'}}</span> / 
@@ -84,7 +127,7 @@
         </uib-tab>
         
         <!--tab 3-->        
-        <uib-tab select="selectStatus('completed')">
+        <uib-tab select="selectTab23('completed')">
             <uib-tab-heading>
                 <i class="glyphicon glyphicon-ok"></i> Livrate
             </uib-tab-heading>
@@ -113,6 +156,7 @@
                             <th>Angajat</th>
                             <th>Preferinte</th>
                             <th>Stare</th>
+                            <th>Data livrarii</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -129,6 +173,7 @@
                                 <span ng-style="orderLine.fromOwnerOpt2 && {'background-color':'lightgreen'}">{{orderLine.option2 || '-'}}</span>
                             </td>                
                             <td>{{orderLine.status}}</td>
+                            <td>{{orderLine.deliveryDate | date:'dd-MM-yyyy HH:mm:ss'}}</td>
                         </tr>
                     </tbody>
                 </table>
