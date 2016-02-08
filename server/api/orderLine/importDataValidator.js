@@ -3,7 +3,7 @@
 (function (importDataValidator) {
     
     //var orderLineService = require('./orderLineService');
-    var customerEmployeeService = require('../../customerEmployee/customerEmployeeService');
+    var customerEmployeeService = require('../customerEmployee/customerEmployeeService');
     var async = require('async');
     var validator = require('validator');  
     var _ = require('lodash');  

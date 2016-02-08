@@ -61,7 +61,7 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
                 if ($scope.orderLines[i]._id === item._id) break;
             }
 
-            orderLineService.delete($scope.orderId, item._id).then(function () {
+            orderLineService.delete(item._id).then(function () {
                 $scope.orderLines.splice(i, 1);
             })
             .catch(function (err) {

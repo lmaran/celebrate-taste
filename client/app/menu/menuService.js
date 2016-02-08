@@ -23,7 +23,7 @@ app.factory('menuService', ['$http', 'helperService', function ($http, helperSer
     
     factory.getActiveMenus = function () { // yyyy-mm-dd 
         var todayStr = helperService.getStringFromDate(new Date());            
-        return $http.get(rootUrl + 'activeMenus?today=' + todayStr).then(function (result) {
+        return $http.get(rootUrl + 'rpc/getActiveMenus?today=' + todayStr).then(function (result) {
             return result.data;
         });
     };    

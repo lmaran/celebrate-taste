@@ -58,7 +58,7 @@ module.exports = function(app) {
 
         // if you are happy with a browser plugin, then you don't need this middleware
         // live-reload corrupts pdf files: http://stackoverflow.com/a/28091651/2726725
-        app.use(require('connect-livereload')({ignore: [/print$/]})); // all that ends in 'print': https://github.com/intesso/connect-livereload#options
+        app.use(require('connect-livereload')({ignore: [/print/]})); // all that contains 'print': https://github.com/intesso/connect-livereload#options
         
         // without last argument express serves index.html even when my routing is to a different file: //http://stackoverflow.com/a/25167332/2726725
         // It is also recommended to put static middleware first: http://stackoverflow.com/a/28143812/2726725 

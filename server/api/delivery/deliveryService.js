@@ -10,18 +10,18 @@
     // ---------- OData ----------
     deliveryService.getAll = function (odataQuery, next) {  
         var query = mongoService.getQuery(odataQuery);
-        if(query.$sort === undefined) query.$sort = {orderDate: 1, eatSeries: 1}; // sort by employee name (asc)
+        if(query.$sort === undefined) query.$sort = {orderDate: 1, eatSeries: 1};
         mongoService.getAll(collection, query, next);
     };
 
 
-    // ---------- CRUD ----------
-    deliveryService.getById = function (id, next) {
-        mongoService.getById(collection, id, next);
-    };
-
+    // ---------- REST ----------
     deliveryService.create = function (badge, next) {
         mongoService.create(collection, badge, next);
+    };
+        
+    deliveryService.getById = function (id, next) {
+        mongoService.getById(collection, id, next);
     };
 
     deliveryService.update = function (badge, next) {        
@@ -33,7 +33,7 @@
     };
     
     
-    // ---------- Misc ----------    
+    // ---------- RPC ----------    
     deliveryService.getByValue = function (field, value, id, next) {
         mongoService.getByValue(collection, field, value, id, next);
     };

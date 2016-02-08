@@ -54,7 +54,7 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
     } 
 
     function getOrderLine() {
-        promiseToGetOrderLine = orderLineService.getById($scope.orderId, $scope.orderLineId).then(function (data) {
+        promiseToGetOrderLine = orderLineService.getById($scope.orderLineId).then(function (data) {
             $scope.orderLine = data;
             if(data.orderDate){
                 $scope.orderDateAsString = dt(data.orderDate).dateAsShortString;
@@ -92,13 +92,13 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
         capitalizeOptions($scope.orderLine.option1, $scope.orderLine.option2);
         
         // set if preferences come from owner                   
-        if(userPref && $scope.orderLine.option1 && $scope.orderLine.option1.toLowerCase() === userPref.option1.toLowerCase())
+        if(userPref && userPref.option1 && $scope.orderLine.option1 && $scope.orderLine.option1.toLowerCase() === userPref.option1.toLowerCase())
             $scope.orderLine.fromOwnerOpt1 = true;
-        if(userPref && $scope.orderLine.option2 && $scope.orderLine.option2.toLowerCase() === userPref.option2.toLowerCase())
+        if(userPref && userPref.option2 && $scope.orderLine.option2 && $scope.orderLine.option2.toLowerCase() === userPref.option2.toLowerCase())
             $scope.orderLine.fromOwnerOpt2 = true;
   
         // 'orderId' and 'orderDate' properties were added before
-        orderLineService.create($scope.orderId, $scope.orderLine)
+        orderLineService.create($scope.orderLine)
             .then(function (data) {
                 $location.path('/admin/orders/' + $scope.orderId);
             })
@@ -123,7 +123,7 @@ app.controller('orderLineController', ['$scope', '$route', 'orderLineService', '
         else
             delete $scope.orderLine.fromOwnerOpt1;
         
-        if(userPref && userPref.option1 && $scope.orderLine.option2 && $scope.orderLine.option2.toLowerCase() === userPref.option2.toLowerCase())
+        if(userPref && userPref.option2 && $scope.orderLine.option2 && $scope.orderLine.option2.toLowerCase() === userPref.option2.toLowerCase())
             $scope.orderLine.fromOwnerOpt2 = true; 
         else
             delete $scope.orderLine.fromOwnerOpt2;                   

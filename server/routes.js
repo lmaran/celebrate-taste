@@ -53,7 +53,7 @@ module.exports = function(app) {
     app.use('/api/customerEmployees', auth.hasRole('admin'), require('./api/customerEmployee/customerEmployeeRoutes'));
     app.use('/api/menus', auth.hasRole('admin'), require('./api/menu/menuRoutes'));
     app.use('/api/orders', auth.hasRole('admin'), require('./api/order/orderRoutes'));
-    //app.use('/api/orders/:id/orderDetails', auth.hasRole('admin'), require('./api/order/orderDetail/orderDetailRoutes'));
+    app.use('/api/orderLines', auth.hasRole('admin'), require('./api/orderLine/orderLineRoutes'));
     app.use('/api/deliveries', auth.hasRole('admin'), require('./api/delivery/deliveryRoutes'));
 
     

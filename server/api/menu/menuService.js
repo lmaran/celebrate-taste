@@ -15,13 +15,13 @@
     };
 
 
-    // ---------- CRUD ----------
-    menuService.getById = function (id, next) {
-        mongoService.getById(collection, id, next);
-    };
-
+    // ---------- REST ----------
     menuService.create = function (badge, next) {
         mongoService.create(collection, badge, next);
+    };
+        
+    menuService.getById = function (id, next) {
+        mongoService.getById(collection, id, next);
     };
 
     menuService.update = function (badge, next) {        
@@ -33,14 +33,12 @@
     };
     
     
-    // ---------- Misc ----------    
+    // ---------- RPC ----------    
     menuService.getByValue = function (field, value, id, next) {
         mongoService.getByValue(collection, field, value, id, next);
     }; 
 
-    
     menuService.getTodaysMenu = function (today, next) { // today = "yyyy-mm-dd"
-        //today = "2015-10-24"; // todo: remove it
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);            
             db.collection('menus').findOne({ menuDate: today }, next);                           
@@ -67,8 +65,7 @@
         });
     };        
     
-    menuService.getFromInterval = function (firstDay, lastDay, next) { // today = "yyyy-mm-dd"
-        //today = "2015-10-24"; // todo: remove it
+    menuService.getFromInterval = function (firstDay, lastDay, next) { // day = "yyyy-mm-dd"
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null); 
             

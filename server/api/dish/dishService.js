@@ -9,12 +9,12 @@
     // ---------- OData ----------
     dishService.getAll = function (odataQuery, next) {  
         var query = mongoService.getQuery(odataQuery);
-        if(query.$sort === undefined) query.$sort = {category: 1, name: 1}; // sort by catgeory and name
+        if(query.$sort === undefined) query.$sort = {category: 1, name: 1};
         mongoService.getAll(collection, query, next);
     };
 
 
-    // ---------- CRUD ----------
+    // ---------- REST ----------
     dishService.getById = function (id, next) {
         mongoService.getById(collection, id, next);
     };
@@ -32,7 +32,7 @@
     };
     
     
-    // ---------- Misc ----------    
+    // ---------- RPC ----------    
     dishService.getByValue = function (field, value, id, next) {
         mongoService.getByValue(collection, field, value, id, next);
     };    
