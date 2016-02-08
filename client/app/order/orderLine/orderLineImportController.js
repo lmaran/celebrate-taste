@@ -37,7 +37,7 @@ app.controller('orderLineImportController', ['$scope', '$route', 'orderLineServi
     } 
 
     function getOrderLine() {
-        orderLineService.getById($scope.orderId, $scope.orderLineId).then(function (data) {
+        orderLineService.getById($scope.orderLineId).then(function (data) {
             $scope.orderLine = data;
             if($scope.orderLine.orderDate)
                 $scope.orderDateAsString = dt($scope.orderLine.orderDate).dateAsShortString;
@@ -55,7 +55,7 @@ app.controller('orderLineImportController', ['$scope', '$route', 'orderLineServi
         // console.log(customerEmployees);
         
         // 'orderId' and 'orderDate' properties were added before
-        orderLineService.import($scope.orderId, $scope.importData)
+        orderLineService.import($scope.importData)
             .then(function (data) {
                 $location.path('/admin/orders/' + $scope.orderId);
             })

@@ -140,7 +140,7 @@ app.controller('preferenceController', ['$scope', '$route', 'preferenceService',
         
         preferenceService.createMany(preferences)
             .then(function (data) {
-                toastr.success('Inregistrarea a fost adaugata cu succes!');
+                toastr.success('Inregistrarea a fost adaugata!');
                 $scope.person.selected = undefined; // clean screen
                 $scope.$broadcast('SetFocus'); // set focus on the employee field
             })

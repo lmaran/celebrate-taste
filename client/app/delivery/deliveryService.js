@@ -10,7 +10,7 @@ app.factory('deliveryService', ['$http', function ($http) {
     };
     
     factory.createMany = function (items) {
-        return $http.post(rootUrl + 'createMany', items);
+        return $http.post(rootUrl + 'rpc/createMany', items);
     };     
 
     factory.getAll = function () {

@@ -27,7 +27,7 @@ app.controller('createDeliveryTplController', ['$scope', '$uibModalInstance', 'h
     function createEatSeriesList(){
         $scope.existNewSeries = false; 
         
-        orderLineService.getEatSeriesList($scope.selectedOrder._id).then(function (eatSeriesList) {
+        orderService.getEatSeriesList($scope.selectedOrder._id).then(function (eatSeriesList) {
             $scope.eatSeriesList = _.map(eatSeriesList, function(eatSeries){
                 var alreadyExists = _.some(dataToModal, {orderId: $scope.selectedOrder._id, eatSeries: eatSeries}) ? true : false;
                 if (!alreadyExists) $scope.existNewSeries = true;

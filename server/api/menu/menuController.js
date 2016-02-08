@@ -3,9 +3,12 @@
 var menuService = require('./menuService');
 var helper = require('../../data/dateTimeHelper');
 
+
+// ---------- OData ----------
 exports.getAll = function (req, res) {
     var odataQuery = req.query;
     odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+    if(!odataQuery.$top) odataQuery.$top = "1000"; // if $top is not specified, return max. 1000 records
         
     menuService.getAll(odataQuery, function (err, menus) {
         if(err) { return handleError(res, err); }
@@ -13,39 +16,8 @@ exports.getAll = function (req, res) {
     });
 };
 
-exports.getById = function (req, res) {
-    menuService.getById(req.params.id, function (err, menu) {
-        if(err) { return handleError(res, err); }
-        //if(!doc) { return res.status(404).send('Not Found'); }
-        res.json(menu);
-    });    
-};
 
-// exports.getTodaysMenu = function (req, res) {
-//     var todayStr = req.query.today || helper.getStringFromDate(new Date());
-//     menuService.getTodaysMenu(todayStr, function (err, menu) {
-//         if(err) { return handleError(res, err); }
-//         //if(!doc) { return res.status(404).send('Not Found'); }
-//         res.json(menu);
-//     });    
-// };
-// 
-// exports.getNextMenus = function (req, res) {
-//     var todayStr = req.query.today || helper.getStringFromDate(new Date());
-//     menuService.getNextMenus(todayStr, function (err, menus) {
-//         if(err) { return handleError(res, err); }
-//         res.status(200).json(menus);        
-//     });
-// };
-
-exports.getActiveMenus = function (req, res) { // today and next menus
-    var todayStr = req.query.today || helper.getStringFromDate(new Date());
-    menuService.getActiveMenus(todayStr, function (err, menus) {
-        if(err) { return handleError(res, err); }
-        res.status(200).json(menus);        
-    });
-};
-
+// ---------- REST ----------
 exports.create = function(req, res){
     var menu = req.body;
     
@@ -58,6 +30,13 @@ exports.create = function(req, res){
     });
 };
 
+exports.getById = function (req, res) {
+    menuService.getById(req.params.id, function (err, menu) {
+        if(err) { return handleError(res, err); }
+        //if(!doc) { return res.status(404).send('Not Found'); }
+        res.json(menu);
+    });    
+};
 
 exports.update = function(req, res){
     var menu = req.body;
@@ -81,6 +60,16 @@ exports.remove = function(req, res){
     menuService.remove(id, function (err, response) {
         if(err) { return handleError(res, err); }
         res.sendStatus(204);
+    });
+};
+
+
+// ---------- RPC ----------
+exports.getActiveMenus = function (req, res) { // today and next menus
+    var todayStr = req.query.today || helper.getStringFromDate(new Date());
+    menuService.getActiveMenus(todayStr, function (err, menus) {
+        if(err) { return handleError(res, err); }
+        res.status(200).json(menus);        
     });
 };
 
@@ -172,6 +161,8 @@ exports.printNextWeek = function (req, res) {
     createDoc(req, res, nextMonday);
 };
 
+
+// ---------- Helpers ----------
 function createDoc(req, res, firstDay){
     var lastDay = new Date(firstDay);
     lastDay.setDate(lastDay.getDate() + 6);

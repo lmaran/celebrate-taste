@@ -10,7 +10,7 @@ app.factory('preferenceService', ['$http', 'helperService', function ($http, hel
     };
     
     factory.createMany = function (items) {
-        return $http.post(rootUrl + 'createMany', items);
+        return $http.post(rootUrl + 'rpc/createMany', items);
     };    
 
     factory.getByDate = function (dateStr) {
@@ -28,7 +28,7 @@ app.factory('preferenceService', ['$http', 'helperService', function ($http, hel
     
     factory.getNextDates = function () {
         var todayStr = helperService.getStringFromDate(new Date());
-        return $http.get(rootUrl + 'nextDates?today=' + todayStr).then(function (result) {
+        return $http.get(rootUrl + 'rpc/getNextDates?today=' + todayStr).then(function (result) {
             return result.data;
         });
     };

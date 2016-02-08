@@ -2,12 +2,13 @@
 
 var preferenceService = require('./preferenceService');
 var preferenceValidator = require('./preferenceValidator');
-//var helper = require('../../data/dateTimeHelper');
 
+// ---------- OData ----------
 exports.getAll = function (req, res) {
     var odataQuery = req.query;
     odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
-        
+    if(!odataQuery.$top) odataQuery.$top = "1000"; // if $top is not specified, return max. 1000 records
+       
     preferenceService.getAll(odataQuery, function (err, preferences) {
         if(err) { return handleError(res, err); }
         res.status(200).json(preferences);        
@@ -15,28 +16,7 @@ exports.getAll = function (req, res) {
 };
 
 
-exports.getById = function (req, res) {
-    preferenceService.getById(req.params.id, function (err, preference) {
-        if(err) { return handleError(res, err); }
-        res.json(preference);
-    });    
-};
-
-
-// output: ["2015-12-04", "2015-12-05", "2015-12-06"]
-exports.getNextDates = function (req, res) {
-    var todayStr = req.query.today;// || helper.getStringFromDate(new Date()); // "2015-12-03"
-    preferenceService.getNextDates(todayStr, function (err, dates) {
-        if(err) { return handleError(res, err); }
-        var result = [];
-        if(dates.length > 0)
-            result = dates[0].nextDates;
-        res.json(result); 
-    });    
-};
-
-
-
+// ---------- REST ----------
 exports.create = function(req, res){
     var preference = req.body;
     preferenceValidator.all(req, res, function(errors){
@@ -57,30 +37,12 @@ exports.create = function(req, res){
 
 };
 
-exports.createMany = function(req, res){
-    var preferences = req.body;
-    
-    preferences.forEach(function(preference) {
-        preference.createBy = req.user.name;    
-        preference.createdOn = new Date();        
-    });
-    
-    
-       
-    // preferenceValidator.all(req, res, function(errors){
-    //     if(errors){
-    //         res.status(400).send({ errors : errors }); // 400 - bad request
-    //     }
-    //     else{
-             preferenceService.createMany(preferences, function (err, response) {
-                if(err) { return handleError(res, err); }
-                res.status(201).json(response.ops[0]);
-            });           
-    //     }
-    // });
-
+exports.getById = function (req, res) {
+    preferenceService.getById(req.params.id, function (err, preference) {
+        if(err) { return handleError(res, err); }
+        res.json(preference);
+    });    
 };
-
 
 exports.update = function(req, res){
     var preference = req.body;
@@ -105,7 +67,6 @@ exports.update = function(req, res){
     }); 
 };
 
-
 exports.remove = function(req, res){
     var id = req.params.id;
     preferenceService.remove(id, function (err, response) {
@@ -115,6 +76,35 @@ exports.remove = function(req, res){
 };
 
 
+// ---------- RPC ----------
+exports.createMany = function(req, res){
+    var preferences = req.body;
+    
+    preferences.forEach(function(preference) {
+        preference.createBy = req.user.name;    
+        preference.createdOn = new Date();        
+    });
+
+    preferenceService.createMany(preferences, function (err, response) {
+        if(err) { return handleError(res, err); }
+        res.status(201).json(response.ops[0]);
+    });           
+};
+
+// out: ["2015-12-04", "2015-12-05", "2015-12-06"]
+exports.getNextDates = function (req, res) {
+    var todayStr = req.query.today;// || helper.getStringFromDate(new Date()); // "2015-12-03"
+    preferenceService.getNextDates(todayStr, function (err, dates) {
+        if(err) { return handleError(res, err); }
+        var result = [];
+        if(dates.length > 0)
+            result = dates[0].nextDates;
+        res.json(result); 
+    });    
+};
+
+
+// ---------- Helpers ----------
 function handleError(res, err) {
     return res.status(500).send(err);
 };

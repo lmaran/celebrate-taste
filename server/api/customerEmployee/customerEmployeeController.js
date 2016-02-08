@@ -4,9 +4,12 @@ var customerEmployeeService = require('./customerEmployeeService');
 var customerEmployeeValidator = require('./customerEmployeeValidator');
 var preferenceService = require('../preference/preferenceService');
 
+
+// ---------- OData ----------
 exports.getAll = function (req, res) {
     var odataQuery = req.query;
     odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+    if(!odataQuery.$top) odataQuery.$top = "1000"; // if $top is not specified, return max. 1000 records
         
     customerEmployeeService.getAll(odataQuery, function (err, customerEmployees) {
         if(err) { return handleError(res, err); }
@@ -15,14 +18,7 @@ exports.getAll = function (req, res) {
 };
 
 
-exports.getById = function (req, res) {
-    customerEmployeeService.getById(req.params.id, function (err, customerEmployee) {
-        if(err) { return handleError(res, err); }
-        res.json(customerEmployee);
-    });    
-};
-
-
+// ---------- REST ----------
 exports.create = function(req, res){
     customerEmployeeValidator.all(req, res, function(errors){
         if(errors){
@@ -43,6 +39,12 @@ exports.create = function(req, res){
     });    
 };
 
+exports.getById = function (req, res) {
+    customerEmployeeService.getById(req.params.id, function (err, customerEmployee) {
+        if(err) { return handleError(res, err); }
+        res.json(customerEmployee);
+    });    
+};
 
 exports.update = function(req, res){
     var customerEmployee = req.body;
@@ -82,7 +84,6 @@ exports.update = function(req, res){
     });
 };
 
-
 exports.remove = function(req, res){
     var id = req.params.id;
     customerEmployeeService.remove(id, function (err, response) {
@@ -91,6 +92,8 @@ exports.remove = function(req, res){
     });
 };
 
+
+// ---------- Helpers ----------
 function handleError(res, err) {
     return res.status(500).send(err);
 };
