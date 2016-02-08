@@ -14,7 +14,7 @@
     };
 
 
-    // ---------- CRUD ----------
+    // ---------- REST ----------
     orderService.getById = function (id, next) {
         mongoService.getById(collection, id, next);
     };
@@ -32,7 +32,7 @@
     };
     
     
-    // ---------- Misc ----------    
+    // ---------- RPC ----------    
     orderService.getByValue = function (field, value, id, next) {
         mongoService.getByValue(collection, field, value, id, next);
     };    

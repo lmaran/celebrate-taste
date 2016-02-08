@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var controller = require('./orderController');
+var controller = require('./orderLineController');
 var router = express.Router();
 
 // ---------- OData ----------
@@ -15,11 +15,8 @@ router.put('/', controller.update);
 router.delete('/:id', controller.remove);
 
 // ---------- RPC ----------
-router.get('/:id/rpc/print/:opCode', controller.print);
-router.get('/:id/rpc/getEatSeriesList', controller.getEatSeriesList);
+router.post('/rpc/import', controller.import);
+
+// router.get('/rpc/print/:opCode/:orderId', controller.print);
 
 module.exports = router;
-
-
-
-

@@ -3,9 +3,12 @@
 var teamService = require('./teamService');
 var teamValidator = require('./teamValidator');
 
+
+// ---------- OData ----------
 exports.getAll = function (req, res) {
     var odataQuery = req.query;
     odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+    if(!odataQuery.$top) odataQuery.$top = "1000"; // if $top is not specified, return max. 1000 records
         
     teamService.getAll(odataQuery, function (err, teams) {
         if(err) { return handleError(res, err); }
@@ -14,14 +17,7 @@ exports.getAll = function (req, res) {
 };
 
 
-exports.getById = function (req, res) {
-    teamService.getById(req.params.id, function (err, team) {
-        if(err) { return handleError(res, err); }
-        res.json(team);
-    });    
-};
-
-
+// ---------- REST ----------
 exports.create = function(req, res){
     var team = req.body;
     teamValidator.all(req, res, function(errors){
@@ -42,6 +38,12 @@ exports.create = function(req, res){
 
 };
 
+exports.getById = function (req, res) {
+    teamService.getById(req.params.id, function (err, team) {
+        if(err) { return handleError(res, err); }
+        res.json(team);
+    });    
+};
 
 exports.update = function(req, res){
     var team = req.body;
@@ -66,7 +68,6 @@ exports.update = function(req, res){
     }); 
 };
 
-
 exports.remove = function(req, res){
     var id = req.params.id;
     teamService.remove(id, function (err, response) {
@@ -76,6 +77,7 @@ exports.remove = function(req, res){
 };
 
 
+// ---------- Helpers ----------
 function handleError(res, err) {
     return res.status(500).send(err);
 };
