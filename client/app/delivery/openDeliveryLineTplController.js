@@ -5,7 +5,9 @@ app.controller('openDeliveryLineTplController', ['$scope', '$uibModalInstance', 
 
     $scope.errors = {};
 
-    $scope.orderLine = dataToModal;  
+    $scope.orderLine = dataToModal.orderLine; 
+    $scope.option1 = dataToModal.option1;
+    $scope.option2 = dataToModal.option2; 
 
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
@@ -36,6 +38,6 @@ app.controller('openDeliveryLineTplController', ['$scope', '$uibModalInstance', 
             .catch(function (err) {
                 alert(JSON.stringify(err.data, null, 4)); 
             })                    
-    };       
+    };        
     
 }]);
