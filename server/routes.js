@@ -47,7 +47,6 @@ module.exports = function(app) {
     // API routes
     app.use('/api/users',require('./api/user/userRoutes'));
     app.use('/api/preferences', auth.hasRole('admin'), require('./api/preference/preferenceRoutes'));
-    app.use('/api/teams', auth.hasRole('admin'), require('./api/team/teamRoutes'));
     app.use('/api/buildInfo', require('./api/buildInfo/buildInfoRoutes'));   
     app.use('/api/dishes', auth.hasRole('admin'), require('./api/dish/dishRoutes'));
     app.use('/api/customerEmployees', auth.hasRole('admin'), require('./api/customerEmployee/customerEmployeeRoutes'));
