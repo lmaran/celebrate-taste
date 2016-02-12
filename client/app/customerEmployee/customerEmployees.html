@@ -22,32 +22,6 @@
                 </div>
             </form> 
         </div>
-        
-        <!--<div class="col-md-3">
-            <form class="form-inline">
-                <div class="form-group pull-right">                   
-                    <div class="input-group">
-
-                        <span class="btn-group" uib-dropdown is-open="status.isopen">
-                            <button style="text-align:left; min-width:200px;" id="single-button" type="button" class="btn btn-default btn-block" uib-dropdown-toggle ng-disabled="disabled">
-                                <span>{{selectedTeam}}</span> 
-                                <span style="float:right; height:12px; margin-top: 8px;" class="caret"></span>
-                            </button>
-                            <ul style="width:100%; min-width:200px" class="uib-dropdown-menu" role="menu" aria-labelledby="single-button" >
-                                <li role="menuitem">
-                                    <a href="#" ng-click="selectTeam('Toate echipele')">Toate echipele</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li role="menuitem" ng-repeat="team in teams">
-                                    <a href="#" ng-click="selectTeam(team)">{{team}}</a>
-                                </li>
-                            </ul>                    
-                        </span> 
-
-                    </div>
-                </div>
-            </form>       
-        </div>         -->
                 
         <div class="col-md-6">
             <form class="form-inline">
@@ -71,7 +45,6 @@
             <thead>
                 <tr>
                     <th>Nume</th>
-                    <!--<th>Echipa</th>-->
                     <th>Email</th>
                     <th>Card</th>
                     <th>Activ</th>
@@ -80,14 +53,12 @@
             </thead>
             <tbody>
                 <tr data-ng-repeat="customerEmployee in customerEmployees 
-                        | filter: (selectedTeam !== 'Toate echipele' || '') && {team:selectedTeam} 
-                        | filter: search 
+                        | filter: mySearch
                         as results">
                     <td>
                         <a ng-href="/admin/customerEmployees/{{customerEmployee._id}}">{{customerEmployee.name}}</a>
                         <i class="glyphicon glyphicon-info-sign" ng-if="customerEmployee.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{customerEmployee.description}}"></i>
                     </td>
-                    <!--<td>{{ customerEmployee.team }}</td>-->
                     <td>{{ customerEmployee.email }}</td>
                     <td>{{ customerEmployee.badgeCode }}</td>
                     <td><span ng-show="customerEmployee.isActive" class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
@@ -100,24 +71,6 @@
         
     </div>
     
-    <!--http://stackoverflow.com/a/33229823/2726725-->
-
-    <!--<div class="pull-left pagination-detail"><span class="pagination-info">Total {{customerEmployees.length}} inregistrari.</span><span class="page-list"><span class="btn-group dropup"><button type="button" class="btn btn-default  dropdown-toggle" data-toggle="dropdown"><span class="page-size">10</span>    <span class="caret"></span></button>
-        <ul class="dropdown-menu" role="menu">
-            <li class="active"><a href="javascript:void(0)">10</a></li>
-            <li><a href="javascript:void(0)">25</a></li>
-            <li><a href="javascript:void(0)">50</a></li>
-            <li><a href="javascript:void(0)">100</a></li>
-            <li><a href="javascript:void(0)">All</a></li>
-        </ul>
-        </span> records per page</span>
-    </div>
-
-    <uib-pagination total-items="customerEmployees.length" ng-model="currentPage" max-size="maxSize" class="pagination-sm pull-right" boundary-links="true" rotate="false" num-pages="numPages" style="margin-top:0"></uib-pagination>
-       
-    <pre>Page: {{currentPage}} / {{numPages}}</pre>        -->
-    <!--<pre ng-show="results.length>0">Total: {{results.length}} / {{customerEmployees.length}} </pre>-->
     <span class="label label-default" style="font-size:100%; font-weight:normal">Total:</span> {{results.length}} / {{customerEmployees.length}}
-        
-    <!--<div ng-show="results.length == 0" style="margin-top:30px;">Nu exista inregistrari!</div>-->
+
 </div>
