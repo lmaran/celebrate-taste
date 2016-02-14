@@ -138,9 +138,9 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
             } else if(data[0].eatSeries !== $scope.delivery.eatSeries) {
                 $scope.errorValidation = true;
                 if(data[0].status === 'completed')
-                    $scope.errorMessage = "Posesorul acestui card a mancat in " + $scope.delivery.eatSeries + "."; 
+                    $scope.errorMessage = "Posesorul acestui card a mancat in " + data[0].eatSeries + "."; 
                 else
-                    $scope.errorMessage = "Posesorul acestui card a fost programat in " + $scope.delivery.eatSeries + ".";             
+                    $scope.errorMessage = "Posesorul acestui card a fost programat in " + data[0].eatSeries + ".";             
             } else {
                 $scope.errorValidation = false;
                 $scope.orderLine = data[0];
