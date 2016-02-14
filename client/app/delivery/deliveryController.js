@@ -128,13 +128,19 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
     
     $scope.deliverByBadge = function(form){
         $scope.orderLine = undefined; // clean up the screen
-        orderLineService.getOrderLinesByBadge($scope.delivery.orderId, $scope.delivery.eatSeries, $scope.obj.badgeCode).then(function (data) {
+        orderLineService.getOrderLinesByBadge($scope.delivery.orderId, $scope.obj.badgeCode).then(function (data) {
             if(data.length === 0){
                 $scope.errorValidation = true;
                 $scope.errorMessage = "Card negasit: " + $scope.obj.badgeCode;
             } else if(data.length > 1) {
                 $scope.errorValidation = true;
                 $scope.errorMessage = "Exista mai multe persoane cu acelasi card: " + $scope.obj.badgeCode;             
+            } else if(data[0].eatSeries !== $scope.delivery.eatSeries) {
+                $scope.errorValidation = true;
+                if(data[0].status === 'completed')
+                    $scope.errorMessage = "Posesorul acestui card a mancat in " + $scope.delivery.eatSeries + "."; 
+                else
+                    $scope.errorMessage = "Posesorul acestui card a fost programat in " + $scope.delivery.eatSeries + ".";             
             } else {
                 $scope.errorValidation = false;
                 $scope.orderLine = data[0];
