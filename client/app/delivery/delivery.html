@@ -25,7 +25,7 @@
                 <div class="col-md-8 col-md-10-offset-2">
                     <form name="form" class="form-horizontal" ng-submit="deliverByBadge(form)" novalidate autocomplete="off"> 
                         <div class="input-group input-group-lg" >
-                            <input name="badge" ng-model="obj.badgeCode" type="text" class="form-control" placeholder="Scaneaza cardul..." lm-focus="obj.isFocusOnBadge">
+                            <input type="password" name="badge" ng-model="obj.badgeCode" type="text" class="form-control" placeholder="Scaneaza cardul..." lm-focus="obj.isFocusOnBadge">
                             <span class="input-group-btn"><button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span></button></span>
                         </div>                                               
                     </form>
@@ -33,7 +33,7 @@
                     </br>
                    
                     <div ng-show="!errorValidation && orderLine">
-                        <h2 class2="text-muted" ng-style="orderLine.status === 'completed' && {'text-decoration':'line-through'}">{{orderLine.employeeName}}</h2>                     
+                        <h2 ng-style="orderLine.status === 'completed' && {'text-decoration':'line-through'}">{{orderLine.employeeName}}</h2>                     
                         <hr/>
                         <h2>
                             <span ng-style="orderLine.fromOwnerOpt1 && {'background-color':'lightgreen'}">
@@ -59,7 +59,7 @@
                     </h2>
                     
                     <div ng-show="errorValidation">
-                        <h2 class="text-muted">{{errorMessage}}</h2>
+                        <h2 class="text-muted" style="color:red">{{errorMessage}}</h2>
                     </div>                                        
                     
                 </div> 
