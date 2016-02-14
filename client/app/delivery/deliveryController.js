@@ -46,21 +46,8 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
             alert(JSON.stringify(err, null, 4));
         }) 
     }   
-    
-    function getEatSeriesDetails(orderId, eatSeries, sortByDeliveryDate){
-        orderLineService.getEatSeriesDetails(orderId, eatSeries).then(function (data) {
-            if(sortByDeliveryDate){
-                $scope.orderLines = _.orderBy(data, 'deliveryDate', 'desc');   
-            } else { 
-                $scope.orderLines = data;
-            }                                      
-        })
-        .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
-        });        
-    } 
    
-    $scope.openDeliveryLine = function(orderLine){
+    $scope.openDeliveryLine = function(orderLine, status){
         var templateUrl = 'app/delivery/openToCompleteTpl.html';
         if(orderLine.status === 'completed'){
             templateUrl = 'app/delivery/openToRevokeTpl.html';
@@ -84,7 +71,9 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
         });
 
         modalInstance.result.then(function () { // "yyyy-mm-dd" 
-            $scope.refresh();
+            //$scope.refresh();
+            if(status === 'open') $scope.refreshOpen();
+            else $scope.refreshCompleted();
         }, function () {
             //$log.info('Modal dismissed at: ' + new Date());
         });          
@@ -93,14 +82,45 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
     
     function dt(dateAsString) { // yyyy-mm-dd
         return helperService.getObjFromString(dateAsString);
-    }    
+    } 
     
-    $scope.selectTab23 = function(status){
-        $scope.selectedStatus = status;
-        var sortByDeliveryDate = (status ==='completed')? true : false;
-        getEatSeriesDetails($scope.delivery.orderId, $scope.delivery.eatSeries, sortByDeliveryDate);
+    var getOrderLinesOpen = function(){
+        orderLineService.getOrderLinesBySeriesAndStatus($scope.delivery.orderId, $scope.delivery.eatSeries, 'open').then(function (data) {
+            $scope.orderLinesOpen = data;                                     
+        })
+        .catch(function (err) {
+            alert(JSON.stringify(err, null, 4));
+        });         
+    }      
+    
+    // handle 'open' lines 
+    $scope.refreshOpen = function(){
+        getOrderLinesOpen();      
+    }      
+    
+    $scope.selectTabOpen = function(){
+        getOrderLinesOpen();         
     }
     
+    
+    var getOrderLinesCompleted = function(){
+        orderLineService.getOrderLinesBySeriesAndStatus($scope.delivery.orderId, $scope.delivery.eatSeries, 'completed').then(function (data) {
+            $scope.orderLinesCompleted = _.orderBy(data, 'deliveryDate', 'desc');                                   
+        })
+        .catch(function (err) {
+            alert(JSON.stringify(err, null, 4));
+        });        
+    }      
+    
+    // handle 'completed' lines
+    $scope.refreshCompleted = function(){
+        getOrderLinesCompleted();      
+    }      
+    
+    $scope.selectTabCompleted = function(status){
+        getOrderLinesCompleted();
+    }    
+        
     $scope.selectTab1 = function(){       
         $scope.obj.isFocusOnBadge = true;
         $scope.orderLine = undefined;
@@ -170,16 +190,6 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
         if($scope.obj.onlyNoBadges){
             return !orderLine.badgeCode;
         } else return true;
-    }
-    
-    $scope.statusFilter = function(orderLine){
-        //return orderLine.status === $scope.selectedStatus; // maybe there are record with no status insted of 'open'
-        // TODO: force a new orderLine to have an 'open' status
-        if($scope.selectedStatus === 'completed'){
-            return orderLine.status === 'completed';
-        } else {
-            return orderLine.status !== 'completed';
-        }        
     }
     
     $scope.selectPreference = function(preference){
