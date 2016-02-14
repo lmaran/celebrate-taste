@@ -14,13 +14,13 @@
     };
 
 
-    // ---------- CRUD ----------
-    customerEmployeeService.getById = function (id, next) {
-        mongoService.getById(collection, id, next);
-    };
-
+    // ---------- REST ----------
     customerEmployeeService.create = function (badge, next) {
         mongoService.create(collection, badge, next);
+    };
+        
+    customerEmployeeService.getById = function (id, next) {
+        mongoService.getById(collection, id, next);
     };
 
     customerEmployeeService.update = function (badge, next) {        
@@ -32,10 +32,9 @@
     };
     
     
-    // ---------- Misc ----------    
+    // ---------- RPC ----------    
     customerEmployeeService.getByValue = function (field, value, id, next) {
         mongoService.getByValue(collection, field, value, id, next);
     };      
-    
     
 })(module.exports);

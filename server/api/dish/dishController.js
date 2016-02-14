@@ -2,10 +2,13 @@
 
 var dishService = require('./dishService');
 
+
+// ---------- OData ----------
 exports.getAll = function (req, res) {
     var odataQuery = req.query;
     odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
-        
+    if(!odataQuery.$top) odataQuery.$top = "1000"; // if $top is not specified, return max. 1000 records
+            
     dishService.getAll(odataQuery, function (err, dishes) {
         if(err) { return handleError(res, err); }
         res.status(200).json(dishes);        
@@ -13,15 +16,7 @@ exports.getAll = function (req, res) {
 };
 
 
-exports.getById = function (req, res) {
-    dishService.getById(req.params.id, function (err, dish) {
-        if(err) { return handleError(res, err); }
-        //if(!doc) { return res.status(404).send('Not Found'); }
-        res.json(dish);
-    });    
-};
-
-
+// ---------- REST ----------
 exports.create = function(req, res){
     var dish = req.body;
     
@@ -34,6 +29,13 @@ exports.create = function(req, res){
     });
 };
 
+exports.getById = function (req, res) {
+    dishService.getById(req.params.id, function (err, dish) {
+        if(err) { return handleError(res, err); }
+        //if(!doc) { return res.status(404).send('Not Found'); }
+        res.json(dish);
+    });    
+};
 
 exports.update = function(req, res){    
     var dish = req.body;
@@ -60,6 +62,8 @@ exports.remove = function(req, res){
     });
 };
 
+
+// ---------- Helpers ----------
 function handleError(res, err) {
     return res.status(500).send(err);
 };

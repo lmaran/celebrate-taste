@@ -47,13 +47,12 @@ module.exports = function(app) {
     // API routes
     app.use('/api/users',require('./api/user/userRoutes'));
     app.use('/api/preferences', auth.hasRole('admin'), require('./api/preference/preferenceRoutes'));
-    app.use('/api/teams', auth.hasRole('admin'), require('./api/team/teamRoutes'));
     app.use('/api/buildInfo', require('./api/buildInfo/buildInfoRoutes'));   
     app.use('/api/dishes', auth.hasRole('admin'), require('./api/dish/dishRoutes'));
     app.use('/api/customerEmployees', auth.hasRole('admin'), require('./api/customerEmployee/customerEmployeeRoutes'));
     app.use('/api/menus', auth.hasRole('admin'), require('./api/menu/menuRoutes'));
     app.use('/api/orders', auth.hasRole('admin'), require('./api/order/orderRoutes'));
-    //app.use('/api/orders/:id/orderDetails', auth.hasRole('admin'), require('./api/order/orderDetail/orderDetailRoutes'));
+    app.use('/api/orderLines', auth.hasRole('admin'), require('./api/orderLine/orderLineRoutes'));
     app.use('/api/deliveries', auth.hasRole('admin'), require('./api/delivery/deliveryRoutes'));
 
     
