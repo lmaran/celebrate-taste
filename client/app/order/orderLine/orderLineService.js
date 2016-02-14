@@ -28,6 +28,13 @@ app.factory('orderLineService', ['$http', function ($http) {
         });
     };
     
+    factory.getOrderLinesBySeriesAndStatus = function (orderId, eatSeries, status) {
+        var query = "?$filter=orderId eq '" + orderId + "' and eatSeries eq '" +  eatSeries +  "' and status eq '" + status + "'";
+        return $http.get(rootUrl + query).then(function (result) {
+            return result.data;
+        });
+    };    
+    
     // ---------- REST ----------
     factory.create = function (orderLine) {
         return $http.post(rootUrl, orderLine);
