@@ -128,13 +128,23 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
     
     $scope.deliverByBadge = function(form){
         $scope.orderLine = undefined; // clean up the screen
-        orderLineService.getOrderLinesByBadge($scope.delivery.orderId, $scope.obj.badgeCode).then(function (data) {
+        if($scope.obj.badgeCode.length !== 10 || isNaN($scope.obj.badgeCode)){
+            $scope.errorValidation = true;
+            $scope.errorMessage = "'" +$scope.obj.badgeCode +  "' este un cod invalid! (nu are 10 cifre)";
+            $scope.obj.badgeCode = ''; // reset badgeCode in UI
+            $scope.obj.isFocusOnBadge = true; 
+            return;
+        }
+        
+        var newBadgeCode = getNewBadge($scope.obj.badgeCode); // '0007453659' --> '0011348091'
+        
+        orderLineService.getOrderLinesByBadge($scope.delivery.orderId, newBadgeCode).then(function (data) {
             if(data.length === 0){
                 $scope.errorValidation = true;
-                $scope.errorMessage = "Card negasit: " + $scope.obj.badgeCode;
+                $scope.errorMessage = "Lipsa comanda pt. " + $scope.obj.badgeCode + " (" + newBadgeCode + ")";
             } else if(data.length > 1) {
                 $scope.errorValidation = true;
-                $scope.errorMessage = "Exista mai multe persoane cu acelasi card: " + $scope.obj.badgeCode;             
+                $scope.errorMessage = "Exista mai multe persoane cu acelasi card: " + $scope.obj.badgeCode + " (" + newBadgeCode + ")";            
             } else if(data[0].eatSeries !== $scope.delivery.eatSeries) {
                 $scope.errorValidation = true;
                 if(data[0].status === 'completed')
@@ -216,6 +226,28 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
         } else if($scope.selectedPreference === 'Fara pref.'){
             return !(orderLine.option1 && orderLine.option2);
         }
-    }                
+    } 
+
+    function getNewBadge(inputCode){ // '0007453659'; (first code printed on card)
+        var intCode =parseInt(inputCode, 10); // 7453659 (int)
+        var hexaCode =intCode.toString(16); // 71BBDB (hex)
+
+        var startDec = hexaCode.substr(0, hexaCode.length - 4); // 71 (hex)    
+        var endDec = hexaCode.substr(hexaCode.length - 4); // BBDB (hex)
+        
+        var startInt = parseInt(startDec, 16) // 113 (int)
+        var endInt = parseInt(endDec, 16) // 48091 (int)
+
+        var aggInt = startInt.toString() + endInt.toString(); // '11348091'
+        
+        var rez = padDigits(aggInt, 10); // '0011348091' (last code printed on card)
+        return rez;        
+    } 
+    
+    //http://stackoverflow.com/a/10075654
+    // padDigits(23, 4); --> "0023"
+    function padDigits(number, digits) {
+        return Array(Math.max(digits - String(number).length + 1, 0)).join('0') + number;
+    }                 
 
 }])
