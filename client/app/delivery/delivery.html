@@ -135,7 +135,6 @@
                         <tr>                   
                             <th>Angajat</th>
                             <th>Preferinte</th>
-                            <th>Stare</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -153,7 +152,6 @@
                                 <span ng-style="orderLine.fromOwnerOpt1 && {'background-color':'lightgreen'}">{{orderLine.option1 || '-'}}</span> / 
                                 <span ng-style="orderLine.fromOwnerOpt2 && {'background-color':'lightgreen'}">{{orderLine.option2 || '-'}}</span>
                             </td>                
-                            <td>{{orderLine.status}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -200,7 +198,6 @@
                         <tr>                   
                             <th>Angajat</th>
                             <th>Preferinte</th>
-                            <th>Stare</th>
                             <th>Data livrarii</th>
                         </tr>
                     </thead>
@@ -216,7 +213,6 @@
                                 <span ng-style="orderLine.fromOwnerOpt1 && {'background-color':'lightgreen'}">{{orderLine.option1 || '-'}}</span> / 
                                 <span ng-style="orderLine.fromOwnerOpt2 && {'background-color':'lightgreen'}">{{orderLine.option2 || '-'}}</span>
                             </td>                
-                            <td>{{orderLine.status}}</td>
                             <td>{{orderLine.deliveryDate | date:'dd-MM-yyyy HH:mm:ss'}}</td>
                         </tr>
                     </tbody>
