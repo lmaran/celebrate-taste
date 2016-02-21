@@ -26,8 +26,8 @@ exports.create = function(req, res){
         else{
             
             preference.createBy = req.user.name;    
-            preference.createdOn = new Date();  
-                        
+            preference.createdOn = new Date(); 
+                  
             preferenceService.create(preference, function (err, response) {
                 if(err) { return handleError(res, err); }
                 res.status(201).json(response.ops[0]);
@@ -53,7 +53,12 @@ exports.update = function(req, res){
         else{
             
             preference.modifiedBy = req.user.name;    
-            preference.modifiedOn = new Date();             
+            preference.modifiedOn = new Date();
+            
+            if(preference.option1)
+                preference.option1 = preference.option1.toUpperCase();
+            if(preference.option2)
+                preference.option2 = preference.option2.toUpperCase();                       
             
             preferenceService.update(preference, function (err, response) {
                 if(err) { return handleError(res, err); }
