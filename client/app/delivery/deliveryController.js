@@ -237,11 +237,14 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
         
         var startInt = parseInt(startDec, 16) // 113 (int)
         var endInt = parseInt(endDec, 16) // 48091 (int)
-
-        var aggInt = startInt.toString() + endInt.toString(); // '11348091'
         
-        var rez = padDigits(aggInt, 10); // '0011348091' (last code printed on card)
-        return rez;        
+        var startPadded = padDigits(startInt, 5) // '00113' (str)
+        var endPadded = padDigits(endInt, 5) // '48091' (str)        
+
+        //var aggInt = startInt.toString() + endInt.toString(); // '11348091'
+        
+        //var rez = padDigits(aggInt, 10); // '0011348091' (last code printed on card)
+        return startPadded + endPadded;        
     } 
     
     //http://stackoverflow.com/a/10075654
