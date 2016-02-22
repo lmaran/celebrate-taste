@@ -4,7 +4,16 @@ app.factory('customerEmployeeService', ['$http', function ($http) {
 
     var factory = {};
     var rootUrl = '/api/customerEmployees/';
-
+    
+    // ---------- OData ----------  
+    factory.getByBadge = function (badgeCode) {
+        var query = "?$filter=badgeCode eq '" + badgeCode + "' and isActive eq true";
+        return $http.get(rootUrl + query).then(function (result) {                
+            return result.data; // normaly it shoud return an array with 0 or 1 elements
+        });
+    };
+    
+    // ---------- REST ----------
     factory.create = function (item) {
         return $http.post(rootUrl, item);
     };
@@ -29,5 +38,8 @@ app.factory('customerEmployeeService', ['$http', function ($http) {
         return $http.delete(rootUrl + encodeURIComponent(itemId));
     };
 
+
+    // ---------- RPC ----------
+    
     return factory;
 }]);
