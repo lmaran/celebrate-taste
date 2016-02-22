@@ -154,7 +154,7 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
                 
                 deliveryService.createLog(log)
                     .then(function (data) {
-                        toastr.success('Datele despre acest card au most memorate pt. investigatii ulterioare.');
+                        toastr.success('Datele despre acest card au fost memorate pt. investigatii ulterioare.');
                     })
                     .catch(function (err) {
                         alert(JSON.stringify(err.data, null, 4)); 
