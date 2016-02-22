@@ -18,7 +18,7 @@
     // ---------- REST ----------
     deliveryService.create = function (badge, next) {
         mongoService.create(collection, badge, next);
-    };
+    };        
         
     deliveryService.getById = function (id, next) {
         mongoService.getById(collection, id, next);
@@ -43,6 +43,10 @@
             if (err) return next(err, null);
             db.collection(collection).insertMany(deliveries, next);      
         });
-    };    
+    }; 
+    
+    deliveryService.createLog = function (log, next) {
+        mongoService.create('deliveryLog', log, next);
+    };      
     
 })(module.exports);

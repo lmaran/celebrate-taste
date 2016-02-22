@@ -38,6 +38,10 @@ app.factory('deliveryService', ['$http', function ($http) {
             return result.data;
         });        
     }
+    
+    factory.createLog = function (log) {
+        return $http.post(rootUrl + 'rpc/createLog', log);
+    };      
 
     return factory;
 }]);

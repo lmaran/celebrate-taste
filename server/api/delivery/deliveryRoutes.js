@@ -16,5 +16,6 @@ router.delete('/:id', controller.remove);
 
 // ---------- RPC ----------
 router.post('/rpc/createMany', controller.createMany);
-
+router.post('/rpc/createLog', controller.createLog)
+  
 module.exports = router;
