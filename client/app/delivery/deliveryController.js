@@ -2,8 +2,8 @@
 /* global _ */
 'use strict';
 
-app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$location', 'helperValidator', 'helperService', 'orderLineService', '$uibModal', '$timeout', 'menuService', 'toastr',
-    function ($scope, $route, deliveryService, $location, helperValidator, helperService, orderLineService, $uibModal, $timeout, menuService, toastr) {
+app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$location', 'helperValidator', 'helperService', 'orderLineService', '$uibModal', '$timeout', 'menuService', 'toastr', 'customerEmployeeService',
+    function ($scope, $route, deliveryService, $location, helperValidator, helperService, orderLineService, $uibModal, $timeout, menuService, toastr, customerEmployeeService) {
         
     //$scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -140,25 +140,37 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
         
         orderLineService.getOrderLinesByBadge($scope.delivery.orderId, newBadgeCode).then(function (data) {
             if(data.length === 0){
-                $scope.errorValidation = true;
-                $scope.errorMessage = "Lipsa comanda pt. " + $scope.obj.badgeCode + " (" + newBadgeCode + ")";
-                
-                // collect log info
-                
-                var log={
-                    orderId: $scope.delivery.orderId,
-                    orderDate: $scope.delivery.orderDate,
-                    badgeCodeLeft: $scope.obj.badgeCode,
-                    badgeCodeRight: newBadgeCode
-                }
-                
-                deliveryService.createLog(log)
-                    .then(function (data) {
-                        toastr.success('Datele despre acest card au fost memorate pt. investigatii ulterioare.');
-                    })
-                    .catch(function (err) {
-                        alert(JSON.stringify(err.data, null, 4)); 
-                    })                 
+                var bCode = $scope.obj.badgeCode;
+                customerEmployeeService.getByBadge(newBadgeCode).then(function (data) {
+                    
+                    if(data.length > 0){
+                        $scope.errorMessage = "Lipsa comanda pt. " + bCode + " (" + newBadgeCode + ") - " + data[0].name;
+                    } else {
+                        $scope.errorMessage = "Card negasit: " + bCode + " (" + newBadgeCode + ")";
+                    }
+                    
+                    $scope.errorValidation = true;
+                    
+                    // collect log info
+                    var log = {
+                        orderId: $scope.delivery.orderId,
+                        orderDate: $scope.delivery.orderDate,
+                        badgeCodeLeft: $scope.obj.badgeCode,
+                        badgeCodeRight: newBadgeCode
+                    }
+                    
+                    deliveryService.createLog(log)
+                        .then(function (data) {
+                            toastr.success('Datele despre acest card au fost memorate pt. investigatii ulterioare.');
+                        })
+                        .catch(function (err) {
+                            alert(JSON.stringify(err.data, null, 4)); 
+                        })                     
+                    
+                })
+                .catch(function (err) {
+                    alert(JSON.stringify(err, null, 4));
+                })                
                 
             } else if(data.length > 1) {
                 $scope.errorValidation = true;
