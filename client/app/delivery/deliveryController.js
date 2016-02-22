@@ -250,12 +250,17 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
         var intCode =parseInt(inputCode, 10); // 7453659 (int)
         var hexaCode =intCode.toString(16); // 71BBDB (hex)
 
-        var startDec = hexaCode.substr(0, hexaCode.length - 4); // 71 (hex)    
-        var endDec = hexaCode.substr(hexaCode.length - 4); // BBDB (hex)
+        var startHex = hexaCode.substr(0, hexaCode.length - 4); // 71 (hex)    
+        var endHex = hexaCode.substr(hexaCode.length - 4); // BBDB (hex)
+
+        if(startHex.length > 2){
+            startHex = startHex.substr(startHex.length - 2); // in first group, keep only last 2 chars
+        }
         
-        var startInt = parseInt(startDec, 16) // 113 (int)
-        var endInt = parseInt(endDec, 16) // 48091 (int)
+        var startInt = parseInt(startHex, 16) // 113 (int)
+        var endInt = parseInt(endHex, 16) // 48091 (int)
         
+        // pad each part with zero 
         var startPadded = padDigits(startInt, 5) // '00113' (str)
         var endPadded = padDigits(endInt, 5) // '48091' (str)        
 
