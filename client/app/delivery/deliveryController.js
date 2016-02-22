@@ -142,6 +142,24 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
             if(data.length === 0){
                 $scope.errorValidation = true;
                 $scope.errorMessage = "Lipsa comanda pt. " + $scope.obj.badgeCode + " (" + newBadgeCode + ")";
+                
+                // collect log info
+                
+                var log={
+                    orderId: $scope.delivery.orderId,
+                    orderDate: $scope.delivery.orderDate,
+                    badgeCodeLeft: $scope.obj.badgeCode,
+                    badgeCodeRight: newBadgeCode
+                }
+                
+                deliveryService.createLog(log)
+                    .then(function (data) {
+                        toastr.success('Datele despre acest card au most memorate pt. investigatii ulterioare.');
+                    })
+                    .catch(function (err) {
+                        alert(JSON.stringify(err.data, null, 4)); 
+                    })                 
+                
             } else if(data.length > 1) {
                 $scope.errorValidation = true;
                 $scope.errorMessage = "Exista mai multe persoane cu acelasi card: " + $scope.obj.badgeCode + " (" + newBadgeCode + ")";            
