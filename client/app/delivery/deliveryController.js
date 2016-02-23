@@ -2,8 +2,8 @@
 /* global _ */
 'use strict';
 
-app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$location', 'helperValidator', 'helperService', 'orderLineService', '$uibModal', '$timeout', 'menuService', 'toastr', 'customerEmployeeService',
-    function ($scope, $route, deliveryService, $location, helperValidator, helperService, orderLineService, $uibModal, $timeout, menuService, toastr, customerEmployeeService) {
+app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$location', 'helperValidator', 'helperService', 'orderLineService', '$uibModal', '$timeout', 'menuService', 'toastr', 'customerEmployeeService', 'orderService',
+    function ($scope, $route, deliveryService, $location, helperValidator, helperService, orderLineService, $uibModal, $timeout, menuService, toastr, customerEmployeeService, orderService) {
         
     //$scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -12,6 +12,8 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
     $scope.preferences=['A', 'B', 'C', 'D'];
     $scope.selectedPreference = 'Toate pref.';
     
+    $scope.deliverySummary = {};
+
     $scope.obj={};
     $scope.obj.isFocusOnBadge = true;
    
@@ -32,11 +34,21 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
             $scope.delivery = data;
             $scope.dateAsShortString = dt($scope.delivery.orderDate).dateAsShortString;
             getMenus($scope.delivery.orderDate);
+            getDeliverySummary(data.orderId, data.eatSeries);
         })
         .catch(function (err) {
             alert(JSON.stringify(err, null, 4));
         })
     } 
+    
+    function getDeliverySummary(orderId, eatSeries){
+        orderService.getDeliverySummary(orderId, eatSeries).then(function (data) {
+            $scope.deliverySummary = data;         
+        })
+        .catch(function (err) {
+            alert(JSON.stringify(err, null, 4));
+        }) 
+    }     
     
     function getMenus(orderDate){
         menuService.getMenu(orderDate).then(function (data) {
@@ -124,6 +136,7 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
     $scope.selectTab1 = function(){       
         $scope.obj.isFocusOnBadge = true;
         $scope.orderLine = undefined;
+        getDeliverySummary($scope.delivery.orderId, $scope.delivery.eatSeries)
     }
     
     $scope.deliverByBadge = function(form){
@@ -186,7 +199,7 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
                 $scope.orderLine = data[0];
                 
                 if($scope.orderLine.status !== 'completed'){
-                    // set orderLine as 'completed'
+                    // set orderLine as 'completed' and save
                     var orderLineClone = {};
                     angular.copy($scope.orderLine, orderLineClone); // deep copy (to deal with status and 'strike-through')
         
@@ -194,6 +207,7 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
                     orderLineClone.deliveryDate = new Date();                                            
                     orderLineService.update(orderLineClone)
                         .then(function (data) {
+                            $scope.deliverySummary = data.data;
                             toastr.success('Livrarea a fost inregistrata!');
                         })
                         .catch(function (err) {
@@ -221,6 +235,7 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
                 toastr.success('Livrarea a fost anulata!');
                 $scope.orderLine = undefined; // clean up the screen
                 $scope.obj.isFocusOnBadge = true;
+                $scope.deliverySummary = data.data;
             })
             .catch(function (err) {
                 alert(JSON.stringify(err.data, null, 4)); 

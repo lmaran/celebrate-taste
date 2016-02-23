@@ -52,7 +52,13 @@ app.factory('orderService', ['$http', function ($http) {
         return $http.get(rootUrl + orderId + '/rpc/getEatSeriesList' ).then(function (result) {
             return result.data;
         });
-    };           
+    }; 
+    
+    factory.getDeliverySummary = function (orderId, eatSeries) {
+        return $http.get(rootUrl + orderId + '/rpc/getDeliverySummary/' + encodeURIComponent(eatSeries) ).then(function (result) {
+            return result.data;
+        });
+    };         
 
     return factory;
 }]);
