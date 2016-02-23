@@ -96,7 +96,13 @@ exports.update = function(req, res){
                 if (!response.value) {
                     res.sendStatus(404); // not found
                 } else {
-                    res.sendStatus(200);
+                    //res.sendStatus(200);
+                    
+                    // get new status
+                    orderLineService.getDeliverySummary(orderLine.orderId, orderLine.eatSeries, function (err, deliverySummary) {
+                        if(err) { return handleError(res, err); }
+                        res.status(200).json(deliverySummary);
+                    });
                 }
             });          
         }

@@ -22,16 +22,27 @@
      
             <div class2="row top-margin-15" style="margin-top:80px"> 
                 <div class="col-md-2"></div>    
-                <div class="col-md-8 col-md-10-offset-2">
+                <div class="col-md-8 col-md-10-offset-2">                 
                     <form name="form" class="form-horizontal" ng-submit="deliverByBadge(form)" novalidate autocomplete="off"> 
                         <div class="input-group input-group-lg" >
                             <input type="password" name="badge" ng-model="obj.badgeCode" type="text" class="form-control" placeholder="Scaneaza cardul..." lm-focus="obj.isFocusOnBadge">
                             <span class="input-group-btn"><button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span></button></span>
                         </div>                                               
                     </form>
-                    
                     </br>
-                   
+                    
+                    <span class="pull-right">
+                        <span class2="label label-default" style="font-size:100%; font-weight:normal">Portii ramase:</span>
+                        <span ng-repeat="opt in deliverySummary.options">
+                            <span class="label label-info" style="font-size:100%; font-weight:normal; background-color:#DDD; color:black">{{opt.key}}: {{opt.value.remaining}}</span>
+                        </span>  
+                    </span>  
+                                        
+                    <span class="label label-default" style="font-size:100%; font-weight:normal; background-color2:#DDD; color2:black">Persoane servite:</span> 
+                    {{deliverySummary.servings.delivered}} / {{deliverySummary.servings.total}}
+                
+                    <uib-progressbar animate="true" value="deliverySummary.servings.delivered" max="deliverySummary.servings.total" type="success" style="height:5px; margin-top:5px"><b></b></uib-progressbar> 
+
                     <div ng-show="!errorValidation && orderLine">
                         <h2 ng-style="orderLine.status === 'completed' && {'text-decoration':'line-through'}">{{orderLine.employeeName}}</h2>                     
                         <hr/>
