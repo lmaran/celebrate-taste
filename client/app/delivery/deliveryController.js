@@ -155,7 +155,7 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
                     var log = {
                         orderId: $scope.delivery.orderId,
                         orderDate: $scope.delivery.orderDate,
-                        badgeCodeLeft: $scope.obj.badgeCode,
+                        badgeCodeLeft: bCode,
                         badgeCodeRight: newBadgeCode
                     }
                     
