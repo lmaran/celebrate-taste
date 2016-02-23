@@ -17,6 +17,7 @@ router.delete('/:id', controller.remove);
 // ---------- RPC ----------
 router.get('/:id/rpc/print/:opCode', controller.print);
 router.get('/:id/rpc/getEatSeriesList', controller.getEatSeriesList);
+router.get('/:id/rpc/getDeliverySummary/:eatSeries', controller.getDeliverySummary);
 
 module.exports = router;
 

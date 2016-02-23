@@ -5,6 +5,7 @@
     var mongoHelper = require('../../data/mongoHelper');
     var mongoService = require('../../data/mongoService');
     var collection = 'orderLines';
+    var _ = require('lodash');
     
     
     // ---------- OData ----------
@@ -144,6 +145,140 @@
             
             db.collection(collection).findOne(query, next);                           
         });
-    };         
+    }; 
+    
+    orderLineService.getDeliverySummary = function (orderId, eatSeries, next) {      
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            db.collection(collection).aggregate([
+                { $match: { orderId:orderId, eatSeries:eatSeries } },
+                { $group: {
+                    _id: {
+                        opt1: "$option1",
+                        opt2: "$option2",
+                        status: "$status"
+                    },
+                    count: { $sum: 1 }
+                }},
+                { $project: {
+                    _id:0, 
+                    opt1:"$_id.opt1", 
+                    opt2:"$_id.opt2", 
+                    status:"$_id.status", 
+                    count:"$count"
+                }}
+            
+            ]).toArray(function (err, docs) {
+                if (err) return next(err, null);
+                return next(null, formatSummary(orderId, eatSeries, docs));                 
+            });
+        });
+    }; 
+    
+    function formatSummary(orderId, eatSeries, deliverySummary){
+        var servings = {delivered:0, remaining:0}; // ((portii pe persoane)
+        var options = [];
+        
+        deliverySummary.forEach(function(item) {
+            if(item.status === 'completed'){
+                servings.delivered += item.count;
+            } else { // 'open'
+                servings.remaining += item.count;
+            }
+            
+            // option1
+            var option1 = _.find(options, {key:item.opt1});
+            if(option1){ // update existing
+                if(item.status === 'completed'){
+                    option1.value.delivered += item.count
+                } else { // 'open'
+                    option1.value.remaining += item.count
+                }                
+            } else { // insert new
+                if(item.opt1){
+                    if(item.status === 'completed'){
+                        options.push({key:item.opt1, value:{delivered:item.count, remaining:0}});
+                    } else { // 'open'
+                        options.push({key:item.opt1, value:{delivered:0, remaining:item.count}});
+                    }  
+                }                
+            }  
+            
+            // option2
+            var option2 = _.find(options, {key:item.opt2});
+            if(option2){ // update existing
+                if(item.status === 'completed'){
+                    option2.value.delivered += item.count
+                } else { // 'open'
+                    option2.value.remaining += item.count
+                }                
+            } else { // insert new
+                if(item.opt1){
+                    if(item.status === 'completed'){
+                        options.push({key:item.opt2, value:{delivered:item.count, remaining:0}});
+                    } else { // 'open'
+                        options.push({key:item.opt2, value:{delivered:0, remaining:item.count}});
+                    }   
+                }
+            }  
+        });
+        
+        // add a 'total' field
+        servings.total = servings.delivered + servings.remaining;
+        
+        options.forEach(function(option){
+            option.value.total = option.value.delivered + option.value.remaining;
+        });
+        
+        var newDeliverySummary = {
+            servings: servings,
+            options: _.sortBy(options, 'key')
+        };
+        
+        return(newDeliverySummary);
+        
+        // output:
+        // {
+        //     servings: {
+        //         delivered: 11,
+        //         remaining: 137,
+        //         total: 148
+        //     },
+        //     options: [
+        //         {
+        //             key: "A",
+        //             value: {
+        //                 delivered: 2,
+        //                 remaining: 61,
+        //                 total: 63
+        //             }
+        //         },
+        //         {
+        //             key: "B",
+        //             value: {
+        //                 delivered: 9,
+        //                 remaining: 75,
+        //                 total: 84
+        //             }
+        //         },
+        //         {
+        //             key: "C",
+        //             value: {
+        //                 delivered: 3,
+        //                 remaining: 56,
+        //                 total: 59
+        //             }
+        //         },
+        //         {
+        //             key: "D",
+        //             value: {
+        //                 delivered: 8,
+        //                 remaining: 80,
+        //                 total: 88
+        //             }
+        //         }
+        //     ]
+        // }          
+    }     
     
 })(module.exports);

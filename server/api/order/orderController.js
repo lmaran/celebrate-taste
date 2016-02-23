@@ -99,6 +99,15 @@ exports.getEatSeriesList = function (req, res) {
     });
 };
 
+exports.getDeliverySummary = function (req, res) {
+    var orderId = req.params.id;
+    var eatSeries = req.params.eatSeries;
+    orderLineService.getDeliverySummary(orderId, eatSeries, function (err, deliverySummary) {
+        if(err) { return handleError(res, err); }
+        res.status(200).json(deliverySummary);
+    });
+};
+
 
 // ---------- Helpers ----------
 function printSeries(req, res, eatSeries){
