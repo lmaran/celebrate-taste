@@ -33,13 +33,17 @@
         mongoService.getById(collection, id, next);       
     };
 
-    userService.create = function (badge, next) {
-        mongoService.create(collection, badge, next);
+    userService.create = function (user, next) {
+        mongoService.create(collection, user, next);
     };
-
-    userService.update = function (badge, next) {        
-        mongoService.update(collection, badge, next);
+    
+    userService.update = function (user, next) {        
+        mongoService.update(collection, user, next);
     };  
+    
+    userService.updatePartial = function (user, next) { // replacing the entire object will delete the psw+salt
+        mongoService.updatePartial(collection, user, next);
+    };    
 
     userService.remove = function (id, next) {
         mongoService.remove(collection, id, next);
