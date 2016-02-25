@@ -65,7 +65,7 @@ exports.update = function(req, res){
     user.modifiedBy = req.user.name;    
     user.modifiedOn = new Date();     
     
-    userService.update(user, function (err, response) {
+    userService.updatePartial(user, function (err, response) { // replacing the entire object will delete the psw+salt
         if(err) { return handleError(res, err); }
         if (!response.value) {
             res.sendStatus(404); // not found
