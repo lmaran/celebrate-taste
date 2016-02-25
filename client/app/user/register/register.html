@@ -10,7 +10,7 @@
         <div class="form-group" ng-class="{ 'has-success': form.name.$valid && submitted, 'has-error': form.name.$invalid && submitted }">
             <label class="col-md-2 control-label">Nume</label>
             <div class="col-md-4">
-                <input type="text" name="name" class="form-control" ng-model="user.name" required />
+                <input type="text" name="name" class="form-control" ng-model="user.name" required autocomplete="off" novalidate/>
                 <p ng-show="form.name.$error.required  && submitted" class="help-block">Acest camp este obligatoriu.</p>
             </div>
         </div>
