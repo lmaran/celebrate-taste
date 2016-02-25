@@ -166,10 +166,9 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
                     
                     // collect log info
                     var log = {
-                        orderId: $scope.delivery.orderId,
                         orderDate: $scope.delivery.orderDate,
-                        badgeCodeLeft: bCode,
-                        badgeCodeRight: newBadgeCode
+                        series: $scope.delivery.eatSeries,
+                        msg: $scope.errorMessage
                     }
                     
                     deliveryService.createLog(log)
