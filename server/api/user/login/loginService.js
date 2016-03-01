@@ -31,6 +31,7 @@ function addUserIfExist() {
             // if (req.query && req.query.hasOwnProperty('access_token')) {
             //     req.headers.authorization = 'Bearer ' + req.query.access_token;
             // };
+            
             if(req.cookies && req.cookies.access_token){
                 req.headers.authorization = 'Bearer ' + req.cookies.access_token;
                 validateJwt(req, res, next);
@@ -44,7 +45,7 @@ function addUserIfExist() {
                     if (err) return next(err);
                     //if (!user) return res.status(401).send('Unauthorized');
                     if (!user) next();
-                    if (user.role.indexOf('admin') > -1) user.isAdmin = true; //add this property for navbar
+                    if (user && user.role.indexOf('admin') > -1) user.isAdmin = true; //add this property for navbar
                     req.user = user;
                     next();
                 });
@@ -75,7 +76,7 @@ function hasRole(roleRequired) {
  * Returns a jwt token signed by the app secret
  */
 function signToken(id) {
-    return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60 * 24 * 365 }); // 365 days
+    return jwt.sign({ _id: id }, config.secrets.session, { expiresIn: 60 * 60 * 24 * 365 }); // in seconds
 }
 
 // /**
