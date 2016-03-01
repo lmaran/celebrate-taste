@@ -10,7 +10,7 @@ module.exports = {
         api_key: 'key-ddfa5b01ca4cac91541645448bcdef14'
     }, 
     zoho: {
-        user: 'support@celebrate-taste.ro',
+        user: 'support@celebrate-taste.ro', //test
         psw: 'Aa123456'
     },          
     gaCode: 'UA-72165579-1'
