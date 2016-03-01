@@ -36,6 +36,15 @@ var all = {
             }
         }
     },
+    
+    mailgun: {
+        api_key: process.env.MAILGUN_KEY
+    },
+    
+    zoho: {
+        user: process.env.ZOHO_USER,
+        psw: process.env.ZOHO_PSW
+    },           
 
     rollbarToken: 'c40dd41c292340419923230eed1d0d61',
     logglyToken: 'ffa32efd-fe1b-4de4-99c2-9c0d6b1f07bc',
