@@ -5,7 +5,6 @@
     <h1>{{pageTitle}}</h1>
 
     <form ng-submit="register(form)" name="form" class="form-horizontal" role="form" novalidate>
-        <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
         
         <div class="form-group" ng-class="{ 'has-success': form.name.$valid && submitted, 'has-error': form.name.$invalid && submitted }">
             <label class="col-md-2 control-label">Nume</label>
@@ -38,7 +37,7 @@
             <div class="col-md-4">
                 <input type="password" name="confirmPassword" class="form-control" ng-model="user.confirmPassword" required my-match2222="user.password" />
                 <p ng-show="form.confirmPassword.$error.required && submitted" class="help-block">Acest camp este obligatoriu.</p>
-                <!--<p ng-show="!form.confirmPassword.$error.required && form.confirmPassword.$error.match && submitted" class="help-block">Parolele nu sunt identice.</p>-->
+                <p ng-show="!form.confirmPassword.$error.required && form.confirmPassword.$error.match && submitted" class="help-block">Parolele nu sunt identice.</p>
             </div>
         </div>            
  

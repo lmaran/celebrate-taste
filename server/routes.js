@@ -66,12 +66,15 @@ module.exports = function(app) {
     app.get('/menus/nextWeek/print', require('./api/menu/menuController').printNextWeek);
     app.get('/menus/:id/print', require('./api/menu/menuController').printById);
     
-    
     // server-side views
     app.get('/',function(req,res){res.render('home/home', {user: req.user});}); 
     app.get('/contact', function(req,res){res.render('contact/contact', {user: req.user});});
     app.get('/login', function(req,res){res.render('user/login/login');}); 
-    app.get('/changePassword', auth.isAuthenticated(), function(req,res){res.render('user/changePassword/changePassword');});
+    
+    app.get('/activate/:id', require('./api/user/userController').activateUser); 
+    app.post('/activate/:id', require('./api/user/userController').saveActivationData); 
+    
+    app.get('/changePassword', auth.isAuthenticated(), function(req,res){res.render('user/changePassword/changePassword', {user: req.user});});
     app.get('/todaysMenu', require('./views/menu/menuController').renderTodaysMenu);  
     app.get('/nextMenus', require('./views/menu/menuController').renderNextMenus);     
 

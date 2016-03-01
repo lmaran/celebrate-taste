@@ -4,7 +4,7 @@ var passport = require('passport');
 var auth = require('../loginService');
 
 // Passport Configuration (once)
-require('./passportConfig');//.setup(userService, config);
+require('./passportConfig');
 
 exports.authenticate = function(req, res, next) {
     // auth with custom callback: http://passportjs.org/docs/authenticate
