@@ -51,10 +51,6 @@ exports.create = function (req, res, next) {
             userService.create(user, function (err, response) {
                 if(err) { return handleError(res, err); }
                 res.status(201).json(response.ops[0]);
-                                
-                var baseUrl = req.protocol + '://' + req.hostname; // https://celebrate-taste.ro
-                if (config.env === 'development')
-                    baseUrl += ':' + config.port;
                 
                 // send an email with an activationLink
                 var from = user.email;
@@ -63,7 +59,7 @@ exports.create = function (req, res, next) {
                 var tpl = '';
                     tpl += '<strong>' + user.createdBy + '</strong> ti-a creat un cont. ';
                     tpl += 'Pentru activarea acestuia, te rog sa folosesti link-ul de mai jos:';
-                    tpl += '<p><a href="' + baseUrl + '/activate/' + user._id + '?activationToken=' + user.activationToken + '">Activare cont</a></p>';
+                    tpl += '<p><a href="' + config.externalUrl + '/activate/' + user._id + '?activationToken=' + user.activationToken + '">Activare cont</a></p>';
                     tpl += '<p style="margin-top:30px">Acest email a fost generat automat.</p>';
         
                     emailService.sendEmail(from, subject, tpl).then(function (result) {

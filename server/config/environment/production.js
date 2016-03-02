@@ -7,5 +7,6 @@ module.exports = {
     mongo: {
         uri: process.env.MONGO_URI
     },
-    gaCode: 'UA-72165579-3'    
+    gaCode: 'UA-72165579-3',
+    externalUrl: 'https://celebrate-taste.ro'  
 };
