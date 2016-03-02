@@ -26,10 +26,14 @@ factory.sendEmail = function(to, subject, body){
         }
     });
 
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) return console.log(error);
-        console.log('Message sent: ' + info.response);
-    });     
+    var promise = new Promise(function (resolve, reject) {
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) reject(error);
+            resolve('ok');
+        });  
+    });
+    
+    return promise;  
     
     
 //     // Mailgun    

@@ -66,7 +66,11 @@ exports.create = function (req, res, next) {
                     tpl += '<p><a href="' + baseUrl + '/activate/' + user._id + '?activationToken=' + user.activationToken + '">Activare cont</a></p>';
                     tpl += '<p style="margin-top:30px">Acest email a fost generat automat.</p>';
         
-                emailService.sendEmail(from, subject, tpl);
+                    emailService.sendEmail(from, subject, tpl).then(function (result) {
+                        console.log(result);
+                    }, function (err) {
+                        console.log(err);
+                    });
             });
             
         }
