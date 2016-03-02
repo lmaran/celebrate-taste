@@ -7,12 +7,11 @@ var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
 var uuid = require('node-uuid');
-var nodemailer = require('nodemailer');
-var Mailgun = require('mailgun-js');
- var auth = require('./login/loginService');
+var emailService = require('../../data/emailService');
+var auth = require('./login/loginService');
 
-var validationError = function(res, err) {
-  return res.status(422).json(err);
+var validationError = function (res, err) {
+    return res.status(422).json(err);
 };
 
 
@@ -57,7 +56,17 @@ exports.create = function (req, res, next) {
                 if (config.env === 'development')
                     baseUrl += ':' + config.port;
                 
-                sendActivationEmail(user, baseUrl);
+                // send an email with an activationLink
+                var from = user.email;
+                var subject = 'Activare cont';
+                
+                var tpl = '';
+                    tpl += '<strong>' + user.createdBy + '</strong> ti-a creat un cont. ';
+                    tpl += 'Pentru activarea acestuia, te rog sa folosesti link-ul de mai jos:';
+                    tpl += '<p><a href="' + baseUrl + '/activate/' + user._id + '?activationToken=' + user.activationToken + '">Activare cont</a></p>';
+                    tpl += '<p style="margin-top:30px">Acest email a fost generat automat.</p>';
+        
+                emailService.sendEmail(from, subject, tpl);
             });
             
         }
@@ -141,20 +150,20 @@ exports.changePassword = function(req, res, next) {
 /**
  * Get my info
  */
-exports.me = function(req, res, next) {
-  var userId = req.user._id.toString(); 
-  userService.getByIdWithoutPsw(userId, function(err, user) { // don't ever give out the password or salt
-    if (err) return next(err);
-    if (!user) return res.status(401).send('Unauthorized');
-    res.json(user);
-  });
+exports.me = function (req, res, next) {
+    var userId = req.user._id.toString();
+    userService.getByIdWithoutPsw(userId, function (err, user) { // don't ever give out the password or salt
+        if (err) return next(err);
+        if (!user) return res.status(401).send('Unauthorized');
+        res.json(user);
+    });
 };
 
 /**
  * Authentication callback
  */
-exports.authCallback = function(req, res, next) {
-  res.redirect('/');
+exports.authCallback = function (req, res, next) {
+    res.redirect('/');
 };
 
 exports.saveActivationData = function (req, res, next) {
@@ -203,58 +212,6 @@ exports.activateUser = function(req, res, next){
         res.render('user/activate/activate', context);
     });
 };
-
-function sendActivationEmail(user, baseUrl){ // https://celebrate-taste.ro
-    
-    var tpl = '';
-        tpl += '<strong>' + user.createdBy + '</strong> ti-a creat un cont. ';
-        tpl += 'Pentru activarea acestuia, te rog sa folosesti link-ul de mai jos:';
-        tpl += '<p><a href="' + baseUrl + '/activate/' + user._id + '?activationToken=' + user.activationToken + '">Activare cont</a></p>';
-        tpl += '<p style="margin-top:30px">Acest email a fost generat automat.</p>';
-
-    // Zoho
-    var transporter = nodemailer.createTransport({
-        host: 'smtp.zoho.com',
-        port: 465,
-        secure: true, // use SSL
-        auth: {         
-            user: config.zoho.user,
-            pass: config.zoho.psw            
-        }
-    });
-
-    var mailOptions = {
-        from: '"Celebrate Taste" <support@celebrate-taste.ro>',
-        to: user.email,
-        subject: 'Activare cont',
-        html: tpl
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) return console.log(error);
-        console.log('Message sent: ' + info.response);
-    });     
-    
-    
-//     // Mailgun    
-//     var mailgun = new Mailgun({ apiKey: config.mailgun.api_key, domain: 'mg.celebrate-taste.ro' });
-// 
-//     var data = {
-//         from: '"Celebrate Taste" <support@mg.celebrate-taste.ro>',
-//         to: user.email,
-//         subject: 'Activare cont',
-//         html: tpl
-//     }
-// 
-//     mailgun.messages().send(data, function (err, body) {
-//         if (err) {
-//             console.log("got an error: ", err);
-//         } else {
-//             console.log('ok');
-//         }
-//     });  
-
-}
 
 function handleError(res, err) {
     return res.status(500).send(err);
