@@ -21,7 +21,9 @@ app.controller('nextMenusItemController', ['$scope', '$route', 'menuService',
             $scope.dish = _.find(data.dishes, '_id', $route.current.params.dishId);
         })
         .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
+            if(err.status !== 401) {
+                alert(JSON.stringify(err, null, 4));
+            }
         });
     }
 

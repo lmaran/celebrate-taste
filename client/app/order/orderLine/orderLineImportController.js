@@ -43,7 +43,9 @@ app.controller('orderLineImportController', ['$scope', '$route', 'orderLineServi
                 $scope.orderDateAsString = dt($scope.orderLine.orderDate).dateAsShortString;
         })
         .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
+            if(err.status !== 401) {
+                alert(JSON.stringify(err, null, 4));
+            }
         })
     }     
 
