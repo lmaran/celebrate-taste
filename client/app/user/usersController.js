@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('usersController', ['$scope', '$http', 'userService', 'modalService', '$location',
-    function ($scope, $http, userService, modalService, $location) {
+app.controller('usersController', ['$scope', '$http', 'userService', 'modalService', '$location', '$window',
+    function ($scope, $http, userService, modalService, $location, $window) {
 
     /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined
     init();
@@ -33,6 +33,11 @@ app.controller('usersController', ['$scope', '$http', 'userService', 'modalServi
                     $scope.users.splice(i, 1);
                 }
             });
+            
+            if(userService.getCurrentUser().name === user.name){
+                userService.logout();
+                $window.location.href = '/'; //server-side home page             
+            }
         });
     };
     

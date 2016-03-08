@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-app.factory('userService', ['$http', '$cookies', '$q',
-    function ($http, $cookies, $q) {
+app.factory('userService', ['$http', '$cookies', '$q', '$window',
+    function ($http, $cookies, $q, $window) {
 
     var factory = {};
     var rootUrl = '/api/users/';
@@ -81,7 +81,10 @@ app.factory('userService', ['$http', '$cookies', '$q',
         //$cookies.remove('user');
         //currentUser = {};
         $http.get('/logout')
-            .success(function(){})
+            .success(function(){
+                //$location.path('/admin/login'); // client-side login page
+                $window.location.href = '/'; //server-side home page
+            })
             .error(function(err){});
         currentUser = {};
     };
