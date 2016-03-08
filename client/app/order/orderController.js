@@ -24,7 +24,9 @@ app.controller('orderController', ['$scope', '$route', 'orderService', '$locatio
             $scope.dateAsShortString = dt($scope.order.date).dateAsShortString;
         })
         .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
+            if(err.status !== 401) {
+                alert(JSON.stringify(err, null, 4));
+            }
         })
     }   
 

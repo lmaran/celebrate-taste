@@ -40,7 +40,9 @@ app.controller('preferenceController', ['$scope', '$route', 'preferenceService',
             $scope.preference = data;
         })
         .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
+            if(err.status !== 401) {
+                alert(JSON.stringify(err, null, 4));
+            }
         })
     } 
     
@@ -90,7 +92,9 @@ app.controller('preferenceController', ['$scope', '$route', 'preferenceService',
             });
         })
         .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
+            if(err.status !== 401) {
+                alert(JSON.stringify(err, null, 4));
+            }
         })
     }     
     
@@ -99,7 +103,9 @@ app.controller('preferenceController', ['$scope', '$route', 'preferenceService',
             $scope.customerEmployees = data;
         })
         .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
+            if(err.status !== 401) {
+                alert(JSON.stringify(err, null, 4));
+            }
         });
     }
     

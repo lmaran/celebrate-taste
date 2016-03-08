@@ -109,7 +109,9 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
                 $scope.obj.onlyNoBadges = false;                                            
         })
         .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
+            if(err.status !== 401) {
+                alert(JSON.stringify(err, null, 4));
+            }
         });
     }
     

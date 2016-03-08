@@ -18,7 +18,9 @@ app.controller('addDishToMenuTplController', ['$scope', '$uibModalInstance', 'da
             $scope.dishes = data;
         })
         .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
+            if(err.status !== 401) {
+                alert(JSON.stringify(err, null, 4));
+            }
         });
     }    
     

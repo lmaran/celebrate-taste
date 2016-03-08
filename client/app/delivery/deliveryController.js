@@ -37,7 +37,9 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
             getDeliverySummary(data.orderId, data.eatSeries);
         })
         .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
+            if(err.status !== 401) {
+                alert(JSON.stringify(err, null, 4));
+            }
         })
     } 
     

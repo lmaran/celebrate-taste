@@ -9,7 +9,12 @@ app.controller('usersController', ['$scope', '$http', 'userService', 'modalServi
     function init(){
         userService.getAll().then(function(data){
             $scope.users = data;
-        });
+        })
+        .catch(function (err) {
+            if(err.status !== 401) {
+                alert(JSON.stringify(err, null, 4));
+            }
+        });        
     }
     
     $scope.create = function () {

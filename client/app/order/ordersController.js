@@ -58,7 +58,9 @@ app.controller('ordersController', ['$scope', '$location', 'orderService', 'moda
             $scope.orders = data;
         })
         .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
+            if(err.status !== 401) {
+                alert(JSON.stringify(err, null, 4));
+            }
         });
     }
     

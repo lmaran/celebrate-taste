@@ -14,7 +14,9 @@ app.controller('todayMenuController', ['$scope', 'menuService', 'helperService',
             $scope.todaysMenu = result;
         })
         .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
+            if(err.status !== 401) {
+                alert(JSON.stringify(err, null, 4));
+            }
         });
     };
     

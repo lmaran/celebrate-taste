@@ -24,7 +24,9 @@ app.controller('userController', ['$scope', '$route', 'userService', '$location'
             $scope.user = data;
         })
         .catch(function (err) {
-            alert(JSON.stringify(err, null, 4));
+            if(err.status !== 401) {
+                alert(JSON.stringify(err, null, 4));
+            }
         });
     }
    
