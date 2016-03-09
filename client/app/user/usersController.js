@@ -8,7 +8,20 @@ app.controller('usersController', ['$scope', '$http', 'userService', 'modalServi
     
     function init(){
         userService.getAll().then(function(data){
+            data.forEach(function(user){
+                if(user.activationToken){
+                    user.status = 'asteapta activare';
+                } else{
+                    user.status = 'activ';
+                }
+                // } else if(user.isActive){
+                //     user.status = 'activ';
+                // } else if (!user.isActive){
+                //     user.status = 'inactiv';
+                // }
+            });
             $scope.users = data;
+            
         })
         .catch(function (err) {
             if(err.status !== 401) {
