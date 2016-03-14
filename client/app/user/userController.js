@@ -1,8 +1,8 @@
 ﻿/*global app*/
 'use strict';
 
-app.controller('userController', ['$scope', '$route', 'userService', '$location', 'helperValidator',
-    function ($scope, $route, userService, $location, helperValidator) {
+app.controller('userController', ['$scope', '$route', 'userService', '$location', 'helperValidator', 'toastr',
+    function ($scope, $route, userService, $location, helperValidator, toastr) {
         
     $scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -36,6 +36,7 @@ app.controller('userController', ['$scope', '$route', 'userService', '$location'
         
         userService.create($scope.user)
             .then(function (data) {
+                //toastr.success('email-ul a fost transmis.'); // not good...use 
                 $scope.goBack(); // it comes from rootScope
             })
             .catch(function (err) {
