@@ -1,13 +1,17 @@
 'use strict';
 
 var userService = require('./userService');
+var userValidator = require('./userValidator');
 
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
+var uuid = require('node-uuid');
+var emailService = require('../../data/emailService');
+var auth = require('./login/loginService');
 
-var validationError = function(res, err) {
-  return res.status(422).json(err);
+var validationError = function (res, err) {
+    return res.status(422).json(err);
 };
 
 
@@ -29,34 +33,61 @@ exports.getAll = function(req, res) {
  * Creates a new user
  */
 exports.create = function (req, res, next) {
-    var user = req.body;
-
-    user.provider = 'local';
-    user.role = 'user';
-    user.salt = userService.makeSalt();
-    user.hashedPassword = userService.encryptPassword(user.password, user.salt);
-    delete user.password;
-    user.createBy = req.user.name;    
-    user.createdOn = new Date();     
-    
-    userService.create(user, function (err, response) {
-        if (err) return validationError(res, err);
-        var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
-        res.json({ token: token });
-    });        
+    userValidator.all(req, res, function(errors){
+        if(errors){
+            res.status(400).send({ errors : errors }); // 400 - bad request
+        }
+        else{
+            var user = req.body;
+            
+            user.isActive = true;
+            user.provider = 'local';
+            user.role = 'admin';
+            user.createdBy = req.user.name;    
+            user.createdOn = new Date();              
+            user.activationToken = uuid.v4();
+            //user.status = 'waitingToBeActivated';
+            
+            userService.create(user, function (err, response) {
+                if(err) { return handleError(res, err); }
+                res.status(201).json(response.ops[0]);
+                
+                // send an email with an activationLink
+                var from = user.email;
+                var subject = 'Activare cont';
+                
+                var tpl = '';
+                    tpl += '<p style="margin-bottom:30px;">Buna <strong>' + user.name + '</strong>,</p>';
+                    tpl += user.createdBy + ' ti-a creat un cont de acces in aplicatie. ';
+                    tpl += 'Pentru activarea acestuia, te rog sa folosesti link-ul de mai jos:';
+                    tpl += '<p><a href="' + config.externalUrl + '/activate/' + user._id + '?activationToken=' + user.activationToken + '">Activare cont</a></p>';
+                    tpl += '<p style="margin-top:30px">Acest email a fost generat automat.</p>';
+        
+                    emailService.sendEmail(from, subject, tpl).then(function (result) {
+                        console.log(result);
+                        //res.status(201).json(response.ops[0]);
+                    }, function (err) {
+                        console.log(err);
+                        //handleError(res, err)
+                    });
+            });
+            
+        }
+    }); 
+   
 };
 
 /**
  * Get a single user
  */
 exports.getById = function (req, res, next) {
-  var userId = req.params.id;
+    var userId = req.params.id;
 
-  userService.getByIdWithoutPsw(userId, function (err, user) {
-    if (err) return next(err);
-    if (!user) return res.status(401).send('Unauthorized');
-    res.json(user);
-  });
+    userService.getByIdWithoutPsw(userId, function (err, user) {
+        if (err) return next(err);
+        if (!user) return res.status(401).send('Unauthorized');
+        res.json(user);
+    });
 };
 
 exports.update = function(req, res){
@@ -92,7 +123,6 @@ exports.remove = function(req, res){
  */
 exports.changePassword = function(req, res, next) {
     var userId = String(req.user._id); //without 'String' the result is an Object
-    console.log('aaa' + userId);
     var oldPass = String(req.body.oldPassword);
     var newPass = String(req.body.newPassword);
     
@@ -123,20 +153,67 @@ exports.changePassword = function(req, res, next) {
 /**
  * Get my info
  */
-exports.me = function(req, res, next) {
-  var userId = req.user._id.toString(); 
-  userService.getByIdWithoutPsw(userId, function(err, user) { // don't ever give out the password or salt
-    if (err) return next(err);
-    if (!user) return res.status(401).send('Unauthorized');
-    res.json(user);
-  });
+exports.me = function (req, res, next) {
+    var userId = req.user._id.toString();
+    userService.getByIdWithoutPsw(userId, function (err, user) { // don't ever give out the password or salt
+        if (err) return next(err);
+        if (!user) return res.status(401).send('Unauthorized');
+        res.json(user);
+    });
 };
 
 /**
  * Authentication callback
  */
-exports.authCallback = function(req, res, next) {
-  res.redirect('/');
+exports.authCallback = function (req, res, next) {
+    res.redirect('/');
+};
+
+exports.saveActivationData = function (req, res, next) {
+    var userId = req.params.id;
+    var psw = req.body.password;
+    
+    userService.getById(userId, function (err, user) {              
+        user.salt = userService.makeSalt();
+        user.hashedPassword = userService.encryptPassword(psw, user.salt);  
+        delete user.activationToken;
+        
+        user.modifiedBy = user.name;    
+        user.modifiedOn = new Date();         
+
+        userService.update(user, function(err, response) {
+            if (err) return validationError(res, err);
+            
+            // keep user as authenticated    
+            var token = auth.signToken(user._id, user.role);
+
+            var userProfile = { //exclude sensitive info
+                name:user.name,
+                email: user.email,
+                role:user.role
+            };
+
+            auth.setCookies(req, res, token, userProfile);
+            
+            res.redirect('/');            
+        });
+    });     
+};  
+
+exports.activateUser = function(req, res, next){
+    var userId = req.params.id;
+    var activationToken = req.query.activationToken;
+    
+    userService.getByIdWithoutPsw(userId, function (err, user) {
+        if (err) return next(err);
+        if (!user) return res.status(400).send('Link incorect sau expirat (utilizator negasit).');
+        if (user.activationToken !== activationToken) return res.status(400).send('Acest cont a fost deja activat.');
+        
+        var context = {
+            user: user,
+        };
+        res.render('user/activate/activate', context);
+    });
 };
 
 function handleError(res, err) {
