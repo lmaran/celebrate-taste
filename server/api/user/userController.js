@@ -212,7 +212,7 @@ exports.activateUser = function(req, res, next){
         var context = {
             user: user,
         };
-        res.render('user/activate/activate', context);
+        res.render('user/activate', context);
     });
 };
 

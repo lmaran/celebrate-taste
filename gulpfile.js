@@ -52,7 +52,7 @@ gulp.task('dev:watch', function(cb) {
 gulp.task('dev', function(cb) {
     runSequence(
         'clean-css',
-        'less',
+        ['less', 'less-srv'],
         'build-dev-html',
         'jshint',
     cb);
@@ -61,7 +61,7 @@ gulp.task('dev', function(cb) {
 gulp.task('prod', function(cb) {
     runSequence(
         ['clean-dist', 'clean-css'],
-        'less',
+        ['less', 'less-srv'],
         ['build-scripts', 'build-scripts-bower', 'build-styles', 'build-styles-bower'],
         ['copy-server', 'copy-client', 'copy-bootstrap-fonts', 'copy-assets', 'copy-node-modules', 'create-buildInfo.json'],
         'build-prod-html',
@@ -99,6 +99,12 @@ gulp.task('less', function() {
     return gulp.src('./client/app/**/*.less')
         .pipe(less())
         .pipe(gulp.dest('./client/app'));
+});
+
+gulp.task('less-srv', function() {
+    return gulp.src('./server/public/css/**/*.less')
+        .pipe(less())
+        .pipe(gulp.dest('./server/public/css'));
 });
 
 gulp.task('build-dev-html', function(){  
