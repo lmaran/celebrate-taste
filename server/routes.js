@@ -69,12 +69,13 @@ module.exports = function(app) {
     // server-side views
     app.get('/',function(req,res){res.render('home/home', {user: req.user});}); 
     app.get('/contact', function(req,res){res.render('contact/contact', {user: req.user});});
-    app.get('/login', function(req,res){res.render('user/login/login');}); 
+    app.get('/login', function(req,res){res.render('user/login');});
+    app.get('/register', function(req,res){res.render('user/register');}); 
     
     app.get('/activate/:id', require('./api/user/userController').activateUser); 
     app.post('/activate/:id', require('./api/user/userController').saveActivationData); 
     
-    app.get('/changePassword', auth.isAuthenticated(), function(req,res){res.render('user/changePassword/changePassword', {user: req.user});});
+    app.get('/changePassword', auth.isAuthenticated(), function(req,res){res.render('user/changePassword', {user: req.user});});
     app.get('/todaysMenu', require('./views/menu/menuController').renderTodaysMenu);  
     app.get('/nextMenus', require('./views/menu/menuController').renderNextMenus);     
 
