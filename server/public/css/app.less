@@ -11,3 +11,12 @@ body {
 .my-borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
     border: none;
 }
+
+/* add an asterix for each required field */
+.required:after {
+    color: #a94442;
+    content: "*";
+    margin-left:5px;
+    position: absolute;
+    top: 3px;
+}
