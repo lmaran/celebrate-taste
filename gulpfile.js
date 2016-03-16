@@ -133,7 +133,7 @@ gulp.task('jshint', function() {
 });
 
 gulp.task('watch-server', function() {
-    livereload.listen(); // listen for changes
+    livereload.listen({port:35729}); // listen for changes
 	nodemon({ // nodemon config - http://jpsierens.com/tutorial-livereload-nodemon-gulp/
     		script: 'server/app.js', // the script to run the app
             //verbose: true,
@@ -143,7 +143,7 @@ gulp.task('watch-server', function() {
         })
 	   .on('restart', function(){                 
             gulp.src('server/app.js', {read:false})
-                .pipe(livereload());
+                .pipe(livereload({port:35729}));
         });
 });
 
