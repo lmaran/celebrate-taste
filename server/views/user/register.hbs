@@ -7,10 +7,12 @@
     <form action="/login" method="post" class="form-horizontal" novalidate>
         <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
 
-        <div class="form-group">
+        <div class="form-group has-success2 has-feedback">
             <label class="col-md-2 control-label required">Email</label>
             <div class="col-md-4">
-                <input type="email" name="email" class="form-control" autofocus/>
+                <input type="email" name="email" class="form-control" autofocus>                
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                <span id="inputGroupSuccess2Status" class="sr-only">(success)</span>
             </div>
         </div>   
         
