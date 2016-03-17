@@ -1,8 +1,39 @@
 {{> navbar}}
 
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.17/vue.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue.js!'
+        }
+    });    
+  });    
+</script> -->
+
+<!--<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var object = document.getElementsByName('email')[0];
+    object.addEventListener("change", myScript); 
+  });   
+  
+
+  
+  function myScript(){
+      alert('ok');
+  } 
+</script>-->
+
+<script src="/views/user/registerCtrl.js"></script>
+
 <div class="container-fluid">
     
     <h1>Creaza cont nou</h1>
+
+    <!--<div id="app">aa
+        \{{ message }}
+    </div>-->
 
     <form action="/login" method="post" class="form-horizontal" novalidate>
         <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
@@ -10,9 +41,10 @@
         <div class="form-group has-success2 has-feedback">
             <label class="col-md-2 control-label required">Email</label>
             <div class="col-md-4">
-                <input type="email" name="email" class="form-control" autofocus>                
-                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-                <span id="inputGroupSuccess2Status" class="sr-only">(success)</span>
+                <input id="email" type="email" name="email" class="form-control" autofocus>                
+                <span id="emailGlyphOk" class="glyphicon glyphicon-ok form-control-feedback" style="color:green;"></span>
+                <span id="emailGlyphWarn" class="glyphicon glyphicon-warning-sign form-control-feedback" style="color:orange;"></span>
+                <!--<span id="inputGroupSuccess2Status" class="sr-only">(success)</span>-->
             </div>
         </div>   
         
@@ -38,6 +70,7 @@
     </p>-->
     <!--<p>
         Nu ai inca un cont? <a href="/register">Inregistreaza-te!</a>
-    </p>-->
+    </p>-->    
     
 </div>
+

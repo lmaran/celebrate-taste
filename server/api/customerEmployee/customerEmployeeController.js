@@ -92,6 +92,14 @@ exports.remove = function(req, res){
     });
 };
 
+exports.checkEmail = function (req, res) {
+    var email = req.params.email;
+    // customerEmployeeService.getById(req.params.id, function (err, customerEmployee) {
+    //     if(err) { return handleError(res, err); }
+    //     res.json(customerEmployee);
+    // });
+    res.json({aa:email});    
+};
 
 // ---------- Helpers ----------
 function handleError(res, err) {
