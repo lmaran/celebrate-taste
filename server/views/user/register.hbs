@@ -1,65 +1,31 @@
 {{> navbar}}
 
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.17/vue.min.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function(event) {
-    new Vue({
-        el: '#app',
-        data: {
-            message: 'Hello Vue.js!'
-        }
-    });    
-  });    
-</script> -->
-
-<!--<script>
-  document.addEventListener("DOMContentLoaded", function(event) {
-    var object = document.getElementsByName('email')[0];
-    object.addEventListener("change", myScript); 
-  });   
-  
-
-  
-  function myScript(){
-      alert('ok');
-  } 
-</script>-->
-
-<script src="/views/user/registerCtrl.js"></script>
-
 <div class="container-fluid">
     
     <h1>Creaza cont nou</h1>
 
-    <!--<div id="app">aa
-        \{{ message }}
-    </div>-->
+    <form method="post" action="/login" class="form-horizontal" novalidate>
 
-    <form action="/login" method="post" class="form-horizontal" novalidate>
-        <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
-
-        <div class="form-group has-success2 has-feedback">
+        <div id="emailFg" class="form-group has-feedback">
             <label class="col-md-2 control-label required">Email</label>
             <div class="col-md-4">
-                <input id="email" type="email" name="email" class="form-control" autofocus>                
-                <span id="emailGlyphOk" class="glyphicon glyphicon-ok form-control-feedback" style="color:green;"></span>
-                <span id="emailGlyphWarn" class="glyphicon glyphicon-warning-sign form-control-feedback" style="color:orange;"></span>
-                <!--<span id="inputGroupSuccess2Status" class="sr-only">(success)</span>-->
+                <input type="email" name="email" class="form-control" autocomplete="off" autofocus>                
+                <p id="emailErr" class="help-block"</p>
             </div>
         </div>   
         
-        <div class="form-group">
+        <div id="pswFg" class="form-group">
             <label class="col-md-2 control-label required">Parola </label>
             <div class="col-md-4">
-                <input type="password" name="password" class="form-control"/>
-                <p class="text-muted">Minim 6 caractere.</p>
+                <input type="password" name="password" class="form-control" autocomplete="off"/>
+                <p class="text-muted" style="margin-bottom:0">Minim 6 caractere.</p>
+                <p id="pswErr" class="help-block"</p>
             </div>
         </div>            
 
         <div class="form-group">
             <div class="col-md-10 col-md-offset-2">
                 <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-floppy-disk"></span> Autentifica</button>
-                <button type="button" class="btn" onclick='window.history.back();'> <span class=" glyphicon glyphicon-remove"></span> Renunta</button>
             </div>
         </div>
 
@@ -74,3 +40,6 @@
     
 </div>
 
+{{#section 'script'}}
+    <script src="/views/user/register.js"></script>
+{{/section}}

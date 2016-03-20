@@ -8,6 +8,7 @@ var auth = require('./login/loginService');
 var router = express.Router();
 
 router.post('/', controller.create);
+router.post('/createpublicuser', controller.createPublicUser);
 router.get('/', auth.hasRole('admin'), controller.getAll);
 router.get('/\\$count', controller.getAll);
 router.get('/:id', auth.hasRole('admin'), controller.getById);
