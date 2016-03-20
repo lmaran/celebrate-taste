@@ -45,13 +45,14 @@ module.exports = function(app) {
     // ## test only (end)
     
     // API routes
+    app.get('/api/users/checkEmail/:email',  require('./api/user/userController').checkEmail);    
     app.use('/api/users',require('./api/user/userRoutes'));
     app.use('/api/preferences', auth.hasRole('admin'), require('./api/preference/preferenceRoutes'));
     app.use('/api/buildInfo', require('./api/buildInfo/buildInfoRoutes'));   
     app.use('/api/dishes', auth.hasRole('admin'), require('./api/dish/dishRoutes'));
-    app.use('/api/customerEmployees/count', auth.hasRole('admin'), require('./api/customerEmployee/customerEmployeeRoutes'));
     
     app.get('/api/customerEmployees/checkEmail/:email',  require('./api/customerEmployee/customerEmployeeController').checkEmail);
+    app.use('/api/customerEmployees', auth.hasRole('admin'), require('./api/customerEmployee/customerEmployeeRoutes'));
     
     app.use('/api/menus', auth.hasRole('admin'), require('./api/menu/menuRoutes'));
     app.use('/api/orders', auth.hasRole('admin'), require('./api/order/orderRoutes'));

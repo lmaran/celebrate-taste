@@ -1,21 +1,21 @@
 <nav class='navbar navbar-default navbar-fixed-top'>
-    <div class='container'>
-        <div class='navbar-header'>
-            <button type='button', data-toggle='collapse', data-target='.navbar-collapse' class = 'navbar-toggle collapsed'>
-                <span class='sr-only'>Toggle navigation</span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-            </button>
-            <a class='navbar-brand' href='/'>Celebrate Taste</a>
-        </div>
-        <div class='collapse navbar-collapse'>
-            <ul class='nav navbar-nav'>
-                <li><a id='todaysMenuNavbarLnk' href='/todaysMenu'>Meniul de astazi</a></li>
-                <li><a id='nextMenusNavbarLnk'href='/nextMenus'>Meniurile viitoare</a></li>
-                <li><a href='/contact'>Contact</a></li>
-            </ul>
-            {{#unless user.activationToken}} {{!do not display this part during user activation}}
+        <div class='container'>
+            <div class='navbar-header'>
+                <button type='button', data-toggle='collapse', data-target='.navbar-collapse' class = 'navbar-toggle collapsed'>
+                    <span class='sr-only'>Toggle navigation</span>
+                    <span class='icon-bar'></span>
+                    <span class='icon-bar'></span>
+                    <span class='icon-bar'></span>
+                </button>
+                <a class='navbar-brand' href='/'>Celebrate Taste</a>
+            </div>
+            <div class='collapse navbar-collapse'>
+                <ul class='nav navbar-nav'>
+                    <li><a id='todaysMenuNavbarLnk' href='/todaysMenu'>Meniul de astazi</a></li>
+                    <li><a id='nextMenusNavbarLnk'href='/nextMenus'>Meniurile viitoare</a></li>
+                    <li><a href='/contact'>Contact</a></li>
+                </ul>
+                {{#unless user.activationToken}} {{!do not display this part during user activation}}
                 <ul class='nav navbar-nav navbar-right'>
                     {{#if user}}
                         {{#if user.isAdmin}}
@@ -42,39 +42,7 @@
                     {{/if}}                
                     
                 </ul> 
-            {{/unless}}           
+                {{/unless}}           
+            </div>
         </div>
-    </div>
-</nav>
-
-<script type="text/javascript">
-
-	(function() {	
-				
-		var dateStr = getStringFromDate(new Date()); // yyyy-mm-dd
-		
-		var link1 = document.getElementById("todaysMenuNavbarLnk");
-		link1.setAttribute('href', "/todaysMenu?today=" + dateStr);
-		
-        var link2 = document.getElementById("nextMenusNavbarLnk");
-		link2.setAttribute('href', "/nextMenus?today=" + dateStr);
-		
-		function getStringFromDate(date){ // javascript date object
-			var d = date.getDate();
-			var m = date.getMonth()+1; // January is 0!
-			var yyyy = date.getFullYear();  
-			
-			var dd = d; 
-			if(dd < 10) dd = '0' + d;
-			
-			var mm = m;
-			if(mm < 10) mm = '0' + m; 
-			
-			return yyyy + '-' + mm + '-' + dd // 2015-07-23		
-		}
-		
-	})();
-
-</script>
-
-                
+    </nav>           

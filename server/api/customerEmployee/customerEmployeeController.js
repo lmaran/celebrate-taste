@@ -94,11 +94,16 @@ exports.remove = function(req, res){
 
 exports.checkEmail = function (req, res) {
     var email = req.params.email;
-    // customerEmployeeService.getById(req.params.id, function (err, customerEmployee) {
-    //     if(err) { return handleError(res, err); }
-    //     res.json(customerEmployee);
-    // });
-    res.json({aa:email});    
+       
+    customerEmployeeService.getByValue('email', email, null, function (err, customerEmployee) {
+        if(err) { return handleError(res, err); }
+
+        if(customerEmployee){
+            res.send(true);
+        } else {
+            res.send(false);
+        }   
+    }); 
 };
 
 // ---------- Helpers ----------
