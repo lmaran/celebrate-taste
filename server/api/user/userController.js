@@ -1,13 +1,14 @@
 'use strict';
 
 var userService = require('./userService');
+var userService = require('./userService');
 var userValidator = require('./userValidator');
 
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
 var uuid = require('node-uuid');
-var emailService = require('../../data/emailService');
+var customerEmployeeService = require('../customerEmployee/customerEmployeeService');
 var auth = require('./login/loginService');
 
 var validationError = function (res, err) {
@@ -74,7 +75,54 @@ exports.create = function (req, res, next) {
             
         }
     }); 
-   
+};
+
+exports.createPublicUser = function (req, res, next) {
+    var data = req.body;
+    
+    customerEmployeeService.getByValue('email', data.email, null, function (err, customerEmployee) {
+        if(err) { return handleError(res, err); }
+
+        if(customerEmployee){
+            
+            var user = {};
+            user.name = customerEmployee.name;
+            user.email = customerEmployee.email;
+            
+            user.salt = userService.makeSalt();
+            user.hashedPassword = userService.encryptPassword(data.password, user.salt);  
+            
+            user.provider = 'local';
+            user.role = 'user';
+                        
+            user.isActive = true;
+            user.createdBy = 'External user';    
+            user.createdOn = new Date();              
+            
+            userService.create(user, function (err, response) {
+                if(err) { return handleError(res, err); }
+                //res.status(201).json(response.ops[0]);
+                
+                // keep user as authenticated    
+                var token = auth.signToken(user._id, user.role);
+
+                var userProfile = { //exclude sensitive info
+                    name:user.name,
+                    email: user.email,
+                    role:user.role
+                };
+
+                auth.setCookies(req, res, token, userProfile);
+                
+                res.redirect('/');                   
+                
+            });            
+            
+            //res.json(customerEmployee);
+        } else {
+            res.send(false);
+        }   
+    }); 
 };
 
 /**
@@ -214,6 +262,20 @@ exports.activateUser = function(req, res, next){
         };
         res.render('user/activate', context);
     });
+};
+
+exports.checkEmail = function (req, res) {
+    var email = req.params.email;
+       
+    userService.getByValue('email', email, null, function (err, user) {
+        if(err) { return handleError(res, err); }
+
+        if(user){
+            res.send(true);
+        } else {
+            res.send(false);
+        }   
+    }); 
 };
 
 function handleError(res, err) {
