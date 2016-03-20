@@ -45,11 +45,15 @@ module.exports = function(app) {
     // ## test only (end)
     
     // API routes
+    app.get('/api/users/checkEmail/:email',  require('./api/user/userController').checkEmail);    
     app.use('/api/users',require('./api/user/userRoutes'));
     app.use('/api/preferences', auth.hasRole('admin'), require('./api/preference/preferenceRoutes'));
     app.use('/api/buildInfo', require('./api/buildInfo/buildInfoRoutes'));   
     app.use('/api/dishes', auth.hasRole('admin'), require('./api/dish/dishRoutes'));
+    
+    app.get('/api/customerEmployees/checkEmail/:email',  require('./api/customerEmployee/customerEmployeeController').checkEmail);
     app.use('/api/customerEmployees', auth.hasRole('admin'), require('./api/customerEmployee/customerEmployeeRoutes'));
+    
     app.use('/api/menus', auth.hasRole('admin'), require('./api/menu/menuRoutes'));
     app.use('/api/orders', auth.hasRole('admin'), require('./api/order/orderRoutes'));
     app.use('/api/orderLines', auth.hasRole('admin'), require('./api/orderLine/orderLineRoutes'));
@@ -69,12 +73,13 @@ module.exports = function(app) {
     // server-side views
     app.get('/',function(req,res){res.render('home/home', {user: req.user});}); 
     app.get('/contact', function(req,res){res.render('contact/contact', {user: req.user});});
-    app.get('/login', function(req,res){res.render('user/login/login');}); 
+    app.get('/login', function(req,res){res.render('user/login');});
+    app.get('/register', function(req,res){res.render('user/register');}); 
     
     app.get('/activate/:id', require('./api/user/userController').activateUser); 
     app.post('/activate/:id', require('./api/user/userController').saveActivationData); 
     
-    app.get('/changePassword', auth.isAuthenticated(), function(req,res){res.render('user/changePassword/changePassword', {user: req.user});});
+    app.get('/changePassword', auth.isAuthenticated(), function(req,res){res.render('user/changePassword', {user: req.user});});
     app.get('/todaysMenu', require('./views/menu/menuController').renderTodaysMenu);  
     app.get('/nextMenus', require('./views/menu/menuController').renderNextMenus);     
 

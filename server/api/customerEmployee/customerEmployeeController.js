@@ -92,6 +92,19 @@ exports.remove = function(req, res){
     });
 };
 
+exports.checkEmail = function (req, res) {
+    var email = req.params.email;
+       
+    customerEmployeeService.getByValue('email', email, null, function (err, customerEmployee) {
+        if(err) { return handleError(res, err); }
+
+        if(customerEmployee){
+            res.send(true);
+        } else {
+            res.send(false);
+        }   
+    }); 
+};
 
 // ---------- Helpers ----------
 function handleError(res, err) {
