@@ -78,15 +78,7 @@ app.factory('userService', ['$http', '$cookies', '$q', '$window',
     };
     
     factory.logout = function() {
-        //$cookies.remove('user');
-        //currentUser = {};
-        $http.get('/logout')
-            .success(function(){
-                //$location.path('/admin/login'); // client-side login page
-                $window.location.href = '/'; //server-side home page
-            })
-            .error(function(err){});
-        currentUser = {};
+        $window.location.href = '/logout';
     };
 
 
