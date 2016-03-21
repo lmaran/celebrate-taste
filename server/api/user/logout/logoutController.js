@@ -15,10 +15,5 @@ exports.logout = function(req, res, next) {
     // http://www.connecto.io/blog/nodejs-express-how-to-set-multiple-cookies-in-the-same-response-object/
     res.header("Set-Cookie", [c1,c2, c3 ]); // array of cookies http://expressjs.com/api.html#res.set	
 
-	
-	if(req.is('json')){ // http://expressjs.com/api.html#req.is 
-		res.json({}); // for requests that come from client-side (Angular)
-	}
-	else
-		res.redirect('/'); // for requests that come from server-side (Jade)
+    res.redirect('/');
 };
