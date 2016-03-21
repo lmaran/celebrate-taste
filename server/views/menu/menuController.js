@@ -4,6 +4,7 @@
 (function (menuController) {
 
     var menuService = require('../../api/menu/menuService');
+    var preferenceService = require('../../api/preference/preferenceService');
     var helper = require('../../data/dateTimeHelper');
     var _ = require('lodash');
     
@@ -34,7 +35,7 @@
             if(err) { return handleError(res, err); }
 
             menus = _.map(menus, function(menu){
-                menu.menuDate = helper.getStringFromString(menu.menuDate);
+                menu.menuDateFormated = helper.getStringFromString(menu.menuDate);
                 menu.dishes =  _.sortBy(menu.dishes, ['category', 'option']);
                 return menu;
             });
@@ -45,7 +46,36 @@
                 today: helper.getStringFromString(todayStr),
                 areMenus: menus && (menus.length > 0)
             };
-            res.render('menu/nextMenus', context);
+            
+            if(req.user && req.user.role === "user"){
+                
+                // TODO: run this query in paralel with "getNextMenus" 
+                preferenceService.getByEmployee(req.user.name, todayStr, function(err, preferences) {
+                    if(err) { return handleError(res, err); }
+                    context.preferences = preferences; 
+                    
+                    menus.forEach(function(menu) {
+                        menu.dishes.forEach(function(dish) {
+                            
+                            var pref = _.find(preferences, {'date': menu.menuDate});
+
+                            if(pref && pref.option1 && dish.category === "1"){
+                                dish.selectedOption = pref.option1;
+                            };
+                                
+                            if(pref && pref.option2 && dish.category === "2"){
+                                dish.selectedOption = pref.option2;
+                            };
+                            
+                        });
+                    });
+
+                    res.render('menu/myMenus', context);
+                });
+            } else {
+                res.render('menu/nextMenus', context);
+            }
+
         });    
     }    
     
