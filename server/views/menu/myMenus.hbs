@@ -1,0 +1,64 @@
+{{> navbar}}
+
+<div class="container">
+
+    {{#if areMenus}}
+		<h1>Meniurile mele</h1>
+		<hr>
+		
+		{{#each menus}}	
+			<h4>Meniul de 
+				<strong>{{menuDateFormated}}</strong> 
+				<small style="font-size:14px"></small>
+			</h4>
+			
+			<ul class="list-group">
+				{{#each dishes}}
+					<li class="list-group-item" style='border: 0 none;'>	
+						{{#if option}}
+							<strong>{{option}}.</strong>
+						{{/if}}
+						<span class="text-muted">{{name}}</span>
+						{{#if isFasting}}
+							<span ng-if="dish.isFasting">(post)</span>
+						{{/if}}
+                        
+                        {{#if selectedOption}}
+                            <span class="text-muted">(Selected: {{selectedOption}})</span>
+                        {{/if}}
+                        
+                        <!--<span class="label label-success"><span class="glyphicon glyphicon-ok" style="color:green"></span> Optiunea mea</span>
+                        <span class="label label-success">Optiunea mea</span>
+                        <button type="button" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-ok"></span> Optiunea mea
+                        </button>
+                        <button type="button" class="btn btn-default btn-xs">
+                            <span class="glyphicon glyphicon-pushpin" style2="color:green"></span> Optiunea mea
+                        </button>                -->                        
+                        
+                        <br/>
+						<span class="text-muted">{{description}}</span>
+                        
+                        
+                        
+					</li>
+				{{/each}}
+			</ul>					
+			<hr>				
+		{{/each}} 
+        
+
+        <ul class="list-group">
+            {{#each preferences}}
+                <li class="list-group-item" style='border: 0 none;'>	
+                    <span class="text-muted">{{option1}}</span>
+                </li>
+            {{/each}}
+        </ul>					
+
+        	
+	{{else}}
+		<h4> Nu exista meniuri pentru perioada urmatoare!</h4>
+	{{/if}}
+
+</div>
