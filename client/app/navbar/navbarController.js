@@ -26,8 +26,6 @@ app.controller('navbarController', ['$scope', '$location', 'navbarService', '$wi
 
     $scope.logout = function() {
         userService.logout();
-        //$location.path('/'); // goto public area
-        $window.location.href = '/'; //server-side home page
     };             
 
     // http://stackoverflow.com/a/18562339
