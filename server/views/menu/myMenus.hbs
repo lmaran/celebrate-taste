@@ -23,42 +23,40 @@
 							<span ng-if="dish.isFasting">(post)</span>
 						{{/if}}
                         
-                        {{#if selectedOption}}
-                            <span class="text-muted">(Selected: {{selectedOption}})</span>
+                        {{#if isMyOption}}
+                            </br>
+                            <span class="label label-success" style="font-size:12px; padding: 4px; font-weight:400">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                Optiunea mea
+                            </span>
                         {{/if}}
-                        
-                        <!--<span class="label label-success"><span class="glyphicon glyphicon-ok" style="color:green"></span> Optiunea mea</span>
-                        <span class="label label-success">Optiunea mea</span>
-                        <button type="button" class="btn btn-default btn-sm">
-                            <span class="glyphicon glyphicon-ok"></span> Optiunea mea
-                        </button>
-                        <button type="button" class="btn btn-default btn-xs">
-                            <span class="glyphicon glyphicon-pushpin" style2="color:green"></span> Optiunea mea
-                        </button>                -->                        
+                        {{#if isNotMyOption}}
+                            </br>
+                            <button type="button" class="btn btn-default btn-xs">
+                                <span class="glyphicon glyphicon-pushpin" style="color:#337ab7"></span>
+                                <a class="changePreferenceBtn" href="#" 
+                                    data-menu-date="{{../../menuDate}}"
+                                    data-category = "{{../category}}"
+                                    data-selected-option = "{{../option}}"
+                                    >Da, vreau! {{../menuDate}}</a>
+                            </button>  
+                        {{/if}}                                             
                         
                         <br/>
 						<span class="text-muted">{{description}}</span>
-                        
-                        
-                        
+
 					</li>
 				{{/each}}
 			</ul>					
 			<hr>				
 		{{/each}} 
         
-
-        <ul class="list-group">
-            {{#each preferences}}
-                <li class="list-group-item" style='border: 0 none;'>	
-                    <span class="text-muted">{{option1}}</span>
-                </li>
-            {{/each}}
-        </ul>					
-
-        	
 	{{else}}
 		<h4> Nu exista meniuri pentru perioada urmatoare!</h4>
 	{{/if}}
 
 </div>
+
+{{#section 'script'}}
+    <script src="/views/menu/menu.js"></script>
+{{/section}}

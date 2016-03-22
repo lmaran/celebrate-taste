@@ -60,11 +60,20 @@
                             var pref = _.find(preferences, {'date': menu.menuDate});
 
                             if(pref && pref.option1 && dish.category === "1"){
-                                dish.selectedOption = pref.option1;
+                                if(dish.option === pref.option1){
+                                    dish.isMyOption = true;
+                                } else {
+                                    dish.isNotMyOption = true;
+                                }
+                                //dish.selectedOption = pref.option1;
                             };
                                 
                             if(pref && pref.option2 && dish.category === "2"){
-                                dish.selectedOption = pref.option2;
+                                if(dish.option === pref.option2){
+                                    dish.isMyOption = true;
+                                } else {
+                                    dish.isNotMyOption = true;
+                                }
                             };
                             
                         });
