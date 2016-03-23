@@ -57,24 +57,27 @@
                     menus.forEach(function(menu) {
                         menu.dishes.forEach(function(dish) {
                             
-                            var pref = _.find(preferences, {'date': menu.menuDate});
+                            var dishesInCategory = _.filter(menu.dishes, {'category': dish.category});
+                            
+                            if(dishesInCategory.length > 1){
+                                var pref = _.find(preferences, {'date': menu.menuDate});
 
-                            if(pref && pref.option1 && dish.category === "1"){
-                                if(dish.option === pref.option1){
-                                    dish.isMyOption = true;
-                                } else {
-                                    dish.isNotMyOption = true;
+                                if(dish.category === "1"){
+                                    if(pref && pref.option1 === dish.option){
+                                        dish.isMyOption = true;
+                                    } else {
+                                        dish.isNotMyOption = true;
+                                    }
                                 }
-                                //dish.selectedOption = pref.option1;
-                            };
-                                
-                            if(pref && pref.option2 && dish.category === "2"){
-                                if(dish.option === pref.option2){
-                                    dish.isMyOption = true;
-                                } else {
-                                    dish.isNotMyOption = true;
+
+                                if(dish.category === "2"){
+                                    if(pref && pref.option2 === dish.option){
+                                        dish.isMyOption = true;
+                                    } else {
+                                        dish.isNotMyOption = true;
+                                    }
                                 }
-                            };
+                            }
                             
                         });
                     });

@@ -1,3 +1,9 @@
+<style>
+	.calories {
+        color:#BBB48C;
+	}	
+</style>
+
 {{> navbar}}
 
 <div class="container">
@@ -6,41 +12,36 @@
 		<h1>Meniurile mele</h1>
 		<hr>
 		
-		{{#each menus}}	
+		{{#each menus as |menu menuIndex|}}	
 			<h4>Meniul de 
 				<strong>{{menuDateFormated}}</strong> 
 				<small style="font-size:14px"></small>
 			</h4>
 			
-			<ul class="list-group">
-				{{#each dishes}}
-					<li class="list-group-item" style='border: 0 none;'>	
+			<ul class="list-group" data-menu-date="{{menu.menuDate}}">
+				{{#each dishes as |dish dishIndex|}}
+					<li class="list-group-item" data-category = "{{dish.category}}" data-selected-option = "{{dish.option}}" style='border: 0 none;'>	
 						{{#if option}}
 							<strong>{{option}}.</strong>
 						{{/if}}
-						<span class="text-muted">{{name}}</span>
-						{{#if isFasting}}
-							<span ng-if="dish.isFasting">(post)</span>
-						{{/if}}
+						<span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}                        
                         
                         {{#if isMyOption}}
                             </br>
-                            <span class="label label-success" style="font-size:12px; padding: 4px; font-weight:400">
-                                <span class="glyphicon glyphicon-ok"></span>
-                                Optiunea mea
+                            <span class="label label-success isMyOption">
+                                <span class="glyphicon glyphicon-ok"></span> Optiunea mea
                             </span>
                         {{/if}}
                         {{#if isNotMyOption}}
                             </br>
-                            <button type="button" class="btn btn-default btn-xs">
+                            <button type="button" class="btn btn-default btn-xs setMyOption" style="color:#337ab7"
+                                    data-menu-date="{{menu.menuDate}}"
+                                    data-category = "{{dish.category}}"
+                                    data-selected-option = "{{dish.option}}">
                                 <span class="glyphicon glyphicon-pushpin" style="color:#337ab7"></span>
-                                <a class="changePreferenceBtn" href="#" 
-                                    data-menu-date="{{../../menuDate}}"
-                                    data-category = "{{../category}}"
-                                    data-selected-option = "{{../option}}"
-                                    >Da, vreau! {{../menuDate}}</a>
+                                Da, vreau!
                             </button>  
-                        {{/if}}                                             
+                        {{/if}}  
                         
                         <br/>
 						<span class="text-muted">{{description}}</span>
