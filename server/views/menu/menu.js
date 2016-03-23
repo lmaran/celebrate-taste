@@ -4,22 +4,43 @@
     // DOM ready
     $(function(){
         // def
-        changePreferenceBtns = $(".changePreferenceBtn");
+        setMyOptionBtns = $(".setMyOption");
 
         // events
-        changePreferenceBtns.click(changePreference);
+        setMyOptionBtns.click(changePreference);
         
     });
     
     function changePreference(event){
         event.preventDefault();
-
-        var $changeBtn = $(event.target);
-        var menuDate = $changeBtn.data('menu-date');
-        var category = $changeBtn.data('category');
-        var selectedOption = $changeBtn.data('selected-option');
         
-        alert(menuDate + ' ' + category + ' ' + selectedOption);
+        var $setMyOption = $(event.target);//.closest("button");
+        
+        var menuDate = $setMyOption.data('menu-date');
+        var category = $setMyOption.data('category');
+        var selectedOption = $setMyOption.data('selected-option');        
+
+
+        var $parentMenuUl = $setMyOption.closest("ul");
+        var $parentCategoiesLi = $parentMenuUl.find("li[data-category='" + category + "']");        
+        var $isMyOption = $parentCategoiesLi.find(".isMyOption");
+
+        if($isMyOption.length){ // we have a previous "myOption" element -> swap
+            swapNodes($isMyOption[0], $setMyOption[0]);
+        } else { // 1 element
+            // create a new "myOption" elem. to replace the existing button
+            var el = '<span class="label label-success isMyOption"><span class="glyphicon glyphicon-ok"></span>Optiunea mea</span>';
+            $(el).insertBefore($setMyOption);
+            $setMyOption.remove();
+        }
     }
     
+    // http://stackoverflow.com/a/698440
+    function swapNodes(a, b) {
+        var aparent = a.parentNode;
+        var asibling = a.nextSibling === b ? a : a.nextSibling;
+        b.parentNode.insertBefore(a, b);
+        aparent.insertBefore(b, asibling);
+    }
+        
 })();
