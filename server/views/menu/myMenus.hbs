@@ -9,7 +9,7 @@
 <div class="container">
 
     {{#if areMenus}}
-		<h1>Meniurile mele</h1>
+		<h1>Meniurile viitoare</h1>
 		<hr>
 		
 		{{#each menus as |menu menuIndex|}}	
@@ -18,9 +18,9 @@
 				<small style="font-size:14px"></small>
 			</h4>
 			
-			<ul class="list-group" data-menu-date="{{menu.menuDate}}">
+			<ul class="list-group" data-menu-date="{{menu.menuDate}}" data-preference-id="{{menu.preferenceId}}">
 				{{#each dishes as |dish dishIndex|}}
-					<li class="list-group-item" data-category = "{{dish.category}}" data-selected-option = "{{dish.option}}" style='border: 0 none;'>	
+					<li class="list-group-item" data-category = "{{dish.category}}" data-option = "{{dish.option}}" style='border: 0 none;'>	
 						{{#if option}}
 							<strong>{{option}}.</strong>
 						{{/if}}
@@ -35,9 +35,7 @@
                         {{#if isNotMyOption}}
                             </br>
                             <button type="button" class="btn btn-default btn-xs setMyOption" style="color:#337ab7"
-                                    data-menu-date="{{menu.menuDate}}"
-                                    data-category = "{{dish.category}}"
-                                    data-selected-option = "{{dish.option}}">
+                                    data-menu-date="{{menu.menuDate}}">
                                 <span class="glyphicon glyphicon-pushpin" style="color:#337ab7"></span>
                                 Da, vreau!
                             </button>  
