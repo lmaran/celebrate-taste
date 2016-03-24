@@ -33,6 +33,11 @@
             $(el).insertBefore($setMyOption);
             $setMyOption.remove();
         }
+        
+        var preference = {
+            menuDate:menuDate           
+        };
+        savePreference(preference);
     }
     
     // http://stackoverflow.com/a/698440
@@ -42,5 +47,17 @@
         b.parentNode.insertBefore(a, b);
         aparent.insertBefore(b, asibling);
     }
+  
+    function savePreference(preference){
+        var url = '/api/myPreferences';
+               
+        $.post(url, preference)
+            .done(function(data){
+                alert(JSON.stringify(data));
+            })
+            .fail(function(err){
+                alert(err);
+            });        
+    }    
         
 })();

@@ -56,7 +56,14 @@
                 return next(null, docs);                 
             });
         });
-    };    
+    };  
+    
+    preferenceService.getByEmployeeAndDate = function (name, dateStr, next) { 
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            db.collection(collection).findOne({date: dateStr, employeeName:name}, next);
+        });
+    };       
     
     preferenceService.getNextDates = function (todayStr, next) {      
         mongoHelper.getDb(function (err, db) {
