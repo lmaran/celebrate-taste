@@ -61,6 +61,10 @@
                             
                             if(dishesInCategory.length > 1){
                                 var pref = _.find(preferences, {'date': menu.menuDate});
+                                
+                                if(pref){
+                                    menu.preferenceId = pref._id;
+                                };
 
                                 if(dish.category === "1"){
                                     if(pref && pref.option1 === dish.option){
