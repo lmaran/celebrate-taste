@@ -108,19 +108,41 @@ exports.getNextDates = function (req, res) {
     });    
 };
 
-exports.saveMyPreferences = function(req, res){
+exports.saveMyPreferences = function(req, res){ 
     var myPreference = req.body;
-       
-    preferenceService.getByEmployeeAndDate(req.user.name, myPreference.menuDate, function (err, preference) {
-        if(err) { return handleError(res, err); }
-        res.json(preference);
-        
-        if(preference){ // update
+    
+    if(myPreference.preferenceId){ // update
+        preferenceService.getById(myPreference.preferenceId, function (err, preference) {
+            if(err) { return handleError(res, err); }
+
+            preference.modifiedBy = req.user.name;    
+            preference.modifiedOn = new Date();
             
-        } else { // insert
+            preference["option" + myPreference.category] = myPreference.selectedOption;                     
             
-        }
-    });    
+            preferenceService.update(preference, function (err, response) {
+                if(err) { return handleError(res, err); }
+                if (!response.value) {
+                    res.sendStatus(404); // not found
+                } else {
+                    res.sendStatus(200);
+                }
+            });            
+              
+        });         
+    } else {  // create
+        var preference = {};
+        preference.employeeName = req.user.name;
+        preference.date = myPreference.menuDate;
+        preference["option" + myPreference.category] = myPreference.selectedOption;
+        preference.createBy = req.user.name;    
+        preference.createdOn = new Date(); 
+                
+        preferenceService.create(preference, function (err, response) {
+            if(err) { return handleError(res, err); }
+            res.status(201).json(response.ops[0]);
+        });                 
+    }
 
 };
 
