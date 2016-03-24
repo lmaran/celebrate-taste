@@ -108,6 +108,22 @@ exports.getNextDates = function (req, res) {
     });    
 };
 
+exports.saveMyPreferences = function(req, res){
+    var myPreference = req.body;
+       
+    preferenceService.getByEmployeeAndDate(req.user.name, myPreference.menuDate, function (err, preference) {
+        if(err) { return handleError(res, err); }
+        res.json(preference);
+        
+        if(preference){ // update
+            
+        } else { // insert
+            
+        }
+    });    
+
+};
+
 
 // ---------- Helpers ----------
 function handleError(res, err) {
