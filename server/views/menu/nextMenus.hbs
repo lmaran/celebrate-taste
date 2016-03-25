@@ -1,3 +1,9 @@
+<style>
+	.calories {
+        color:#BBB48C;
+	}	
+</style>
+
 {{> navbar}}
 
 <div class="container">
@@ -18,10 +24,11 @@
 						{{#if option}}
 							<strong>{{option}}.</strong>
 						{{/if}}
-						<span class="text-muted">{{name}}</span>
+						<!--<span class="text-muted">{{name}}</span>
 						{{#if isFasting}}
 							<span ng-if="dish.isFasting">(post)</span><br/>
-						{{/if}}
+						{{/if}}-->
+                        <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}
 						<span class="text-muted">{{description}}</span>
 					</li>
 				{{/each}}

@@ -1,3 +1,10 @@
+<style>
+	.notMyOption {
+        text-decoration: line-through;
+        color: gray;
+	}	
+</style>
+
 {{> navbar}}
 
 <div class="container">
@@ -6,20 +13,38 @@
 		<h1>Meniul de astazi<small class="text-muted"> ({{today}})</small></h1>
 		<hr>
 		
-		{{#each menu.dishes}}			
-			<h4 class="media-heading">
-				{{#if option}}
-					<span>{{option}}.</span>
-				{{/if}}
-				{{name}}
-			</h4>
-			<div style="color:gray">{{description}}</div>
-			{{#if calories}}
-				<div style="color:gray">{{calories}} calorii</div>
-			{{/if}}	
-			</br>		
-			
-		{{/each}} 	
+        <ul class="list-group">
+            {{#each menu.dishes as |dish dishIndex|}}
+                <li class="list-group-item" data-category = "{{dish.category}}" data-option = "{{dish.option}}" style='border: 0 none;'>	
+                    {{#if option}}
+                        <strong>{{option}}.</strong>
+                    {{/if}}
+                    <span {{#if isNotMyOption}}class="notMyOption"{{/if}}>
+                        <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}                        
+                    </span>
+                    {{#if isMyOption}}
+                        </br>
+                        <span class="label label-success isMyOption">
+                            <span class="glyphicon glyphicon-ok"></span> Optiunea mea
+                        </span>
+                    {{/if}}
+                    <!--{{#if isNotMyOption}}
+                        </br>
+                        <button type="button" class="btn btn-default btn-xs setMyOption" style="color:#337ab7"
+                                data-menu-date="{{menu.menuDate}}">
+                            <span class="glyphicon glyphicon-pushpin" style="color:#337ab7"></span>
+                            Da, vreau!
+                        </button>  
+                    {{/if}}  -->
+                    
+                    <br/>
+                    <span class="text-muted">{{description}}</span>
+
+                </li>
+            {{/each}}
+        </ul>        
+        
+        
 	{{else}}
 		<h4> Pentru astazi <span class="text-muted">({{today}})</span> nu exista meniu!</h4>
 	{{/if}}

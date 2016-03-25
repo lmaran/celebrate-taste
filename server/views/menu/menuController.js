@@ -24,7 +24,50 @@
                 today: helper.getStringFromString(todayStr),
                 menuHasDishes: menuHasDishes
             };
-            res.render('menu/todaysMenu', context);
+
+            if(req.user && req.user.role === "user"){
+                
+                // TODO: run this query in paralel with "getTodaysMenu" 
+                preferenceService.getByEmployeeAndDate(req.user.name, todayStr, function(err, pref) {
+                    if(err) { return handleError(res, err); }
+
+                    menu.dishes.forEach(function(dish) {
+                        
+                        var dishesInCategory = _.filter(menu.dishes, {'category': dish.category});
+                        
+                        if(dishesInCategory.length > 1){
+                            //var pref = _.find(preferences, {'date': menu.menuDate});
+                            
+                            if(pref){
+                                menu.preferenceId = pref._id;
+                            };
+
+                            if(dish.category === "1"){
+                                if(pref && pref.option1 === dish.option){
+                                    dish.isMyOption = true;
+                                } else {
+                                    dish.isNotMyOption = true;
+                                }
+                            }
+
+                            if(dish.category === "2"){
+                                if(pref && pref.option2 === dish.option){
+                                    dish.isMyOption = true;
+                                } else {
+                                    dish.isNotMyOption = true;
+                                }
+                            }
+                        }
+                        
+                    });
+
+
+                    res.render('menu/todaysMenu', context);
+                });
+            } else {
+                res.render('menu/todaysMenu', context);
+            }
+            
         });    
     }
     
@@ -52,7 +95,6 @@
                 // TODO: run this query in paralel with "getNextMenus" 
                 preferenceService.getByEmployee(req.user.name, todayStr, function(err, preferences) {
                     if(err) { return handleError(res, err); }
-                    context.preferences = preferences; 
                     
                     menus.forEach(function(menu) {
                         menu.dishes.forEach(function(dish) {
