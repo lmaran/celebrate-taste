@@ -1,7 +1,12 @@
 <style>
-	.calories {
+	/*.calories {
         color:#BBB48C;
-	}	
+	}*/
+    
+	.notMyOption {
+        text-decoration: line-through;
+        color: gray;
+	}    
 </style>
 
 {{> navbar}}
@@ -24,7 +29,9 @@
 						{{#if option}}
 							<strong>{{option}}.</strong>
 						{{/if}}
-						<span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}                        
+                        <span {{#if isNotMyOption}}class="notMyOption"{{/if}}>
+						    <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}                        
+                        </span>
                         
                         {{#if isMyOption}}
                             </br>
