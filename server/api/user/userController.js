@@ -10,6 +10,7 @@ var jwt = require('jsonwebtoken');
 var uuid = require('node-uuid');
 var customerEmployeeService = require('../customerEmployee/customerEmployeeService');
 var auth = require('./login/loginService');
+var emailService = require('../../data/emailService');
 
 var validationError = function (res, err) {
     return res.status(422).json(err);
