@@ -30,6 +30,10 @@ app.controller('usersController', ['$scope', '$http', 'userService', 'modalServi
         });        
     }
     
+    $scope.refresh = function () {
+        init();
+    };    
+    
     $scope.create = function () {
         $location.path('/admin/users/create');
     }    
