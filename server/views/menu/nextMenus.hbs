@@ -1,7 +1,7 @@
 <style>
-	.calories {
+	/*.calories {
         color:#BBB48C;
-	}	
+	}	*/
 </style>
 
 {{> navbar}}
@@ -24,10 +24,6 @@
 						{{#if option}}
 							<strong>{{option}}.</strong>
 						{{/if}}
-						<!--<span class="text-muted">{{name}}</span>
-						{{#if isFasting}}
-							<span ng-if="dish.isFasting">(post)</span><br/>
-						{{/if}}-->
                         <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}
 						<span class="text-muted">{{description}}</span>
 					</li>
@@ -38,5 +34,8 @@
 	{{else}}
 		<h4> Nu exista meniuri pentru perioada urmatoare!</h4>
 	{{/if}}
+    
+    Vezi si <a href="/todaysMenu">meniul de astazi &raquo;</a>
+    <hr>
 
 </div>
