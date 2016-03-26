@@ -1,0 +1,68 @@
+<style>
+	/*.calories {
+        color:#BBB48C;
+	}*/
+    
+	.notMyOption {
+        text-decoration: line-through;
+        color: gray;
+	}    
+</style>
+
+{{> navbar}}
+
+<div class="container">
+
+    {{#if areMenus}}
+		<h1>Meniurile viitoare</h1>
+		<hr>
+		
+		{{#each menus as |menu menuIndex|}}	
+			<h4>Meniul de 
+				<strong>{{menuDateFormated}}</strong> 
+				<small style="font-size:14px"></small>
+			</h4>
+			
+			<ul class="list-group" data-menu-date="{{menu.menuDate}}" data-preference-id="{{menu.preferenceId}}">
+				{{#each dishes as |dish dishIndex|}}
+					<li class="list-group-item" data-category = "{{dish.category}}" data-option = "{{dish.option}}" style='border: 0 none;'>	
+						{{#if option}}
+							<strong>{{option}}.</strong>
+						{{/if}}
+                        <!--<span {{#if isNotMyOption}}class="notMyOption"{{/if}}>-->
+						    <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}                        
+                        <!--</span>-->
+                        
+                        {{#if isMyOption}}
+                            </br>
+                            <span class="label label-success isMyOption">
+                                <span class="glyphicon glyphicon-ok"></span> Optiunea mea
+                            </span>
+                        {{/if}}
+                        {{#if isNotMyOption}}
+                            </br>
+                            <button type="button" class="btn btn-default btn-xs setMyOption" style="color:#337ab7"
+                                    data-menu-date="{{menu.menuDate}}">
+                                <span class="glyphicon glyphicon-pushpin" style="color:#337ab7"></span>
+                                Da, vreau!
+                            </button>  
+                        {{/if}}  
+                        
+                        <br/>
+						<span class="text-muted">{{description}}</span>
+
+					</li>
+				{{/each}}
+			</ul>					
+			<hr>				
+		{{/each}} 
+        
+	{{else}}
+		<h4> Nu exista meniuri pentru perioada urmatoare!</h4>
+	{{/if}}
+
+</div>
+
+{{#section 'script'}}
+    <script src="/views/menu/menu.js"></script>
+{{/section}}
