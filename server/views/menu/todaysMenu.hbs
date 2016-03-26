@@ -28,14 +28,6 @@
                             <span class="glyphicon glyphicon-ok"></span> Optiunea mea
                         </span>
                     {{/if}}
-                    <!--{{#if isNotMyOption}}
-                        </br>
-                        <button type="button" class="btn btn-default btn-xs setMyOption" style="color:#337ab7"
-                                data-menu-date="{{menu.menuDate}}">
-                            <span class="glyphicon glyphicon-pushpin" style="color:#337ab7"></span>
-                            Da, vreau!
-                        </button>  
-                    {{/if}}  -->
                     
                     <br/>
                     <span class="text-muted">{{description}}</span>
@@ -48,5 +40,8 @@
 	{{else}}
 		<h4> Pentru astazi <span class="text-muted">({{today}})</span> nu exista meniu!</h4>
 	{{/if}}
+
+    Vezi si <a href="/nextMenus">meniurile de maine &raquo;</a>
+    <hr>
 
 </div>

@@ -6,7 +6,25 @@
 	.notMyOption {
         text-decoration: line-through;
         color: gray;
-	}    
+	}  
+    
+    /* spiner icon: http://stackoverflow.com/a/26283602 */
+    .glyphicon.spinning {
+        animation: spin 1s infinite linear;
+        -webkit-animation: spin2 1s infinite linear;
+    }
+
+    @keyframes spin {
+        from { transform: scale(1) rotate(0deg); }
+        to { transform: scale(1) rotate(360deg); }
+    }
+
+    @-webkit-keyframes spin2 {
+        from { -webkit-transform: rotate(0deg); }
+        to { -webkit-transform: rotate(360deg); }
+    }
+    /* end spiner icon */
+      
 </style>
 
 {{> navbar}}
@@ -29,9 +47,8 @@
 						{{#if option}}
 							<strong>{{option}}.</strong>
 						{{/if}}
-                        <!--<span {{#if isNotMyOption}}class="notMyOption"{{/if}}>-->
-						    <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}                        
-                        <!--</span>-->
+
+                        <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}
                         
                         {{#if isMyOption}}
                             </br>
@@ -41,11 +58,10 @@
                         {{/if}}
                         {{#if isNotMyOption}}
                             </br>
-                            <button type="button" class="btn btn-default btn-xs setMyOption" style="color:#337ab7"
-                                    data-menu-date="{{menu.menuDate}}">
-                                <span class="glyphicon glyphicon-pushpin" style="color:#337ab7"></span>
+                            <button type="button" class="btn btn-default btn-sm setMyOption" style="color:#337ab7">
+                                <span class="glyphicon glyphicon-pushpin" style="color:#337ab7"></span> 
                                 Da, vreau!
-                            </button>  
+                            </button>
                         {{/if}}  
                         
                         <br/>
@@ -60,7 +76,9 @@
 	{{else}}
 		<h4> Nu exista meniuri pentru perioada urmatoare!</h4>
 	{{/if}}
-
+    
+    Vezi si <a href="/todaysMenu">meniul de astazi &raquo;</a>
+    <hr>
 </div>
 
 {{#section 'script'}}
