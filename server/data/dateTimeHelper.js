@@ -1,5 +1,5 @@
 'use strict';
-
+    var config = require('../config/environment');
 	var factory = {};
 	
 	// *********** date/time helpers
@@ -95,8 +95,21 @@
 	
 	factory.getStringFromDate = function(date){	// javascript date object		
 		return this.getFriendlyDate(date).ymd;
-	}	
-	
+	}
+    
+	factory.getRoToday = function(){	// javascript date object (Ro time)		
+        var utcDate = new Date ();
+        var roDate = new Date(utcDate);
+        var offset = 2;
+
+        roDate.setHours(utcDate.getHours() + config.roUtcOffset); // Ro time
+        return roDate;
+	}
+    
+	factory.getRoTodayStr = function(){	// "yyyy-mm-dd" (Ro time)		
+        var roDate = this.getRoToday();
+        return this.getFriendlyDate(roDate).ymd;
+	}    	
 	
 	// *********** random string generator 
 	// source: http://stackoverflow.com/a/1349426
