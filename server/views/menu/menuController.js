@@ -9,8 +9,7 @@
     var _ = require('lodash');
     
     menuController.renderTodaysMenu = function (req, res, next) { 
-        var todayStr = helper.getRoTodayStr(); // "2016-03-26" (UTC + 2)
-                  
+        var todayStr = helper.getRoTodayStr(); // "2016-03-26"       
         menuService.getTodaysMenu(todayStr, function (err, menu) {
             if(err) { return handleError(res, err); }
 
@@ -23,10 +22,7 @@
                 user: req.user,
                 menu: menu,
                 today: helper.getStringFromString(todayStr),
-                menuHasDishes: menuHasDishes,
-                
-                tmpRoToday: helper.getRoToday(),
-                tmpRoTodayStr: helper.getRoTodayStr()
+                menuHasDishes: menuHasDishes
             };
 
             if(req.user && req.user.role === "user"){
@@ -77,7 +73,7 @@
     
     
     menuController.renderNextMenus = function (req, res, next) { 
-        var todayStr = req.query.today || helper.getStringFromDate(new Date());           
+        var todayStr = helper.getRoTodayStr(); // "2016-03-26"           
         menuService.getNextMenus(todayStr, function (err, menus) {
             if(err) { return handleError(res, err); }
 
