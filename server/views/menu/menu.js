@@ -11,10 +11,8 @@
         
     });
     
-    function changePreference(event){
-        event.preventDefault();
-        
-        var $setMyOption = $(event.target);
+    function changePreference(){
+        var $setMyOption = $(this);
 
         var $parentMenuUl = $setMyOption.closest("ul");
         var menuDate = $parentMenuUl.data("menu-date");
@@ -26,6 +24,7 @@
         
         var $parentCategoiesLi = $parentMenuUl.find("li[data-category='" + category + "']");        
         var $isMyOption = $parentCategoiesLi.find(".isMyOption");
+        var $setMyOptionIcon = $setMyOption.find("span").removeClass("glyphicon-pushpin").addClass("spinning glyphicon-refresh");
         
         var preference = {
             menuDate: menuDate,
@@ -38,7 +37,7 @@
             preference.preferenceId = preferenceId;
         };
         
-        savePreference(preference, $isMyOption, $setMyOption, $parentMenuUl);
+        savePreference(preference, $isMyOption, $setMyOption, $parentMenuUl, $setMyOptionIcon);
     }
     
     // http://stackoverflow.com/a/698440
@@ -49,7 +48,7 @@
         aparent.insertBefore(b, asibling);
     }    
   
-    function savePreference(preference, $isMyOption, $setMyOption, $parentMenuUl){
+    function savePreference(preference, $isMyOption, $setMyOption, $parentMenuUl, $setMyOptionIcon){
         var url = '/api/myPreferences';
         $.post(url, preference)
             .done(function(data){
@@ -71,7 +70,10 @@
             })
             .fail(function(err){
                 alert(err);
-            });        
+            })
+            .always(function(err){
+                $setMyOptionIcon.removeClass("spinning glyphicon-refresh").addClass("glyphicon-pushpin");
+            });                    
     }       
         
 })();
