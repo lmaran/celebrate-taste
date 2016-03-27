@@ -3,6 +3,8 @@
 var customerEmployeeService = require('./customerEmployeeService');
 var customerEmployeeValidator = require('./customerEmployeeValidator');
 var preferenceService = require('../preference/preferenceService');
+var config = require('../../config/environment');
+var emailService = require('../../data/emailService');
 
 
 // ---------- OData ----------
@@ -55,7 +57,12 @@ exports.update = function(req, res){
         else{
             
             customerEmployee.modifiedBy = req.user.name;    
-            customerEmployee.modifiedOn = new Date();  
+            customerEmployee.modifiedOn = new Date(); 
+            
+            if(customerEmployee.askForNotification){
+                var askForNotification = customerEmployee.askForNotification;
+                delete customerEmployee.askForNotification;
+            } 
             
             // update customer
             customerEmployeeService.update(customerEmployee, function (err, response) {
@@ -75,7 +82,28 @@ exports.update = function(req, res){
                         preferenceService.updateMany(filter2, update2, function(err, response){
                             if(err) { return handleError(res, err); }
                         });                                             
-                    }   
+                    } 
+
+                    if(askForNotification){
+                        // send an email with an activationLink
+                        var from = customerEmployee.email;
+                        var subject = 'Creare cont';
+                        
+                        var tpl = '';
+                            tpl += '<p style="margin-bottom:30px;">Buna <strong>' + customerEmployee.name + '</strong>,</p>';
+                            tpl += 'Adresa ta de email a fost inregistrata. ';
+                            tpl += 'Din acest moment iti poti crea un cont in aplicatie.';
+                            tpl += '<br>Si pentru ca totul sa fie cat mai simplu pentru tine, am creat link-ul de mai jos:';
+                            tpl += '<p><a href="' + config.externalUrl + '/register?email=' + encodeURIComponent(customerEmployee.email) + '">Creaza cont</a></p>';
+                            tpl += '<p style="margin-top:30px">Acest email a fost generat automat.</p>';
+                
+                            emailService.sendEmail(from, subject, tpl).then(function (result) {
+                                console.log(result);
+                            }, function (err) {
+                                console.log(err);
+                                //handleError(res, err)
+                            }); 
+                    }                     
                     
                     res.sendStatus(200);
                 }

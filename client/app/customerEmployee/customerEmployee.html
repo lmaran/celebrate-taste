@@ -51,6 +51,16 @@
                 <p ng-show="form.isActive.$error.myValidation" class="help-block">{{errors.isActive}}</p>                 
             </div>
         </div>
+        
+        <div ng-show="isEditMode" class="form-group" ng-class="{ 'has-error' : form.askForNotification.$invalid}">
+            <div class="col-md-4 col-md-offset-2">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="customerEmployee.askForNotification"> Trimite un email la client pt. creare cont.
+                    </label>
+                </div>
+            </div>
+        </div>         
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
