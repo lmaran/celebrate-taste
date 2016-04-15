@@ -10,7 +10,7 @@
     // ---------- OData ----------
     deliveryService.getAll = function (odataQuery, next) {  
         var query = mongoService.getQuery(odataQuery);
-        if(query.$sort === undefined) query.$sort = {orderDate: 1, eatSeries: 1};
+        if(query.$sort === undefined) query.$sort = {orderDate: -1, eatSeries: -1};
         mongoService.getAll(collection, query, next);
     };
 
