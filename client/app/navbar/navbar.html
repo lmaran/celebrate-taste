@@ -38,7 +38,7 @@
             <ul class="nav navbar-nav navbar-right">
                 
                 <li ng-show="isLoggedIn() && getCurrentUser().name == 'Lucian Maran'" ng-class="{active: isActive('/admin/register')}"><a href="/admin/register">Inregistrare</a></li>
-                <li><a href="/" target="_self">CT-Public</a></li>
+                <li><a href="/" target="_self">Public</a></li>
                 <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/admin/login">Autentificare</a></li>
                 
                 <li ng-show="isLoggedIn()" uib-dropdown ng-class="{active: isActive('/settings')}">
