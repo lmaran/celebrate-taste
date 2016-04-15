@@ -50,7 +50,7 @@ app.controller('customerEmployeeController', ['$scope', '$route', 'customerEmplo
         if($scope.customerEmployee.askForNotification && !$scope.customerEmployee.email){
             alert('Ai ales sa notifici clientul dar lipseste adresa de email!');
             return false;
-        };
+        }
           
         validateForm($scope, form);
         if (form.$invalid) return false;

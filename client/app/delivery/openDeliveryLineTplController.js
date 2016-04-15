@@ -15,6 +15,7 @@ app.controller('openDeliveryLineTplController', ['$scope', '$uibModalInstance', 
     
     $scope.update = function (form) {
         $scope.orderLine.status = 'completed';
+        $scope.orderLine.deliveryMode = "manual";
         $scope.orderLine.deliveryDate = new Date(); 
                      
         orderLineService.update($scope.orderLine)
@@ -30,7 +31,7 @@ app.controller('openDeliveryLineTplController', ['$scope', '$uibModalInstance', 
     $scope.revoke = function () { 
         $scope.orderLine.status = 'open';
         delete $scope.orderLine.deliveryDate;
-                
+             
         orderLineService.update($scope.orderLine)
             .then(function (data) {
                 $uibModalInstance.close();
