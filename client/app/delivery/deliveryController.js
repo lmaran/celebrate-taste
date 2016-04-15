@@ -205,7 +205,9 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
                     angular.copy($scope.orderLine, orderLineClone); // deep copy (to deal with status and 'strike-through')
         
                     orderLineClone.status = 'completed';
-                    orderLineClone.deliveryDate = new Date();                                            
+                    orderLineClone.deliveryDate = new Date();    
+                    orderLineClone.deliveryMode = "card";
+                                                                     
                     orderLineService.update(orderLineClone)
                         .then(function (data) {
                             $scope.deliverySummary = data.data;
@@ -229,7 +231,7 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
     // return an orderLine back to open status
     $scope.revoke = function (orderLine) { 
         orderLine.status = 'open';
-        delete orderLine.deliveryDate;
+        delete orderLine.deliveryDate;       
                 
         orderLineService.update(orderLine)
             .then(function (data) {
