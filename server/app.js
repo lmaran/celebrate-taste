@@ -1,5 +1,4 @@
 /* global process */
-/* global process */
 
 "use strict";
 
