@@ -47,7 +47,7 @@
             <thead>
                 <tr>
                     <th>Data</th>
-                    <th>Stare</th>
+                    <!--<th>Stare</th>-->
                     <th></th>
                 </tr>
             </thead>
@@ -59,10 +59,10 @@
                                 {{dt(order.date).dateAsShortString}} 
                         </a>
                     </td>                    
-                    <td>
+                    <!--<td>
                         <span ng-if="order.status==='open'">deschisa</span>
                         <span ng-if="order.status==='completed'" style="color:green">finalizata</span>
-                    </td>
+                    </td>-->
                     <td>
                         <span ng-if="order.status !== 'completed'">
                             <a href ng-click="delete(order)">sterge</a>

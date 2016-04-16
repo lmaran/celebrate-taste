@@ -12,7 +12,7 @@ var PDFDocument = require('pdfkit');
 exports.getAll = function (req, res) { 
     var odataQuery = req.query;
     odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
-    if(!odataQuery.$top) odataQuery.$top = "1000"; // if $top is not specified, return max. 1000 records
+    if(!odataQuery.$top) odataQuery.$top = "100"; // if $top is not specified, return max. 1000 records
     
     orderService.getAll(odataQuery, function (err, orders) {
         if(err) { return handleError(res, err); }
