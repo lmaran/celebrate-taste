@@ -43,10 +43,6 @@
             if (err) return next(err, null);
             db.collection(collection).insertMany(deliveries, next);      
         });
-    }; 
-    
-    deliveryService.createLog = function (log, next) {
-        mongoService.create('deliveryLog', log, next);
     };      
     
 })(module.exports);

@@ -61,6 +61,7 @@ module.exports = function(app) {
     app.use('/api/orders', auth.hasRole('admin'), require('./api/order/orderRoutes'));
     app.use('/api/orderLines', auth.hasRole('admin'), require('./api/orderLine/orderLineRoutes'));
     app.use('/api/deliveries', auth.hasRole('admin'), require('./api/delivery/deliveryRoutes'));
+    app.use('/api/deliveryLogs', auth.hasRole('admin'), require('./api/deliveryLog/deliveryLogRoutes'));
 
     
     // RPC routes

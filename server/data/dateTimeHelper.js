@@ -100,7 +100,6 @@
 	factory.getRoToday = function(){	// javascript date object (Ro time)		
         var utcDate = new Date ();
         var roDate = new Date(utcDate);
-        var offset = 2;
 
         roDate.setHours(utcDate.getHours() + config.roUtcOffset); // Ro time
         return roDate;
