@@ -102,19 +102,6 @@ exports.createMany = function(req, res){
     });           
 };
 
-exports.createLog = function(req, res){
-    var log = req.body;
-
-    var createdOn = new Date();
-    
-    log.createBy =req.user.name;
-    log.createdOn = createdOn;
-
-    deliveryService.createLog(log, function (err, response) {
-        if(err) { return handleError(res, err); }
-        res.status(201).json(response.ops[0]);
-    });           
-};
 
 // ---------- Helpers ----------
 function handleError(res, err) {

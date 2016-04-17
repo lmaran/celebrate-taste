@@ -2,8 +2,8 @@
 /* global _ */
 'use strict';
 
-app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$location', 'helperValidator', 'helperService', 'orderLineService', '$uibModal', '$timeout', 'menuService', 'toastr', 'customerEmployeeService', 'orderService',
-    function ($scope, $route, deliveryService, $location, helperValidator, helperService, orderLineService, $uibModal, $timeout, menuService, toastr, customerEmployeeService, orderService) {
+app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$location', 'helperValidator', 'helperService', 'orderLineService', '$uibModal', '$timeout', 'menuService', 'toastr', 'customerEmployeeService', 'orderService', 'deliveryLogService',
+    function ($scope, $route, deliveryService, $location, helperValidator, helperService, orderLineService, $uibModal, $timeout, menuService, toastr, customerEmployeeService, orderService, deliveryLogService) {
         
     //$scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;
@@ -173,7 +173,7 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
                         msg: $scope.errorMessage
                     }
                     
-                    deliveryService.createLog(log)
+                    deliveryLogService.create(log)
                         .then(function () {
                             toastr.success('Datele despre acest card au fost memorate pt. investigatii ulterioare.');
                         })
