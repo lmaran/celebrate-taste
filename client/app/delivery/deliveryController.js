@@ -153,13 +153,13 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
         
         var newBadgeCode = getNewBadge($scope.obj.badgeCode); // '0007453659' --> '0011348091'
         
-        orderLineService.getOrderLinesByBadge($scope.delivery.orderId, newBadgeCode).then(function (data) {
-            if(data.length === 0){
+        orderLineService.getOrderLinesByBadge($scope.delivery.orderId, newBadgeCode).then(function (orderLines) {
+            if(orderLines.length === 0){
                 var bCode = $scope.obj.badgeCode;
-                customerEmployeeService.getByBadge(newBadgeCode).then(function (data) {
+                customerEmployeeService.getByBadge(newBadgeCode).then(function (customerEmployees) {
                     
-                    if(data.length > 0){
-                        $scope.errorMessage = "Lipsa comanda pt. " + bCode + " (" + newBadgeCode + ") - " + data[0].name;
+                    if(customerEmployees.length > 0){
+                        $scope.errorMessage = "Lipsa comanda pt. " + customerEmployees[0].name;
                     } else {
                         $scope.errorMessage = "Card negasit: " + bCode + " (" + newBadgeCode + ")";
                     }
@@ -174,7 +174,7 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
                     }
                     
                     deliveryService.createLog(log)
-                        .then(function (data) {
+                        .then(function () {
                             toastr.success('Datele despre acest card au fost memorate pt. investigatii ulterioare.');
                         })
                         .catch(function (err) {
@@ -186,18 +186,18 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
                     alert(JSON.stringify(err, null, 4));
                 })                
                 
-            } else if(data.length > 1) {
+            } else if(orderLines.length > 1) {
                 $scope.errorValidation = true;
-                $scope.errorMessage = "Exista mai multe persoane cu acelasi card: " + $scope.obj.badgeCode + " (" + newBadgeCode + ")";            
-            } else if(data[0].eatSeries !== $scope.delivery.eatSeries) {
+                $scope.errorMessage = "Exista mai multe persoane cu acelasi card: " + newBadgeCode + ")";            
+            } else if(orderLines[0].eatSeries !== $scope.delivery.eatSeries) {
                 $scope.errorValidation = true;
-                if(data[0].status === 'completed')
-                    $scope.errorMessage = "Posesorul acestui card a mancat in " + data[0].eatSeries + "."; 
+                if(orderLines[0].status === 'completed')
+                    $scope.errorMessage = "Posesorul acestui card a mancat in " + orderLines[0].eatSeries + "."; 
                 else
-                    $scope.errorMessage = "Posesorul acestui card a fost programat in " + data[0].eatSeries + ".";             
+                    $scope.errorMessage = "Posesorul acestui card a fost programat in " + orderLines[0].eatSeries + ".";             
             } else {
                 $scope.errorValidation = false;
-                $scope.orderLine = data[0];
+                $scope.orderLine = orderLines[0];
                 
                 if($scope.orderLine.status !== 'completed'){
                     // set orderLine as 'completed' and save
