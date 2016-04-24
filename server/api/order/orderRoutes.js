@@ -18,6 +18,7 @@ router.delete('/:id', controller.remove);
 router.get('/:id/rpc/print/:opCode', controller.print);
 router.get('/:id/rpc/getEatSeriesList', controller.getEatSeriesList);
 router.get('/:id/rpc/getDeliverySummary/:eatSeries', controller.getDeliverySummary);
+router.post('/:id/rpc/closeOrder', controller.closeOrder);
 
 module.exports = router;
 

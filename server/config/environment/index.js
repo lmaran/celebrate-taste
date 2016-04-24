@@ -26,7 +26,7 @@ var all = {
     },
     
     // List of user roles
-    userRoles: ['guest', 'user', 'admin'],
+    userRoles: ['guest', 'user', 'partner', 'admin'], // the order is important
     
     // MongoDB connection options
     mongo: {
