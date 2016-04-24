@@ -7,6 +7,7 @@ var orderValidator = require('./orderValidator');
 var _ = require('lodash');
 var helper = require('../../data/dateTimeHelper');   
 var PDFDocument = require('pdfkit'); 
+var async = require('async');
 
 // ---------- OData ----------
 exports.getAll = function (req, res) { 
@@ -106,6 +107,37 @@ exports.getDeliverySummary = function (req, res) {
         if(err) { return handleError(res, err); }
         res.status(200).json(deliverySummary);
     });
+};
+
+exports.closeOrder = function (req, res) {
+    var orderId = req.params.id;
+    
+    async.parallel([
+        function(cb){
+            orderService.getById(orderId, cb);  // get order                  
+        },
+        function(cb){
+            orderLineService.getOrderForSummary(orderId, cb); // get orderLines (for specific order)
+        }               
+    ],
+    function(err, results){
+        if(err) { return handleError(res, err); }
+
+        var order = results[0];
+        var orderLines = results[1];
+        
+        var orderSummary = getOrderSummary(orderLines);
+
+        order.status = "completed";
+        order.summary = orderSummary;
+        order.modifiedBy = req.user.name;    
+        order.modifiedOn = new Date();         
+        
+        orderService.update(order, function (err, response) {});        
+        //console.log(orderSummary);
+        
+        res.status(200).json(orderSummary);                                                        
+    });      
 };
 
 
@@ -225,6 +257,138 @@ function printSummary(req, res){
         };
              
     });  // end 'orderLineService'
+}
+
+function getOrderSummary(orderLines){
+    var summary = {
+        ordered:{
+            total:0,
+            s1:0,
+            s2:0,
+            s3:0
+        },  
+        noBadge:{
+            total:0,
+            details:[] // list of {series:'', name:''}
+        }     
+
+        // unknowEmployees: [], // list of unknow employees, during import        
+        // uncknowBadges :[], // list of unknow badges, during delivery (TODO: add it during delivery)
+        // notOrdered:[] // list of persons with no order (TODO: add it during delivery)
+                        
+    };
+    
+    var firstOrderLine = orderLines[0];
+    
+    // init 'delivered' and 'undelivered'
+    if(firstOrderLine.hasOwnProperty('status')){
+        summary.delivered = {
+            total:0,
+            s1:0,
+            s2:0,
+            s3:0         
+        };
+        summary.undelivered = {
+            total:0,
+            s1:0,
+            s2:0,
+            s3:0,
+            details:[] // list of {series:'', name:''}         
+        }       
+    }    
+    
+    // init 'manualDelivered'
+    if(firstOrderLine.hasOwnProperty('deliveryMode')){
+        summary.manualDelivered = {
+            total:0,
+            s1:0,
+            s2:0,
+            s3:0,
+            details:[] // list of {series:'', name:''}            
+        }     
+    }
+    
+    orderLines.forEach(function(o){
+        if (o.eatSeries === "Seria 1") {
+            summary.ordered.s1++; 
+            summary.ordered.total++;
+            
+            if(summary.delivered){
+                if (o.status === "completed") {
+                    summary.delivered.s1++; 
+                    summary.delivered.total++;
+                } else {
+                    summary.undelivered.s1++;
+                    summary.undelivered.total++; 
+                    summary.undelivered.details.push({series:o.eatSeries, name:o.employeeName});
+                }
+            }
+            
+            if (summary.manualDelivered && o.deliveryMode === "manual") {
+                summary.manualDelivered.s1++; 
+                summary.manualDelivered.total++;
+                summary.manualDelivered.details.push({series:o.eatSeries, name:o.employeeName});
+            }            
+        }
+        if (o.eatSeries === "Seria 2") {
+            summary.ordered.s2++; 
+            summary.ordered.total++;
+            
+            if(summary.delivered){
+                if (o.status === "completed") {
+                    summary.delivered.s2++; 
+                    summary.delivered.total++;
+                } else {
+                    summary.undelivered.s2++; 
+                    summary.undelivered.total++;
+                    summary.undelivered.details.push({series:o.eatSeries, name:o.employeeName});
+                }
+            }
+            
+            if (summary.manualDelivered && o.deliveryMode === "manual") {
+                summary.manualDelivered.s2++; 
+                summary.manualDelivered.total++;
+                summary.manualDelivered.details.push({series:o.eatSeries, name:o.employeeName});
+            }             
+
+        }
+        if (o.eatSeries === "Seria 3") {
+            summary.ordered.s3++; 
+            summary.ordered.total++;
+            
+            if(summary.delivered) {
+                if (o.status === "completed") {
+                    summary.delivered.s3++; 
+                    summary.delivered.total++;
+                } else {
+                    summary.undelivered.s3++; 
+                    summary.undelivered.total++;
+                    summary.undelivered.details.push({series:o.eatSeries, name:o.employeeName});
+                }
+            }
+            
+            if (summary.manualDelivered && o.deliveryMode === "manual") {
+                summary.manualDelivered.s3++; 
+                summary.manualDelivered.total++;
+                summary.manualDelivered.details.push({series:o.eatSeries, name:o.employeeName});
+            }             
+        }                
+
+        if(!o.badgeCode) {
+            summary.noBadge.total++;
+            summary.noBadge.details.push({series:o.eatSeries, name:o.employeeName});
+        }
+             
+    }); 
+    
+    // final corrections ()
+    // for period 08-19 feb.2016 the status  for all records has been 'open'
+    if(summary.delivered && summary.delivered.total === 0){
+        delete summary.delivered;
+        delete summary.undelivered;
+    }
+    
+    return summary;   
 }
 
 function handleError(res, err) {

@@ -18,8 +18,11 @@ app.controller('navbarController', ['$scope', '$location', 'navbarService', '$wi
     $scope.isCollapsed = true;   
     $scope.isLoggedIn = userService.isLoggedIn;
     $scope.isAdmin = userService.isAdmin;
+    $scope.isPartnerOrAdmin = userService.isPartnerOrAdmin;
     $scope.getCurrentUser = userService.getCurrentUser;
     $scope.buildInfo = {};
+    
+    //console.log($scope.getCurrentUser());
 
     /*jshint latedef: nofunc */ // https://jslinterrors.com/a-was-used-before-it-was-defined
     init();

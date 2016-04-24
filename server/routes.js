@@ -90,8 +90,8 @@ module.exports = function(app) {
     
     // client-side views
     //app.get('/admin|/admin/*', auth.hasRole('admin'), function(req, res) {res.sendFile(path.resolve(app.get('appPath') + '/index.html'));});
-    app.get('/admin', auth.isAuthenticated(), function(req, res) {res.sendFile(path.resolve(app.get('appPath') + '/index.html'));});    
-    app.get('/admin|/admin/*', function(req, res) {res.sendFile(path.resolve(app.get('appPath') + '/index.html'));});
+    app.get('/admin', auth.hasRole('partner'), function(req, res) {res.sendFile(path.resolve(app.get('appPath') + '/index.html'));});    
+    app.get('/admin|/admin/*', auth.hasRole('partner'), function(req, res) {res.sendFile(path.resolve(app.get('appPath') + '/index.html'));});
 
   
     // All undefined asset or api routes should return a 404
