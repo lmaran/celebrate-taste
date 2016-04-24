@@ -94,6 +94,10 @@ app.factory('userService', ['$http', '$cookies', '$q', '$window',
     factory.isAdmin = function() {
         return currentUser.role === 'admin';
     };
+    
+    factory.isPartnerOrAdmin = function() {
+        return currentUser.role === 'partner' || currentUser.role === 'admin';
+    };    
         
     return factory;
 }]);

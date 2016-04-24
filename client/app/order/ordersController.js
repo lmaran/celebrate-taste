@@ -1,4 +1,5 @@
-﻿'use strict';
+﻿/* global _ */
+'use strict';
 
 app.controller('ordersController', ['$scope', '$location', 'orderService', 'modalService', 'helperService', '$uibModal',
     function ($scope, $location, orderService, modalService, helperService, $uibModal) {
@@ -66,6 +67,45 @@ app.controller('ordersController', ['$scope', '$location', 'orderService', 'moda
     
     $scope.dt = function (dateAsString) { // yyyy-mm-dd
         return helperService.getObjFromString(dateAsString);
+    }
+    
+    $scope.closeOrder = function(orderId){
+        
+        var modalOptions = {
+            actionButtonText: 'Finalizeaza',
+            headerText: 'Finalizare/Arhivare comanda',
+            bodyTitle: 'Esti sigur ca vrei sa finalizezi aceasta comanda?',
+            bodyDetails: 'Odata finalizata, comanda nu mai poate fi redeschisa!'         
+        };
+        
+        modalService.confirm(modalOptions).then(function (result) {            
+            orderService.closeOrder(orderId).then(function(data){
+                var currentOrder = _.find($scope.orders, {_id: orderId});
+                currentOrder.summary = data;
+                currentOrder.status = 'completed';
+            })
+            .catch(function (err) {
+                if(err.status !== 401) {
+                    alert(JSON.stringify(err, null, 4));
+                }
+            }); 
+        });        
+    }
+    
+    $scope.showEmployees = function(employees, msg){
+        var modalSettings = {
+            animation: false,
+            templateUrl: 'app/common/templates/showEmployees.html'
+        };
+        
+        var modalOptions = {
+            closeButtonText: 'Renunta',
+            headerText: msg,
+            employees: employees       
+        };
+                
+        modalService.show(modalSettings, modalOptions);
+      
     }    
 
 }]);

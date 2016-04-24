@@ -9,13 +9,14 @@
     
     </br>
     </br>
-    <p><a ng-href="/admin/users">Utilizatori</a></p>
+    <p ng-if-start="isAdmin()"><a ng-href="/admin/users">Utilizatori</a></p>
     <p><a ng-href="/admin/customerEmployees">Angajati client</a></p>
     <p><a ng-href="/admin/dishes">Feluri de mancare</a></p>
     <p><a ng-href="/admin/menus">Meniuri</a></p>
     <p><a ng-href="/admin/preferences">Preferinte</a></p>
     <p><a ng-href="/admin/orders">Comenzi</a></p>
     <p><a ng-href="/admin/deliveries">Livrari</a></p>
-    <p><a ng-href="/admin/deliveryLogs">Notificari</a></p>
+    <p ng-if-end><a ng-href="/admin/deliveryLogs">Notificari</a></p>
+    <!--<p><a ng-href="/admin/partners">Notificari partener</a></p>-->
     
 </div>
