@@ -1,0 +1,78 @@
+<div ng-include="'app/navbar/navbar.html'"></div>
+
+<ol class="breadcrumb">
+    <li>
+        <button ng-click="goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+            <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
+        </button>
+        <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
+    </li>
+    <li class="active">Comenzi</li>
+</ol>
+
+<div class="container-fluid">
+    <h1>{{pageTitle}}</h1>
+
+
+    <div class="table-responsive">
+        <table class="table table-responsive table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    
+                    <th>Comandat</th>
+                    <th>Livrat</th>
+                    <th style="bpartnerOrder-right: 1px solid #ddd;">Ramas</th>
+                    <th>Lipsa card</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="partnerOrder in partnerOrders | filter:search">
+                    <td>
+                        <!--<a ng-href="/admin/partnerOrders/{{partnerOrder._id}}">-->
+                            <strong>{{dt(partnerOrder.date).dayAsShortString}}</strong>, 
+                                {{dt(partnerOrder.date).dateAsShortString}} 
+                        <!--</a>-->
+                    </td>
+                    
+                    <td>
+                        <span ng-if="partnerOrder.status==='completed'">
+                            <strong>{{partnerOrder.summary.ordered.total}}</strong> ({{partnerOrder.summary.ordered.s1}}+{{partnerOrder.summary.ordered.s2}}+{{partnerOrder.summary.ordered.s3}})
+                        </span>
+                    </td>
+                    
+                    <td>
+                        <span ng-if="partnerOrder.status==='completed' && partnerOrder.summary.delivered">
+                            <strong>{{partnerOrder.summary.delivered.total}}</strong> ({{partnerOrder.summary.delivered.s1}}+{{partnerOrder.summary.delivered.s2}}+{{partnerOrder.summary.delivered.s3}})
+                        </span>
+                        <span ng-if="partnerOrder.status==='completed' && !partnerOrder.summary.delivered">
+                            N/A
+                        </span>                        
+                    </td>                    
+                    
+                    <td style="bpartnerOrder-right: 1px solid #ddd;">
+                        <span ng-if="partnerOrder.status==='completed' && partnerOrder.summary.undelivered">
+                            <a href="" ng-click="showEmployees(partnerOrder.summary.undelivered.details, 'Portii nelivrate')">
+                                <strong>{{partnerOrder.summary.undelivered.total}}</strong>
+                            </a> 
+                            ({{partnerOrder.summary.undelivered.s1}}+{{partnerOrder.summary.undelivered.s2}}+{{partnerOrder.summary.undelivered.s3}})
+                        </span>
+                        <span ng-if="partnerOrder.status==='completed' && !partnerOrder.summary.undelivered">
+                            N/A
+                        </span>                        
+                    </td>
+                    
+                    <td>
+                        <apan ng-if="partnerOrder.status==='completed'">
+                            <a href="" ng-click="showEmployees(partnerOrder.summary.noBadge.details, 'Lipsa card')">
+                                <strong>{{partnerOrder.summary.noBadge.total}}</strong>
+                            </a>
+                        </apan>
+                    </td> 
+                                      
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
