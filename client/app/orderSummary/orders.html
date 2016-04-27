@@ -1,0 +1,107 @@
+<div ng-include="'app/navbar/navbar.html'"></div>
+
+<ol class="breadcrumb">
+    <li>
+        <button ng-click="goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+            <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
+        </button>
+        <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
+    </li>
+    <li class="active">Comenzi</li>
+</ol>
+
+<div class="container-fluid">
+    <h1>{{pageTitle}}</h1>           
+
+    <div class="table-responsive">
+        <table class="table table-responsive table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    
+                    <th>Comandat</th>
+                    <th>Livrat</th>
+                    <th style="border-right: 1px solid #ddd;">Ramas</th>
+                    <th>Lipsa card</th>
+                    <th>Livrat manual</th>
+                    
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="order in orders | filter:search">
+                    <td>
+                        <a ng-href="/admin/orders/{{order._id}}">
+                            <strong>{{dt(order.date).dayAsShortString}}</strong>, 
+                                {{dt(order.date).dateAsShortString}} 
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <span ng-if="order.status==='completed'">
+                            <strong>{{order.summary.ordered.total}}</strong> ({{order.summary.ordered.s1}}+{{order.summary.ordered.s2}}+{{order.summary.ordered.s3}})
+                        </span>
+                    </td>
+                    
+                    <td>
+                        <span ng-if="order.status==='completed' && order.summary.delivered">
+                            <strong>{{order.summary.delivered.total}}</strong> ({{order.summary.delivered.s1}}+{{order.summary.delivered.s2}}+{{order.summary.delivered.s3}})
+                        </span>
+                        <span ng-if="order.status==='completed' && !order.summary.delivered">
+                            N/A
+                        </span>                        
+                    </td>                    
+                    
+                    <td style="border-right: 1px solid #ddd;">
+                        <span ng-if="order.status==='completed' && order.summary.undelivered">
+                            <a href="" ng-click="showEmployees(order.summary.undelivered.details, 'Portii nelivrate')">
+                                <strong>{{order.summary.undelivered.total}}</strong>
+                            </a> 
+                            ({{order.summary.undelivered.s1}}+{{order.summary.undelivered.s2}}+{{order.summary.undelivered.s3}})
+                        </span>
+                        <span ng-if="order.status==='completed' && !order.summary.undelivered">
+                            N/A
+                        </span>                        
+                    </td>
+                    
+                    <td>
+                        <apan ng-if="order.status==='completed'">
+                            <a href="" ng-click="showEmployees(order.summary.noBadge.details, 'Lipsa card')">
+                                <strong>{{order.summary.noBadge.total}}</strong>
+                            </a>
+                        </apan>
+                    </td> 
+                    
+                    <td>
+                        <span ng-if="order.status==='completed' && order.summary.manualDelivered">
+                            <strong>{{order.summary.manualDelivered.total}}</strong> ({{order.summary.manualDelivered.s1}}+{{order.summary.manualDelivered.s2}}+{{order.summary.manualDelivered.s3}})  
+                        </span>
+                        <span ng-if="order.status==='completed' && !order.summary.manualDelivered">
+                            N/A  
+                        </span>                        
+                    </td>                                                                                                  
+
+                    <td class="text-right">
+                        <span ng-if="order.status !== 'completed'">
+                            <a href ng-click="delete(order)">sterge</a>
+                        </span>
+                        <!--<span ng-if="order.status === 'completed'" class="text-muted" title="Nu poti sterge comenzile finalizate!">
+                            sterge
+                        </span>-->
+                    </td>
+                    
+                    <td class="text-right" style="width:1px">
+                        <!--<span ng-if="order.status==='open'">deschisa</span>-->   
+                        <button ng-if="order.status !== 'completed'" type="button" class="btn btn-primary btn-xs" ng-click="closeOrder(order._id)">
+                            <span class="glyphicon glyphicon-ok"></span> Finalizeaza
+                        </button>
+                        
+                        <span ng-if="order.status==='completed'" style2="color:green">finalizata</span>
+                    </td>                                        
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
