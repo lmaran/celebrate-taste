@@ -2,8 +2,8 @@
     "name": "Celebrate-Taste",
     "version": "1.0.0",
     "engines": {
-        "node": "4.4.2",
-        "npm": "3.8.6"
+        "node": "6.6.0",
+        "npm": "3.8.7"
     },
     "private": true,
     "description": "",
