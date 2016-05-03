@@ -126,7 +126,7 @@ exports.closeOrder = function (req, res) {
         var order = results[0];
         var orderLines = results[1];
         
-        var orderSummary = getOrderSummary(orderLines);
+        var orderSummary = getOrderSummary(order, orderLines);
 
         order.status = "completed";
         order.summary = orderSummary;
@@ -259,7 +259,7 @@ function printSummary(req, res){
     });  // end 'orderLineService'
 }
 
-function getOrderSummary(orderLines){
+function getOrderSummary(order, orderLines){
     var summary = {
         ordered:{
             total:0,
@@ -297,8 +297,8 @@ function getOrderSummary(orderLines){
         }       
     }    
     
-    // init 'manualDelivered'
-    if(firstOrderLine.hasOwnProperty('deliveryMode')){
+    // init 'manualDelivered'  
+    if(order.date >= '2016-04-18'){ // we don't have info before this date
         summary.manualDelivered = {
             total:0,
             s1:0,
