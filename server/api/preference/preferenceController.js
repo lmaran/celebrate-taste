@@ -117,6 +117,7 @@ exports.saveMyPreferences = function(req, res){
 
             preference.modifiedBy = req.user.name;    
             preference.modifiedOn = new Date();
+            preference.fromOnline = true;
             
             preference["option" + myPreference.category] = myPreference.selectedOption;                     
             
@@ -137,6 +138,7 @@ exports.saveMyPreferences = function(req, res){
         preference["option" + myPreference.category] = myPreference.selectedOption;
         preference.createBy = req.user.name;    
         preference.createdOn = new Date(); 
+        preference.fromOnline = true;
                 
         preferenceService.create(preference, function (err, response) {
             if(err) { return handleError(res, err); }

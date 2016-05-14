@@ -7,8 +7,18 @@ app.controller('preferencesController', ['$scope', '$location', 'preferenceServi
     $scope.preferences = [];
     $scope.errors = {};
     $scope.nextDates=[]; 
+    $scope.obj = {};
+    $scope.obj.onlyFromOnline = false;
 
     init();
+    
+    $scope.selectOnlyFromOnline = function(){
+        if($scope.obj.onlyFromOnline === false){
+            $location.search('onlyFromOnline', null); // delete property from url
+        } else {
+            $location.search('onlyFromOnline', true); // add property to url
+        }
+    }  
     
     $scope.selectDate = function(date){
         if(date !== 'Nu exista date'){
@@ -69,7 +79,12 @@ app.controller('preferencesController', ['$scope', '$location', 'preferenceServi
             
             // get preferences for the selected day
             if($scope.selectedDate)
-                getPreferencesByDay($scope.selectedDate);          
+                getPreferencesByDay($scope.selectedDate);  
+                
+            if(searchObject.onlyFromOnline)
+                $scope.obj.onlyFromOnline = true;  
+            else
+                $scope.obj.onlyFromOnline = false;                         
                                    
         })
         .catch(function (err) {
@@ -90,6 +105,12 @@ app.controller('preferencesController', ['$scope', '$location', 'preferenceServi
     
     $scope.dt = function (dateAsString) { // yyyy-mm-dd
         return helperService.getObjFromString(dateAsString);
-    }     
+    }  
+    
+    $scope.filterByOnline = function(orderLine){
+        if($scope.obj.onlyFromOnline) {
+            return orderLine.fromOnline;
+        } else return true;
+    }    
 
 }]);
