@@ -15,7 +15,7 @@
     
     <div class="row">
         
-        <div class="col-md-6">
+        <div class="col-md-4">
             <form class="form-inline">
                 <div class="form-group">    
                     <button type="button" class="btn btn-primary" ng-click="create()"> 
@@ -24,6 +24,22 @@
                 </div>
             </form> 
         </div>
+        
+        <div class="col-md-2">
+            <form class="form-inline">
+                <div class="form-group pull-right">                 
+                    <div class="input-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="obj.onlyFromOnline" ng-change="selectOnlyFromOnline()"> 
+                                Din online
+                            </label>
+                        </div>                     
+                    </div>                        
+                    
+                </div>             
+            </form>       
+        </div>         
         
         <div class="col-md-3">
             <form class="form-inline">
@@ -84,15 +100,14 @@
             <thead>
                 <tr>
                     <th>Data / Angajat</th>
-                    <!--<th>Angajat</th>-->
-                    <th>Supa</th>
-                    <th>Felul 2</th>
+                    <th>Preferinte</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr data-ng-repeat=" preference in preferences
                         | filter: search 
+                        | filter: filterByOnline
                         as results">                
                     <td>
                         <!--{{preference.date}}-->
@@ -101,15 +116,10 @@
                                 {{dt(preference.date).dateAsShortString}} / {{preference.employeeName}}
                         </a>
                     </td>
-                    <!--<td>
-                        {{preference.employeeName}}
-                    </td>                    -->
                     <td>
-                        {{preference.option1}}
+                        <span ng-style="preference.fromOnline && {'background-color':'lightblue'}">{{preference.option1 || '-'}}</span> / 
+                        <span ng-style="preference.fromOnline && {'background-color':'lightblue'}">{{preference.option2 || '-'}}</span>                        
                     </td>
-                    <td>
-                        {{preference.option2}}
-                    </td>                    
                     <td class2="text-right">
                         <a href ng-click="delete(preference)">sterge</a> 
                         <!--<spa class="text-muted"> | </spa> 

@@ -43,15 +43,16 @@ function addUserIfExist() {
             if(req.user)
                 userService.getByIdWithoutPsw(req.user._id, function (err, user) {
                     if (err) return next(err);
-                    //if (!user) return res.status(401).send('Unauthorized');
-                    if (!user) next();
-                    if (user && user.role.indexOf('admin') > -1) user.isAdmin = true; //add this property for navbar
-                    if (user && user.role.indexOf('partner') > -1) user.isPartner = true; //add this property for navbar
-                    req.user = user;
+                    if (user) {
+                        if (user.role.indexOf('admin') > -1) user.isAdmin = true; //add this property for navbar
+                        if (user.role.indexOf('partner') > -1) user.isPartner = true; //add this property for navbar
+                        req.user = user;                      
+                    }                    
                     next();
                 });
-            else
+            else {
                 next();
+            }
         });
 }
 
