@@ -23,7 +23,7 @@
                 </li>               -->
                 <li uib-dropdown ng-class="{active: isActive('/admin/users') || isActive('/admin/dishes') || isActive('/admin/menus')}">
                     <a href uib-dropdown-toggle>Admin <b class="caret"></b></a>
-                    <ul class="uib-dropdown-menu">
+                    <ul class="dropdown-menu" uib-dropdown-menu>
                         <li ng-if-start="isAdmin()"><a href="/admin/users">Utilizatori</a></li>
                         <li><a href="/admin/customerEmployees">Angajati client</a></li>
                         <li><a href="/admin/dishes">Feluri de mancare</a></li>
@@ -45,7 +45,7 @@
                 
                 <li ng-show="isLoggedIn()" uib-dropdown ng-class="{active: isActive('/settings')}">
                     <a href uib-dropdown-toggle>{{getCurrentUser().name}} <b class="caret"></b></a>
-                    <ul class="uib-dropdown-menu">
+                    <ul class="dropdown-menu" uib-dropdown-menu>
                         <li><a href="/admin/changePassword">Schimba parola</a></li>
                         <li><a href="" ng-click="logout()">Log out</a></li>
                     </ul>
