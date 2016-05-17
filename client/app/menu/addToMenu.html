@@ -23,7 +23,7 @@
                             <span>{{selectedCategory.name}}</span> 
                             <span style="float:right; height:12px; margin-top: 8px;" class="caret"></span>
                         </button>
-                        <ul style="min-width:200px;" class="uib-dropdown-menu" role="menu" aria-labelledby="single-button" >
+                        <ul style="min-width:200px;" class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button" >
                             <li role="menuitem" ng-repeat="category in categories">
                                 <a href="#" ng-click="selectCategory(category)">{{category.name}}</a>
                             </li>
