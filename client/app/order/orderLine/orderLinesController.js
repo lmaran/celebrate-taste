@@ -48,9 +48,9 @@ app.controller('orderLinesController', ['$scope', '$location', 'orderLineService
     init();
 
     $scope.delete = function (item) {
-
+        
         var modalOptions = {
-            bodyDetails: item.name,           
+            bodyDetails: 'Comanda pentru ' + item.employeeName,           
         };
         
         modalService.confirm(modalOptions).then(function (result) {
