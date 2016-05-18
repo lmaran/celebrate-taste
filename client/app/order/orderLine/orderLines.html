@@ -22,7 +22,7 @@
                              
                             <span class="caret"></span>
                         </button>
-                        <ul class="uib-dropdown-menu">
+                        <ul class="dropdown-menu" uib-dropdown-menu>
                             <li><a ng-href="api/orders/{{orderId}}/rpc/print/seria1" target="_self">Seria 1</a></li>
                             <li><a ng-href="api/orders/{{orderId}}/rpc/print/seria2" target="_self">Seria 2</a></li>
                             <li><a ng-href="api/orders/{{orderId}}/rpc/print/seria3" target="_self">Seria 3</a></li>
@@ -59,7 +59,7 @@
                                 <span>{{selectedEatSeries}}</span> 
                                 <span style="float:right; height:12px; margin-top: 8px;" class="caret"></span>
                             </button>
-                            <ul style="width:100%; min-width:120px" class="uib-dropdown-menu" role="menu">
+                            <ul style="width:100%; min-width:120px" class="dropdown-menu" uib-dropdown-menu role="menu">
                                 <li>
                                     <a href="#" ng-click="selectEatSeries('Toate seriile')">Toate seriile</a>
                                 </li>
@@ -84,7 +84,7 @@
                                 <span>{{selectedPreference}}</span> 
                                 <span style="float:right; height:12px; margin-top: 8px;" class="caret"></span>
                             </button>
-                            <ul style="width:100%; min-width:120px" class="uib-dropdown-menu" role="menu">
+                            <ul style="width:100%; min-width:120px" class="dropdown-menu" uib-dropdown-menu role="menu">
                                 <li role="menuitem">
                                     <a href="#" ng-click="selectPreference('Toate pref.')">Toate pref.</a>
                                     <a href="#" ng-click="selectPreference('Fara pref.')">Fara pref.</a>
