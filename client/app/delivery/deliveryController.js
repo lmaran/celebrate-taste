@@ -161,7 +161,8 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
                     if(customerEmployees.length > 0){
                         $scope.errorMessage = "Lipsa comanda pt. " + customerEmployees[0].name;
                     } else {
-                        $scope.errorMessage = "Card negasit: " + bCode + " (" + newBadgeCode + ")";
+                        //$scope.errorMessage = "Card negasit: " + bCode + " (" + newBadgeCode + ")";
+                        $scope.errorMessage = "Card negasit: " + newBadgeCode;
                     }
                     
                     $scope.errorValidation = true;
