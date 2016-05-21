@@ -2,31 +2,37 @@
     "use strict";
     
     var module = angular.module("celebrate-taste");
+    var id;
     
     module.component("customerEmployee",{
         templateUrl:"app/customerEmployee/customerEmployee.html",
         controllerAs:"vm",
-        controller:["$route", "$window", "customerEmployeeService", "helperValidator", controller]
+        controller:["$route", "$window", "customerEmployeeService", "helperValidator", controller]       
     });
        
     function controller($route, $window, customerEmployeeService, helperValidator){
         var vm = this;
         
         //
-        // lifecycle hooks
+        // lifecycle hooks (chronological)
         //
         vm.$onInit = function(){
-            vm.isEditMode = $route.current.isEditMode;
-            vm.isFocusOnName = vm.isEditMode ? false : true;
-            
+            vm.isFocusOnName = vm.isEditMode ? false : true;    
             vm.isActiveOptions = [{id: true, name: 'Da'},{id: false, name: 'Nu'}];
-            vm.customerEmployee = {};
             vm.errors = {};
+        };
+        
+        vm.$routerOnActivate = function (next, previous) {
+            id = next.params.id;
+            vm.isEditMode = next.routeData.data.action === 'edit';
             
             if (vm.isEditMode) {  
-                getCustomerEmployee(); 
-            }       
-        };
+                vm.pageTitle = "Editeaza utilizator";
+                getCustomerEmployee();                 
+            } else {
+                vm.pageTitle = "Adauga utilizator"; 
+            } 
+        };        
         
         
         //
@@ -89,8 +95,8 @@
         } 
         
         function getCustomerEmployee() {
-            console.log($route.current.params.id);
-            customerEmployeeService.getById($route.current.params.id).then(function (data) {
+            //console.log($route.current.params.id);
+            customerEmployeeService.getById(id).then(function (data) {
                 vm.customerEmployee = data;
             })
             .catch(function (err) {

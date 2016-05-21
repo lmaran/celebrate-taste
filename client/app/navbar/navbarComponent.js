@@ -12,6 +12,9 @@
     function controller($http, userService, $location){
         var vm = this;
         
+        //
+        // lifecycle hooks (chronological)
+        //
         vm.$onInit = function(){
             vm.isCollapsed = true;   
             vm.isLoggedIn = userService.isLoggedIn;

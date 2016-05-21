@@ -4,20 +4,18 @@
 var app = angular.module('celebrate-taste', [
     'ngCookies',
     'ngResource',
-    'ngSanitize',
-    'ngRoute',
+    'ngSanitize',   
+    'ngComponentRouter',
     'ui.bootstrap',
     'ui.select',
     'ngAnimate', 'toastr'
     //'ngAnimate' // we need it if uibCollapse directive is used
 ]);
 
-app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
-    $routeProvider
-        // all routes are configured inside each module
-        .otherwise({
-            redirectTo: '/admin'
-      });
+// define the top level Root Component; instantiate this Root Component in our index.html file
+app.value("$routerRootComponent", "mainApp");
+
+app.config(['$locationProvider', '$httpProvider', function ($locationProvider, $httpProvider) {
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
