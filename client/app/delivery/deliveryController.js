@@ -155,7 +155,7 @@ app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$l
         
         orderLineService.getOrderLinesByBadge($scope.delivery.orderId, newBadgeCode).then(function (orderLines) {
             if(orderLines.length === 0){
-                var bCode = $scope.obj.badgeCode;
+                // var bCode = $scope.obj.badgeCode;
                 customerEmployeeService.getByBadge(newBadgeCode).then(function (customerEmployees) {
                     
                     if(customerEmployees.length > 0){
