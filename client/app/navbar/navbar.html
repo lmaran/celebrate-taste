@@ -1,30 +1,23 @@
-
-<!--
-    navbar implemented in angular-ui: 
-    info: https://github.com/angular-ui/bootstrap/issues/1672#issuecomment-33616426
-    plunker (complex menu): http://plnkr.co/edit/qPeBaVUyr5cH6QOV5WF5?p=preview
-    plunker (simple menu, close on click): http://plnkr.co/edit/L8H80ULgf3fMnROSAqCu?p=preview
--->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" ng-controller="navbarController">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">        
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed">
+            <button type="button" class="navbar-toggle" ng-click="vm.isCollapsed = !vm.isCollapsed">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/admin" target2="_self">CT-Admin</a> <!-- http://stackoverflow.com/a/11857881/2726725-->
+            <a class="navbar-brand" href="/admin">CT-Admin</a> <!-- http://stackoverflow.com/a/11857881/2726725-->
         </div>
-        <div class="collapse navbar-collapse" lm-collapse="isCollapsed">            
+        <div class="collapse navbar-collapse" lm-collapse="vm.isCollapsed">            
             <ul class="nav navbar-nav">
                 <!--<li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
                     <a ng-href="{{item.link}}">{{item.title}}</a>
                 </li>               -->
-                <li uib-dropdown ng-class="{active: isActive('/admin/users') || isActive('/admin/dishes') || isActive('/admin/menus')}">
+                <li uib-dropdown ng-class="{active: vm.isActive('/admin/users') || vm.isActive('/admin/dishes') || vm.isActive('/admin/menus')}">
                     <a href uib-dropdown-toggle>Admin <b class="caret"></b></a>
                     <ul class="dropdown-menu" uib-dropdown-menu>
-                        <li ng-if-start="isAdmin()"><a href="/admin/users">Utilizatori</a></li>
+                        <li ng-if-start="vm.isAdmin()"><a href="/admin/users">Utilizatori</a></li>
                         <li><a href="/admin/customerEmployees">Angajati client</a></li>
                         <li><a href="/admin/dishes">Feluri de mancare</a></li>
                         <li><a href="/admin/menus">Meniuri</a></li>
@@ -38,22 +31,21 @@
                 
             </ul>            
             <ul class="nav navbar-nav navbar-right">
-                <li>{{getCurrentUser() | json}}</li>
-                <!--<li ng-show="isLoggedIn() && getCurrentUser().name == 'Lucian Maran'" ng-class="{active: isActive('/admin/register')}"><a href="/admin/register">Inregistrare</a></li>-->
+
                 <li><a href="/" target="_self">Public</a></li>
-                <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/admin/login">Autentificare</a></li>
+                <li ng-hide="vm.isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/admin/login">Autentificare</a></li>
                 
-                <li ng-show="isLoggedIn()" uib-dropdown ng-class="{active: isActive('/settings')}">
-                    <a href uib-dropdown-toggle>{{getCurrentUser().name}} <b class="caret"></b></a>
+                <li ng-show="vm.isLoggedIn()" uib-dropdown>
+                    <a href uib-dropdown-toggle>{{vm.getCurrentUser().name}} <b class="caret"></b></a>
                     <ul class="dropdown-menu" uib-dropdown-menu>
                         <li><a href="/admin/changePassword">Schimba parola</a></li>
-                        <li><a href="" ng-click="logout()">Log out</a></li>
+                        <li><a href="/logout" target="_self">Log out</a></li>
                     </ul>
                 </li>                                        
                 
-                <li ng-if="buildInfo.nodeEnv == 'staging'">
+                <!--<li ng-if="buildInfo.nodeEnv == 'staging'">
                     <a class="build-info" href="" >{{buildInfo.nodeEnv}}, {{buildInfo.buildDate | date:'dd MMM yyyy, HH:mm'}}</a>
-                </li> 
+                </li> -->
             </ul>           
         </div>
     </div>
