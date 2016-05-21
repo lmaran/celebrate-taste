@@ -6,14 +6,14 @@
     module.component("customerEmployeeList",{
         templateUrl:"app/customerEmployee/customerEmployeeList.html",
         controllerAs:"vm",
-        controller:['$location', '$window', 'customerEmployeeService', 'modalService', controller]
+        controller:['$location', '$window', 'customerEmployeeService', 'modalService', controller]     
     });
        
     function controller($location, $window, customerEmployeeService, modalService){
         var vm = this;
         
         //
-        // lifecycle hooks
+        // lifecycle hooks (chronological)
         //        
         vm.$onInit = function(){
             vm.customerEmployees = [];
