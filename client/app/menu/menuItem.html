@@ -1,54 +1,54 @@
 ﻿<ol class="breadcrumb">
     <li>
-        <button ng-click="goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+        <button ng-click="vm.goBack()" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
             <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
         </button>
         <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
     </li>
     <li><a href="/admin/menus">Meniuri</a></li>
-    <li class="active">Meniu: {{menuDateAsString}}</li>
-    <li class="active">{{dish.name || 'nou'}}</li>
+    <li class="active">Meniul din {{vm.menuDateAsString}}</li>
+    <li class="active">{{vm.dish.name || 'nou'}}</li>
 </ol>
 
 <div class="container-fluid">
     
-    <h1>{{pageTitle}}</h1>
+    <h1>{{vm.pageTitle}}</h1>
 
-    <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" novalidate>
+    <form ng-submit="vm.update(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
 
-        <div class="form-group" ng-class="{ 'has-error' : form.name.$invalid && submitted }">
-            <label class="col-md-2 control-label">Nume </label>
+        <div class="form-group" ng-class="{ 'has-error' : form.name.$invalid}">
+            <label class="col-md-2 control-label required">Nume </label>
             <div class="col-md-4">
-                <input class="form-control" ng-model="dish.name" type="text" name="name" lm-focus="isFocusOnName" required />
-                <p ng-show="form.name.$invalid  && submitted" class="help-block">Acest camp este obligatoriu.</p>
+                <input class="form-control" ng-model="vm.dish.name" type="text" name="name" lm-focus="vm.isFocusOnName"/>
+                <p ng-show="form.name.$error.myValidation" class="help-block">{{vm.errors.name}}</p>
             </div>
         </div>       
         
-        <div class="form-group" ng-class="{ 'has-error' : form.category.$invalid && submitted }">
-            <label class="col-md-2 control-label">Categorie</label>
+        <div class="form-group" ng-class="{ 'has-error' : form.category.$invalid}">
+            <label class="col-md-2 control-label required">Categorie</label>
             <div class="col-md-4">
-                <select name="category" class="form-control" ng-model="dish.category" required>
+                <select name="category" class="form-control" ng-model="vm.dish.category">
                     <option></option>
                     <option value="1">Supa</option>
                     <option value="2">Felul doi</option>
                     <option value="3">Salata</option>
                     <option value="4">Desert</option>
                 </select>
-                <p ng-show="form.category.$invalid  && submitted" class="help-block">Acest camp este obligatoriu.</p>
+                <p ng-show="form.category.$error.myValidation" class="help-block">{{vm.errors.category}}</p>
             </div>
         </div>                
 
         <div class="form-group">
             <label class="col-md-2 control-label">Calorii </label>
             <div class="col-md-4">
-                <input class="form-control" ng-model="dish.calories" type="text"/>
+                <input class="form-control" ng-model="vm.dish.calories" type="text"/>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-md-2 control-label">Descriere</label>
             <div class="col-md-4">
-                <textarea class="form-control" ng-model="dish.description" name="description" msd-elastic></textarea>
+                <textarea class="form-control" ng-model="vm.dish.description" name="description" msd-elastic></textarea>
             </div>
         </div>
         
@@ -56,7 +56,7 @@
             <div class="col-md-4 col-md-offset-2">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" ng-model="dish.isFasting"> De Post
+                        <input type="checkbox" ng-model="vm.dish.isFasting"> De Post
                     </label>
                 </div>
             </div>
@@ -65,14 +65,14 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Pozitia (A/B): </label>
             <div class="col-md-4">
-                <input class="form-control" ng-model="dish.option" type="text"/>
+                <input class="form-control" ng-model="vm.dish.option" type="text"/>
             </div>
         </div>         
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-floppy-disk"></span> Salveaza </button>
-                <button type="button" class="btn  btn-default" ng-click="goBack()()"> <span class=" glyphicon glyphicon-remove"></span> Renunta </button>
+                <button type="button" class="btn  btn-default" ng-click="vm.goBack()"> <span class=" glyphicon glyphicon-remove"></span> Renunta </button>
             </div>
         </div>
         

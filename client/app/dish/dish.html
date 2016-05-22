@@ -13,7 +13,6 @@
     <h1>{{vm.pageTitle}}</h1>
 
     <form ng-submit="vm.isEditMode ? vm.update(form) : vm.create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
-        <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
 
         <div class="form-group" ng-class="{ 'has-error' : form.name.$invalid}">
             <label class="col-md-2 control-label required">Nume </label>

@@ -7,16 +7,17 @@
     module.component("dishList",{
         templateUrl:"app/dish/dishList.html",
         controllerAs:"vm",
-        controller:["$location", "$window", "dishService", "modalService", "helperValidator", "toastr", controller]     
+        controller:["$location", "$window", "dishService", "modalService", "toastr", controller]     
     });
        
-    function controller($location, $window, dishService, modalService, helperValidator, toastr){
+    function controller($location, $window, dishService, modalService, toastr){
         var vm = this;
         
         //
         // lifecycle hooks (chronological)
         //        
         vm.$onInit = function(){
+            vm.pageTitle = "Feluri de mancare";            
             vm.dishes = [];
             vm.errors = {};    
             
