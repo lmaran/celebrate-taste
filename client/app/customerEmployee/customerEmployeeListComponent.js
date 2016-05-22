@@ -17,6 +17,7 @@
         // lifecycle hooks (chronological)
         //        
         vm.$onInit = function(){
+            vm.pageTitle = "Angajati client";
             vm.customerEmployees = [];
             vm.errors = {};    
             

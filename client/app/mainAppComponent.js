@@ -33,7 +33,16 @@
             //
             {path:"/admin/dishes", component:"dishList", name:"DishList"},
             {path:"/admin/dishes/create", component:"dish", name:"DishCreate"},
-            {path:"/admin/dishes/:id", component:"dish", name:"DishEdit", data: { action: 'edit'}}            
+            {path:"/admin/dishes/:id", component:"dish", name:"DishEdit", data: { action: 'edit'}},     
+            
+            //
+            // menu
+            //
+            {path:"/admin/menus", component:"menuList", name:"MenuList"},
+            // {path:"/admin/menus/create", component:"menu", name:"MenuCreate"},
+            // {path:"/admin/menus/:id", component:"menu", name:"DishEdit", data: { action: 'edit'}}  
+            {path:"/admin/menus/:menuId/dishes/:dishId", component:"menuItem", name:"MenuItem"},
+            {path:"/admin/menus/:id/add", component:"addToMenu", name:"AddToMenu"}                  
                         
             //{path:"/admin/**", redirectTo:["Home"]}
         ]

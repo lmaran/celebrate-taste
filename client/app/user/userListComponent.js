@@ -7,16 +7,17 @@
     module.component("userList",{
         templateUrl:"app/user/userList.html",
         controllerAs:"vm",
-        controller:["$location", "$window", "userService", "modalService", "helperValidator", "toastr", controller]     
+        controller:["$location", "$window", "userService", "modalService", "toastr", controller]     
     });
        
-    function controller($location, $window, userService, modalService, helperValidator, toastr){
+    function controller($location, $window, userService, modalService, toastr){
         var vm = this;
         
         //
         // lifecycle hooks (chronological)
         //        
         vm.$onInit = function(){
+            vm.pageTitle = "Utilizatori";
             vm.users = [];
             vm.errors = {};    
             
