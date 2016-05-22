@@ -4,23 +4,23 @@
     
     var module = angular.module("celebrate-taste");
     
-    module.component("customerEmployeeList",{
-        templateUrl:"app/customerEmployee/customerEmployeeList.html",
+    module.component("userList",{
+        templateUrl:"app/user/userList.html",
         controllerAs:"vm",
-        controller:["$location", "$window", "customerEmployeeService", "modalService", controller]     
+        controller:["$location", "$window", "userService", "modalService", "helperValidator", "toastr", controller]     
     });
        
-    function controller($location, $window, customerEmployeeService, modalService){
+    function controller($location, $window, userService, modalService, helperValidator, toastr){
         var vm = this;
         
         //
         // lifecycle hooks (chronological)
         //        
         vm.$onInit = function(){
-            vm.customerEmployees = [];
+            vm.users = [];
             vm.errors = {};    
             
-            getCustomerEmpoyees();
+            getUsers();
         };
         
         
@@ -28,16 +28,21 @@
         // public methods
         //       
         vm.create = function () {
-            $location.path('/admin/customerEmployees/create');
+            $location.path('/admin/users/create');
         }
         
-        vm.delete = function (customerEmployee) {
+        vm.delete = function (user) {
             var modalOptions = {
-                bodyDetails: customerEmployee.name,           
+                bodyDetails: user.name,           
             };
             modalService.confirm(modalOptions).then(function (result) {
-                customerEmployeeService.delete(customerEmployee._id).then(function () {
-                     _.remove(vm.customerEmployees, {_id: customerEmployee._id});
+                userService.delete(user._id).then(function () {
+                    _.remove(vm.users, {_id: user._id});
+                    
+                    if(userService.getCurrentUser().name === user.name){
+                        userService.logout();
+                        //$window.location.href = '/'; //server-side home page             
+                    }                    
                 })
                 .catch(function (err) {
                     vm.errors = JSON.stringify(err.data, null, 4);
@@ -49,8 +54,8 @@
         vm.filterBySearch = function (item) {
             var isMatch = false;
             if (vm.search) {
-                // search by employeeName or badge
-                if (new RegExp(vm.search, 'i').test(item.name) || new RegExp(vm.search, 'i').test(item.badgeCode)) {
+            // search by user name or email
+            if (new RegExp(vm.search, 'i').test(item.name) || new RegExp(vm.search, 'i').test(item.email)) {
                     isMatch = true;
                 }
             } else {
@@ -61,7 +66,7 @@
         };          
 
         vm.refresh = function () {
-            getCustomerEmpoyees();
+            getUsers();
         };
 
         vm.goBack = function(){ 
@@ -72,9 +77,16 @@
         //
         // private methods
         //
-        function getCustomerEmpoyees(){
-            customerEmployeeService.getAll().then(function (data) {
-                vm.customerEmployees = data;
+        function getUsers(){
+            userService.getAll().then(function (data) {
+                data.forEach(function(user){
+                    if(user.activationToken){
+                        user.status = 'asteapta activare';
+                    } else{
+                        user.status = 'activ';
+                    }
+                });                
+                vm.users = data;
             })
             .catch(function (err) {
                 if(err.status !== 401) {

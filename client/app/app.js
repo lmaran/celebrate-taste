@@ -3,7 +3,6 @@
 
 var app = angular.module('celebrate-taste', [
     'ngCookies',
-    'ngResource',
     'ngSanitize',   
     'ngComponentRouter',
     'ui.bootstrap',

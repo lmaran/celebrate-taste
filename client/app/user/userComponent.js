@@ -4,20 +4,20 @@
     var module = angular.module("celebrate-taste");
     var id;
     
-    module.component("customerEmployee",{
-        templateUrl:"app/customerEmployee/customerEmployee.html",
+    module.component("user",{
+        templateUrl:"app/user/user.html",
         controllerAs:"vm",
-        controller:["$route", "$window", "customerEmployeeService", "helperValidator", controller]       
+        controller:["$route", "$window", "userService", "helperValidator", "toastr", controller]       
     });
        
-    function controller($route, $window, customerEmployeeService, helperValidator){
+    function controller($route, $window, userService, helperValidator, toastr){
         var vm = this;
         
         //
         // lifecycle hooks (chronological)
         //
         vm.$onInit = function(){
-            vm.customerEmployee = {};
+            vm.user = {};
             vm.errors = {};            
             vm.isFocusOnName = vm.isEditMode ? false : true;    
             vm.isActiveOptions = [{id: true, name: 'Da'},{id: false, name: 'Nu'}];
@@ -25,11 +25,11 @@
         
         vm.$routerOnActivate = function (next, previous) {
             id = next.params.id;
-            vm.isEditMode = next.routeData.data.action === 'edit';
+            vm.isEditMode = next.routeData.data.action === "edit";
             
             if (vm.isEditMode) {  
                 vm.pageTitle = "Editeaza utilizator";
-                getCustomerEmployee();                 
+                getUser();                 
             } else {
                 vm.pageTitle = "Adauga utilizator"; 
             } 
@@ -43,7 +43,7 @@
             validateForm(vm, form);
             if (form.$invalid) return false;
             
-            customerEmployeeService.create(vm.customerEmployee)
+            userService.create(vm.user)
                 .then(function (data) {
                     vm.goBack(); // it comes from rootScope
                 })
@@ -56,17 +56,13 @@
                 }) 
         };        
             
-        vm.update = function (form) {         
-            if(vm.customerEmployee.askForNotification && !vm.customerEmployee.email){
-                alert('Ai ales sa notifici clientul dar lipseste adresa de email!');
-                return false;
-            }
-            
+        vm.update = function (form) {                    
             validateForm(vm, form);
             if (form.$invalid) return false;
                 
-            customerEmployeeService.update(vm.customerEmployee)
+            userService.update(vm.user)
                 .then(function (data) {
+                    // $location.path('/admin/users');
                     vm.goBack(); // it comes from rootScope
                 })
                 .catch(function (err) {
@@ -87,18 +83,18 @@
         // private methods
         //        
         function validateForm(vm, form){ 
-            var entity = 'customerEmployee'; 
+            var entity = 'user'; 
             helperValidator.setAllFildsAsValid(form);
             
             // fields
             helperValidator.required50(vm, form, entity, 'name');
-            helperValidator.optionalEmail(vm, form, entity, 'email');
+            helperValidator.requiredEmail(vm, form, entity, 'email');
         } 
         
-        function getCustomerEmployee() {
+        function getUser() {
             //console.log($route.current.params.id);
-            customerEmployeeService.getById(id).then(function (data) {
-                vm.customerEmployee = data;
+            userService.getById(id).then(function (data) {
+                vm.user = data;
             })
             .catch(function (err) {
                 alert(JSON.stringify(err, null, 4));
