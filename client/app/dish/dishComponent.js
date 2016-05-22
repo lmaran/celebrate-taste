@@ -4,20 +4,20 @@
     var module = angular.module("celebrate-taste");
     var id;
     
-    module.component("user",{
-        templateUrl:"app/user/user.html",
+    module.component("dish",{
+        templateUrl:"app/dish/dish.html",
         controllerAs:"vm",
-        controller:["$route", "$window", "userService", "helperValidator", "toastr", controller]       
+        controller:["$route", "$window", "dishService", "helperValidator", "toastr", controller]       
     });
        
-    function controller($route, $window, userService, helperValidator, toastr){
+    function controller($route, $window, dishService, helperValidator, toastr){
         var vm = this;
         
         //
         // lifecycle hooks (chronological)
         //
         vm.$onInit = function(){
-            vm.user = {};
+            vm.dish = {};
             vm.errors = {};            
             vm.isFocusOnName = vm.isEditMode ? false : true;    
             vm.isActiveOptions = [{id: true, name: 'Da'},{id: false, name: 'Nu'}];
@@ -28,10 +28,10 @@
             vm.isEditMode = next.routeData.data.action === "edit";
             
             if (vm.isEditMode) {  
-                vm.pageTitle = "Editeaza utilizator";
-                getUser();                 
+                vm.pageTitle = "Editeaza felul de mancare";
+                getDish();                 
             } else {
-                vm.pageTitle = "Adauga utilizator"; 
+                vm.pageTitle = "Adauga un fel de mancare"; 
             } 
         };        
         
@@ -43,7 +43,7 @@
             validateForm(vm, form);
             if (form.$invalid) return false;
             
-            userService.create(vm.user)
+            dishService.create(vm.dish)
                 .then(function (data) {
                     vm.goBack(); // it comes from rootScope
                 })
@@ -60,10 +60,9 @@
             validateForm(vm, form);
             if (form.$invalid) return false;
                 
-            userService.update(vm.user)
+            dishService.update(vm.dish)
                 .then(function (data) {
-                    // $location.path('/admin/users');
-                    vm.goBack(); // it comes from rootScope
+                    vm.goBack();
                 })
                 .catch(function (err) {
                     if(err.data.errors){                   
@@ -83,17 +82,17 @@
         // private methods
         //        
         function validateForm(vm, form){ 
-            var entity = 'user'; 
+            var entity = 'dish'; 
             helperValidator.setAllFildsAsValid(form);
             
             // fields
             helperValidator.required50(vm, form, entity, 'name');
-            helperValidator.requiredEmail(vm, form, entity, 'email');
+            helperValidator.required50(vm, form, entity, 'category');
         } 
         
-        function getUser() {
-            userService.getById(id).then(function (data) {
-                vm.user = data;
+        function getDish() {
+            dishService.getById(id).then(function (data) {
+                vm.dish = data;
             })
             .catch(function (err) {
                 alert(JSON.stringify(err, null, 4));

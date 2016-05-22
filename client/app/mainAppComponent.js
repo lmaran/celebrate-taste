@@ -15,18 +15,25 @@
             {path:"/admin", component:"home", name:"Home"},            
             
             //
-            // customerEmployees
+            // customerEmployee
             //
             {path:"/admin/customerEmployees", component:"customerEmployeeList", name:"CustomerEmployeeList"},
             {path:"/admin/customerEmployees/create", component:"customerEmployee", name:"CustomerEmployeeCreate"},
             {path:"/admin/customerEmployees/:id", component:"customerEmployee", name:"CustomerEmployeeEdit", data: { action: 'edit'}},
             
             //
-            // users
+            // user
             //
             {path:"/admin/users", component:"userList", name:"UserList"},
             {path:"/admin/users/create", component:"user", name:"UserCreate"},
-            {path:"/admin/users/:id", component:"user", name:"UserEdit", data: { action: 'edit'}}
+            {path:"/admin/users/:id", component:"user", name:"UserEdit", data: { action: 'edit'}},
+            
+            //
+            // dish
+            //
+            {path:"/admin/dishes", component:"dishList", name:"DishList"},
+            {path:"/admin/dishes/create", component:"dish", name:"DishCreate"},
+            {path:"/admin/dishes/:id", component:"dish", name:"DishEdit", data: { action: 'edit'}}            
                         
             //{path:"/admin/**", redirectTo:["Home"]}
         ]
