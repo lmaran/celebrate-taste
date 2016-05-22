@@ -5,8 +5,8 @@
     var module = angular.module("celebrate-taste");
     var menuId;
     
-    module.component("addToMenu",{
-        templateUrl:"app/menu/addToMenu.html",
+    module.component("addDishToMenu",{
+        templateUrl:"app/menu/addDishToMenu.html",
         controllerAs:"vm",
         controller:["$window", "menuService", "dishService", "helperValidator", "helperService", "toastr", controller]       
     });

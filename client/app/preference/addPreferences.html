@@ -9,7 +9,7 @@
 
 <ol class="breadcrumb">
     <li>
-        <button ng-click="goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+        <button ng-click="vm.goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
             <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
         </button>
         <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
@@ -19,22 +19,22 @@
 </ol>
 
 <div class="container-fluid">
-    <h1>{{pageTitle}}</h1>
+    <h1>{{vm.pageTitle}}</h1>
     
-    <p ng-show="menuIsReady && menus.length == 0">Nu exista meniuri definite pentru perioada urmatoare. Prin urmare, nici preferinte nu se pot adauga.</p>
+    <p ng-show="vm.menuIsReady && menus.length == 0">Nu exista meniuri definite pentru perioada urmatoare. Prin urmare, nici preferinte nu se pot adauga.</p>
 
-    <div ng-show="menus.length > 0" >
-        <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
+    <div ng-show="vm.menus.length > 0" >
+        <form ng-submit="vm.create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
     
             <div class="form-group" ng-class="{'has-error' : form.option1.$invalid}">
                 <label class="col-md-2 control-label required">Angajat</label>
                 <div class="col-md-4">
                     
-                    <ui-select ng-model="person.selected" autofocus="true" focus-on='SetFocus' on-select="selectEmployee($item, $model)">
+                    <ui-select ng-model="vm.person.selected" autofocus="true" on-select="vm.selectEmployee($item, $model)">
                         <ui-select-match>
                             <span ng-bind="$select.selected.name"></span>
                         </ui-select-match>
-                        <ui-select-choices repeat="item in customerEmployees | filter: {name:$select.search}">
+                        <ui-select-choices repeat="item in vm.customerEmployees | filter: {name:$select.search}">
                             <span ng-bind-html="item.name | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>                
@@ -42,7 +42,7 @@
                 </div>
             </div>            
     
-            <div ng-show="person.selected !== undefined" class="form-group" ng-class="{'my-has-error' : preferencesHaveErrors }">
+            <div ng-show="vm.person.selected !== undefined" class="form-group" ng-class="{'my-has-error' : preferencesHaveErrors }">
                 <label class="col-md-2 control-label">Preferinte</label>
                 <div class="col-md-4">
                     
@@ -56,14 +56,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr data-ng-repeat=" preference in preferences
-                                        | filter: search 
+                                <tr data-ng-repeat=" preference in vm.preferences
+                                        | filter: vm.search 
                                         as results">                
                                     <td>
-                                        <strong>{{dt(preference.date).dayAsShortString}}</strong>, 
-                                        {{dt(preference.date).dayOfMonth}}
-                                        {{dt(preference.date).monthAsShortString}}
-                                        {{dt(preference.date).year}}                                    
+                                        <strong>{{vm.dt(preference.date).dayAsShortString}}</strong>, 
+                                        {{vm.dt(preference.date).dayOfMonth}}
+                                        {{vm.dt(preference.date).monthAsShortString}}
+                                        {{vm.dt(preference.date).year}}                                    
                                     </td> 
                                     <td>
                                         <input id="{{2 * $index}}" name="input{{2 * $index}}" type="text" ng-model="preference.option1" class="form-control input-sm text-uppercase" maxlength="1" move-next-on-maxlength 
@@ -86,32 +86,24 @@
                     </div>                
                     
                     <p class="text-muted">Tip: Literele mici se convertesc automat.</p>
-                    <p ng-show="preferencesHaveErrors" class="help-block">{{errors.preferences}}</p>
+                    <p ng-show="vm.preferencesHaveErrors" class="help-block">{{vm.errors.preferences}}</p>
                 </div>
             </div>
             
             <div ng-show="errors.other && submitted" class="form-group has-error">
                 <div class="col-md-4 col-md-offset-2">
-                    <p class="help-block">{{errors.other}}</p>
+                    <p class="help-block">{{vm.errors.other}}</p>
                 </div>
             </div>         
     
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <button type="submit" class="btn btn-primary" ng-disabled="person.selected === undefined"> <span class="glyphicon glyphicon-floppy-disk"></span> Salveaza si continua </button>
-                    Inapoi la <a ng-click="goBack()" href="">lista de preferinte</a>
+                    <button type="submit" class="btn btn-primary" ng-disabled="vm.person.selected === undefined"> <span class="glyphicon glyphicon-floppy-disk"></span> Salveaza si continua </button>
+                    Inapoi la <a ng-click="vm.goBack()" href="">lista de preferinte</a>
                 </div>
             </div>
     
         </form>
     
-        </br/>
-        </br/>
-        <p class="text-muted">
-            <strong>OBS:</strong> In acest ecran nu ai nevoie de mouse. Incepe prin a scrie un fragment din numele angajatului, apoi continua folosind <strong>doar tastatura</strong>.
-            <!--<br/> - <strong>SAGETI sus/jos</strong>: pt. deplasare in lista
-            <br/> - <strong>ENTER</strong>: pt. selectia unei valori din lista sau "Salvare"
-            <br/> - <strong>TAB, SHIFT+TAB</strong>: pt. deplasare intre campuri-->
-        </p>
     </div>
 </div>
