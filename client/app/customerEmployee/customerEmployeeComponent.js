@@ -28,10 +28,10 @@
             vm.isEditMode = next.routeData.data.action === 'edit';
             
             if (vm.isEditMode) {  
-                vm.pageTitle = "Editeaza utilizator";
+                vm.pageTitle = "Editeaza angajat";
                 getCustomerEmployee();                 
             } else {
-                vm.pageTitle = "Adauga utilizator"; 
+                vm.pageTitle = "Adauga angajat"; 
             } 
         };        
         
@@ -96,7 +96,6 @@
         } 
         
         function getCustomerEmployee() {
-            //console.log($route.current.params.id);
             customerEmployeeService.getById(id).then(function (data) {
                 vm.customerEmployee = data;
             })

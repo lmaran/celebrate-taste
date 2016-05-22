@@ -17,7 +17,7 @@
         <div class="form-group" ng-class="{'has-error' : form.name.$invalid}">
             <label class="col-md-2 control-label required">Nume </label>
             <div class="col-md-4">
-                <input type="text" name="name" ng-model="vm.customerEmployee.name" class="form-control" lm-focus="isFocusOnName"/>
+                <input type="text" name="name" ng-model="vm.customerEmployee.name" class="form-control" lm-focus="vm.isFocusOnName"/>
                 <p class="text-muted">Numele in format <strong>Nume</strong> + <strong>Prenume</strong>.</p>
                 <p ng-show="form.name.$error.myValidation" class="help-block">{{vm.errors.name}}</p>
             </div>
