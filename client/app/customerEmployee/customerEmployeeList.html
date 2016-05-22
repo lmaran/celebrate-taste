@@ -51,7 +51,7 @@
             </thead>
             <tbody>
                 <tr data-ng-repeat="customerEmployee in vm.customerEmployees 
-                        | filter: vm.mySearch
+                        | filter: vm.filterBySearch
                         as results">
                     <td>
                         <a ng-href="/admin/customerEmployees/{{customerEmployee._id}}">{{customerEmployee.name}}</a>

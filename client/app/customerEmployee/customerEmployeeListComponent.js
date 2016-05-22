@@ -50,7 +50,7 @@
             });
         };
 
-        vm.mySearch = function (item) {
+        vm.filterBySearch = function (item) {
             var isMatch = false;
             if (vm.search) {
                 // search by employeeName or badge

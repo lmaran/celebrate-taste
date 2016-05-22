@@ -10,6 +10,11 @@
         `,
         $routeConfig:[
             //
+            // home
+            //
+            {path:"/admin", component:"home", name:"Home"},            
+            
+            //
             // customerEmployees
             //
             {path:"/admin/customerEmployees", component:"customerEmployeeList", name:"CustomerEmployeeList"},
