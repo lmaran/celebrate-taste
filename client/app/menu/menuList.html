@@ -1,0 +1,110 @@
+<ol class="breadcrumb">
+    <li>
+        <button ng-click="vm.goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+            <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
+        </button>
+        <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
+    </li>
+    <li class="active">Meniuri</li>
+</ol>
+
+<div class="container-fluid">
+    <h1>{{vm.pageTitle}}</h1>
+
+    <div class="row">
+        
+        <div class="col-md-9">
+            <form class="form-inline">
+                <div class="form-group">  
+                    
+                    <button type="button" class="btn btn-primary" ng-click="vm.openCreateMenu()">
+                        <span class="glyphicon glyphicon-plus"></span> Adauga meniu 
+                    </button>
+
+                    <span class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                            <span class="glyphicon glyphicon-print"></span>
+                            Tipareste meniuri 
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" uib-dropdown-menu>
+                            <li><a ng-href="menus/currentWeek/print" target="_self">pt. sapt. curenta</a></li>
+                            <li><a ng-href="menus/nextWeek/print" target="_self">pt. sapt. viitoare</a></li>                            
+                        </ul>                    
+                    </span>                  
+                    
+                </div>
+            </form> 
+        </div>
+                
+        <div class="col-md-3">
+            <form class="form-inline">
+                <div class="form-group pull-right">                   
+                    <div class="input-group">
+                        <span style="padding-right:10px;" class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="vm.refresh()" style="border-radius:4px; background-color:lightgray"><span class="glyphicon glyphicon-refresh"></span></button>
+                        </span>
+                        <input style="border-top-left-radius:4px; border-bottom-left-radius:4px" ng-model="vm.search" type="text" class="form-control" placeholder="Cauta...">
+                        <span class="input-group-btn"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>       
+        </div> 
+    
+    </div>    
+    
+    <hr>
+    <!--{{menus.length}}-->
+    <h4 ng-show="vm.menus.length == 0"> Nu exista meniuri pentru astazi sau perioada urmatoare!</h4>
+    <div ng-show="vm.menus.length > 0"ng-repeat="menu in vm.menus | filter:vm.search">
+        <div class="row toolbar">
+            <div class="col-md-12">
+                <h4>Meniul de 
+                    <strong>{{vm.friendlyDate(menu.menuDate)}}</strong> 
+                    <small style="font-size:14px"> <a href ng-click="vm.delete(menu)" >sterge meniu</a> 
+                        <span style="margin:7px">|</span> 
+                        <a ng-href="menus/{{menu._id}}/print" target="_self">tipareste</a>
+                    </small>
+                </h4>
+            </div>
+            <br/>            
+        </div>
+        <div class="row">
+            <div class="col-md-11 col-md-offset-1">
+
+                <div class="table-responsive">
+                    <table class="table table-responsive table-hover table-condensed my-borderless">
+                        <tbody>
+                            <tr data-ng-repeat="dish in menu.dishes | filter:vm.search | orderBy:['category', 'option']">
+                                <td>
+                                    <span ng-if="dish.option !== undefined">{{dish.option}}.</span>
+                                    <span ng-if="dish.option === undefined">&nbsp;&nbsp;&nbsp;</span>
+                                    <a ng-href="/admin/menus/{{menu._id}}/dishes/{{dish._id}}">{{dish.name}}</a> 
+                                    <span ng-if="dish.isFasting">(post)</span>
+                                    <span ng-if="dish.calories"> - {{ dish.calories }} cal.</span>
+                                </td>
+                                <td></td>
+                                <!--<td width="100px">{{ dish.calories }} cal.</td>-->
+                                <!--<td >{{ dish.description }}</td>-->
+                                <td width="100px">
+                                    <a href ng-click="vm.deleteDishFromMenu(dish, menu)">sterge</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11 col-md-offset-1">
+                <a type="button" class="btn btn-primary btn-xs" ng-href="/admin/menus/{{menu._id}}/add"> <span class="glyphicon glyphicon-plus"></span> Adauga un fel la meniu </a>            
+            </div>
+        </div>
+        <hr>
+    </div>
+    
+
+
+
+</div>
