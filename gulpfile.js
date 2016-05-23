@@ -18,6 +18,7 @@ var gulp = require('gulp'), // task runner
     runSequence = require('run-sequence'), // a cool way of choosing what must run sequentially, and what in parallel
     del = require('del'), // delete files/folders  
     concat = require('gulp-concat'), // concatenate files    
+    babel = require('gulp-babel'), // back thick (`) used for inline template is feature of ES5: http://stackoverflow.com/a/34411589
     uglify = require('gulp-uglify'), // js minification
     minifyCSS = require('gulp-minify-css'), // css minification
     rev = require('gulp-rev'), // add a unique id at the end of app.js (ex: app-f4446a9c.js) to prevent browser caching
@@ -241,7 +242,14 @@ gulp.task('clean-dist', function (cb) {
 gulp.task('build-scripts', function() {
     return gulp.src('./client/app/**/*.js')
         .pipe(concat('app.js'))
-        .pipe(uglify())
+        .pipe(babel({
+            presets: ['es2015'], // add support for ES2015 (back thick "`" in inline template) http://stackoverflow.com/a/34411589
+            compact: false // remove warning: 'code generator has deoptimised...' ->http://stackoverflow.com/a/30879872
+        }))       
+        .pipe(uglify()
+            .on('error', function(e){
+                console.log(e);
+            }))
         .pipe(rev()) // add a unique id at the end of app.js (ex: app-f4446a9c.js)
         .pipe(gulp.dest('./dist/client/app'));
 });
@@ -250,7 +258,10 @@ gulp.task('build-scripts-bower', function() {
     return gulp.src(bowerFiles())
         .pipe(filter(['*.js', '!bootstrap-sass-official', '!bootstrap.js', '!json3', '!es5-shim']))
         .pipe(concat('vendor.js'))
-        .pipe(uglify())
+        .pipe(uglify()
+            .on('error', function(e){
+                console.log(e);
+            }))        
         .pipe(rev())
         .pipe(gulp.dest('./dist/client/app'));
 });
