@@ -7,10 +7,10 @@
         <div class="col-md-3">
             <form class="form-inline">
                 <div class="form-group">  
-                    <button type="button" class="btn btn-primary" ng-click="create()"> 
+                    <button type="button" class="btn btn-primary" ng-click="vm.create()"> 
                         <span class="glyphicon glyphicon-plus"></span> Adauga  
                     </button> 
-                    <button type="button" class="btn btn-primary" ng-click="import()"> 
+                    <button type="button" class="btn btn-primary" ng-click="vm.import()"> 
                         <span class="glyphicon glyphicon-import"></span> Import  
                     </button> 
                     
@@ -21,10 +21,10 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" uib-dropdown-menu>
-                            <li><a ng-href="api/orders/{{orderId}}/rpc/print/seria1" target="_self">Seria 1</a></li>
-                            <li><a ng-href="api/orders/{{orderId}}/rpc/print/seria2" target="_self">Seria 2</a></li>
-                            <li><a ng-href="api/orders/{{orderId}}/rpc/print/seria3" target="_self">Seria 3</a></li>
-                            <li><a ng-href="api/orders/{{orderId}}/rpc/print/summary" target="_self">Centralizator</a></li>                            
+                            <li><a ng-href="api/orders/{{vm.orderId}}/rpc/print/seria1" target="_self">Seria 1</a></li>
+                            <li><a ng-href="api/orders/{{vm.orderId}}/rpc/print/seria2" target="_self">Seria 2</a></li>
+                            <li><a ng-href="api/orders/{{vm.orderId}}/rpc/print/seria3" target="_self">Seria 3</a></li>
+                            <li><a ng-href="api/orders/{{vm.orderId}}/rpc/print/summary" target="_self">Centralizator</a></li>                            
                         </ul>                    
                     </span>
                                                                           
@@ -38,7 +38,7 @@
                     <div class="input-group">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" ng-model="obj.onlyNoBadges" ng-click="selectOnlyNoBadges()"> 
+                                <input type="checkbox" ng-model="vm.obj.onlyNoBadges" ng-click="vm.selectOnlyNoBadges()"> 
                                 Fara card
                             </label>
                         </div>                     
@@ -54,16 +54,16 @@
                     <div class="input-group">
                         <span class="btn-group" uib-dropdown>
                             <button style="text-align:left; min-width:120px;" type="button" class="btn btn-default btn-block" uib-dropdown-toggle ng-disabled="disabled">
-                                <span>{{selectedEatSeries}}</span> 
+                                <span>{{vm.selectedEatSeries}}</span> 
                                 <span style="float:right; height:12px; margin-top: 8px;" class="caret"></span>
                             </button>
                             <ul style="width:100%; min-width:120px" class="dropdown-menu" uib-dropdown-menu role="menu">
                                 <li>
-                                    <a href="#" ng-click="selectEatSeries('Toate seriile')">Toate seriile</a>
+                                    <a href="#" ng-click="vm.selectEatSeries('Toate seriile')">Toate seriile</a>
                                 </li>
                                 <li class="divider"></li>
-                                <li ng-repeat="eatSeries in eatSeriesList">
-                                    <a href="#" ng-click="selectEatSeries(eatSeries)">{{eatSeries}}</a>
+                                <li ng-repeat="eatSeries in vm.eatSeriesList">
+                                    <a href="#" ng-click="vm.selectEatSeries(eatSeries)">{{eatSeries}}</a>
                                 </li>
                             </ul>                    
                         </span>                       
@@ -79,17 +79,17 @@
                     <div class="input-group">
                         <span class="btn-group" uib-dropdown>
                             <button style="text-align:left; min-width:120px;" type="button" class="btn btn-default btn-block" uib-dropdown-toggle ng-disabled="disabled">
-                                <span>{{selectedPreference}}</span> 
+                                <span>{{vm.selectedPreference}}</span> 
                                 <span style="float:right; height:12px; margin-top: 8px;" class="caret"></span>
                             </button>
                             <ul style="width:100%; min-width:120px" class="dropdown-menu" uib-dropdown-menu role="menu">
                                 <li role="menuitem">
-                                    <a href="#" ng-click="selectPreference('Toate pref.')">Toate pref.</a>
-                                    <a href="#" ng-click="selectPreference('Fara pref.')">Fara pref.</a>
+                                    <a href="#" ng-click="vm.selectPreference('Toate pref.')">Toate pref.</a>
+                                    <a href="#" ng-click="vm.selectPreference('Fara pref.')">Fara pref.</a>
                                 </li>
                                 <li class="divider"></li>
-                                <li role="menuitem" ng-repeat="preference in preferences">
-                                    <a href="#" ng-click="selectPreference(preference)">{{preference}}</a>
+                                <li role="menuitem" ng-repeat="preference in vm.preferences">
+                                    <a href="#" ng-click="vm.selectPreference(preference)">{{preference}}</a>
                                 </li>
                             </ul>                    
                         </span>                       
@@ -103,9 +103,9 @@
                 <div class="form-group pull-right">                   
                     <div class="input-group">
                         <span style="padding-right:10px;" class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="refresh()" style="border-radius:4px; background-color:lightgray"><span class="glyphicon glyphicon-refresh"></span></button>
+                            <button type="button" class="btn btn-default" ng-click="vm.refresh()" style="border-radius:4px; background-color:lightgray"><span class="glyphicon glyphicon-refresh"></span></button>
                         </span>
-                        <input style="border-top-left-radius:4px; border-bottom-left-radius:4px" ng-model="search" type="text" class="form-control" placeholder="Cauta...">
+                        <input style="border-top-left-radius:4px; border-bottom-left-radius:4px" ng-model="vm.search" type="text" class="form-control" placeholder="Cauta...">
                         <span class="input-group-btn"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button></span>
                     </div>
                 </div>
@@ -127,15 +127,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-ng-repeat="orderLine in orderLines 
+                <tr data-ng-repeat="orderLine in vm.orderLines 
                         | filter: (selectedEatSeries !== 'Toate seriile' || '') && {eatSeries:selectedEatSeries} 
-                        | filter: preferencesFilter
-                        | filter: badgesFilter                        
-                        | filter: search 
+                        | filter: vm.preferencesFilter
+                        | filter: vm.badgesFilter                        
+                        | filter: vm.search 
                         as results">
                     <td>{{orderLine.eatSeries}}</td>                     
                     <td>
-                        <a ng-href="/admin/orders/{{orderId}}/orderLines/{{orderLine._id}}">{{orderLine.employeeName}}</a>
+                        <a ng-href="/admin/orders/{{vm.orderId}}/orderLines/{{orderLine._id}}">{{orderLine.employeeName}}</a>
                     </td>                     
                     <td>{{orderLine.badgeCode}}
                         <span ng-if="!orderLine.badgeCode" style="color:red">Lipsa card!</span>
@@ -144,7 +144,7 @@
                         <span ng-style="orderLine.fromOwnerOpt1 && {'background-color':'lightgreen'}">{{orderLine.option1 || '-'}}</span> / 
                         <span ng-style="orderLine.fromOwnerOpt2 && {'background-color':'lightgreen'}">{{orderLine.option2 || '-'}}</span>
                     </td>                
-                    <td><a href ng-click="delete(orderLine)">sterge</a></td>
+                    <td><a href ng-click="vm.delete(orderLine)">sterge</a></td>
                 </tr>
             </tbody>
         </table>
