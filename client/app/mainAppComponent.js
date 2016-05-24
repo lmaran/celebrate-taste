@@ -48,9 +48,39 @@
             {path:"/admin/preferences", component:"preferenceList", name:"PreferenceList"},
             {path:"/admin/preferences/create", component:"addPreferences", name:"PreferenceCreate"},
             {path:"/admin/preferences/:id", component:"preference", name:"PreferenceEdit"},                            
+
+            //
+            // order
+            //
+            {path:"/admin/orders", component:"orderList", name:"OrderList"},
+            // {path:"/admin/orders/create", component:"order", name:"OrdersCreate"},
+            {path:"/admin/orders/:id", component:"order", name:"OrderEdit"},  
                         
             //{path:"/admin/**", redirectTo:["Home"]}
         ]
     });
     
 })();
+
+
+// 'use strict';
+
+// app.config(['$routeProvider', function ($routeProvider) {
+//     $routeProvider
+//         .when('/admin/orders', {
+//             controller: 'ordersController',
+//             templateUrl: 'app/order/orders.html',
+// 			title: 'Comenzi'
+// 	    })    
+// 	    .when('/admin/orders/create', {
+// 	        controller: 'orderController',
+// 	        templateUrl: 'app/order/order.html',
+// 	        title: 'Adauga o comanda'
+// 	    })
+// 	    .when('/admin/orders/:id', {
+// 	        controller: 'orderController',
+// 	        templateUrl: 'app/order/order.html',
+// 	        title: 'Comanda',
+// 	        isEditMode: true
+// 	    });	
+// }]);
