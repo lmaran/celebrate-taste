@@ -1,7 +1,6 @@
 <!--<div class="container-fluid" ng-controller="orderLinesController">
     <h1>{{pageTitle}}</h1>-->
     
-    
     <div class="row">
         
         <div class="col-md-3">
@@ -128,7 +127,7 @@
             </thead>
             <tbody>
                 <tr data-ng-repeat="orderLine in vm.orderLines 
-                        | filter: (selectedEatSeries !== 'Toate seriile' || '') && {eatSeries:selectedEatSeries} 
+                        | filter: vm.eatSeriesFilter 
                         | filter: vm.preferencesFilter
                         | filter: vm.badgesFilter                        
                         | filter: vm.search 
@@ -150,6 +149,6 @@
         </table>
     </div>
     
-    <span class="label label-default" style="font-size:100%; font-weight:normal">Total:</span> {{results.length}} / {{orderLines.length}}
+    <span class="label label-default" style="font-size:100%; font-weight:normal">Total:</span> {{results.length}} / {{vm.orderLines.length}}
 
 <!--</div>-->
