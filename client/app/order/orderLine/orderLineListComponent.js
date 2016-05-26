@@ -5,6 +5,10 @@
     var module = angular.module("celebrate-taste");
     
     module.component("orderLineList",{
+        bindings:{
+            orderId:"<",
+            orderDate:"<"
+        },
         templateUrl:"app/order/orderLine/orderLineList.html",
         controllerAs:"vm",
         controller:["$location", "$window", "orderLineService", "modalService", "toastr", controller]     
@@ -22,23 +26,30 @@
             vm.errors = {};  
             vm.preferences=['A', 'B', 'C', 'D'];  
             vm.obj = {};
-            vm.obj.onlyNoBadges = false;              
+            vm.obj.onlyNoBadges = false; 
+            //console.log(vm.orderId);   
+            getOrderLines();          
         };
         
-        vm.$routerOnActivate = function (next, previous) {
-            console.log("aaa" + next.params.id);
-            vm.orderId = next.params.id;
-            getOrderLines();
-        };          
+        // vm.$routerOnActivate = function (next, previous) {
+        //     console.log("aaa" + next.params.id);
+        //     vm.orderId = next.params.id;
+        //     //getOrderLines();
+        // };          
         
         //
         // public methods
         //       
         vm.create = function () {
             $location.path('/admin/orders/' + vm.orderId + '/orderLines/create');
-            $location.search('orderDate', vm.order.date); // add property to url
+            $location.search('orderDate', vm.orderDate); // add property to url
         }
         
+        vm.import = function () {
+            $location.path('/admin/orders/' + vm.orderId + '/orderLines/import');
+            $location.search('orderDate', vm.orderDate); // add property to url
+        } 
+                
         vm.delete = function (orderLine) {
             var modalOptions = {
                 bodyDetails: 'Comanda pentru ' + orderLine.employeeName,           
@@ -76,11 +87,6 @@
             $window.history.back();
         }
         
-        vm.import = function () {
-            $location.path('/admin/orders/' + vm.orderId + '/orderLines/import');
-            $location.search('orderDate', vm.order.date); // add property to url
-        }         
-        
         vm.preferencesFilter = function(preference){
             if(vm.selectedPreference === 'Toate pref.'){
                 return true;
@@ -92,6 +98,14 @@
                 return !(preference.option1 && preference.option2);
             }
         }
+        
+        vm.eatSeriesFilter = function(orderLine){
+            if(vm.selectedEatSeries === 'Toate seriile'){
+                return true;
+            } else {
+                return orderLine.eatSeries === vm.selectedEatSeries;
+            }
+        }        
         
         vm.badgesFilter = function(orderLine){
             if(vm.obj.onlyNoBadges){
@@ -117,14 +131,14 @@
                 vm.selectedEatSeries = eatSeries;
                 $location.search('eatSeries', eatSeries); // add property to url
             }
-        }
+        }  
         
         vm.selectPreference = function(preference){
             if(preference === 'Toate pref.'){
-                vm.selectPreference = 'Toate pref.';
+                vm.selectedPreference = 'Toate pref.';
                 $location.search('preference', null); // delete property from url
             } else {
-                vm.selectPreference = preference;
+                vm.selectedPreference = preference;
                 $location.search('preference', preference); // add property to url
             }
         }         
@@ -139,6 +153,7 @@
                 vm.eatSeriesList = _.chain(vm.orderLines).map('eatSeries').uniq().sortBy().value();
                 
                 var searchObject = $location.search();
+                
                 if(searchObject.eatSeries)
                     vm.selectedEatSeries = searchObject.eatSeries;  
                 else

@@ -1,43 +1,43 @@
 ﻿<ol class="breadcrumb">
     <li>
-        <button ng-click="goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+        <button ng-click="vm.goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
             <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
         </button>
         <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
     </li>
     <li><a href="/admin/orders">Comenzi</a></li>
-    <li><a ng-href="/admin/orders/{{orderId}}">Comanda: {{orderDateAsString}}</a></li>
+    <li><a ng-href="/admin/orders/{{vm.orderId}}">Comanda: {{vm.orderDateAsString}}</a></li>
     <li class="active">Import</li>
 </ol>
 
 <div class="container-fluid">
-    <h1>{{pageTitle}}</h1>
+    <h1>{{vm.pageTitle}}</h1>
 
-    <form ng-submit="isEditMode ? update(form) : create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
+    <form ng-submit="vm.create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
 
         <div class="form-group" ng-class="{'has-error' : form.employeesName.$invalid}">
             <label class="col-md-2 control-label required">Angajati</label>
             <div class="col-md-4">
                 
-                <textarea name="employeesName" ng-model="importData.employeesName" class="form-control" rows="10" lm-focus></textarea>
+                <textarea name="employeesName" ng-model="vm.importData.employeesName" class="form-control" rows="10" lm-focus></textarea>
                 
                 <p class="text-muted">O lista de angajati, cate unul pe rand (copy/paste din Excel). </p>
-                <p ng-show="form.employeesName.$error.myValidation" class="help-block">{{errors.employeesName}}</p>
+                <p ng-show="form.employeesName.$error.myValidation" class="help-block">{{vm.errors.employeesName}}</p>
             </div>
         </div>
         
         <div class="form-group" ng-class="{'has-error' : form.eatSeries.$invalid}">
             <label class="col-md-2 control-label required">Masa</label>
             <div class="col-md-4">        
-                <select name="eatSeries" ng-model="importData.eatSeries" ng-options="eatSeries.name as eatSeries.name for eatSeries in eatSeriesList" class="form-control"></select>
+                <select name="eatSeries" ng-model="vm.importData.eatSeries" ng-options="eatSeries.name as eatSeries.name for eatSeries in vm.eatSeriesList" class="form-control"></select>
                 <p class="text-muted">Seria in care angajatii (introdusi mai sus) urmeaza sa manance.</p>
-                <p ng-show="form.eatSeries.$error.myValidation" class="help-block">{{errors.eatSeries}}</p>                
+                <p ng-show="form.eatSeries.$error.myValidation" class="help-block">{{vm.errors.eatSeries}}</p>                
             </div>
         </div>         
         
-        <div ng-show="errors.other && submitted" class="form-group has-error">
+        <div ng-show="vm.errors.other && submitted" class="form-group has-error">
             <div class="col-md-4 col-md-offset-2">
-                <p class="help-block">{{errors.other}}</p>
+                <p class="help-block">{{vm.errors.other}}</p>
             </div>
         </div>         
 
