@@ -2,8 +2,8 @@
 /* global _ */
 'use strict';
 
-app.controller('deliveryController', ['$scope', '$route', 'deliveryService', '$location', 'helperValidator', 'helperService', 'orderLineService', '$uibModal', '$timeout', 'menuService', 'toastr', 'customerEmployeeService', 'orderService', 'deliveryLogService',
-    function ($scope, $route, deliveryService, $location, helperValidator, helperService, orderLineService, $uibModal, $timeout, menuService, toastr, customerEmployeeService, orderService, deliveryLogService) {
+app.controller('deliveryController', ['$scope', '$route', 'deliveryService', 'helperValidator', 'helperService', 'orderLineService', '$uibModal', 'menuService', 'toastr', 'customerEmployeeService', 'orderService', 'deliveryLogService',
+    function ($scope, $route, deliveryService, helperValidator, helperService, orderLineService, $uibModal, menuService, toastr, customerEmployeeService, orderService, deliveryLogService) {
         
     //$scope.isEditMode = $route.current.isEditMode;
     $scope.isFocusOnName = $scope.isEditMode ? false : true;

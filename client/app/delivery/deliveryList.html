@@ -1,6 +1,6 @@
 ﻿<ol class="breadcrumb">
     <li>
-        <button ng-click="goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+        <button ng-click="vm.goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
             <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
         </button>
         <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
@@ -9,14 +9,14 @@
 </ol>
 
 <div class="container-fluid">
-    <h1>{{pageTitle}}</h1>
+    <h1>{{vm.pageTitle}}</h1>
     
     <div class="row">
         
         <div class="col-md-9">
             <form class="form-inline">
                 <div class="form-group">  
-                    <button type="button" class="btn btn-primary" ng-click="openCreateDelivery()"> 
+                    <button type="button" class="btn btn-primary" ng-click="vm.openCreateDelivery()"> 
                         <span class="glyphicon glyphicon-plus"></span> Adauga livrare 
                     </button>               
                 </div>
@@ -28,9 +28,9 @@
                 <div class="form-group pull-right">                   
                     <div class="input-group">
                         <span style="padding-right:10px;" class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="refresh()" style="border-radius:4px; background-color:lightgray"><span class="glyphicon glyphicon-refresh"></span></button>
+                            <button type="button" class="btn btn-default" ng-click="vm.refresh()" style="border-radius:4px; background-color:lightgray"><span class="glyphicon glyphicon-refresh"></span></button>
                         </span>
-                        <input style="border-top-left-radius:4px; border-bottom-left-radius:4px" ng-model="search" type="text" class="form-control" placeholder="Cauta...">
+                        <input style="border-top-left-radius:4px; border-bottom-left-radius:4px" ng-model="vm.search" type="text" class="form-control" placeholder="Cauta...">
                         <span class="input-group-btn"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button></span>
                     </div>
                 </div>
@@ -50,11 +50,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-ng-repeat="delivery in deliveries | filter:search">
+                <tr data-ng-repeat="delivery in vm.deliveries | filter:vm.search">
                     <td>
                         <a ng-href="/admin/deliveries/{{delivery._id}}">
-                            <strong>{{dt(delivery.orderDate).dayAsShortString}}</strong>, 
-                                {{dt(delivery.orderDate).dateAsShortString}} / {{delivery.eatSeries}}
+                            <strong>{{vm.dt(delivery.orderDate).dayAsShortString}}</strong>, 
+                                {{vm.dt(delivery.orderDate).dateAsShortString}} / {{delivery.eatSeries}}
                         </a>
                     </td>                    
                     <!--<td>
