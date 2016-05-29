@@ -67,7 +67,12 @@
             //
             // deliveryLog
             //
-            {path:"/admin/deliveryLogs", component:"deliveryLogList", name:"DeliveryLogList"}             
+            {path:"/admin/deliveryLogs", component:"deliveryLogList", name:"DeliveryLogList"},    
+            
+            //
+            // partnerOrder
+            //
+            {path:"/admin/partnerOrders", component:"partnerOrderList", name:"PartnerOrderList"}                              
 
         ]
     });
