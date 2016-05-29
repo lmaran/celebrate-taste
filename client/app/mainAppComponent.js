@@ -62,7 +62,12 @@
             // delivery
             //
             {path:"/admin/deliveries", component:"deliveryList", name:"PreferenceList"},
-            {path:"/admin/deliveries/:id", component:"delivery", name:"DeliveryEdit"}          
+            {path:"/admin/deliveries/:id", component:"delivery", name:"DeliveryEdit"},  
+            
+            //
+            // deliveryLog
+            //
+            {path:"/admin/deliveryLogs", component:"deliveryLogList", name:"DeliveryLogList"}             
 
         ]
     });
