@@ -17,24 +17,31 @@
                 </div>
             </div>         
             
-            <div class="form-group" ng-class="{ 'has-error': form.code.$invalid}">
-                <div class="col-md-9 col-md-offset-3">
-                    <div class="checkbox">
-                        <span ng-repeat="eatSeries in eatSeriesList">
-                            <label style="margin-right:30px" 
-                                ng-style="{color: eatSeries.disabled ? 'gray' : 'black'}"
-                                ng-attr-title="{{eatSeries.disabled ? 'Aceasta serie a mai fost introdusa!' : ''}}">
-                                <input type="checkbox" 
-                                    ng-model="eatSeries.selected"
-                                    ng-disabled="eatSeries.disabled"> 
-                                    {{eatSeries.name}}
-                            </label>
-                        </span>                                    
+            <div ng-show="!noSeries">
+                <div class="form-group" ng-class="{ 'has-error': form.code.$invalid}">
+                    <div class="col-md-9 col-md-offset-3">
+                        <div class="checkbox">
+                            <span ng-repeat="eatSeries in eatSeriesList">
+                                <label style="margin-right:30px" 
+                                    ng-style="{color: eatSeries.disabled ? 'gray' : 'black'}"
+                                    ng-attr-title="{{eatSeries.disabled ? 'Aceasta serie a mai fost introdusa!' : ''}}">
+                                    <input type="checkbox" 
+                                        ng-model="eatSeries.selected"
+                                        ng-disabled="eatSeries.disabled"> 
+                                        {{eatSeries.name}}
+                                </label>
+                            </span>                                    
+                        </div>
+                        <p class="text-muted">Genereaza cate o cerere pt. fiecare serie.</p>
+                        <p ng-show="form.order.$error.myValidation" class="help-block">{{errors.order}}</p>                      
                     </div>
-                    <p class="text-muted">Genereaza cate o cerere pt. fiecare serie.</p>
-                    <p ng-show="form.order.$error.myValidation" class="help-block">{{errors.order}}</p>                      
                 </div>
+            </div>            
+
+            <div ng-show="noSeries">
+                Pe aceasta comanda nu exista serii disponibile pentru livrare! 
             </div>
+        
         </div> 
         
         <div ng-show="noOrders">
@@ -45,7 +52,7 @@
 
     <div class="modal-footer">
         <button class="btn btn-default" type="button" ng-click="cancel()">Renunta</button>    
-        <button class="btn btn-primary" type="submit" ng-disabled="!existNewSeries" ng-attr-title="{{!existNewSeries ? 'Aceasta comanda a mai fost introdusa!' : ''}}">Salveaza</button>
+        <button class="btn btn-primary" type="submit" ng-disabled="!existNewSeries || noSeries" ng-attr-title2="{{!existNewSeries ? 'Aceasta comanda a mai fost introdusa!' : ''}}">Salveaza</button>
     </div>
     
 </form>  

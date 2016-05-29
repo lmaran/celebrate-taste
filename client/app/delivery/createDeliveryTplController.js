@@ -6,6 +6,7 @@ app.controller('createDeliveryTplController', ['$scope', '$uibModalInstance', 'h
 
     $scope.errors = {};
     $scope.noOrders = false; 
+    $scope.noSeries = false;
     $scope.eatSeriesList = [];
 
     $scope.delivery = {};
@@ -26,8 +27,10 @@ app.controller('createDeliveryTplController', ['$scope', '$uibModalInstance', 'h
     
     function createEatSeriesList(){
         $scope.existNewSeries = false; 
-        
+
         orderService.getEatSeriesList($scope.selectedOrder._id).then(function (eatSeriesList) {
+            if(eatSeriesList.length === 0) $scope.noSeries = true;
+            else $scope.noSeries = false;
             $scope.eatSeriesList = _.map(eatSeriesList, function(eatSeries){
                 var alreadyExists = _.some(dataToModal, {orderId: $scope.selectedOrder._id, eatSeries: eatSeries}) ? true : false;
                 if (!alreadyExists) $scope.existNewSeries = true;

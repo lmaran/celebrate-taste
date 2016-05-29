@@ -53,57 +53,18 @@
             // order
             //
             {path:"/admin/orders", component:"orderList", name:"OrderList"},
-            // {path:"/admin/orders/create", component:"order", name:"OrdersCreate"},
             {path:"/admin/orders/:id", component:"order", name:"OrderEdit"}, 
             {path:"/admin/orders/:id/orderLines/create", component:"orderLine", name:"OrderLineCreate"}, 
             {path:"/admin/orders/:id/orderLines/:id2", component:"orderLine", name:"OrderLineEdit", data: { action: 'edit'}},
-            {path:"/admin/orders/:id/orderLines/import", component:"orderLineImport", name:"OrderLineImport"}
+            {path:"/admin/orders/:id/orderLines/import", component:"orderLineImport", name:"OrderLineImport"},
             
-            
-            // 	    .when('/admin/orders/:id/orderLines/create', {
-// 	        controller: 'orderLineController',
-// 	        templateUrl: 'app/order/orderLine/orderLine.html',
-// 	        title: 'Adauga o linie la comanda'
-// 	    })
-                        
-            //{path:"/admin/**", redirectTo:["Home"]}
+            //
+            // delivery
+            //
+            {path:"/admin/deliveries", component:"deliveryList", name:"PreferenceList"},
+            {path:"/admin/deliveries/:id", component:"delivery", name:"DeliveryEdit"}          
+
         ]
     });
     
 })();
-
-
-// 'use strict';
-
-// app.config(['$routeProvider', function ($routeProvider) {
-//     $routeProvider
-//         .when('/admin/orders', {
-//             controller: 'ordersController',
-//             templateUrl: 'app/order/orders.html',
-// 			title: 'Comenzi'
-// 	    })    
-// 	    .when('/admin/orders/create', {
-// 	        controller: 'orderController',
-// 	        templateUrl: 'app/order/order.html',
-// 	        title: 'Adauga o comanda'
-// 	    })
-// 	    .when('/admin/orders/:id', {
-// 	        controller: 'orderController',
-// 	        templateUrl: 'app/order/order.html',
-// 	        title: 'Comanda',
-// 	        isEditMode: true
-// 	    });	
-// }]);
-
-
-// app.config(['$routeProvider', function ($routeProvider) {
-//     $routeProvider
-
-
-// 	    .when('/admin/orders/:id/orderLines/import', {
-// 	        controller: 'orderLineImportController',
-// 	        templateUrl: 'app/order/orderLine/orderLineImport.html',
-// 	        title: 'Importa comanda'
-// 	    })        
-
-// }]);
