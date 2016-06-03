@@ -18,7 +18,7 @@ var gulp = require('gulp'), // task runner
     runSequence = require('run-sequence'), // a cool way of choosing what must run sequentially, and what in parallel
     del = require('del'), // delete files/folders  
     concat = require('gulp-concat'), // concatenate files    
-    babel = require('gulp-babel'), // back thick (`) used for inline template is feature of ES5: http://stackoverflow.com/a/34411589
+    // babel = require('gulp-babel'), // back thick (`) used for inline template is feature of ES5: http://stackoverflow.com/a/34411589
     uglify = require('gulp-uglify'), // js minification
     minifyCSS = require('gulp-minify-css'), // css minification
     rev = require('gulp-rev'), // add a unique id at the end of app.js (ex: app-f4446a9c.js) to prevent browser caching
@@ -32,6 +32,8 @@ var gulp = require('gulp'), // task runner
     var ghPages = require('gulp-gh-pages');
     var gnf = require('gulp-npm-files'); // copy only node_modules used in production (not "dev_dependencies")
     var file = require('gulp-file'); // create a file from string
+    var ts = require('gulp-typescript');
+    var tsProject = ts.createProject('tsconfig.json');
     
 /*  usage:
     
@@ -56,13 +58,14 @@ gulp.task('dev', function(cb) {
         ['less', 'less-srv'],
         'build-dev-html',
         'jshint',
+        'tsc',
     cb);
 });
 
 gulp.task('prod', function(cb) {
     runSequence(
         ['clean-dist', 'clean-css'],
-        ['less', 'less-srv'],
+        ['less', 'less-srv', 'tsc'],
         ['build-scripts', 'build-scripts-bower', 'build-styles', 'build-styles-bower'],
         ['copy-server', 'copy-client', 'copy-bootstrap-fonts', 'copy-assets', 'copy-node-modules', 'create-buildInfo.json'],
         'build-prod-html',
@@ -226,7 +229,11 @@ gulp.task('watch-client', function() { // using the native "gulp.watch" plugin
             };         
         } else if(ext == '.html'){
             livereload.changed(fileName); 
-        };
+        } else if(ext == '.ts'){
+            gulp.src(file.path)
+                    .pipe(ts(tsProject))
+                    .js.pipe(gulp.dest(path.parse(file.path).dir));            
+        };        
 
     });
 });
@@ -242,10 +249,10 @@ gulp.task('clean-dist', function (cb) {
 gulp.task('build-scripts', function() {
     return gulp.src('./client/app/**/*.js')
         .pipe(concat('app.js'))
-        .pipe(babel({
-            presets: ['es2015'], // add support for ES2015 (back thick "`" in inline template) http://stackoverflow.com/a/34411589
-            compact: false // remove warning: 'code generator has deoptimised...' ->http://stackoverflow.com/a/30879872
-        }))       
+        // .pipe(babel({
+        //     presets: ['es2015'], // add support for ES2015 (back thick "`" in inline template) http://stackoverflow.com/a/34411589
+        //     compact: false // remove warning: 'code generator has deoptimised...' ->http://stackoverflow.com/a/30879872
+        // }))       
         .pipe(uglify()
             .on('error', function(e){
                 console.log(e);
@@ -358,3 +365,25 @@ gulp.task('deploy', function() {
         message: 'Update ' + new Date().toISOString() + ' [skip ci]' // https://codeship.com/documentation/continuous-integration/skipping-builds/
     }));
 }); 
+
+gulp.task("tsc", function () {
+
+    //var tsResult = tsProject.src(['./App/**/*.ts', '!./App/bower_components/**/*.ts', '!./App/libs/**/*.ts']) // instead of gulp.src(...) 
+    //    .pipe(ts(tsProject));
+
+    //return tsResult.js.pipe(gulp.dest('./App'));
+
+    //return tsProject.src()
+    //    .pipe(ts(tsProject))
+    //    .pipe(gulp.dest('./App/'));
+
+    return gulp.src([
+            "./client/**/**.ts",
+            "typings/main.d.ts/",
+            "source/interfaces/interfaces.d.ts"
+        ])
+        .pipe(ts(tsProject))
+        .js.pipe(gulp.dest("./client/"));
+
+
+});
