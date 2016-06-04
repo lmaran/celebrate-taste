@@ -1,10 +1,10 @@
 (function() {
     "use strict";
-    
-    var module = angular.module("celebrate-taste");
-    
-    module.component("home",{
-        template:`
+
+    let module = angular.module("celebrate-taste");
+
+    module.component("home", {
+        template: `
             <div class="container">    
                 </br>
                 </br>
@@ -19,16 +19,16 @@
                 <p><a ng-href="/admin/partnerOrders">Raport comenzi</a></p>
             </div>        
         `,
-        controllerAs:"vm",
-        controller:["userService", controller]       
+        controllerAs: "vm",
+        controller: ["userService", controller]
     });
-       
-    function controller(userService){
-        var vm = this;
+
+    function controller(userService) {
+        let vm = this;
 
         vm.$onInit = function(){
             vm.isAdmin = userService.isAdmin;
-        };   
+        };
     }
-    
+
 })();

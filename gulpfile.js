@@ -34,6 +34,7 @@ var gulp = require('gulp'), // task runner
     var file = require('gulp-file'); // create a file from string
     var ts = require('gulp-typescript');
     var tsProject = ts.createProject('tsconfig.json');
+    var tslint = require('gulp-tslint');
     
 /*  usage:
     
@@ -56,9 +57,10 @@ gulp.task('dev', function(cb) {
     runSequence(
         'clean-css',
         ['less', 'less-srv'],
+        'tslint',
+        'tsc',        
+        'jshint',        
         'build-dev-html',
-        'jshint',
-        'tsc',
     cb);
 });
 
@@ -134,6 +136,22 @@ gulp.task('jshint', function() {
             if(!err)
                 gutil.log(gutil.colors.green('JSHINT passed!'));
         });                        
+});
+
+gulp.task('tslint', function() { 
+    var err = false;
+    return gulp.src('./client/app/**/*.ts')
+        .pipe(tslint())
+        .pipe(tslint.report("prose")) // defines how errors are displayed         
+        .on('error', function(error){
+            err = true;
+            gutil.log(gutil.colors.red('TSLINT failed!'));
+            this.emit('end'); // end the current task so that 'passed' msg is no longer displayed
+        })
+        .on('end', function(error){
+            if(!err)
+                gutil.log(gutil.colors.green('TSLINT passed!'));
+        });                          
 });
 
 gulp.task('watch-server', function() {
@@ -225,15 +243,29 @@ gulp.task('watch-client', function() { // using the native "gulp.watch" plugin
                         livereload.changed(fileName);
                         cb(null, file);
                     }));                 
-                    //.pipe(livereload()); // it works but displays a long, ugly path 
             };         
         } else if(ext == '.html'){
             livereload.changed(fileName); 
-        } else if(ext == '.ts'){
-            gulp.src(file.path)
+        } else if(ext == '.ts' && file.type === 'changed'){
+            // ts-lint
+            gulp.src([file.path])
+                    .pipe(tslint())
+                    .pipe(tslint.report("prose"))                  
+                    .on('error', function(error){
+                        gutil.log(gutil.colors.red('TSLINT failed!'));
+                        this.emit('end'); // end the current task so that 'passed' msg is no longer displayed
+                    })                                   
+                    .pipe(through.obj(function(file, enc, cb) { // 'through2' is used as a wrapper to run regular code into the pipeline
+                        gutil.log(gutil.colors.green('TSLINT passed!'));
+                        //livereload.changed(fileName);
+                        cb(null, file);
+                    }));
+                    
+            // ts-compile
+            gulp.src([file.path, "typings/**/**.d.ts"])
                     .pipe(ts(tsProject))
-                    .js.pipe(gulp.dest(path.parse(file.path).dir));            
-        };        
+                    .js.pipe(gulp.dest(path.parse(file.path).dir));                                                     
+        };   
 
     });
 });
@@ -367,23 +399,10 @@ gulp.task('deploy', function() {
 }); 
 
 gulp.task("tsc", function () {
-
-    //var tsResult = tsProject.src(['./App/**/*.ts', '!./App/bower_components/**/*.ts', '!./App/libs/**/*.ts']) // instead of gulp.src(...) 
-    //    .pipe(ts(tsProject));
-
-    //return tsResult.js.pipe(gulp.dest('./App'));
-
-    //return tsProject.src()
-    //    .pipe(ts(tsProject))
-    //    .pipe(gulp.dest('./App/'));
-
     return gulp.src([
-            "./client/**/**.ts",
-            "typings/main.d.ts/",
-            "source/interfaces/interfaces.d.ts"
+            "client/**/**.ts",
+            "typings/**/**.d.ts"
         ])
         .pipe(ts(tsProject))
-        .js.pipe(gulp.dest("./client/"));
-
-
+        .js.pipe(gulp.dest("client"));
 });
