@@ -8,10 +8,10 @@
     module.component("addPreferences",{
         templateUrl:"app/preference/addPreferences.html",
         controllerAs:"vm",
-        controller:["$route", "$window", "preferenceService", "helperValidator", "customerEmployeeService", "helperService", "toastr", "menuService", controller]       
+        controller:["$route", "$window", "preferenceService", "helperValidator", "customerEmployeeService", "helperService", "toastr", "menuService", "$scope", controller]       
     });
        
-    function controller($route, $window, preferenceService, helperValidator, customerEmployeeService, helperService, toastr, menuService){
+    function controller($route, $window, preferenceService, helperValidator, customerEmployeeService, helperService, toastr, menuService, $scope){
         var vm = this;
         
         //
@@ -61,14 +61,12 @@
                 }
             });
 
-            console.log(preferences);
             if(preferences.length > 0){
-                vm.setFocus = false;
                 preferenceService.createMany(preferences)
                     .then(function (data) {
-                        toastr.success('Inregistrarea a fost adaugata!');
                         vm.person.selected = undefined; // clean screen
-                        //vm.$broadcast('SetFocus'); // set focus on the employee field
+                        $scope.$broadcast('SetFocus'); // set focus on the employee field
+                        toastr.success('Inregistrarea a fost adaugata!');                        
                     })
                     .catch(function (err) {
                         if(err.data.errors){                   

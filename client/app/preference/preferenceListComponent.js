@@ -31,10 +31,6 @@
         //
         // public methods
         //       
-        vm.create = function () {
-            $location.path('/admin/preferences/create');
-        }
-        
         vm.delete = function (preference) {
             var modalOptions = {
                 bodyDetails: preference.name,           
@@ -50,20 +46,6 @@
             });
         };
 
-        // vm.filterBySearch = function (item) {
-        //     var isMatch = false;
-        //     if (vm.search) {
-        //     // search by preference name or email
-        //     if (new RegExp(vm.search, 'i').test(item.name) || new RegExp(vm.search, 'i').test(item.email)) {
-        //             isMatch = true;
-        //         }
-        //     } else {
-        //         // if nothing is entered, return all posts
-        //         isMatch = true;
-        //     }
-        //     return isMatch;
-        // };
-        
         vm.filterByOnline = function(orderLine){
             if(vm.obj.onlyFromOnline) {
                 return orderLine.fromOnline;
