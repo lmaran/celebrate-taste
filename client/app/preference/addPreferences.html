@@ -30,7 +30,7 @@
                 <label class="col-md-2 control-label required">Angajat</label>
                 <div class="col-md-4">
                     
-                    <ui-select ng-model="vm.person.selected" autofocus="true" on-select="vm.selectEmployee($item, $model)">
+                    <ui-select ng-model="vm.person.selected" autofocus="true" focus-on='SetFocus' on-select="vm.selectEmployee($item, $model)">
                         <ui-select-match>
                             <span ng-bind="$select.selected.name"></span>
                         </ui-select-match>
@@ -42,7 +42,7 @@
                 </div>
             </div>            
     
-            <div ng-show="vm.person.selected !== undefined" class="form-group" ng-class="{'my-has-error' : preferencesHaveErrors }">
+            <div ng-show="vm.person.selected !== undefined" class="form-group" ng-class="{'my-has-error' : vm.preferencesHaveErrors }">
                 <label class="col-md-2 control-label">Preferinte</label>
                 <div class="col-md-4">
                     
