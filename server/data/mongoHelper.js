@@ -13,6 +13,7 @@
                 if (err) {
                     next(err, null);
                 } else {
+                    theDb = db;
                     next(null, db);
                 }
             });
