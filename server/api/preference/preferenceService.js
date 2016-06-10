@@ -89,8 +89,6 @@
     };
     
     preferenceService.updateMany = function (filter, update, next) {
-        console.log(filter);
-        console.log(update);
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);
             db.collection(collection).updateMany(filter, update, next);      
