@@ -14,4 +14,7 @@ router.get('/:id', controller.getById);
 router.put('/', controller.update);
 router.delete('/:id', controller.remove);
 
+// ---------- RPC ----------
+router.post('/upload', controller.uploadImage);
+
 module.exports = router;

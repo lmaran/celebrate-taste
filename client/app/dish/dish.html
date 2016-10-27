@@ -60,6 +60,23 @@
             </div>
         </div>        
 
+        <div class="form-group">
+            <label class="col-md-2 control-label" style="padding-top:0"></label>
+            <div class="col-md-4">
+
+                <button type="button" class="btn btn-primary  btn-xs" ngf-select="vm.upload($file)" accept="image/*">
+                    <span ng-if="!vm.dish.imageUrl">Adauga poza</span>
+                    <span ng-if="vm.dish.imageUrl">Modifica poza</span>
+                </button>
+                <span ng-if="vm.dish.imageUrl">
+                    | <a href="" ng-click="vm.removeImage()">Sterge poza</a>
+                </span>
+                <div class="media" style2="margin:10px;">
+                    <img ng-if="vm.dish.imageUrl" ng-src="{{vm.dish.imageUrl}}" class="img-thumbnail">
+                </div>
+
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
