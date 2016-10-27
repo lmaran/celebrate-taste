@@ -7,7 +7,8 @@ var app = angular.module('celebrate-taste', [
     'ngComponentRouter',
     'ui.bootstrap',
     'ui.select',
-    'ngAnimate', 'toastr'
+    'ngAnimate', 'toastr',
+    'ngFileUpload'    
     //'ngAnimate' // we need it if uibCollapse directive is used
 ]);
 
