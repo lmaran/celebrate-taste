@@ -8,5 +8,9 @@ module.exports = {
         uri: process.env.MONGO_URI
     },
     gaCode: 'UA-72165579-3',
-    externalUrl: 'https://celebrate-taste.ro'  
+    externalUrl: 'https://celebrate-taste.ro',
+    azureStorage: {
+        account: process.env.AZURE_STORAGE_ACCOUNT,
+        key: process.env.AZURE_STORAGE_ACCESS_KEY
+    }     
 };

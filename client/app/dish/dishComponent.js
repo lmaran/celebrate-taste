@@ -7,10 +7,10 @@
     module.component("dish",{
         templateUrl:"app/dish/dish.html",
         controllerAs:"vm",
-        controller:["$route", "$window", "dishService", "helperValidator", "toastr", controller]       
+        controller:["$route", "$window", "dishService", "helperValidator", "toastr", "Upload", controller]       
     });
        
-    function controller($route, $window, dishService, helperValidator, toastr){
+    function controller($route, $window, dishService, helperValidator, toastr, Upload){
         var vm = this;
         
         //
@@ -56,7 +56,7 @@
                 }) 
         };        
             
-        vm.update = function (form) {                    
+        vm.update = function (form) {                  
             validateForm(vm, form);
             if (form.$invalid) return false;
                 
@@ -77,6 +77,35 @@
             $window.history.back();
         }   
         
+        // upload on file select or drop
+        // https://github.com/danialfarid/ng-file-upload#-usage
+        vm.upload = function (file) {
+            // alert(123);
+            Upload.upload({
+                url: 'api/dishes/upload',
+                data: {
+                    file: file
+                }
+            }).then(function (resp) {
+                // file is uploaded successfully
+                // console.log('Success ' + resp.config.data.file.name + ' uploaded. Response: ' + resp.data);
+                // console.log(resp);
+                
+                vm.dish.imageUrl = resp.data.url;
+                
+            }, function (resp) {
+                // handle error
+                // console.log('Error status: ' + resp.status);
+            }, function (evt) {
+                // progress notify
+                // var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+            });
+        };        
+
+        vm.removeImage = function(){
+            delete vm.dish.imageUrl;
+        }
         
         //
         // private methods
