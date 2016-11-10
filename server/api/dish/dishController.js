@@ -5,6 +5,9 @@ var config = require('../../config/environment');
 var azure = require('azure-storage');
 var multiparty = require('multiparty');
 var sharp = require('sharp');
+var stream = require('stream');
+var fs = require('fs');
+var path = require('path');
 
 // ---------- OData ----------
 exports.getAll = function (req, res) {
@@ -82,15 +85,32 @@ exports.uploadImage = function(req, res){
         var blobName = part.filename;
         var containerName = 'dishes';
         
-        // console.log(part.headers);
+        console.log('original size: ' + size);
               
         var options = {
             contentSettings:{contentType: part.headers['content-type']}
         };
-        
-        // console.log(options);
 
-        blobService.createBlockBlobFromStream(containerName, blobName, part, size, options, function(err, result, response) {
+        var transformer = sharp()
+            .resize(200, 200)
+            //.withoutEnlargement()
+            // .overlayWith(roundedCorners, { cutout: true })
+            // .png();
+            .on('info', function (info) {
+                console.log('Image height is ' + info.height);
+                console.log('Image size is ' + info.size);
+                size = info.size;
+
+            });
+
+        var xx = part.pipe(transformer);
+
+        xx.on('end', function(){
+            console.log('new size: ' + size);
+        });
+
+
+        blobService.createBlockBlobFromStream(containerName, blobName, xx, size, options, function(err, result, response) {
             if (err) {
                 // error handling
                 // console.log(error);
@@ -100,33 +120,15 @@ exports.uploadImage = function(req, res){
                 // console.log(result);
                 // console.log(response);
                 
-                res.json({url:dishesBaseURI + blobName});
+                // res.json({url:dishesBaseURI + blobName});
             }
         });
-
-
-
-        // var fileInstance400x400 = sharp(part);
-        // var inst400x400 = fileInstance400x400.resize(400, 400);
-        // blobService.createBlockBlobFromStream(containerName, blobName, inst400x400, size, options, function(err, result, response) {
-        //     if (err) {
-        //         // error handling
-        //         // console.log(error);
-        //         handleError(res, err)
-        //     }
-        //     else{
-        //         // console.log(result);
-        //         // console.log(response);
-                
-        //         // res.json({url:dishesBaseURI + blobName});
-        //     }
-        // });
 
     });
 
     form.parse(req);    
     
-    //res.json({ok:'ok'});             
+    res.json({ok:'ok'});             
 };
 
 // ---------- Helpers ----------
