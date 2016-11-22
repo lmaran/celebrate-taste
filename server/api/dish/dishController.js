@@ -73,7 +73,7 @@ exports.remove = function(req, res){
 // ---------- RPC ----------
 
 exports.uploadImage = function(req, res){
-    
+
     var dishesBaseURI = "https://" + config.azureStorage.account + ".blob.core.windows.net/dishes/";
 
     // https://github.com/andrewrk/node-multiparty/blob/master/examples/azureblobstorage.js
@@ -82,121 +82,112 @@ exports.uploadImage = function(req, res){
 
     form.on('part', function(part) {
         if (!part.filename) return;
-        //console.log(part);
-        //return;
 
-        var size = part.byteCount;
+        var chunks = [];
+        part.on('data', function (chunk) {
+            console.log('a');
+            chunks.push(chunk);
+        }).on('end', function () {
+            var buffer = Buffer.concat(chunks);
+            console.log('Length 1: ' + buffer.length); // idem cu  
+            console.log('Length 2: ' + part.byteCount);
 
-        var parsedFile = path.parse(part.filename); // Cuş Cuş.jpg
+            var image = sharp(buffer);
 
-        var fileNameWithoutExtension = parsedFile.name; // Cuş Cuş
-        var fileExtensionWithDot = parsedFile.ext; // .jpg
-
-        var blobName = slugify(fileNameWithoutExtension) + fileExtensionWithDot; // cus-cus.jpg
-
-        var containerName = 'dishes';
-        
-        // console.log('original size: ' + size);
-              
-        var options = {
-            contentSettings:{contentType: part.headers['content-type']}
-        };
-
-        // var transformer = sharp()
-        //     .resize(200, 200)
-        //     //.withoutEnlargement()
-        //     // .overlayWith(roundedCorners, { cutout: true })
-        //     // .png();
-        //     .on('info', function (info) {
-        //         console.log('Image height is ' + info.height);
-        //         console.log('Image size is ' + info.size);
-        //         size = info.size;
-
-        //     });
-
-        // var xx = part.pipe(transformer);
-
-        var cb = function(err, result, response) {
-            if (err) {
-                handleError(res, err)
-            }
-            else{               
-                // res.json({url:dishesBaseURI + blobName});
-                console.log('ok');
-            }
-        };
-
-        // var writeStreamToBlob = createWriteStreamToBlockBlob(containerName, blobName, options, cb);
-
-        
-        // https://github.com/Azure/azure-storage-node/issues/102#issuecomment-164234599
-        // part.pipe(transformer).pipe(writeStreamToBlob);
-
-        //var uniqueTime = moment().format("YYMMDDHHmmss"); // 161120172824
-        var uniqueTime = moment().format("HHmmss"); // 172824
-        var blobName = slugify(fileNameWithoutExtension) + '-' + uniqueTime + fileExtensionWithDot;
-
-        var sizes = [{
-            label: "sm",
-            width: 225,
-            height: 150
-        },{
-            label: "lg",
-            width: 960,
-            height: 640
-        }];
-
-        // http://sharp.dimens.io/en/stable/api/#clone
-        var transformer = sharp()
-            .on('info', function (info) {
-                console.log('Image height is ' + info.height);
-                console.log('Image size is ' + info.size);
-                //size = info.size;
-            });
-
-        sizes.forEach(function(size){
-            console.log('size=' + size.label);
-            // transformer.clone().resize(size.width, size.height)
-            //     .on('info', function (info) {
-            //         console.log('Image height is ' + info.height);
-            //         console.log('Image size is ' + info.size);
-            //         //size = info.size;
-            //     })
-            //     .pipe(blobService.createWriteStreamToBlockBlob(containerName + '-' + size.label, blobName, options, cb));
-
-            var xx = transformer.clone().resize(size.width, size.height)
-                .on('info', function (info) {
-                    console.log('Image height is ' + info.height);
-                    console.log('Image size is ' + info.size);
-                    //size = info.size;
-                    
+            image
+                .metadata()
+                .then(function (metadata) {
+                    console.log(metadata.format + ' ' + metadata.width + ' ' + metadata.height);
+                    return image
+                        //.resize(Math.round(metadata.width / 2))
+                        //.webp()
+                        .toBuffer();
+                })
+                .then(function (data) {
+                    // data contains a WebP image half the width and height of the original JPEG
+                    console.log('bbbbbbbbb');
+                    console.log(data);
                 });
-            xx.pipe(blobService.createWriteStreamToBlockBlob(containerName + '-' + size.label, blobName, options, cb));
-
-        });
-
-        transformer.clone()
-            .pipe(blobService.createWriteStreamToBlockBlob(containerName, blobName, options, cb));
-
-        part.pipe(transformer);
-
-        //saveOriginal();
-
-        // blobService.createBlockBlobFromStream(containerName, blobName, xx, size, options, function(err, result, response) {
-        //     if (err) {
-        //         // error handling
-        //         // console.log(error);
-        //         handleError(res, err)
-        //     }
-        //     else{
-        //         // console.log(result);
-        //         // console.log(response);
-                
-        //         res.json({url:dishesBaseURI + blobName});
-        //     }
-        // });
-
+        });        
     });
+
+    // form.on('part2', function(part) {
+    //     if (!part.filename) return;
+    //     //console.log(part);
+
+    //     var size = part.byteCount;
+
+    //     var parsedFile = path.parse(part.filename); // Cuş Cuş.jpg
+
+    //     var fileNameWithoutExtension = parsedFile.name; // Cuş Cuş
+    //     var fileExtensionWithDot = parsedFile.ext; // .jpg
+
+    //     var blobName = slugify(fileNameWithoutExtension) + fileExtensionWithDot; // cus-cus.jpg
+
+    //     var containerName = 'dishes';
+              
+    //     var options = {
+    //         contentSettings:{contentType: part.headers['content-type']}
+    //     };
+
+    //     var cb = function(err, result, response) {
+    //         if (err) {
+    //             handleError(res, err)
+    //         }
+    //         else{               
+    //             // res.json({url:dishesBaseURI + blobName});
+    //             console.log('ok');
+    //         }
+    //     };
+        
+    //     var uniqueTime = moment().format("HHmmss"); // 172824
+    //     var blobName = slugify(fileNameWithoutExtension) + '-' + uniqueTime + fileExtensionWithDot;
+
+    //     var sizes = [{
+    //         label: "sm",
+    //         width: 225,
+    //         height: 150
+    //     },{
+    //         label: "lg",
+    //         width: 960,
+    //         height: 640
+    //     }];
+
+    //     // https://github.com/Azure/azure-storage-node/issues/102#issuecomment-164234599
+    //     var transformer = sharp()
+    //         // .withoutEnlargement()
+    //         .on('error', function(err) {
+    //             console.log('aaaaa');
+    //             console.log(err);
+    //             res.json({ok:'fail'});  
+    //         });
+
+    //     sizes.forEach(function(size){
+    //         // http://sharp.dimens.io/en/stable/api/#clone
+    //         transformer.clone().resize(size.width, size.height)
+    //             // .on('info', function (info) {
+    //             //     console.log('Image height is ' + info.height);
+    //             //     console.log('Image size is ' + info.size);
+    //             //     //size = info.size;
+    //             // })
+    //             .on('error', function(err) {
+    //                 console.log('aaaaa');
+    //                 console.log(err);
+    //                 //res.json({ok:'fail'});  
+    //             })                
+    //             .pipe(blobService.createWriteStreamToBlockBlob(containerName + '-' + size.label, blobName, options, cb));
+    //     });
+
+    //     transformer.clone()
+    //         .on('error', function(err) {
+    //             console.log('bbbbb');
+    //             console.log(err);
+    //             //res.json({ok:'fail'});  
+    //         })        
+    //         .pipe(blobService.createWriteStreamToBlockBlob(containerName, blobName, options, cb));
+
+    //     part.pipe(transformer);
+    // });
 
     form.parse(req);    
     
