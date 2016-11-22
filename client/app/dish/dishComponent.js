@@ -80,28 +80,29 @@
         // upload on file select or drop
         // https://github.com/danialfarid/ng-file-upload#-usage
         vm.upload = function (file) {
-            // alert(123);
-            Upload.upload({
-                url: 'api/dishes/upload',
-                data: {
-                    file: file
-                }
-            }).then(function (resp) {
-                // file is uploaded successfully
-                // console.log('Success ' + resp.config.data.file.name + ' uploaded. Response: ' + resp.data);
-                // console.log(resp);
-                
-                vm.dish.imageUrl = resp.data.url;
-                
-            }, function (resp) {
-                // handle error
-                // console.log('Error status: ' + resp.status);
-            }, function (evt) {
-                // progress notify
-                // var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-            });
-        };        
+            if(file){ // otherwise, a duplicate request is sent if you try to modify an image two (or more) times
+                Upload.upload({
+                    url: 'api/dishes/upload',
+                    data: {
+                        file: file
+                    }
+                }).then(function (resp) {
+                    // file is uploaded successfully
+                    // console.log('Success ' + resp.config.data.file.name + ' uploaded. Response: ' + resp.data);
+                    // console.log(resp);
+                    
+                    vm.dish.imageUrl = resp.data.url;
+                    
+                }, function (resp) {
+                    // handle error
+                    // console.log('Error status: ' + resp.status);
+                }, function (evt) {
+                    // progress notify
+                    // var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+                });
+            }
+        };                
 
         vm.removeImage = function(){
             delete vm.dish.imageUrl;

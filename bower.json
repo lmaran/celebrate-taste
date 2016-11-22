@@ -12,7 +12,7 @@
     "angular-ui-select": "^0.17.1",
     "angular-toastr": "^1.7.0",
     "angular-component-router": "^0.2.1",
-    "ng-file-upload": "^12.2.12"
+    "ng-file-upload": "^12.2.13"
   },
   "overrides": {
     "font-awesome": {
