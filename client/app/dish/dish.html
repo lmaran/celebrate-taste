@@ -65,14 +65,17 @@
             <div class="col-md-4">
 
                 <button type="button" class="btn btn-primary  btn-xs" ngf-select="vm.upload($file)" accept="image/*">
-                    <span ng-if="!vm.dish.imageUrl">Adauga poza</span>
-                    <span ng-if="vm.dish.imageUrl">Modifica poza</span>
+                    <span ng-if="!vm.dish.image">Adauga poza</span>
+                    <span ng-if="vm.dish.image">Modifica poza</span>
                 </button>
-                <span ng-if="vm.dish.imageUrl">
+                <span ng-if="vm.dish.image">
                     | <a href="" ng-click="vm.removeImage()">Sterge poza</a>
                 </span>
+
+                <p ng-show = "vm.errors.image" class="help-block">{{vm.errors.image}}</p>
+
                 <div class="media" style2="margin:10px;">
-                    <img ng-if="vm.dish.imageUrl" ng-src="{{vm.dish.imageUrl}}" class="img-thumbnail">
+                    <img ng-if="vm.dish.image" ng-src="{{vm.dish.image.small}}" class="img-thumbnail">
                 </div>
 
             </div>

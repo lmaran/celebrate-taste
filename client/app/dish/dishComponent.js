@@ -88,14 +88,12 @@
                     }
                 }).then(function (resp) {
                     // file is uploaded successfully
-                    // console.log('Success ' + resp.config.data.file.name + ' uploaded. Response: ' + resp.data);
-                    // console.log(resp);
-                    
-                    vm.dish.imageUrl = resp.data.url;
-                    
+                    vm.dish.image = resp.data;
+                    vm.errors.image = ""; // reset errors
                 }, function (resp) {
                     // handle error
                     // console.log('Error status: ' + resp.status);
+                    vm.errors.image = resp.data.msg;
                 }, function (evt) {
                     // progress notify
                     // var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
@@ -105,7 +103,7 @@
         };                
 
         vm.removeImage = function(){
-            delete vm.dish.imageUrl;
+            delete vm.dish.image;
         }
         
         //
