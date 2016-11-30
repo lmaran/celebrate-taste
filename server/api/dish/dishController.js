@@ -75,8 +75,9 @@ exports.remove = function (req, res) {
 exports.uploadImage = function (req, res) {
     let form = new multiparty.Form();
 
-    const maxWidth = 960; 
     const ratio = 1.5; // an aspect ratios of 3/2 (1.5) is used by most DSLRs; 4/3 is used by most phone/digital camera
+    const maxWidth = 960; 
+    const maxHeight = Math.round(maxWidth / ratio) // 640
     const maxSizeInMB = 15;
 
     const sizes = [{
@@ -88,7 +89,7 @@ exports.uploadImage = function (req, res) {
         name: "large",
         label: "lg",
         width: maxWidth, // 900
-        height: Math.round(maxWidth / ratio) // 640
+        height: maxHeight // 640
     }];    
 
     form.on('part', function (part) {
@@ -105,9 +106,10 @@ exports.uploadImage = function (req, res) {
 
         let pipeline = sharp()
             .toBuffer(function (err, outputBuffer, info) {
-                var result = validateImage(err, info, maxWidth);
-                if(!result.isValid){
-                    res.status(400).send({ msg : result.msg }); // 400 - bad request
+                
+                var errMsg = validateImage(err, info, maxWidth, maxHeight);
+                if(errMsg){
+                    res.status(400).send({ msg : errMsg }); // 400 - bad request
                     //part.resume(); // not necessary, the input stream is already processed
                     return false;
                 }                    
@@ -174,30 +176,29 @@ function slugify(text) {
         .replace(/-+$/, '');         // Trim - from end of text
 }
 
-function validateImage(err, info, maxWidth){ 
-    var result = {};
+function validateImage(err, info, maxWidth, maxHeight){
+    // if you change this validations, change also the corresponding rules in the client-side
     if (err) {
-        result.msg = "Fisierul incarcat nu poate fi convertit intr-o imagine.";
-        return result;
+        return "Fisierul incarcat nu poate fi convertit intr-o imagine.";
     }
 
     if(info.format !== "jpeg"){
-        result.msg = "Sunt acceptate doar poze in format '.jpg'.";
-        return result;
+        return "Sunt acceptate doar poze in format '.jpg'.";
     }
 
     if(info.width < info.height){
-        result.msg = "Sunt acceptate doar poze in format 'landscape' (latime > inaltime).";
-        return result;
+        return "Sunt acceptate doar poze in format 'landscape' (latime > inaltime).";
     }
 
     if(info.width < maxWidth){
-        result.msg = `Sunt acceptate doar poze cu latimea de minimum ${maxWidth} px.`;
-        return result;
+        return `Sunt acceptate doar poze cu latimea de minimum ${maxWidth} px.`;
     }
 
-    result.isValid = true;
-    return result; 
+    if(info.height < maxHeight){
+        return `Sunt acceptate doar poze cu inaltimea de minimum ${maxHeight} px.`;
+    }    
+
+    return ""; 
 }
 
 function resizeAndSave(blobService, outputBuffer, blobName, blobOptions, containerName, size){
