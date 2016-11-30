@@ -124,7 +124,17 @@
             }, function () {
                 //$log.info('Modal dismissed at: ' + new Date());
             });       
-        }              
+        }
+
+        vm.showModal = function (dish) {
+            var modalOptions = {
+                imageUrl: dish.image.large,           
+            };
+            
+            modalService.showImage(modalOptions).then(function (result) {
+            });
+        };
+                              
                             
         //
         // private methods
