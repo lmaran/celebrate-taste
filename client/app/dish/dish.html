@@ -60,11 +60,11 @@
             </div>
         </div>        
 
-        <div class="form-group">
+        <div class="form-group" ng-class="{ 'has-error' : true}">
             <label class="col-md-2 control-label" style="padding-top:0"></label>
             <div class="col-md-4">
 
-                <button type="button" class="btn btn-primary  btn-xs" ngf-select="vm.upload($file)" accept="image/*">
+                <button type="button" class="btn btn-primary  btn-xs" ngf-select="vm.upload($file)" accept="image/*" ngf-min-width="1">
                     <span ng-if="!vm.dish.image">Adauga poza</span>
                     <span ng-if="vm.dish.image">Modifica poza</span>
                 </button>
@@ -72,7 +72,7 @@
                     | <a href="" ng-click="vm.removeImage()">Sterge poza</a>
                 </span>
 
-                <p ng-show = "vm.errors.image" class="help-block">{{vm.errors.image}}</p>
+                <p ng-show = "vm.errors.fileErrorMsg" class="help-block" sty>{{vm.errors.fileErrorMsg}}</p>
 
                 <div class="media" style2="margin:10px;">
                     <img ng-if="vm.dish.image" ng-src="{{vm.dish.image.small}}" class="img-thumbnail">

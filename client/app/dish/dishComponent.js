@@ -81,6 +81,12 @@
         // https://github.com/danialfarid/ng-file-upload#-usage
         vm.upload = function (file) {
             if(file){ // otherwise, a duplicate request is sent if you try to modify an image two (or more) times
+                
+                vm.errors.fileErrorMsg = validateImage(file, 10, 960, 640); // client-side validation
+                if(vm.errors.fileErrorMsg){
+                    return false;
+                } 
+
                 Upload.upload({
                     url: 'api/dishes/upload',
                     data: {
@@ -89,15 +95,17 @@
                 }).then(function (resp) {
                     // file is uploaded successfully
                     vm.dish.image = resp.data;
-                    vm.errors.image = ""; // reset errors
+                    vm.errors.fileErrorMsg = ""; // reset errors
                 }, function (resp) {
                     // handle error
-                    // console.log('Error status: ' + resp.status);
-                    vm.errors.image = resp.data.msg;
+                    vm.errors.fileErrorMsg = resp.data.msg; // server-side validation
                 }, function (evt) {
                     // progress notify
                     // var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                     // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+
+                    // Math.min is to fix IE which reports 200% sometimes
+                    //file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));                    
                 });
             }
         };                
@@ -129,4 +137,34 @@
 
     }
     
+    function validateImage(file, maxSizeInMB, maxWidth, maxHeight){
+        // if you change this validations, change also the corresponding rules in the server-side
+        
+        // properties like '$ngfWidth', '$ngfHeight' or '$ngfBlobUrl' (for image preview in browser) ...
+        // ...requires 'ngf-min-width' attribute (or similar) in html part
+        // ...or 'Upload.imageDimensions()' in js part
+
+        if(file.size > maxSizeInMB * 1024 * 1024){
+            return "Sunt acceptate doar poze cu dimensiunea de maximum " + maxSizeInMB + " MB.";
+        }
+
+        if(file.type !== "image/jpeg"){
+            return "Sunt acceptate doar poze in format '.jpg'.";
+        }
+
+        if(file.$ngfWidth < file.$ngfHeight){
+            return "Sunt acceptate doar poze in format 'landscape' (latime > inaltime).";
+        }
+
+        if(file.$ngfWidth < maxWidth){
+            return "Sunt acceptate doar poze cu latimea de minimum " + maxWidth + " px.";
+        }
+
+        if(file.$ngfHeight < maxHeight){
+            return "Sunt acceptate doar poze cu inaltimea de minimum " + maxHeight + " px.";
+        }    
+
+        return ""; 
+    }
+
 })();
