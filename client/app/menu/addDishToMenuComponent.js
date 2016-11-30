@@ -8,10 +8,10 @@
     module.component("addDishToMenu",{
         templateUrl:"app/menu/addDishToMenu.html",
         controllerAs:"vm",
-        controller:["$window", "menuService", "dishService", "helperValidator", "helperService", "toastr", controller]       
+        controller:["$window", "menuService", "dishService", "helperValidator", "helperService", "toastr", "modalService", controller]       
     });
        
-    function controller($window, menuService, dishService, helperValidator, helperService, toastr){
+    function controller($window, menuService, dishService, helperValidator, helperService, toastr, modalService){
         var vm = this;
         
         //
@@ -103,6 +103,15 @@
             loadDishesData()
             loadMenuData(); 
         }
+
+        vm.showModal = function (dish) {
+            var modalOptions = {
+                imageUrl: dish.image.large,           
+            };
+            
+            modalService.showImage(modalOptions).then(function (result) {
+            });
+        };        
             
         //
         // private methods

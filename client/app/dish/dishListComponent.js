@@ -55,14 +55,14 @@
             $window.history.back();
         } 
         
-        // vm.showModal = function (item) {
-        //     var modalOptions = {
-        //         imageUrl: item.imageUrl,           
-        //     };
+        vm.showModal = function (dish) {
+            var modalOptions = {
+                imageUrl: dish.image.large,           
+            };
             
-        //     modalService.showImage(modalOptions).then(function (result) {
-        //     });
-        // };        
+            modalService.showImage(modalOptions).then(function (result) {
+            });
+        };        
         
                         
         //

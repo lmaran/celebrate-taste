@@ -68,7 +68,7 @@
                     <span class="glyphicon glyphicon-paperclip" ng-class="{ 'glyphicon-paperclip' : !vm.inProgress, 'glyphicon-refresh spinning' : vm.inProgress}"></span>
                     <span ng-if="!vm.inProgress && !vm.dish.image">Adauga poza</span> 
                     <span ng-if="!vm.inProgress && vm.dish.image">Modifica poza</span>
-                    <span ng-if="vm.inProgress">Se incarca... {{vm.progressPercentage}}</span>
+                    <span ng-if="vm.inProgress">Se incarca... {{vm.progressPercentage}}%</span>
                 </button>
                 <span ng-if="!vm.inProgress && vm.dish.image">
                     | <a href="" ng-click="vm.removeImage()">Sterge poza</a>
@@ -77,7 +77,9 @@
                 <p ng-show = "vm.errors.fileErrorMsg" class="help-block" sty>{{vm.errors.fileErrorMsg}}</p>
 
                 <div class="media">
-                    <img ng-if="vm.dish.image" ng-src="{{vm.dish.image.small}}" class="img-thumbnail">
+                    <a href ng-click="vm.showModal(vm.dish)">
+                        <img ng-if="vm.dish.image" ng-src="{{vm.dish.image.small}}" class="img-thumbnail">
+                    </a>
                 </div>
 
             </div>
