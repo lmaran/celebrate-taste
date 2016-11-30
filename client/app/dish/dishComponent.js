@@ -7,10 +7,10 @@
     module.component("dish",{
         templateUrl:"app/dish/dish.html",
         controllerAs:"vm",
-        controller:["$route", "$window", "dishService", "helperValidator", "toastr", "Upload", controller]       
+        controller:["$route", "$window", "dishService", "helperValidator", "toastr", "Upload", "modalService", controller]       
     });
        
-    function controller($route, $window, dishService, helperValidator, toastr, Upload){
+    function controller($route, $window, dishService, helperValidator, toastr, Upload, modalService){
         var vm = this;
         
         //
@@ -115,6 +115,15 @@
             delete vm.dish.image;
             vm.errors.fileErrorMsg = ""; // reset errors
         }
+
+        vm.showModal = function (dish) {
+            var modalOptions = {
+                imageUrl: dish.image.large,           
+            };
+            
+            modalService.showImage(modalOptions).then(function (result) {
+            });
+        };         
         
         //
         // private methods

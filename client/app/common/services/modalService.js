@@ -49,6 +49,8 @@ app.service('modalService', ['$uibModal',function ($uibModal) {
     
     this.showImage = function (modalOptions) {
         var modalSettings = {
+            animation: false,
+            size:'lg',
             templateUrl: 'app/common/templates/showImage.html'
         };
         return this.show(modalSettings, modalOptions);
