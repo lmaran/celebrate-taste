@@ -87,6 +87,8 @@
                     return false;
                 } 
 
+                vm.inProgress = true;
+
                 Upload.upload({
                     url: 'api/dishes/upload',
                     data: {
@@ -96,22 +98,22 @@
                     // file is uploaded successfully
                     vm.dish.image = resp.data;
                     vm.errors.fileErrorMsg = ""; // reset errors
+                    vm.inProgress = false;
                 }, function (resp) {
                     // handle error
                     vm.errors.fileErrorMsg = resp.data.msg; // server-side validation
+                    vm.inProgress = false;
                 }, function (evt) {
                     // progress notify
-                    // var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                    // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-
                     // Math.min is to fix IE which reports 200% sometimes
-                    //file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));                    
+                    vm.progressPercentage = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));                
                 });
             }
         };                
 
         vm.removeImage = function(){
             delete vm.dish.image;
+            vm.errors.fileErrorMsg = ""; // reset errors
         }
         
         //
