@@ -50,22 +50,23 @@
 
                         <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}
                         
-                        {{#if isMyOption}}
-                            </br>
+                        <div class="text-muted">{{description}}</div>
+
+                        <div><a><img src="{{image.small}}" /></a></div>
+
+                        {{#if isMyOption}}  
                             <span class="label label-success isMyOption">
                                 <span class="glyphicon glyphicon-ok"></span> Optiunea mea
                             </span>
                         {{/if}}
                         {{#if isNotMyOption}}
-                            </br>
-                            <button type="button" class="btn btn-default btn-sm setMyOption" style="color:#337ab7">
+                            <button type="button" class="btn btn-default btn-sm setMyOption" style="color:#337ab7; margin-top:4px">
                                 <span class="glyphicon glyphicon-pushpin" style="color:#337ab7"></span> 
                                 Da, vreau!
                             </button>
                         {{/if}}  
                         
-                        <br/>
-						<span class="text-muted">{{description}}</span>
+						
 
 					</li>
 				{{/each}}
