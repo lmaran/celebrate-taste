@@ -47,13 +47,12 @@ exports.getById = function (req, res) {
 
 exports.update = function (req, res) {
     let newDish = req.body;
-
-    newDish.modifiedBy = req.user.name;
-    newDish.modifiedOn = new Date();
     
     dishService.getById(newDish._id, function (err, oldDish) {
         if (err) { return handleError(res, err); }
 
+        newDish.modifiedBy = req.user.name;
+        newDish.modifiedOn = new Date();
 
         dishService.update(newDish, function (err, response) {
             if (err) { return handleError(res, err); }
@@ -64,29 +63,8 @@ exports.update = function (req, res) {
             }
         });
 
-        // remove image from blob
-        // "image" : {
-        //     "small" : "https://celebratetastestg.blob.core.windows.net/dishes-sm/supa-de-visine-220722.jpg", 
-        //     "large" : "https://celebratetastestg.blob.core.windows.net/dishes-lg/supa-de-visine-220722.jpg",
-        //     "original" : "https://celebratetastestg.blob.core.windows.net/dishes/supa-de-visine-220722.jpg"
-        // }
-        if(!newDish.image && oldDish.image){           
-            let obj = oldDish.image;
-            for (var p in obj) {
-                if( obj.hasOwnProperty(p) ) {
-                    let url = obj[p];
-                    let urlParts = url.split('/');
-                    let blobName = urlParts[urlParts.length -1];
-                    let containerName = urlParts[urlParts.length -2];
-
-                    let blobService = azure.createBlobService(config.azureStorage.account, config.azureStorage.key);
-                    blobService.deleteBlob(containerName, blobName, function (error, response) {
-                        if (!error) {
-                            // Blob has been deleted
-                        }
-                    });
-                } 
-            }  
+        if(newDish.image !== oldDish.image){           
+            removeImagesFromBlob(oldDish.image);
         }        
     });
 };
@@ -94,9 +72,15 @@ exports.update = function (req, res) {
 
 exports.remove = function (req, res) {
     let id = req.params.id;
-    dishService.remove(id, function (err, response) {
+    dishService.getById(id, function (err, dish) {
         if (err) { return handleError(res, err); }
-        res.sendStatus(204);
+
+        dishService.remove(id, function (err, response) {
+            if (err) { return handleError(res, err); }
+            res.sendStatus(204);
+        });
+
+        removeImagesFromBlob(dish.image);
     });
 };
 
@@ -253,3 +237,28 @@ function resizeAndSave(blobService, outputBuffer, blobName, blobOptions, contain
         }
     });
 };
+
+function removeImagesFromBlob(image){
+    // "image" : {
+    //     "small" : "https://celebratetastestg.blob.core.windows.net/dishes-sm/supa-de-visine-220722.jpg", 
+    //     "large" : "https://celebratetastestg.blob.core.windows.net/dishes-lg/supa-de-visine-220722.jpg",
+    //     "original" : "https://celebratetastestg.blob.core.windows.net/dishes/supa-de-visine-220722.jpg"
+    // }
+
+    // if image is null/undefined, nothing happens
+    for (var p in image) {
+        if( image.hasOwnProperty(p) ) {
+            let url = image[p];
+            let urlParts = url.split('/');
+            let blobName = urlParts[urlParts.length -1];
+            let containerName = urlParts[urlParts.length -2];
+
+            let blobService = azure.createBlobService(config.azureStorage.account, config.azureStorage.key);
+            blobService.deleteBlob(containerName, blobName, function (error, response) {
+                if (!error) {
+                    // Blob has been deleted
+                }
+            });
+        } 
+    }
+}
