@@ -25,7 +25,14 @@
 							<strong>{{option}}.</strong>
 						{{/if}}
                         <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}
-						<span class="text-muted">{{description}}</span>
+                        
+						{{#if description}}
+                        <div class="text-muted">{{description}}</div>
+                        {{/if}}
+                        
+                        {{#if image.small}}
+                        <div><a><img src="{{image.small}}" /></a></div>
+                        {{/if}}
 					</li>
 				{{/each}}
 			</ul>					

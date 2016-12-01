@@ -1,9 +1,9 @@
-<style>
+{{!--<style>
 	.notMyOption {
         text-decoration: line-through;
         color: gray;
 	}	
-</style>
+</style>--}}
 
 {{> navbar}}
 
@@ -19,18 +19,23 @@
                     {{#if option}}
                         <strong>{{option}}.</strong>
                     {{/if}}
-                    <span {{#if isNotMyOption}}class="notMyOption"{{/if}}>
-                        <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}                        
-                    </span>
-                    {{#if isMyOption}}
-                        </br>
-                        <span class="label label-success isMyOption">
-                            <span class="glyphicon glyphicon-ok"></span> Optiunea mea
-                        </span>
+                    <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}                        
+
+                    {{#if description}}
+                    <div class="text-muted">{{description}}</div>
                     {{/if}}
-                    
-                    <br/>
-                    <span class="text-muted">{{description}}</span>
+
+                    {{#if image.small}}
+                        <div><a><img style2="max-width:400px" src="{{image.small}}" /></a></div>
+                    {{/if}}
+
+                    {{#if isMyOption}}
+                        <div>
+                            <span class="label label-success isMyOption">
+                                <span class="glyphicon glyphicon-ok"></span> Optiunea mea
+                            </span>
+                        </div>
+                    {{/if}}                  
 
                 </li>
             {{/each}}

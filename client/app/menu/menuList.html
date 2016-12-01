@@ -76,17 +76,19 @@
                     <table class="table table-responsive table-hover table-condensed my-borderless">
                         <tbody>
                             <tr data-ng-repeat="dish in menu.dishes | filter:vm.search | orderBy:['category', 'option']">
+                                <td width="10">
+                                    <span ng-if="dish.option !== undefined">{{dish.option}}.</span>                                                                 
+                                </td>
+                                <td width="50">
+                                    <a href ng-click="vm.showModal(dish)"><img ng-src="{{dish.image.small}}" width="60" /></a> 
+                                </td>
                                 <td>
-                                    <span ng-if="dish.option !== undefined">{{dish.option}}.</span>
-                                    <span ng-if="dish.option === undefined">&nbsp;&nbsp;&nbsp;</span>
                                     <a ng-href="/admin/menus/{{menu._id}}/dishes/{{dish._id}}">{{dish.name}}</a> 
                                     <span ng-if="dish.isFasting">(post)</span>
                                     <span ng-if="dish.calories"> - {{ dish.calories }} cal.</span>
                                 </td>
-                                <td></td>
-                                <!--<td width="100px">{{ dish.calories }} cal.</td>-->
-                                <!--<td >{{ dish.description }}</td>-->
-                                <td width="100px">
+
+                                <td width="100">
                                     <a href ng-click="vm.deleteDishFromMenu(dish, menu)">sterge</a>
                                 </td>
                             </tr>

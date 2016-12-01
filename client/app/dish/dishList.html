@@ -43,7 +43,7 @@
         <table class="table table-responsive table-hover table-condensed">
             <thead>
                 <tr>
-                    <!--<th></th>-->
+                    <th></th>
                     <th>Nume</th>
                     <th>Categorie</th>
                     <th>DePost</th>
@@ -54,8 +54,9 @@
             </thead>
             <tbody>
                 <tr data-ng-repeat="dish in vm.dishes | filter:vm.search ">
-                    <!--<td width="50">
-                        <a href ng-click="showModal(dish)"><img ng-src="{{dish.thumbUrl}}" width="40" /></td></a>-->
+                    <td width="50">
+                        <a href ng-click="vm.showModal(dish)"><img ng-src="{{dish.image.small}}" width="60" /></a>
+                    </td>
                     <td>
                         <a ng-href="/admin/dishes/{{dish._id}}">{{dish.name}}</a>
                     </td>
