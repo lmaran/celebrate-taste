@@ -46,18 +46,48 @@ exports.getById = function (req, res) {
 };
 
 exports.update = function (req, res) {
-    let dish = req.body;
+    let newDish = req.body;
 
-    dish.modifiedBy = req.user.name;
-    dish.modifiedOn = new Date();
-
-    dishService.update(dish, function (err, response) {
+    newDish.modifiedBy = req.user.name;
+    newDish.modifiedOn = new Date();
+    
+    dishService.getById(newDish._id, function (err, oldDish) {
         if (err) { return handleError(res, err); }
-        if (!response.value) {
-            res.sendStatus(404); // not found
-        } else {
-            res.sendStatus(200);
-        }
+
+
+        dishService.update(newDish, function (err, response) {
+            if (err) { return handleError(res, err); }
+            if (!response.value) {
+                res.sendStatus(404); // not found
+            } else {
+                res.sendStatus(200);
+            }
+        });
+
+        // remove image from blob
+        // "image" : {
+        //     "small" : "https://celebratetastestg.blob.core.windows.net/dishes-sm/supa-de-visine-220722.jpg", 
+        //     "large" : "https://celebratetastestg.blob.core.windows.net/dishes-lg/supa-de-visine-220722.jpg",
+        //     "original" : "https://celebratetastestg.blob.core.windows.net/dishes/supa-de-visine-220722.jpg"
+        // }
+        if(!newDish.image && oldDish.image){           
+            let obj = oldDish.image;
+            for (var p in obj) {
+                if( obj.hasOwnProperty(p) ) {
+                    let url = obj[p];
+                    let urlParts = url.split('/');
+                    let blobName = urlParts[urlParts.length -1];
+                    let containerName = urlParts[urlParts.length -2];
+
+                    let blobService = azure.createBlobService(config.azureStorage.account, config.azureStorage.key);
+                    blobService.deleteBlob(containerName, blobName, function (error, response) {
+                        if (!error) {
+                            // Blob has been deleted
+                        }
+                    });
+                } 
+            }  
+        }        
     });
 };
 
@@ -130,6 +160,7 @@ exports.uploadImage = function (req, res) {
                     values.map((size) => {
                         image[size.name] = dishesBaseURI + containerName + '-' + size.label + "/" + blobName;
                     });
+                    image["original"] = dishesBaseURI + containerName + "/" + blobName;
                     res.json(image);
 
                     // save the original image (yes, after the response has been sent to the client)
