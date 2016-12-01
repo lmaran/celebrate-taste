@@ -97,6 +97,11 @@ exports.uploadImage = function (req, res) {
     const sizes = [{
         name: "small",
         label: "sm",
+        width: 60,
+        height: Math.round(60 / ratio) // 40
+    }, {
+        name: "medium",
+        label: "md",
         width: 225,
         height: Math.round(225 / ratio) // 150
     }, {
