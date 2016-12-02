@@ -33,7 +33,10 @@ exports.create = function (req, res) {
 
     dishService.create(dish, function (err, response) {
         if (err) { return handleError(res, err); }
+        let createdDish = response.ops[0];
         res.status(201).json(response.ops[0]);
+
+        updateImageStatus(dish.image, 'dishId', createdDish._id);  // mark newDish image as used  
     });
 };
 
@@ -47,13 +50,12 @@ exports.getById = function (req, res) {
 
 exports.update = function (req, res) {
     let newDish = req.body;
-
-    newDish.modifiedBy = req.user.name;
-    newDish.modifiedOn = new Date();
     
     dishService.getById(newDish._id, function (err, oldDish) {
         if (err) { return handleError(res, err); }
 
+        newDish.modifiedBy = req.user.name;
+        newDish.modifiedOn = new Date();
 
         dishService.update(newDish, function (err, response) {
             if (err) { return handleError(res, err); }
@@ -64,39 +66,23 @@ exports.update = function (req, res) {
             }
         });
 
-        // remove image from blob
-        // "image" : {
-        //     "small" : "https://celebratetastestg.blob.core.windows.net/dishes-sm/supa-de-visine-220722.jpg", 
-        //     "large" : "https://celebratetastestg.blob.core.windows.net/dishes-lg/supa-de-visine-220722.jpg",
-        //     "original" : "https://celebratetastestg.blob.core.windows.net/dishes/supa-de-visine-220722.jpg"
-        // }
-        if(!newDish.image && oldDish.image){           
-            let obj = oldDish.image;
-            for (var p in obj) {
-                if( obj.hasOwnProperty(p) ) {
-                    let url = obj[p];
-                    let urlParts = url.split('/');
-                    let blobName = urlParts[urlParts.length -1];
-                    let containerName = urlParts[urlParts.length -2];
-
-                    let blobService = azure.createBlobService(config.azureStorage.account, config.azureStorage.key);
-                    blobService.deleteBlob(containerName, blobName, function (error, response) {
-                        if (!error) {
-                            // Blob has been deleted
-                        }
-                    });
-                } 
-            }  
-        }        
+        updateImageStatus(newDish.image, 'dishId', newDish._id); // mark new image as used
+        updateImageStatus(oldDish.image, 'isDeleted', true); // mark old image as deleted     
     });
 };
 
 
 exports.remove = function (req, res) {
     let id = req.params.id;
-    dishService.remove(id, function (err, response) {
+    dishService.getById(id, function (err, dish) {
         if (err) { return handleError(res, err); }
-        res.sendStatus(204);
+
+        dishService.remove(id, function (err, response) {
+            if (err) { return handleError(res, err); }
+            res.sendStatus(204);
+        });
+
+        updateImageStatus(dish.image, 'isDeleted', true); // mark image as deleted
     });
 };
 
@@ -113,6 +99,11 @@ exports.uploadImage = function (req, res) {
     const sizes = [{
         name: "small",
         label: "sm",
+        width: 60,
+        height: Math.round(60 / ratio) // 40
+    }, {
+        name: "medium",
+        label: "md",
         width: 225,
         height: Math.round(225 / ratio) // 150
     }, {
@@ -144,13 +135,13 @@ exports.uploadImage = function (req, res) {
                     return false;
                 }                    
 
-                let blobService = azure.createBlobService(config.azureStorage.account, config.azureStorage.key);
+                let blobService = azure.createBlobService(config.azureBlobStorage.account, config.azureBlobStorage.key);
                 let blobOptions = {
                     contentSettings:{contentType: part.headers['content-type']}
                 }; 
                 let blobName = getBlobName(part.filename);
                 let containerName = 'dishes';
-                let dishesBaseURI = "https://" + config.azureStorage.account + ".blob.core.windows.net/";
+                let dishesBaseURI = "https://" + config.azureBlobStorage.account + ".blob.core.windows.net/";
     
                 Promise.all(
                     sizes.map((size) => resizeAndSave(blobService, outputBuffer, blobName, blobOptions, containerName + '-' + size.label, size))
@@ -160,11 +151,23 @@ exports.uploadImage = function (req, res) {
                     values.map((size) => {
                         image[size.name] = dishesBaseURI + containerName + '-' + size.label + "/" + blobName;
                     });
-                    image["original"] = dishesBaseURI + containerName + "/" + blobName;
                     res.json(image);
 
                     // save the original image (yes, after the response has been sent to the client)
-                    resizeAndSave(blobService, outputBuffer, blobName, blobOptions, containerName, null);
+                    let blobServiceCool = azure.createBlobService(config.azureBlobStorageCool.account, config.azureBlobStorageCool.key);
+                    resizeAndSave(blobServiceCool, outputBuffer, blobName, blobOptions, containerName, null);
+
+                    // upload dishImages jurnal
+                    let dishImage = {
+                        blobName: blobName,
+                        createdBy: req.user.name,    
+                        createdOn: new Date()
+                    }; 
+                    dishService.createImageEntity(dishImage, function (err, response) {
+                        if (err) { 
+                            // todo: log this
+                        }
+                    });
 
                 }).catch(reason => { 
                     res.jon(err);
@@ -253,3 +256,60 @@ function resizeAndSave(blobService, outputBuffer, blobName, blobOptions, contain
         }
     });
 };
+
+function  updateImageStatus(image, field, value){
+    // if image is null/undefined, nothing happens
+    let blobInfo = getBlobInfo(image);
+    if(blobInfo){
+        dishService.getImageEntity(blobInfo.blobName, function (err, imageEntity) {
+            if (err) { } // todo: log this
+            
+            if(imageEntity){                
+                imageEntity[field] = value; // update status
+
+                dishService.updateImageEntity(imageEntity, function (err, response) {
+                    if (err) { } // todo: log this
+                    if (!response.value) {
+                        // todo: log this
+                    } else {
+                        // todo: log this
+                    }
+                });
+
+                // optional (todo)
+                // if field='isDeleted' => remove the original and all sizes
+                // forEach(blobInfo.sizeContainers) =>  blobService.deleteBlob(containerName, blobName, cb);  
+            }
+        })
+    }
+}
+
+function getBlobInfo(image){
+    // "image" : {
+    //     "small" : "https://celebratetastestg.blob.core.windows.net/dishes-sm/supa-de-visine-220722.jpg", 
+    //     "medium" : "https://celebratetastestg.blob.core.windows.net/dishes-md/supa-de-visine-220722.jpg",
+    //     "large" : "https://celebratetastestg.blob.core.windows.net/dishes-lg/supa-de-visine-220722.jpg"
+    // }
+
+    // uncomment if you need container name(s)
+    if(image && Object.keys(image).length > 0){ // ususaly length=3 (small, medium, large)
+        let firstKey = Object.keys(image)[0]; // usualy 'small'
+        let firstUrl = image[firstKey]; // eg. 'https://celebratetastestg.blob.core.windows.net/dishes-sm/supa-de-visine-220722.jpg'
+        let urlParts = firstUrl.split('/');
+        // let firstContainer = urlParts[urlParts.length -2] // 'dishes-sm'
+        // let sizeContainers = [];
+
+        // for (var p in image) {
+        //     let urlParts = image[p].split('/');
+        //     let containerName = urlParts[urlParts.length -2];
+        //     sizeContainers.push(containerName);
+        // }
+
+        return {
+            // originalContainer: firstContainer.split('-')[0], // 'dishes'
+            // sizeContainers: sizesContainers, // ['dishes-sm', 'dishes-md', 'dishes-lg'']
+            blobName: urlParts[urlParts.length -1] // 'supa-de-visine-220722.jpg' 
+        };
+    };
+    return false;
+}
