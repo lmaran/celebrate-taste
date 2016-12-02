@@ -9,8 +9,12 @@ module.exports = {
     },
     gaCode: 'UA-72165579-3',
     externalUrl: 'https://celebrate-taste.ro',
-    azureStorage: {
-        account: process.env.AZURE_STORAGE_ACCOUNT,
-        key: process.env.AZURE_STORAGE_ACCESS_KEY
-    }     
+    azureBlobStorage: {
+        account: process.env.AZURE_BLOB_STORAGE_ACCOUNT,
+        key: process.env.AZURE_BLOB_STORAGE_ACCESS_KEY
+    },  
+    azureBlobStorageCool: {
+        account: process.env.AZURE_BLOB_STORAGE_COOL_ACCOUNT,
+        key: process.env.AZURE_BLOB_STORAGE_COOL_ACCESS_KEY
+    }    
 };
