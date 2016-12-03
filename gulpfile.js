@@ -30,7 +30,7 @@ var gulp = require('gulp'), // task runner
     var mocha = require('gulp-mocha');
     var through = require('through2');
     var ghPages = require('gulp-gh-pages');
-    var gnf = require('gulp-npm-files'); // copy only node_modules used in production (not "dev_dependencies")
+    // var gnf = require('gulp-npm-files'); // copy only node_modules used in production (not "dev_dependencies")
     var file = require('gulp-file'); // create a file from string
     var ts = require('gulp-typescript');
     var tsProject = ts.createProject('tsconfig.json');
@@ -344,8 +344,12 @@ gulp.task('copy-assets', function() {
 });
 
 gulp.task('copy-node-modules', function() {
-    return gulp.src(gnf(), {base:'./'})
-        .pipe(gulp.dest('./dist'));
+    // return gulp.src(gnf(), {base:'./'})
+    //     .pipe(gulp.dest('./dist'));
+
+    // on the build server, use 'npm i --only=prod' to not install dev. packages: http://stackoverflow.com/a/9276112
+    return gulp.src('./node_modules/**/*.*')
+        .pipe(gulp.dest('./dist/node_modules'));
 });
 
 // gulp.task('create-package.json', function() {
