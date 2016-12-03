@@ -50,22 +50,34 @@
 
                         <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}
                         
-                        {{#if isMyOption}}
-                            </br>
-                            <span class="label label-success isMyOption">
-                                <span class="glyphicon glyphicon-ok"></span> Optiunea mea
-                            </span>
+                        {{#if description}}
+                            <div class="text-muted">{{description}}</div>
                         {{/if}}
-                        {{#if isNotMyOption}}
-                            </br>
-                            <button type="button" class="btn btn-default btn-sm setMyOption" style="color:#337ab7">
-                                <span class="glyphicon glyphicon-pushpin" style="color:#337ab7"></span> 
-                                Da, vreau!
-                            </button>
-                        {{/if}}  
                         
-                        <br/>
-						<span class="text-muted">{{description}}</span>
+                        {{#if image.medium}}
+                            <div class="media" style="margin-top:0">
+                                <a>
+                                    <img src="{{image.medium}}" class="img-thumbnail">
+                                </a>
+                            </div>
+                        {{/if}}
+
+                        {{#if isMyOption}}
+                            <div>  
+                                <span class="label label-success isMyOption">
+                                    <span class="glyphicon glyphicon-ok"></span> Optiunea mea
+                                </span>
+                            </div>
+                        {{/if}}
+
+                        {{#if isNotMyOption}}
+                            <div>
+                                <button type="button" class="btn btn-default btn-sm setMyOption" style="color:#337ab7; margin-top:4px">
+                                    <span class="glyphicon glyphicon-pushpin" style="color:#337ab7"></span> 
+                                    Da, vreau!
+                                </button>
+                            </div>
+                        {{/if}}  
 
 					</li>
 				{{/each}}
