@@ -5,6 +5,8 @@
 
     var menuService = require('../../api/menu/menuService');
     var preferenceService = require('../../api/preference/preferenceService');
+    var orderService = require('../../api/order/orderService');
+    var orderLineService = require('../../api/orderLine/orderLineService');
     var helper = require('../../data/dateTimeHelper');
     var _ = require('lodash');
       
@@ -12,11 +14,15 @@
         var todayStr = helper.getRoTodayStr(); // "2016-03-26"
         if(req.user){
             let p1 = promiseToGetTodaysMenu(todayStr);
-            let p2 = promiseToGetUserPreferenceByDate(req.user.name, todayStr);
+            let p2 = promiseToGetTodaysUserPreference(req.user.name, todayStr);
+            let p3 = promiseToGetTodaysOrder(todayStr);
+            let p4 = promiseToGetTodaysUserOrderLine(req.user.name, todayStr);
             
-            Promise.all([p1, p2]).then(function(results){
+            Promise.all([p1, p2, p3, p4]).then(function(results){
                 let menu = results[0];
                 let pref = results[1];
+                let order = results[2];
+                let orderLine = results[3];
 
                 var menuHasDishes = menu && menu.dishes && (menu.dishes.length > 0);
                 if(menuHasDishes){                
@@ -51,11 +57,32 @@
                     });                    
                 }
 
+                var orderStatus = {};
+
+                if(!order){
+                        orderStatus.code = "in asteptare";
+                        orderStatus.details = "Comanda de la Anvis asteapta sa fie inregistrata in sistem.";
+                } else { // there is an order
+                    if(!orderLine){ // no orderLine for this employee
+                            orderStatus.code = "lipsa comanda";
+                            orderStatus.details = "Comanda de la Anvis a fost procesata dar numele tau nu se regaseste pe lista.";  
+                    } else { // no orderLine for this employee
+                        if(orderLine.status === "open"){
+                            orderStatus.code = "pregatita pentru livrare";
+                            orderStatus.details = "Comanda ta este pregatita pentru livrare, in " + orderLine.eatSeries;
+                        } else { // completed
+                            orderStatus.code = "livrata";
+                            orderStatus.details = "Ai servit deja masa";                            
+                        }                         
+                    }
+                }
+
                 var context = {
                     user: req.user,
                     menu: menu,
                     today: helper.getStringFromString(todayStr),
-                    menuHasDishes: menuHasDishes
+                    menuHasDishes: menuHasDishes,
+                    orderStatus: orderStatus                    
                 };
                 
                 res.render('menu/todaysMenu', context);
@@ -179,14 +206,32 @@
         });
     }   
 
-    function promiseToGetUserPreferenceByDate(userName, todayStr){
+    function promiseToGetTodaysUserPreference(userName, todayStr){
         return new Promise(function(resolve, reject) {
             preferenceService.getByEmployeeAndDate(userName, todayStr, function (err, preference) {
                 if(err) { reject(err) }
                 resolve(preference);  
             });
         });
-    }         
+    }  
+
+    function promiseToGetTodaysOrder(todayStr){
+        return new Promise(function(resolve, reject) {
+            orderService.getByDate(todayStr, function (err, order) {
+                if(err) { reject(err) }
+                resolve(order);  
+            });
+        });
+    }
+
+    function promiseToGetTodaysUserOrderLine(employeeName, todayStr){
+        return new Promise(function(resolve, reject) {
+            orderLineService.getByUserAndDate(employeeName, todayStr, function (err, orderLine) {
+                if(err) { reject(err) }
+                resolve(orderLine);  
+            });
+        });
+    }              
     
     function handleError(res, err) {
         return res.status(500).send(err);
