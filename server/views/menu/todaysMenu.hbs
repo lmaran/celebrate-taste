@@ -10,8 +10,31 @@
 <div class="container">
     
     {{#if menuHasDishes}}
+
+        {{#if orderStatus.inAsteptare}}
+            <div class="alert alert-warning" role="alert">
+                <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                {{orderStatus.details}}
+            </div>
+        {{else if orderStatus.lipsaComanda}}
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                {{orderStatus.details}}
+            </div>
+        {{else if orderStatus.comandata}}
+            <div class="alert alert-success" role="alert">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                {{orderStatus.details}}
+            </div>
+        {{else if orderStatus.livrata}}
+            <div class="alert alert-info" role="alert">
+                <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                {{orderStatus.details}}
+            </div>
+        {{/if}}
+
 		<h1>Meniul de astazi<small class="text-muted"> ({{today}})</small></h1>
-		<hr>
+        <hr>
 		
         <ul class="list-group">
             {{#each menu.dishes as |dish dishIndex|}}
@@ -53,8 +76,5 @@
 
     Vezi si <a href="/nextMenus">meniurile viitoare &raquo;</a>
     <hr>
-
-    <div>Starea comenzii tale de astazi ({{today}}):</div>
-    <div><strong>{{orderStatus.details}}</strong></div>
 
 </div>
