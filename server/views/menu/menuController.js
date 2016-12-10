@@ -60,19 +60,19 @@
                 var orderStatus = {};
 
                 if(!order){
-                        orderStatus.code = "in asteptare";
-                        orderStatus.details = "Comanda de la Anvis asteapta sa fie inregistrata in sistem.";
+                        orderStatus.inAsteptare = true;
+                        orderStatus.details = "Anvis nu a trimis inca lista cu persoanele care urmeaza sa serveasca astazi masa (sau lista nu a fost importata in sistem).";
                 } else { // there is an order
                     if(!orderLine){ // no orderLine for this employee
-                            orderStatus.code = "lipsa comanda";
-                            orderStatus.details = "Comanda de la Anvis a fost procesata dar numele tau nu se regaseste pe lista.";  
+                            orderStatus.lipsaComanda = true;
+                            orderStatus.details = "Anvis a trimis lista cu persoanele care urmeaza sa serveasca astazi masa, dar numele tau nu figureaza pe acesta lista.";
                     } else { // no orderLine for this employee
                         if(orderLine.status === "open"){
-                            orderStatus.code = "pregatita pentru livrare";
-                            orderStatus.details = "Comanda ta este pregatita pentru livrare, in " + orderLine.eatSeries;
+                            orderStatus.comandata = true;
+                            orderStatus.details = "Anvis a anuntat ca astazi urmeaza sa servesti masa in " + orderLine.eatSeries + ". Te asteptam!";
                         } else { // completed
-                            orderStatus.code = "livrata";
-                            orderStatus.details = "Ai servit deja masa";                            
+                            orderStatus.livrata = true;
+                            orderStatus.details = "Ai servit deja masa. Daca doresti, ai posibilitatea sa evaluezi felurile de mancare servite astazi.";                            
                         }                         
                     }
                 }
