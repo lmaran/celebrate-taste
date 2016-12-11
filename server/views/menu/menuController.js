@@ -5,6 +5,9 @@
 
     var menuService = require('../../api/menu/menuService');
     var preferenceService = require('../../api/preference/preferenceService');
+    var orderService = require('../../api/order/orderService');
+    var orderLineService = require('../../api/orderLine/orderLineService');
+    var reviewService = require('../../api/review/reviewService');
     var helper = require('../../data/dateTimeHelper');
     var _ = require('lodash');
       
@@ -12,11 +15,17 @@
         var todayStr = helper.getRoTodayStr(); // "2016-03-26"
         if(req.user){
             let p1 = promiseToGetTodaysMenu(todayStr);
-            let p2 = promiseToGetUserPreferenceByDate(req.user.name, todayStr);
+            let p2 = promiseToGetTodaysUserPreference(req.user.name, todayStr);
+            let p3 = promiseToGetTodaysOrder(todayStr);
+            let p4 = promiseToGetTodaysUserOrderLine(req.user.name, todayStr);
+            let p5 = promiseToGetTodaysEmployeeReviews(req.user.name, todayStr);
             
-            Promise.all([p1, p2]).then(function(results){
+            Promise.all([p1, p2, p3, p4, p5]).then(function(results){
                 let menu = results[0];
                 let pref = results[1];
+                let order = results[2];
+                let orderLine = results[3];
+                let reviews = results[4];
 
                 var menuHasDishes = menu && menu.dishes && (menu.dishes.length > 0);
                 if(menuHasDishes){                
@@ -24,7 +33,7 @@
                     menu.dishes.forEach(function(dish) {
                         
                         var dishesInCategory = _.filter(menu.dishes, {'category': dish.category});
-                        
+                       
                         if(dishesInCategory.length > 1){
                             
                             if(pref){
@@ -47,24 +56,51 @@
                                 }
                             }
                         }
+
+                        var dishReview = _.find(reviews, {dishId: dish._id});
+                        if(dishReview){
+                            dish.stars = dishReview.stars;
+                            dish.starDetails = dishReview.starDetails;
+                        }
                         
                     });                    
+                }
+
+                var orderStatus = {};
+
+                if(!order){
+                        orderStatus.inAsteptare = true;
+                        orderStatus.details = "Anvis nu a trimis inca lista cu persoanele care urmeaza sa serveasca astazi masa (sau lista nu a fost importata in sistem).";
+                } else { // there is an order
+                    if(!orderLine){ // no orderLine for this employee
+                            orderStatus.lipsaComanda = true;
+                            orderStatus.details = "Anvis a trimis lista cu persoanele care urmeaza sa serveasca astazi masa, dar numele tau nu figureaza pe acesta lista.";
+                    } else { // no orderLine for this employee
+                        if(orderLine.status === "open"){
+                            orderStatus.comandata = true;
+                            orderStatus.details = "Anvis a anuntat ca astazi urmeaza sa servesti masa in " + orderLine.eatSeries + ". Te asteptam!";
+                        } else { // completed
+                            orderStatus.livrata = true;
+                            orderStatus.details = "Ai servit deja masa. Daca doresti, ai posibilitatea sa evaluezi felurile de mancare servite astazi.";                            
+                        }                         
+                    }
                 }
 
                 var context = {
                     user: req.user,
                     menu: menu,
                     today: helper.getStringFromString(todayStr),
-                    menuHasDishes: menuHasDishes
+                    menuHasDishes: menuHasDishes,
+                    orderStatus: orderStatus                    
                 };
-                
+
                 res.render('menu/todaysMenu', context);
 
             })
             .catch(function(err){
                 return handleError(res, err);
             })
-        } else {
+        } else { // anonymous user
             promiseToGetTodaysMenu(todayStr).then(function(menu){
                 var menuHasDishes = menu && menu.dishes && (menu.dishes.length > 0);
                 if(menuHasDishes){                
@@ -179,15 +215,42 @@
         });
     }   
 
-    function promiseToGetUserPreferenceByDate(userName, todayStr){
+    function promiseToGetTodaysUserPreference(userName, todayStr){
         return new Promise(function(resolve, reject) {
             preferenceService.getByEmployeeAndDate(userName, todayStr, function (err, preference) {
                 if(err) { reject(err) }
                 resolve(preference);  
             });
         });
-    }         
-    
+    }  
+
+    function promiseToGetTodaysOrder(todayStr){
+        return new Promise(function(resolve, reject) {
+            orderService.getByDate(todayStr, function (err, order) {
+                if(err) { reject(err) }
+                resolve(order);  
+            });
+        });
+    }
+
+    function promiseToGetTodaysUserOrderLine(employeeName, todayStr){
+        return new Promise(function(resolve, reject) {
+            orderLineService.getByEmployeeAndDate(employeeName, todayStr, function (err, orderLine) {
+                if(err) { reject(err) }
+                resolve(orderLine);  
+            });
+        });
+    }              
+
+    function promiseToGetTodaysEmployeeReviews(employeeName, todayStr){
+        return new Promise(function(resolve, reject) {
+            reviewService.getByEmployeeAndDate(employeeName, todayStr, function (err, reviews) {
+                if(err) { reject(err) }
+                resolve(reviews);  
+            });
+        });
+    }
+
     function handleError(res, err) {
         return res.status(500).send(err);
     };

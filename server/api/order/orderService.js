@@ -1,8 +1,9 @@
 'use strict';
 
 (function (orderService) {
-    
-   var mongoService = require('../../data/mongoService');
+
+    var mongoHelper = require('../../data/mongoHelper');
+    var mongoService = require('../../data/mongoService');
     var collection = 'orders';
  
  
@@ -35,6 +36,13 @@
     // ---------- RPC ----------    
     orderService.getByValue = function (field, value, id, next) {
         mongoService.getByValue(collection, field, value, id, next);
-    };    
+    };
+
+    orderService.getByDate = function (dateStr, next) {      
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            db.collection(collection).findOne({ date:dateStr }, next);
+        });
+    };       
     
 })(module.exports);

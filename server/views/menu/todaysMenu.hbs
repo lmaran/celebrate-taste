@@ -5,17 +5,44 @@
 	}	
 </style>--}}
 
+{{#section 'head'}}
+    <link rel="stylesheet", href="/public/five-star-rating/css/rating.min.css" />
+{{/section}}
+
 {{> navbar}}
 
 <div class="container">
     
     {{#if menuHasDishes}}
+
+        {{#if orderStatus.inAsteptare}}
+            <div class="alert alert-warning" role="alert">
+                <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                {{orderStatus.details}}
+            </div>
+        {{else if orderStatus.lipsaComanda}}
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                {{orderStatus.details}}
+            </div>
+        {{else if orderStatus.comandata}}
+            <div class="alert alert-success" role="alert">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                {{orderStatus.details}}
+            </div>
+        {{else if orderStatus.livrata}}
+            <div class="alert alert-info" role="alert">
+                <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                {{orderStatus.details}}
+            </div>
+        {{/if}}
+
 		<h1>Meniul de astazi<small class="text-muted"> ({{today}})</small></h1>
-		<hr>
+        <hr>
 		
-        <ul class="list-group">
+        <ul class="list-group" data-menu-date="{{menu.menuDate}}">
             {{#each menu.dishes as |dish dishIndex|}}
-                <li class="list-group-item" data-category = "{{dish.category}}" data-option = "{{dish.option}}" style='border: 0 none;'>	
+                <li class="list-group-item" data-category="{{dish.category}}" data-option="{{dish.option}}" data-dish-id="{{dish._id}}" data-dish-stars="{{dish.stars}}" data-dish-star-datails="{{dish.starDetails}}" style="border: 0 none;">	
                     {{#if option}}
                         <strong>{{option}}.</strong>
                     {{/if}}
@@ -35,12 +62,21 @@
                     {{/if}}
 
                     {{#if isMyOption}}
-                        <div>
-                            <span class="label label-success isMyOption">
-                                <span class="glyphicon glyphicon-ok"></span> Optiunea mea
-                            </span>
-                        </div>
+                        {{#unless ../orderStatus.livrata}}
+                            <div>
+                                <span class="label label-success isMyOption">
+                                    <span class="glyphicon glyphicon-ok"></span> Optiunea mea
+                                </span>
+                            </div>
+                        {{/unless}}
                     {{/if}}                  
+
+                    {{#if ../orderStatus.livrata}}
+                        <div style="display:flex;">
+                            <ul style="width:130px;" class="c-rating"></ul>
+                            {{!--<a style="width2:70px; margin-top:7px" class="delete-review" href="#">Anuleaza evaluarea</a>--}}
+                        </span>
+                    {{/if}} 
 
                 </li>
             {{/each}}
@@ -55,3 +91,8 @@
     <hr>
 
 </div>
+
+{{#section 'script'}}
+    <script src="/public/five-star-rating/js/src/rating.js"></script>
+    <script src="/views/menu/todaysMenu.js"></script>
+{{/section}}

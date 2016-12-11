@@ -32,7 +32,7 @@ module.exports = function(app) {
         partialsDir: config.root + '/server/views/partials/',
         
         // ensure the javascript is at the bottom of the code in express-handlebars template
-        // http://stackoverflow.com/a/25307270
+        // http://stackoverflow.com/a/25307270, http://stackoverflow.com/a/21740214
         helpers: {
             section: function(name, options){ 
                 if(!this._sections) this._sections = {};

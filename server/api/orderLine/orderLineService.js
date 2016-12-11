@@ -58,7 +58,14 @@
                 return next(null, docs);                 
             });
         });
-    };  
+    };
+
+    orderLineService.getByEmployeeAndDate = function (employeeName, dateStr, next) {      
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            db.collection(collection).findOne({ employeeName: employeeName, orderDate: dateStr }, next);
+        });
+    };       
             
     orderLineService.createMany = function (orderLines, next) {
         mongoHelper.getDb(function (err, db) {
