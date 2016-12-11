@@ -3,7 +3,7 @@
 
     // DOM ready
     $(function(){
-        // def
+        // elements
         setMyOptionBtns = $(".setMyOption");
 
         // events

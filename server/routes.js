@@ -46,10 +46,15 @@ module.exports = function(app) {
     
     // API routes
     app.get('/api/users/checkEmail/:email',  require('./api/user/userController').checkEmail);    
-    app.use('/api/users',require('./api/user/userRoutes'));
+    app.use('/api/users',require('./api/user/userRoutes'));   
     app.use('/api/preferences', auth.hasRole('admin'), require('./api/preference/preferenceRoutes'));
     
     app.post('/api/myPreferences', auth.hasRole('user'), require('./api/preference/preferenceController').saveMyPreferences);
+    
+    app.use('/api/reviews', auth.hasRole('admin'), require('./api/review/reviewRoutes'));
+    app.post('/api/myReviews', auth.hasRole('user'), require('./api/review/reviewController').saveMyReview);
+    app.delete('/api/myReviews/:dishId/:menuDate', auth.hasRole('user'), require('./api/review/reviewController').deleteMyReview);
+
     
     app.use('/api/buildInfo', require('./api/buildInfo/buildInfoRoutes'));   
     app.use('/api/dishes', auth.hasRole('admin'), require('./api/dish/dishRoutes'));

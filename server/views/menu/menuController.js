@@ -7,6 +7,7 @@
     var preferenceService = require('../../api/preference/preferenceService');
     var orderService = require('../../api/order/orderService');
     var orderLineService = require('../../api/orderLine/orderLineService');
+    var reviewService = require('../../api/review/reviewService');
     var helper = require('../../data/dateTimeHelper');
     var _ = require('lodash');
       
@@ -17,12 +18,14 @@
             let p2 = promiseToGetTodaysUserPreference(req.user.name, todayStr);
             let p3 = promiseToGetTodaysOrder(todayStr);
             let p4 = promiseToGetTodaysUserOrderLine(req.user.name, todayStr);
+            let p5 = promiseToGetTodaysEmployeeReviews(req.user.name, todayStr);
             
-            Promise.all([p1, p2, p3, p4]).then(function(results){
+            Promise.all([p1, p2, p3, p4, p5]).then(function(results){
                 let menu = results[0];
                 let pref = results[1];
                 let order = results[2];
                 let orderLine = results[3];
+                let reviews = results[4];
 
                 var menuHasDishes = menu && menu.dishes && (menu.dishes.length > 0);
                 if(menuHasDishes){                
@@ -30,7 +33,7 @@
                     menu.dishes.forEach(function(dish) {
                         
                         var dishesInCategory = _.filter(menu.dishes, {'category': dish.category});
-                        
+                       
                         if(dishesInCategory.length > 1){
                             
                             if(pref){
@@ -52,6 +55,12 @@
                                     dish.isNotMyOption = true;
                                 }
                             }
+                        }
+
+                        var dishReview = _.find(reviews, {dishId: dish._id});
+                        if(dishReview){
+                            dish.stars = dishReview.stars;
+                            dish.starDetails = dishReview.starDetails;
                         }
                         
                     });                    
@@ -84,14 +93,14 @@
                     menuHasDishes: menuHasDishes,
                     orderStatus: orderStatus                    
                 };
-                
+
                 res.render('menu/todaysMenu', context);
 
             })
             .catch(function(err){
                 return handleError(res, err);
             })
-        } else {
+        } else { // anonymous user
             promiseToGetTodaysMenu(todayStr).then(function(menu){
                 var menuHasDishes = menu && menu.dishes && (menu.dishes.length > 0);
                 if(menuHasDishes){                
@@ -226,13 +235,22 @@
 
     function promiseToGetTodaysUserOrderLine(employeeName, todayStr){
         return new Promise(function(resolve, reject) {
-            orderLineService.getByUserAndDate(employeeName, todayStr, function (err, orderLine) {
+            orderLineService.getByEmployeeAndDate(employeeName, todayStr, function (err, orderLine) {
                 if(err) { reject(err) }
                 resolve(orderLine);  
             });
         });
     }              
-    
+
+    function promiseToGetTodaysEmployeeReviews(employeeName, todayStr){
+        return new Promise(function(resolve, reject) {
+            reviewService.getByEmployeeAndDate(employeeName, todayStr, function (err, reviews) {
+                if(err) { reject(err) }
+                resolve(reviews);  
+            });
+        });
+    }
+
     function handleError(res, err) {
         return res.status(500).send(err);
     };

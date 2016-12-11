@@ -16,16 +16,16 @@
 
 
     // ---------- REST ----------
-    preferenceService.create = function (badge, next) {
-        mongoService.create(collection, badge, next);
+    preferenceService.create = function (preference, next) {
+        mongoService.create(collection, preference, next);
     };
     
     preferenceService.getById = function (id, next) {
         mongoService.getById(collection, id, next);
     };
 
-    preferenceService.update = function (badge, next) {        
-        mongoService.update(collection, badge, next);
+    preferenceService.update = function (preference, next) {        
+        mongoService.update(collection, preference, next);
     };  
 
     preferenceService.remove = function (id, next) {

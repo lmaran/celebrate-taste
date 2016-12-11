@@ -60,7 +60,7 @@
         });
     };
 
-    orderLineService.getByUserAndDate = function (employeeName, dateStr, next) {      
+    orderLineService.getByEmployeeAndDate = function (employeeName, dateStr, next) {      
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);
             db.collection(collection).findOne({ employeeName: employeeName, orderDate: dateStr }, next);
