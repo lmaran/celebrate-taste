@@ -58,7 +58,11 @@
             //
             // partnerOrder
             //
-            { path: "/admin/partnerOrders", component: "partnerOrderList", name: "PartnerOrderList" }
+            { path: "/admin/partnerOrders", component: "partnerOrderList", name: "PartnerOrderList" },
+            //
+            // review
+            //
+            { path: "/admin/reviews", component: "reviewList", name: "ReviewList" },
         ]
     });
 })();

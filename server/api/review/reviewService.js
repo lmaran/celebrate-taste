@@ -10,7 +10,7 @@
     // ---------- OData ----------
     reviewService.getAll = function (odataQuery, next) {  
         var query = mongoService.getQuery(odataQuery);
-        if(query.$sort === undefined) query.$sort = {name: 1};
+        if(query.$sort === undefined) query.$sort = {menuDate: -1};
         mongoService.getAll(collection, query, next);
     };
 
