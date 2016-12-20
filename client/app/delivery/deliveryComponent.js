@@ -287,8 +287,10 @@
         }     
         
         function setDishOptions(orderLine){
-            vm.option1 = _.find(vm.menu.dishes, {option: orderLine.option1});
-            vm.option2 = _.find(vm.menu.dishes, {option: orderLine.option2});
+            if(vm.menu){
+                vm.option1 = _.find(vm.menu.dishes, {option: orderLine.option1});
+                vm.option2 = _.find(vm.menu.dishes, {option: orderLine.option2});
+            }
         }                                           
 
         function getNewBadge(inputCode){ // '0007453659'; (first code printed on card)

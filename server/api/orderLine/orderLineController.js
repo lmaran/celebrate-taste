@@ -229,6 +229,7 @@ function getOption(availableOptions){ // => ['A', 'B']
 }
 
 function getAvailableOptions(menu, category){
+    if(!menu) return [];
     return _.chain(menu.dishes)
         .filter({category: category})
         .map(function(item){
