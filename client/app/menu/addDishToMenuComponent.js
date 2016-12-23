@@ -56,17 +56,18 @@
             // search in the same caterory as dish
             var dishesInCategory = _.filter(vm.menu.dishes, {category: dish.category})
             //console.log(dishesInCategory);
-            if(dishesInCategory && dishesInCategory.length >= 2){
-                alert('Exista deja doua mancaruri din felul ' + dish.category + '.');
-                return false;
-            }
+            // if(dishesInCategory && dishesInCategory.length >= 2){
+            //     alert('Exista deja doua mancaruri din felul ' + dish.category + '.');
+            //     return false;
+            // }
             
             var dishClone = {};
             angular.copy(dish, dishClone); // deep copy
             
             //dishClone._id = helperService.makeId(6); // ex: "spr9na" (the original _id could not be unique in this menu)
             if(dish.category === '1' || dish.category === '2'){
-                dishClone.option = getOptionChar(dishesInCategory, dish);
+                // dishClone.option = getOptionChar(dishesInCategory, dish);
+                dishClone.option = getOptionChar2(vm.menu.dishes, dish);
             }
             if(vm.menu.dishes === undefined) vm.menu.dishes = [];
             vm.menu.dishes.push(dishClone);
@@ -150,7 +151,21 @@
                 else
                     return String.fromCharCode(existingDish.option.charCodeAt(0) - 1);                
             }       
-        }                              
+        } 
+
+        function getOptionChar2(dishes, dish){       
+            var firstChar = 'A';
+
+            if(dishes === undefined || dishes.length === 0)
+                return firstChar;
+            else {
+                var lastDish = dishes[dishes.length -1];
+                // if(lastDish.option === firstChar)
+                //     return String.fromCharCode(firstChar.charCodeAt(0) + 1);
+                // else
+                    return String.fromCharCode(lastDish.option.charCodeAt(0) + 1);                
+            }       
+        }                                       
 
     }
     
