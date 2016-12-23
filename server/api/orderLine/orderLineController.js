@@ -215,17 +215,35 @@ function getOption(availableOptions){ // => ['A', 'B']
     if(availableOptions.length == 0) return null;
     if(availableOptions.length == 1) return availableOptions[0];
 
-    var weightedOptions=[];
+    if(availableOptions.length == 2){
+        var weightedOptions=[];
 
-    for(var i=0; i<3; i++){ // A: 30%
-        weightedOptions.push(availableOptions[0]); // => ['A','A','A']
+        for(var i=0; i<3; i++){ // A: 30%
+            weightedOptions.push(availableOptions[0]); // => ['A','A','A']
+        }
+        for(var i=0; i<7; i++){ // B: 70%
+            weightedOptions.push(availableOptions[1]) // => ['A','A','A','B','B','B','B','B','B','B']
+        }    
+        var randomNr=Math.floor(Math.random() * weightedOptions.length); // random nr. [0..9]
+        return weightedOptions[randomNr]; // => 'A' or 'B' with probability: A: 30%, B: 70%
     }
-    for(var i=0; i<7; i++){ // B: 70%
-        weightedOptions.push(availableOptions[1]) // => ['A','A','A','B','B','B','B','B','B','B']
+
+    if(availableOptions.length == 3){
+        var weightedOptions=[];
+
+        for(var i=0; i<2; i++){ // A: 20%
+            weightedOptions.push(availableOptions[0]); // => ['A','A']
+        }
+        for(var i=0; i<3; i++){ // B: 30%
+            weightedOptions.push(availableOptions[1]) // => ['A','A','B','B','B']
+        }  
+        for(var i=0; i<5; i++){ // C: 50%
+            weightedOptions.push(availableOptions[2]) // => ['A','A','B','B','B','C','c','c','C','C']
+        }    
+        var randomNr=Math.floor(Math.random() * weightedOptions.length); // random nr. [0..9]
+        return weightedOptions[randomNr]; // => 'A' or 'B' or 'C' with probability: A: 20%, B: 30%, C: 50%
     }    
 
-    var randomNr=Math.floor(Math.random() * weightedOptions.length); // random nr. [0..9]
-    return weightedOptions[randomNr]; // => 'A' or 'B' with probability: A: 30%, B: 70%
 }
 
 function getAvailableOptions(menu, category){
