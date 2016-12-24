@@ -54,7 +54,7 @@
         //
         vm.addToMenu = function (dish) {
             // search in the same caterory as dish
-            var dishesInCategory = _.filter(vm.menu.dishes, {category: dish.category})
+            // var dishesInCategory = _.filter(vm.menu.dishes, {category: dish.category})
             //console.log(dishesInCategory);
             // if(dishesInCategory && dishesInCategory.length >= 2){
             //     alert('Exista deja doua mancaruri din felul ' + dish.category + '.');
@@ -138,20 +138,20 @@
             });       
         }
         
-        function getOptionChar(dishesInCategory, dish){       
-            var firstChar = 'A';
-            if(dish.category === '2') firstChar = 'C';
+        // function getOptionChar(dishesInCategory, dish){       
+        //     var firstChar = 'A';
+        //     if(dish.category === '2') firstChar = 'C';
 
-            if(dishesInCategory === undefined || dishesInCategory.length === 0)
-                return firstChar;
-            else{ // dishesInCategory.length == 1
-                var existingDish = dishesInCategory[0];
-                if(existingDish.option === firstChar)
-                    return String.fromCharCode(firstChar.charCodeAt(0) + 1);
-                else
-                    return String.fromCharCode(existingDish.option.charCodeAt(0) - 1);                
-            }       
-        } 
+        //     if(dishesInCategory === undefined || dishesInCategory.length === 0)
+        //         return firstChar;
+        //     else{ // dishesInCategory.length == 1
+        //         var existingDish = dishesInCategory[0];
+        //         if(existingDish.option === firstChar)
+        //             return String.fromCharCode(firstChar.charCodeAt(0) + 1);
+        //         else
+        //             return String.fromCharCode(existingDish.option.charCodeAt(0) - 1);                
+        //     }       
+        // } 
 
         function getOptionChar2(dishes, dish){       
             var firstChar = 'A';
