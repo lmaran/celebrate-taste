@@ -231,17 +231,17 @@ function getOption(availableOptions){ // => ['A', 'B']
     if(availableOptions.length == 3){
         var weightedOptions=[];
 
-        for(var i=0; i<2; i++){ // A: 20%
-            weightedOptions.push(availableOptions[0]); // => ['A','A']
+        for(var i=0; i<4; i++){ // A: 40%
+            weightedOptions.push(availableOptions[0]); // => ['A','A','A','A']
         }
-        for(var i=0; i<3; i++){ // B: 30%
-            weightedOptions.push(availableOptions[1]) // => ['A','A','B','B','B']
+        for(var i=0; i<6; i++){ // B: 60%
+            weightedOptions.push(availableOptions[1]) // => ['A','A','A','A','B','B','B','B','B','B']
         }  
-        for(var i=0; i<5; i++){ // C: 50%
-            weightedOptions.push(availableOptions[2]) // => ['A','A','B','B','B','C','c','c','C','C']
-        }    
+        // for(var i=0; i<5; i++){ // C: 50%
+        //     weightedOptions.push(availableOptions[2]) // => ['A','A','A','A','B','B','B','C','c','c','C','C']
+        // }    
         var randomNr=Math.floor(Math.random() * weightedOptions.length); // random nr. [0..9]
-        return weightedOptions[randomNr]; // => 'A' or 'B' or 'C' with probability: A: 20%, B: 30%, C: 50%
+        return weightedOptions[randomNr]; // => 'A' or 'B' or 'C' with probability: A: 40%, B: 60%, C: 0%
     }    
 
 }
