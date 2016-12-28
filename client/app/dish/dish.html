@@ -61,26 +61,50 @@
         </div>        
 
         <div class="form-group" ng-class="{ 'has-error' : true}">
-            <label class="col-md-2 control-label" style="padding-top:0"></label>
-            <div class="col-md-4">
+            <div class="col-md-offset-2 col-md-4">
+                <div ng-if="vm.screenSize === 'widescreen'">
+                    <div ngf-drop ngf-select2 class="drop-box" ng-model="file" ng-change="vm.upload(file)" accept="image/*" ngf-min-width="1"
+                        ngf-drag-over-class="'dragover'" accept="image/*">
 
-                <button type="button" class="btn btn-primary btn-xs" ngf-select="vm.upload($file)" accept="image/*" ngf-min-width="1">
-                    <span class="glyphicon glyphicon-paperclip" ng-class="{ 'glyphicon-paperclip' : !vm.inProgress, 'glyphicon-refresh spinning' : vm.inProgress}"></span>
-                    <span ng-if="!vm.inProgress && !vm.dish.image">Adauga poza</span> 
-                    <span ng-if="!vm.inProgress && vm.dish.image">Modifica poza</span>
-                    <span ng-if="vm.inProgress">Se incarca... {{vm.progressPercentage}}%</span>
-                </button>
-                <span ng-if="!vm.inProgress && vm.dish.image">
-                    | <a href="" ng-click="vm.removeImage()">Sterge poza</a>
-                </span>
+                        <button type="button" class="btn btn-primary btn-xs" ngf-select="vm.upload($file)" accept="image/*" ngf-min-width="1">
+                            <span class="glyphicon glyphicon-paperclip" ng-class="{ 'glyphicon-paperclip' : !vm.inProgress, 'glyphicon-refresh spinning' : vm.inProgress}"></span>
+                            <span ng-if="!vm.inProgress && !vm.dish.image">Adauga poza</span> 
+                            <span ng-if="!vm.inProgress && vm.dish.image">Modifica poza</span>
+                            <span ng-if="vm.inProgress">Se incarca... {{vm.progressPercentage}}%</span>
+                        </button>
+                        <span ng-if="!vm.inProgress && vm.dish.image">
+                            | <a href="" ng-click="vm.removeImage()">Sterge poza</a>, 
+                        </span> 
+                        sau trage <span ng-if="!vm.inProgress && vm.dish.image">noua</span> poza aici                       
+                        <div ng-if="vm.dish.image" class="media" style="margin-top: 10px;">
+                            <a href ng-click="vm.showModal(vm.dish)">
+                                <img ng-src="{{vm.dish.image.medium}}" class="img-thumbnail">
+                            </a>
+                        </div>
+                        
+                    </div>
+                    <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>             
+                </div>
+
+                <div ng-if="vm.screenSize !== 'widescreen'">
+                    <button type="button" class="btn btn-primary btn-xs" ngf-select="vm.upload($file)" accept="image/*" ngf-min-width="1">
+                        <span class="glyphicon glyphicon-paperclip" ng-class="{ 'glyphicon-paperclip' : !vm.inProgress, 'glyphicon-refresh spinning' : vm.inProgress}"></span>
+                        <span ng-if="!vm.inProgress && !vm.dish.image">Adauga poza</span> 
+                        <span ng-if="!vm.inProgress && vm.dish.image">Modifica poza</span>
+                        <span ng-if="vm.inProgress">Se incarca... {{vm.progressPercentage}}%</span>
+                    </button>
+                    <span ng-if="!vm.inProgress && vm.dish.image">
+                        | <a href="" ng-click="vm.removeImage()">Sterge poza</a>
+                    </span> 
+
+                    <div ng-if="vm.dish.image" class="media">
+                        <a href ng-click="vm.showModal(vm.dish)">
+                            <img ng-src="{{vm.dish.image.medium}}" class="img-thumbnail">
+                        </a>
+                    </div>                    
+                </div>
 
                 <p ng-show = "vm.errors.fileErrorMsg" class="help-block" sty>{{vm.errors.fileErrorMsg}}</p>
-
-                <div class="media">
-                    <a href ng-click="vm.showModal(vm.dish)">
-                        <img ng-if="vm.dish.image" ng-src="{{vm.dish.image.medium}}" class="img-thumbnail">
-                    </a>
-                </div>
 
             </div>
         </div>

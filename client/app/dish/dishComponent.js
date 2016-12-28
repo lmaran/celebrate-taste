@@ -75,8 +75,9 @@
         
         vm.goBack = function(){ 
             $window.history.back();
-        }   
-        
+        } 
+
+        vm.screenSize = window.getComputedStyle(document.body,':after').getPropertyValue('content').replace(/"/g, ''); // FF and IE add double quotes around the value                  
         // upload on file select or drop
         // https://github.com/danialfarid/ng-file-upload#-usage
         vm.upload = function (file) {
