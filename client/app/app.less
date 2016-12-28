@@ -62,3 +62,13 @@ body {
     to { -webkit-transform: rotate(360deg); }
 }
 /* end spiner icon */
+
+
+/*  used to detect screen size in Js
+    http://bricss.net/post/22198838298/easily-checking-in-javascript-if-a-css-media-query */
+@media (min-width: 992px) {
+    body:after {
+        content: 'widescreen';
+        display: none;
+        }
+    }
