@@ -18,6 +18,7 @@
                 <p ng-if-end><a ng-href="/admin/deliveryLogs">Notificari</a></p>
                 <p><a ng-href="/admin/partnerOrders">Raport comenzi</a></p>
                 <p><a ng-href="/admin/reviews">Feedback clienti</a></p>
+                <p><a ng-href="/admin/assignedNames">Asocieri de nume</a></p>
             </div>        
         `,
         controllerAs: "vm",

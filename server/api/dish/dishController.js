@@ -6,7 +6,6 @@ let azure = require('azure-storage');
 let multiparty = require('multiparty');
 let sharp = require('sharp');
 let stream = require('stream');
-let fs = require('fs');
 let path = require('path');
 let removeDiacritics = require('diacritics').remove;
 let moment = require('moment');

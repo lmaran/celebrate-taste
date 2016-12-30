@@ -63,6 +63,18 @@
             // review
             //
             { path: "/admin/reviews", component: "reviewList", name: "ReviewList" },
+            //
+            // assignedName
+            //
+            { path: "/admin/assignedNames", component: "assignedNameList", name: "AssignedNameList" },
+            { path: "/admin/assignedNames/create", component: "assignedName", name: "AssignedNameCreate" },
+            { path: "/admin/assignedNames/:id", component: "assignedName", name: "AssignedNameEdit", data: { action: "edit" } },
+            //
+            // badge
+            //
+            { path: "/admin/badges", component: "badgeList", name: "BadgeList" }
+            // { path: "/admin/assignedNames/create", component: "assignedName", name: "AssignedNameCreate" },
+            // { path: "/admin/assignedNames/:id", component: "assignedName", name: "AssignedNameEdit", data: { action: "edit" } }            
         ]
     });
 })();

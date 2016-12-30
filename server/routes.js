@@ -69,7 +69,10 @@ module.exports = function(app) {
     app.use('/api/deliveries', auth.hasRole('admin'), require('./api/delivery/deliveryRoutes'));
     app.use('/api/deliveryLogs', auth.hasRole('admin'), require('./api/deliveryLog/deliveryLogRoutes'));
 
+    app.use('/api/assignedNames', auth.hasRole('admin'), require('./api/assignedName/assignedNameRoutes'));
     
+    app.use('/api/badges', auth.hasRole('admin'), require('./api/badge/badgeRoutes'));
+
     // RPC routes
     app.post('/login/', require('./api/user/login/local/loginLocalController').authenticate);       
     app.get('/logout', auth.isAuthenticated(), require('./api/user/logout/logoutController').logout);
