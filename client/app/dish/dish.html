@@ -63,8 +63,8 @@
         <div class="form-group" ng-class="{ 'has-error' : true}">
             <div class="col-md-offset-2 col-md-4">
                 <div ng-if="vm.screenSize === 'widescreen'">
-                    <div ngf-drop ngf-select2 class="drop-box" ng-model="file" ng-change="vm.upload(file)" accept="image/*" ngf-min-width="1"
-                        ngf-drag-over-class="'dragover'" accept="image/*">
+                    <div ngf-drop class="drop-box" ng-model="file" ng-change="vm.upload(file)" accept="image/*" ngf-min-width="1"
+                        ngf-drag-over-class="'dragover'">
 
                         <button type="button" class="btn btn-primary btn-xs" ngf-select="vm.upload($file)" accept="image/*" ngf-min-width="1">
                             <span class="glyphicon glyphicon-paperclip" ng-class="{ 'glyphicon-paperclip' : !vm.inProgress, 'glyphicon-refresh spinning' : vm.inProgress}"></span>
@@ -83,7 +83,7 @@
                         </div>
                         
                     </div>
-                    <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>             
+                    <div ngf-no-file-drop>Facilitatea de Drag/Drop nu este suportata de catre acest browser.</div>             
                 </div>
 
                 <div ng-if="vm.screenSize !== 'widescreen'">

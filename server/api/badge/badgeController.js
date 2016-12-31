@@ -49,20 +49,26 @@ exports.uploadFile = function (req, res) {
         part.on('end', function () {
             var buf = Buffer.concat(bufs); 
             try {
-                //console.log(111);
                 const workSheets = xlsx.parse(buf);
-                //console.log(222);
                 // console.log(JSON.stringify(workSheets, null, 4)); 
-                //console.log(333);
-                let cards = getCardsFromWorksheet(workSheets[0]);
-                if (typeof cards === "string") {
-                    res.status(400).send({ msg : cards }); // 400 - bad request
+                let badges = getBadgesFromWorksheet(workSheets[0], req.user.name);
+                if (typeof badges === "string") {
+                    res.status(400).send({ msg : badges }); // 400 - bad request
                     //part.resume(); // not necessary, the input stream is already processed
                     return false;  
                 } else {
-                    // save cards to mongo
-                    console.log(cards);
-                    res.json({importedCards: cards.length});
+
+                    // save badges to mongo
+                    badgeService.removeAll(function (err, response) {
+                        if(err) { return handleError(res, err); }
+                        // res.sendStatus(204);
+
+                        badgeService.createAll(badges, function (err, response) {
+                            if(err) { return handleError(res, err); }
+                            res.json({importedBadges: badges.length});
+                        });
+                    });
+
                 }
                 
             }
@@ -218,7 +224,7 @@ function validateFile(part, maxSizeInMB){
     return ""; 
 }
 
-function getCardsFromWorksheet(workSheet){
+function getBadgesFromWorksheet(workSheet, userName){
     // worksheet format:
     // {
     //     "name": "Cartele_noi",
@@ -240,13 +246,13 @@ function getCardsFromWorksheet(workSheet){
     const badgeCodeHeaderName = "Serie";
     const ownerCodeHeaderName = "Nume utilizator";
 
-    var originalCards = workSheet.data;
-    let len = originalCards.length;
+    var originalBadges = workSheet.data;
+    let len = originalBadges.length;
     if(len == 0){
         return `Fisierul este gol.`;
     }
 
-    let headerRow = originalCards[0];
+    let headerRow = originalBadges[0];
 
     let badgeCodeIdx = headerRow.indexOf(badgeCodeHeaderName);
     if( badgeCodeIdx == -1) return `Fisierul nu are o coloana cu numele '${badgeCodeHeaderName}'`;
@@ -257,38 +263,41 @@ function getCardsFromWorksheet(workSheet){
     let maxIdx = Math.max(badgeCodeIdx, ownerCodeIdx);
     let minCols = maxIdx + 1;
 
-    var cards = []
+    var badges = [];
+    let createdOn = new Date();
     for(let i=1; i < len; i++){
-        let cardRow = originalCards[i];
+        let badgeRow = originalBadges[i];
 
-        if(cardRow.length < minCols){
-            return `Randul ${i} nu are minimum de informatii necesare: codCard si numeCard.`;
+        if(badgeRow.length < minCols){
+            return `Randul ${i+1} nu are minimum de informatii necesare: codCard si numeCard.`;
         }
 
-        let badgeCode = cardRow[badgeCodeIdx];
+        let badgeCode = badgeRow[badgeCodeIdx];
         if(!badgeCode){
-            return `Pe randul ${i} coloana ${badgeCodeIdx + 1} nu exista informatii despre codul cardului.`;
+            return `Pe randul ${i+1} coloana ${badgeCodeIdx + 1} nu exista informatii despre codul cardului.`;
         } 
         let newBadgeCode = getNewBadgeCode(badgeCode);   
         if(newBadgeCode === "invalid"){
-            return `Pe randul ${i} coloana ${badgeCodeIdx + 1} nu exista un cod de card valid.`;
+            return `Pe randul ${i+1} coloana ${badgeCodeIdx + 1} nu exista un cod de card valid.`;
         }
 
-        let ownerCode = cardRow[ownerCodeIdx];
+        let ownerCode = badgeRow[ownerCodeIdx];
         if(!ownerCode){
-            return `Pe randul ${i} coloana ${ownerCodeIdx + 1} nu exista informatii despre detinatorul cardului.`;
+            return `Pe randul ${i+1} coloana ${ownerCodeIdx + 1} nu exista informatii despre detinatorul cardului.`;
         } 
         let newOwnerCode = getNewOwnerCode(ownerCode);             
       
         // console.log(newBadgeCode + " " + newOwnerCode);
-        cards.push({
+        badges.push({
             code: newBadgeCode,
-            ownerCode: newOwnerCode
+            ownerCode: newOwnerCode,
+            createdBy: userName,
+            createdOn: createdOn
         });
 
         
     }
-    return cards;
+    return badges;
 }
 
 function getNewBadgeCode(badgeCode){
@@ -296,7 +305,7 @@ function getNewBadgeCode(badgeCode){
     var parts = badgeCode.split(":");
     if(parts.length != 2) return "invalid";
     let newBadgeCode = parts[0] + parts[1].substring(0,5);
-    if(newBadgeCode.length != 10) return "invalid";
+    if(newBadgeCode.trim().length != 10) return "invalid";
 
     return newBadgeCode;
 }

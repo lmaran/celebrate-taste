@@ -1,5 +1,4 @@
 (function() {
-    /* global _ */
     "use strict";
     
     var module = angular.module("celebrate-taste");
@@ -7,10 +6,10 @@
     module.component("badgeList",{
         templateUrl:"app/badge/badgeList.html",
         controllerAs:"vm",
-        controller:["$location", "$window", "badgeService", "Upload", "modalService", controller]     
+        controller:["$location", "$window", "badgeService", "Upload", "modalService", "toastr", controller]     
     });
        
-    function controller($location, $window, badgeService, Upload, modalService){
+    function controller($location, $window, badgeService, Upload, modalService, toastr){
         var vm = this;
         
         //
@@ -21,32 +20,15 @@
             vm.badges = [];
             vm.errors = {};    
             
-            getCustomerEmpoyees();
+            getBadges();
         };
         
         
         //
         // public methods
-        //       
-        vm.create = function () {
-            $location.path('/admin/badges/create');
-        }
-        
-        vm.delete = function (badge) {
-            var modalOptions = {
-                bodyDetails: badge.name,           
-            };
-            modalService.confirm(modalOptions).then(function (result) {
-                badgeService.delete(badge._id).then(function () {
-                     _.remove(vm.badges, {_id: badge._id});
-                })
-                .catch(function (err) {
-                    vm.errors = JSON.stringify(err.data, null, 4);
-                    alert(vm.errors);
-                });
-            });
-        };
-
+        //  
+        vm.screenSize = window.getComputedStyle(document.body,':after').getPropertyValue('content').replace(/"/g, ''); // FF and IE add double quotes around the value
+             
         vm.upload = function (file) {
             if(file){ // otherwise, a duplicate request is sent if you try to modify an image two (or more) times
                 
@@ -55,7 +37,6 @@
                     return false;
                 } 
                 vm.inProgress = true;
-                vm.importStatusMsg = "";
 
                 Upload.upload({
                     url: 'api/badges/upload',
@@ -64,11 +45,10 @@
                     }
                 }).then(function (resp) {
                     // file is uploaded successfully
-                    //vm.dish.image = resp.data;
                     vm.errors.fileErrorMsg = ""; // reset errors
                     vm.inProgress = false;
-                    // alert(resp.data.importedCards + " carduri au fost importate cu succes.");                    
-                    vm.importStatusMsg = resp.data.importedCards + " carduri au fost importate cu succes.";
+                    vm.refresh();                 
+                    toastr.success(resp.data.importedBadges + " carduri au fost importate cu succes.");
                 }, function (resp) {
                     // handle error
                     vm.errors.fileErrorMsg = resp.data.msg; // server-side validation
@@ -85,7 +65,7 @@
             var isMatch = false;
             if (vm.search) {
                 // search by employeeName or badge
-                if (new RegExp(vm.search, 'i').test(item.name) || new RegExp(vm.search, 'i').test(item.badgeCode)) {
+                if (new RegExp(vm.search, 'i').test(item.code) || new RegExp(vm.search, 'i').test(item.ownerCode)) {
                     isMatch = true;
                 }
             } else {
@@ -96,7 +76,7 @@
         };          
 
         vm.refresh = function () {
-            getCustomerEmpoyees();
+            getBadges();
         };
 
         vm.goBack = function(){ 
@@ -107,7 +87,7 @@
         //
         // private methods
         //
-        function getCustomerEmpoyees(){
+        function getBadges(){
             badgeService.getAll().then(function (data) {
                 vm.badges = data;
             })

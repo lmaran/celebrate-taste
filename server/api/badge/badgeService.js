@@ -2,6 +2,7 @@
 
 (function (badgeService) {
     
+    var mongoHelper = require('../../data/mongoHelper');
     var mongoService = require('../../data/mongoService');
     var collection = 'badges';
  
@@ -35,6 +36,20 @@
     // ---------- RPC ----------    
     badgeService.getByValue = function (field, value, id, next) {
         mongoService.getByValue(collection, field, value, id, next);
-    };      
+    };
+
+    badgeService.removeAll = function (next) {
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);          
+            db.collection(collection).remove({}, next);
+        });
+    }; 
+
+    badgeService.createAll = function (badges, next) {
+        mongoHelper.getDb(function (err, db) {
+            if (err) return next(err, null);
+            db.collection(collection).insertMany(badges, next);      
+        });
+    };              
     
 })(module.exports);
