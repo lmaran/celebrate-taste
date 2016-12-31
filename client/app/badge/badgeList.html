@@ -16,17 +16,23 @@
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">                  
-                    <!--<button type="button" class="btn btn-primary" ng-click="vm.import()">
-                        <span class="glyphicon glyphicon-import"></span> 
-                    Import </button>-->
-
                     <button type="button" class="btn btn-primary" ngf-select="vm.upload($file)" accept=".xls, .xlsx">
                         <span class="glyphicon glyphicon-import" ng-class="{ 'glyphicon-paperclip' : !vm.inProgress, 'glyphicon-refresh spinning' : vm.inProgress}"></span>
                         <span ng-if="!vm.inProgress">Importa carduri</span> 
                         <span ng-if="vm.inProgress">Se incarca... {{vm.progressPercentage}}%</span>
                     </button>
-                    <span ng-show = "vm.errors.fileErrorMsg" style="color:#a94442">{{vm.errors.fileErrorMsg}}</span>
-                    <span>{{vm.importStatusMsg}}</span>
+                    
+                    <span ng-if="vm.screenSize === 'widescreen'" style="display:inline-block;">
+                        <div ngf-drop class="drop-box" ng-model="file" ng-change="vm.upload(file)" accept=".xls, .xlsx"
+                            ngf-drag-over-class="'dragover'" style="padding:4px 20px 4px 20px">
+
+                            sau trage fisierul Excel aici                       
+                           
+                        </div>
+                        <div ngf-no-file-drop>Facilitatea de Drag/Drop nu este suportata de catre acest browser.</div>             
+                    </span>
+                    <div ng-show = "vm.errors.fileErrorMsg" style="color:#a94442">{{vm.errors.fileErrorMsg}}</div>
+
                 </div>
             </form> 
         </div>
@@ -55,7 +61,8 @@
                 <tr>
                     <th>Cod card</th>
                     <th>Nume card</th>
-                    <th></th>
+                    <th>CreatDe</th>
+                    <th>CreatLa</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,9 +74,8 @@
                         <i class="glyphicon glyphicon-info-sign" ng-if="badge.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{badge.description}}"></i>
                     </td>
                     <td>{{ badge.ownerCode }}</td>
-                    <td>
-                        <a href ng-click="vm.delete(badge)">sterge</a>
-                    </td>
+                    <td>{{ badge.createdBy }}</td>
+                    <td>{{ badge.createdOn | date:'dd-MM-yyyy HH:mm:ss'}}</td>
                 </tr>
             </tbody>
         </table>

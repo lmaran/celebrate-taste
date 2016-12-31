@@ -19,6 +19,7 @@
                 <p><a ng-href="/admin/partnerOrders">Raport comenzi</a></p>
                 <p><a ng-href="/admin/reviews">Feedback clienti</a></p>
                 <p><a ng-href="/admin/assignedNames">Asocieri de nume</a></p>
+                <p><a ng-href="/admin/badges">Carduri</a></p>
             </div>        
         `,
         controllerAs: "vm",
