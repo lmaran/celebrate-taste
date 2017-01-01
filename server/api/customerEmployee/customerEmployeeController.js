@@ -3,8 +3,10 @@
 var customerEmployeeService = require('./customerEmployeeService');
 var customerEmployeeValidator = require('./customerEmployeeValidator');
 var preferenceService = require('../preference/preferenceService');
+var badgeService = require('../badge/badgeService');
 var config = require('../../config/environment');
 var emailService = require('../../data/emailService');
+var _ = require('lodash');
 
 
 // ---------- OData ----------
@@ -15,7 +17,35 @@ exports.getAll = function (req, res) {
         
     customerEmployeeService.getAll(odataQuery, function (err, customerEmployees) {
         if(err) { return handleError(res, err); }
-        res.status(200).json(customerEmployees);        
+        // res.status(200).json(customerEmployees);        
+        badgeService.getAll(odataQuery, function (err, badges) {
+            if(err) { return handleError(res, err); }            
+
+            let newCustomerEmployees = [];
+            customerEmployees.forEach(function(customerEmployee){
+                // find badge by name
+                let badge = _.find(badges, function(b){
+                    return normalize(b.ownerCode) == normalize(customerEmployee.name);
+                });
+
+                // if not found, search again by adjustedName
+                if(!badge){
+                    badge = _.find(badges, function(b){
+                        return normalize(b.ownerCode) == normalize(customerEmployee.adjustedName);
+                    });                    
+                }
+
+               newCustomerEmployees.push({
+                    _id: customerEmployee._id,
+                    name: customerEmployee.name,
+                    adjustedName: customerEmployee.adjustedName,
+                    isActive: customerEmployee.isActive,
+                    email: customerEmployee.email,
+                    badgeCode: badge && badge.code
+               });
+            });
+            res.status(200).json(newCustomerEmployees);        
+        });        
     });
 };
 
@@ -138,3 +168,11 @@ exports.checkEmail = function (req, res) {
 function handleError(res, err) {
     return res.status(500).send(err);
 };
+
+// todo: refactor as it is used in ordeLineController too
+function normalize(str){
+    if(!str) return undefined;
+    return str.toLowerCase()
+        .replace(/-/g , ' ') // replace dash with one space
+        .replace(/ {2,}/g,' '); // replace multiple spaces with a single space
+}
