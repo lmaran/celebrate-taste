@@ -4,6 +4,7 @@ var orderLineService = require('./orderLineService');
 var orderLineValidator = require('./orderLineValidator');
 var importDataValidator = require('./importDataValidator');
 var customerEmployeeService = require('../customerEmployee/customerEmployeeService');
+var badgeService = require('../badge/badgeService');
 var preferenceService = require('../preference/preferenceService');
 var menuService = require('../menu/menuService');
 var async = require('async');
@@ -15,13 +16,58 @@ exports.getAll = function (req, res) {
     var odataQuery = req.query;
     odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
     if(!odataQuery.$top) odataQuery.$top = "1000"; // if $top is not specified, return max. 1000 records
-        
-    orderLineService.getAll(odataQuery, function (err, orderLines) {
-        if(err) { return handleError(res, err); }
-        res.status(200).json(orderLines);        
-    });
+    
+    promiseToGetOrderLines(odataQuery).then(function(orderLines){
+        res.status(200).json(orderLines); 
+    })
+    .catch(function(err){
+        return handleError(res, err);
+    })    
 };
 
+exports.getAllWithBadgeInfo = function (req, res) {
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+    if(!odataQuery.$top) odataQuery.$top = "1000"; // if $top is not specified, return max. 1000 records
+
+    let p1 = promiseToGetOrderLines(odataQuery);
+    let p2 = promiseToGetCustomerEmployees("");
+    let p3 = promiseToGetBadges("");
+    
+    Promise.all([p1, p2, p3]).then(function(results){
+        let orderLines = results[0];
+        let customerEmployees = results[1];
+        let badges = results[2];
+
+        let newOrderLines = [];
+        orderLines.forEach(function(orderLine){
+            // find badge by name
+            let badge = _.find(badges, function(b){
+                return normalize(b.ownerCode) == normalize(orderLine.employeeName);
+            });
+
+            // if not found, identify the employee and then search again by its adjustedName
+            if(!badge){
+                let customerEmployee = _.find(customerEmployees, function(c){
+                    return normalize(c.name) == normalize(orderLine.employeeName);
+                });
+
+                if(customerEmployee && customerEmployee.adjustedName){
+                    badge = _.find(badges, function(b){
+                        return normalize(b.ownerCode) == normalize(customerEmployee.adjustedName);
+                    }); 
+                }                   
+            }
+
+            orderLine.badgeCode = badge && badge.code;
+            newOrderLines.push(orderLine);
+        });
+        res.status(200).json(newOrderLines); 
+    })
+    .catch(function(err){
+        return handleError(res, err);
+    })    
+};
 
 // ---------- REST ----------
 exports.create = function(req, res){
@@ -82,7 +128,6 @@ exports.getById = function (req, res) {
 
 exports.update = function(req, res){
     var orderLine = req.body;
-    
     orderLine.modifiedBy = req.user.name;    
     orderLine.modifiedOn = new Date(); 
         
@@ -262,10 +307,36 @@ function handleError(res, err) {
 };
 
 function normalize(str){
+    if(!str) return undefined;
     return str.toLowerCase()
         .replace(/-/g , ' ') // replace dash with one space
         .replace(/ {2,}/g,' '); // replace multiple spaces with a single space
 }
-  
-  
+ 
+function promiseToGetOrderLines(odataQuery){
+    return new Promise(function(resolve, reject) {
+        orderLineService.getAll(odataQuery, function (err, orderLines) {
+            if(err) { reject(err) }
+            resolve(orderLines);
+        });  
+    });   
+}
+
+function promiseToGetCustomerEmployees(odataQuery){
+    return new Promise(function(resolve, reject) {
+        customerEmployeeService.getAll(odataQuery, function (err, customerEmployees) {
+            if(err) { reject(err) }
+            resolve(customerEmployees);
+        });  
+    });   
+}
+
+function promiseToGetBadges(odataQuery){
+    return new Promise(function(resolve, reject) {
+        badgeService.getAll(odataQuery, function (err, badges) {
+            if(err) { reject(err) }
+            resolve(badges);
+        });  
+    });   
+}  
  

@@ -51,7 +51,7 @@
             var isMatch = false;
             if (vm.search) {
                 // search by employeeName or badge
-                if (new RegExp(vm.search, 'i').test(item.name) || new RegExp(vm.search, 'i').test(item.badgeCode)) {
+                if (new RegExp(vm.search, 'i').test(item.name) || new RegExp(vm.search, 'i').test(item.badgeCode) || new RegExp(vm.search, 'i').test(item.adjustedName)) {
                     isMatch = true;
                 }
             } else {
@@ -74,7 +74,7 @@
         // private methods
         //
         function getCustomerEmpoyees(){
-            customerEmployeeService.getAll().then(function (data) {
+            customerEmployeeService.getAllWithBadgeInfo().then(function (data) {
                 vm.customerEmployees = data;
             })
             .catch(function (err) {

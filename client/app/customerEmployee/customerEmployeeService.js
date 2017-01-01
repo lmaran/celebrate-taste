@@ -24,6 +24,12 @@ app.factory('customerEmployeeService', ['$http', function ($http) {
         });
     };
 
+    factory.getAllWithBadgeInfo = function () {
+        return $http.get(rootUrl + "/getAllWithBadgeInfo").then(function (result) {
+            return result.data;
+        });
+    };    
+
     factory.getById = function (itemId) {
         return $http.get(rootUrl + encodeURIComponent(itemId)).then(function (result) {
             return result.data;

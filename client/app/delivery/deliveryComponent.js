@@ -8,10 +8,10 @@
     module.component("delivery",{
         templateUrl:"app/delivery/delivery.html",
         controllerAs:"vm",
-        controller:["$route", "$window", "deliveryService", "helperValidator", "helperService", "orderLineService", "$uibModal", "menuService", "toastr", "customerEmployeeService", "orderService", "deliveryLogService", controller]       
+        controller:["$route", "$window", "deliveryService", "helperValidator", "helperService", "orderLineService", "$uibModal", "menuService", "toastr", "customerEmployeeService", "orderService", "deliveryLogService", "badgeService", controller]       
     });
        
-    function controller($route, $window, deliveryService, helperValidator, helperService, orderLineService, $uibModal, menuService, toastr, customerEmployeeService, orderService, deliveryLogService){
+    function controller($route, $window, deliveryService, helperValidator, helperService, orderLineService, $uibModal, menuService, toastr, customerEmployeeService, orderService, deliveryLogService, badgeService){
         var vm = this;
         
         //
@@ -25,7 +25,10 @@
 
             vm.obj={};
             vm.obj.isFocusOnBadge = true;   
-            vm.preferences=['A', 'B', 'C', 'D'];      
+            vm.preferences=['A', 'B', 'C', 'D'];  
+            getBadges();
+            getCustomerEmployees();
+
         };
         
         vm.$routerOnActivate = function (next, previous) {
@@ -94,15 +97,16 @@
             
         vm.selectTab1 = function(){       
             vm.obj.isFocusOnBadge = true;
+            vm.errorValidation = false; // remove any error message
             vm.orderLine = undefined;
             getDeliverySummary(vm.delivery.orderId, vm.delivery.eatSeries)
         }
-        
+
         vm.deliverByBadge = function(form){
+            vm.errorValidation = false; // remove any error message
             vm.orderLine = undefined; // clean up the screen
             if(vm.obj.badgeCode.length !== 10 || isNaN(vm.obj.badgeCode)){
-                vm.errorValidation = true;
-                vm.errorMessage = "'" +vm.obj.badgeCode +  "' este un cod invalid! (nu are 10 cifre)";
+                showMessage("'" +vm.obj.badgeCode +  "' este un cod invalid! (nu are 10 cifre)");
                 vm.obj.badgeCode = ''; // reset badgeCode in UI
                 vm.obj.isFocusOnBadge = true; 
                 return;
@@ -110,81 +114,63 @@
             
             var newBadgeCode = getNewBadge(vm.obj.badgeCode); // '0007453659' --> '0011348091'
             
-            orderLineService.getOrderLinesByBadge(vm.delivery.orderId, newBadgeCode).then(function (orderLines) {
-                if(orderLines.length === 0){
-                    // var bCode = vm.obj.badgeCode;
-                    customerEmployeeService.getByBadge(newBadgeCode).then(function (customerEmployees) {
+            var badge = _.find(vm.badges, {code: newBadgeCode});
+            if(!badge){
+                showMessage("Card negasit: " + newBadgeCode);                
+            } else {
+                var newEmployeeName = badge.ownerCode;
+                
+                // check to see if there is an adjustedName
+                var customerEmployee = _.find(vm.customerEmployees, function(c){
+                    return normalize(c.adjustedName) === normalize(badge.ownerCode);
+                });  
+             
+                if(customerEmployee){
+                    newEmployeeName = customerEmployee.name;
+                }  
+
+                orderLineService.getOrderLinesByEmployeeName(vm.delivery.orderId, newEmployeeName).then(function (orderLines) {
+                    if(orderLines.length === 0){
+                        showMessage("Lipsa comanda pt. '" + newEmployeeName + "'.");                        
+                    } else if(orderLines.length > 1) {
+                        showMessage("Exista mai multe comenzi cu acelasi persoana: '" + newEmployeeName + "'.");            
+                    } else if(orderLines[0].eatSeries !== vm.delivery.eatSeries) {
+                        if(orderLines[0].status === 'completed')
+                            showMessage("'" + newEmployeeName + "' a mancat in " + orderLines[0].eatSeries + "."); 
+                        else
+                            showMessage("'" + newEmployeeName + "' a fost programat in " + orderLines[0].eatSeries + ".");             
+                    } else {
+                        vm.orderLine = orderLines[0];
                         
-                        if(customerEmployees.length > 0){
-                            vm.errorMessage = "Lipsa comanda pt. " + customerEmployees[0].name;
-                        } else {
-                            //vm.errorMessage = "Card negasit: " + bCode + " (" + newBadgeCode + ")";
-                            vm.errorMessage = "Card negasit: " + newBadgeCode;
+                        if(vm.orderLine.status !== 'completed'){
+                            // set orderLine as 'completed' and save
+                            var orderLineClone = {};
+                            angular.copy(vm.orderLine, orderLineClone); // deep copy (to deal with status and 'strike-through')
+                
+                            orderLineClone.status = 'completed';
+                            orderLineClone.deliveryDate = new Date();    
+                            orderLineClone.deliveryMode = "card";
+                                                                            
+                            orderLineService.update(orderLineClone)
+                                .then(function (data) {
+                                    vm.deliverySummary = data.data;
+                                    toastr.success('Livrarea a fost inregistrata!');
+                                })
+                                .catch(function (err) {
+                                    alert(JSON.stringify(err.data, null, 4)); 
+                                })                    
                         }
                         
-                        vm.errorValidation = true;
-                        
-                        // collect log info
-                        var log = {
-                            orderDate: vm.delivery.orderDate,
-                            series: vm.delivery.eatSeries,
-                            msg: vm.errorMessage
-                        }
-                        
-                        deliveryLogService.create(log)
-                            .then(function () {
-                                toastr.success('Datele despre acest card au fost memorate pt. investigatii ulterioare.');
-                            })
-                            .catch(function (err) {
-                                alert(JSON.stringify(err.data, null, 4)); 
-                            })                     
-                        
-                    })
-                    .catch(function (err) {
-                        alert(JSON.stringify(err, null, 4));
-                    })                
-                    
-                } else if(orderLines.length > 1) {
-                    vm.errorValidation = true;
-                    vm.errorMessage = "Exista mai multe persoane cu acelasi card: " + newBadgeCode + ")";            
-                } else if(orderLines[0].eatSeries !== vm.delivery.eatSeries) {
-                    vm.errorValidation = true;
-                    if(orderLines[0].status === 'completed')
-                        vm.errorMessage = "Posesorul acestui card a mancat in " + orderLines[0].eatSeries + "."; 
-                    else
-                        vm.errorMessage = "Posesorul acestui card a fost programat in " + orderLines[0].eatSeries + ".";             
-                } else {
-                    vm.errorValidation = false;
-                    vm.orderLine = orderLines[0];
-                    
-                    if(vm.orderLine.status !== 'completed'){
-                        // set orderLine as 'completed' and save
-                        var orderLineClone = {};
-                        angular.copy(vm.orderLine, orderLineClone); // deep copy (to deal with status and 'strike-through')
-            
-                        orderLineClone.status = 'completed';
-                        orderLineClone.deliveryDate = new Date();    
-                        orderLineClone.deliveryMode = "card";
-                                                                        
-                        orderLineService.update(orderLineClone)
-                            .then(function (data) {
-                                vm.deliverySummary = data.data;
-                                toastr.success('Livrarea a fost inregistrata!');
-                            })
-                            .catch(function (err) {
-                                alert(JSON.stringify(err.data, null, 4)); 
-                            })                    
+                        setDishOptions(vm.orderLine);
                     }
-                    
-                    setDishOptions(vm.orderLine);
-                }
-                vm.obj.badgeCode = ''; // reset badgeCode in UI
-                vm.obj.isFocusOnBadge = true;                                   
-            })
-            .catch(function (err) {
-                alert(JSON.stringify(err, null, 4));
-            });                 
-        }
+                    vm.obj.badgeCode = ''; // reset badgeCode in UI
+                    vm.obj.isFocusOnBadge = true;                                   
+                })
+                .catch(function (err) {
+                    alert(JSON.stringify(err, null, 4));
+                });  
+            }   
+        }        
         
         // return an orderLine back to open status
         vm.revoke = function (orderLine) { 
@@ -262,8 +248,26 @@
             .catch(function (err) {
                 alert(JSON.stringify(err, null, 4));
             }) 
-        }  
-        
+        } 
+
+        function getBadges(){
+            badgeService.getAll().then(function (data) {
+                vm.badges = data;         
+            })
+            .catch(function (err) {
+                alert(JSON.stringify(err, null, 4));
+            }) 
+        } 
+
+        function getCustomerEmployees(){
+            customerEmployeeService.getAll().then(function (data) {
+                vm.customerEmployees = data;         
+            })
+            .catch(function (err) {
+                alert(JSON.stringify(err, null, 4));
+            }) 
+        }
+
         function dt(dateAsString) { // yyyy-mm-dd
             return helperService.getObjFromString(dateAsString);
         }
@@ -321,7 +325,34 @@
         // padDigits(23, 4); --> "0023"
         function padDigits(number, digits) {
             return Array(Math.max(digits - String(number).length + 1, 0)).join('0') + number;
-        }   
+        }  
+
+        function normalize(str){
+            if(!str) return undefined;
+            return str.toLowerCase()
+                .replace(/-/g , ' ') // replace dash with one space
+                .replace(/ {2,}/g,' '); // replace multiple spaces with a single space
+        } 
+
+        function showMessage(msg){
+            vm.errorValidation = true;
+            vm.errorMessage = msg;
+
+            // collect log info
+            var log = {
+                orderDate: vm.delivery.orderDate,
+                series: vm.delivery.eatSeries,
+                msg: msg
+            }
+            
+            deliveryLogService.create(log)
+                .then(function () {
+                    toastr.success('Datele despre acest card au fost memorate pt. investigatii ulterioare.');
+                })
+                .catch(function (err) {
+                    alert(JSON.stringify(err.data, null, 4)); 
+                })    
+        }        
     
     }
     

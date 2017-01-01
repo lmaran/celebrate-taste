@@ -36,27 +36,18 @@
             </div>
                         
         </div>
-        
-        <div class="form-group" ng-class="{'has-error' : form.badgeCode.$invalid }">
-            <label class="col-md-2 control-label">Card</label>
-            <div class="col-md-4">
-                <input type="text" name="badgeCode" ng-model="vm.orderLine.badgeCode" class="form-control"/>
-                <!--<p class="text-muted">Ex: Petrescu Ion / Delegat 1</p>-->
-                <p ng-show="form.badgeCode.$error.myValidation" class="help-block">{{vm.errors.badgeCode}}</p>
-            </div>
-        </div> 
-        
-        <div class="form-group" ng-class="{'has-error' : form.badgeCode.$invalid }">
+               
+        <div class="form-group" ng-class="{'has-error' : form.option1.$invalid }">
             <label class="col-md-2 control-label">Preferinte</label>
             <div class="col-md-2">
-                <input type="text" name="badgeCode" ng-model="vm.orderLine.option1" class="form-control text-uppercase" maxlength="1"/>
+                <input type="text" name="option1" ng-model="vm.orderLine.option1" class="form-control text-uppercase" maxlength="1"/>
                 <p class="text-muted">Supa (Ex: A/B)</p>
-                <p ng-show="form.badgeCode.$error.myValidation" class="help-block">{{errors.badgeCode}}</p>
+                <p ng-show="form.option1.$error.myValidation" class="help-block">{{errors.option1}}</p>
             </div>
             <div class="col-md-2">
-                <input type="text" name="badgeCode" ng-model="vm.orderLine.option2" class="form-control text-uppercase" maxlength="1"/>
+                <input type="text" name="option2" ng-model="vm.orderLine.option2" class="form-control text-uppercase" maxlength="1"/>
                 <p class="text-muted">Felul 2 (Ex: C/D)</p>
-                <p ng-show="form.badgeCode.$error.myValidation" class="help-block">{{vm.errors.badgeCode}}</p>
+                <p ng-show="form.option2.$error.myValidation" class="help-block">{{vm.errors.option2}}</p>
             </div>            
         </div>               
         
@@ -83,12 +74,5 @@
         </div>
 
     </form>
-
-    <!--</br/>
-    </br/>
-    <p>Observatie:</p>
-    <p class="text-muted">
-        - pentru angajatii permanenti, este recomandabil ca <strong>numele cardului</strong> sa coincida cu <strong>numele angajatului</strong>.<br/>
-    </p>-->
 
 </div>
