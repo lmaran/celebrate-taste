@@ -120,8 +120,7 @@
         
         vm.selectEmployee = function(item, model){
             vm.orderLine.employeeName = vm.obj.selectedEmployee.name;
-            vm.orderLine.badgeCode = vm.obj.selectedEmployee.badgeCode; 
-            preferenceService.getByEmployeeAndDate(vm.orderLine.employeeName, vm.orderLine.orderDate)
+             preferenceService.getByEmployeeAndDate(vm.orderLine.employeeName, vm.orderLine.orderDate)
                 .then(function(preferences){
                     if(preferences.length === 1){                    
                         vm.orderLine.option1 = preferences[0].option1;

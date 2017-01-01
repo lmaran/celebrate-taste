@@ -13,6 +13,13 @@ app.factory('orderLineService', ['$http', function ($http) {
             return result.data;
         });
     };
+
+    factory.getAllWithBadgeInfo = function (orderId) {
+        var query = "?$filter=orderId eq '" + orderId + "'";
+        return $http.get(rootUrl + "/getAllWithBadgeInfo" + query).then(function (result) {
+            return result.data;
+        });
+    };    
         
     factory.getEatSeriesDetails = function (orderId, eatSeries) {
         var query = "?$filter=orderId eq '" + orderId + "' and eatSeries eq '" +  eatSeries +  "'";
@@ -26,7 +33,14 @@ app.factory('orderLineService', ['$http', function ($http) {
         return $http.get(rootUrl + query).then(function (result) {
             return result.data;
         });
-    };    
+    };
+
+    factory.getOrderLinesByEmployeeName = function (orderId, employeeName) {
+        var query = "?$filter=orderId eq '" + orderId + "' and employeeName eq '" + encodeURIComponent(employeeName) + "'";
+        return $http.get(rootUrl + query).then(function (result) {
+            return result.data;
+        });
+    };       
     
     factory.getOrderLinesBySeriesAndStatus = function (orderId, eatSeries, status) {
         var query = "?$filter=orderId eq '" + orderId + "' and eatSeries eq '" +  eatSeries +  "' and status eq '" + status + "'";

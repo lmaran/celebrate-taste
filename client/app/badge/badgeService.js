@@ -41,5 +41,12 @@ app.factory('badgeService', ['$http', function ($http) {
 
     // ---------- RPC ----------
     
+    factory.getByCode = function (badgeCode) {
+        var query = "?$filter=code eq '" + encodeURIComponent(badgeCode) + "'";
+        return $http.get(rootUrl + query).then(function (result) {
+            return result.data;
+        });
+    };
+
     return factory;
 }]);

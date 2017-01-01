@@ -147,7 +147,7 @@
         // private methods
         //
         function getOrderLines(){
-            orderLineService.getAll(vm.orderId).then(function (data) {
+            orderLineService.getAllWithBadgeInfo(vm.orderId).then(function (data) {
                 vm.orderLines = data;
                 
                 vm.eatSeriesList = _.chain(vm.orderLines).map('eatSeries').uniq().sortBy().value();

@@ -5,6 +5,7 @@ var controller = require('./orderLineController');
 var router = express.Router();
 
 // ---------- OData ----------
+router.get('/getAllWithBadgeInfo', controller.getAllWithBadgeInfo);
 router.get('/', controller.getAll);
 router.get('/\\$count', controller.getAll);
 
