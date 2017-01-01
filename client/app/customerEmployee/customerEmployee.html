@@ -15,13 +15,22 @@
     <form ng-submit="vm.isEditMode ? vm.update(form) : vm.create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
 
         <div class="form-group" ng-class="{'has-error' : form.name.$invalid}">
-            <label class="col-md-2 control-label required">Nume </label>
+            <label class="col-md-2 control-label required">Nume</label>
             <div class="col-md-4">
                 <input type="text" name="name" ng-model="vm.customerEmployee.name" class="form-control" lm-focus="vm.isFocusOnName"/>
-                <p class="text-muted">Numele in format <strong>Nume</strong> + <strong>Prenume</strong>.</p>
+                <p class="text-muted">Numele de pe comanda (<strong>Nume</strong> + <strong>Prenume</strong>).</p>
                 <p ng-show="form.name.$error.myValidation" class="help-block">{{vm.errors.name}}</p>
             </div>
         </div>
+
+        <div class="form-group" ng-class="{'has-error' : form.adjustedName.$invalid}">
+            <label class="col-md-2 control-label">Corectie nume</label>
+            <div class="col-md-4">        
+                <input type="text" name="adjustedName" ng-model="vm.customerEmployee.adjustedName" class="form-control"/>                
+                <p class="text-muted">Numele de pe card. <strong>Doar daca difera!</strong></p>
+                <p ng-show="form.adjustedName.$error.myValidation" class="help-block">{{vm.errors.adjustedName}}</p>                
+            </div>
+        </div>         
 
         <div class="form-group" ng-class="{'has-error' : form.email.$invalid}">
             <label class="col-md-2 control-label">Email </label>
@@ -32,14 +41,14 @@
             </div>
         </div>
         
-        <div class="form-group" ng-class="{'has-error' : form.badgeCode.$invalid}">
+        <!--<div class="form-group" ng-class="{'has-error' : form.badgeCode.$invalid}">
             <label class="col-md-2 control-label">Card</label>
             <div class="col-md-4">        
                 <input type="text" name="badgeCode" ng-model="vm.customerEmployee.badgeCode" class="form-control"/>                
                 <p class="text-muted">Cardul de acces. Ex: 0002594062 (10 cifre)</p>
                 <p ng-show="form.badgeCode.$error.myValidation" class="help-block">{{vm.errors.badgeCode}}</p>                
             </div>
-        </div> 
+        </div> -->
 
 
         <div ng-show="vm.isEditMode" class="form-group">
