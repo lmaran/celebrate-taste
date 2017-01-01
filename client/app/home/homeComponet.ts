@@ -10,6 +10,7 @@
                 </br>
                 <p ng-if-start="vm.isAdmin()"><a ng-href="/admin/users">Utilizatori</a></p>
                 <p><a ng-href="/admin/customerEmployees">Angajati client</a></p>
+                <p><a ng-href="/admin/badges">Carduri</a></p>                
                 <p><a ng-href="/admin/dishes">Feluri de mancare</a></p>
                 <p><a ng-href="/admin/menus">Meniuri</a></p>
                 <p><a ng-href="/admin/preferences">Preferinte</a></p>
@@ -18,8 +19,6 @@
                 <p ng-if-end><a ng-href="/admin/deliveryLogs">Notificari</a></p>
                 <p><a ng-href="/admin/partnerOrders">Raport comenzi</a></p>
                 <p><a ng-href="/admin/reviews">Feedback clienti</a></p>
-                <p><a ng-href="/admin/assignedNames">Asocieri de nume</a></p>
-                <p><a ng-href="/admin/badges">Carduri</a></p>
             </div>        
         `,
         controllerAs: "vm",
