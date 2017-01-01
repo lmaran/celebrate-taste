@@ -68,8 +68,6 @@ module.exports = function(app) {
     app.use('/api/orderLines', auth.hasRole('admin'), require('./api/orderLine/orderLineRoutes'));
     app.use('/api/deliveries', auth.hasRole('admin'), require('./api/delivery/deliveryRoutes'));
     app.use('/api/deliveryLogs', auth.hasRole('admin'), require('./api/deliveryLog/deliveryLogRoutes'));
-
-    app.use('/api/assignedNames', auth.hasRole('admin'), require('./api/assignedName/assignedNameRoutes'));
     
     app.use('/api/badges', auth.hasRole('admin'), require('./api/badge/badgeRoutes'));
 
