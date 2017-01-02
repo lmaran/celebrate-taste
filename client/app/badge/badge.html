@@ -1,0 +1,82 @@
+<ol class="breadcrumb">
+    <li>
+        <button ng-click="vm.goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+            <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
+        </button>
+        <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
+    </li>
+    <li><a href="/admin/assignedNames">Carduri</a></li>
+    <li class="active">Card: {{vm.assignedName.name || 'nou'}}</li>
+</ol>
+
+<div class="container-fluid">
+    <h1>{{vm.pageTitle}}</h1>
+
+    <form ng-submit="vm.isEditMode ? vm.update(form) : vm.create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
+
+        <div class="form-group" ng-class="{'has-error' : form.badgeOwnerCode.$invalid}">
+            <label class="col-md-2 control-label">Nume card</label>
+            <div class="col-md-4">
+                <select name="badgeOwnerCode" class="form-control" ng-model="vm.assignedName.badgeOwnerCode" ng-options="badge.ownerCode as badge.ownerCode for badge in vm.badges"></select>
+                <p ng-show="form.badgeOwnerCode.$error.myValidation" class="help-block">{{vm.errors.badgeOwnerCode}}</p>                 
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error' : form.employeeId.$invalid}">
+            <label class="col-md-2 control-label">Nume angajat</label>
+            <div class="col-md-4">
+                <select name="employeeId" class="form-control" ng-model="vm.assignedName.employeeId" ng-options="employee._id as employee.name for employee in vm.employees"></select>
+                <p ng-show="form.employeeId.$error.myValidation" class="help-block">{{vm.errors.employeeId}}</p>                 
+            </div>
+        </div>        
+
+        <!--<div class="form-group" ng-class="{'has-error' : form.name.$invalid}">
+            <label class="col-md-2 control-label required">Nume </label>
+            <div class="col-md-4">
+                <input type="text" name="name" ng-model="vm.assignedName.name" class="form-control" lm-focus="vm.isFocusOnName"/>
+                <p class="text-muted">Numele in format <strong>Nume</strong> + <strong>Prenume</strong>.</p>
+                <p ng-show="form.name.$error.myValidation" class="help-block">{{vm.errors.name}}</p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error' : form.email.$invalid}">
+            <label class="col-md-2 control-label">Email </label>
+            <div class="col-md-4">
+                <input type="email" stop-email-validation name="email" ng-model="vm.assignedName.email" class="form-control"/>
+                <p class="text-muted">Necesar pt. cine doreste sa-si faca cont in aplicatie.</p>
+                <p ng-show="form.email.$error.myValidation" class="help-block">{{vm.errors.email}}</p>
+            </div>
+        </div>
+        
+        <div class="form-group" ng-class="{'has-error' : form.badgeCode.$invalid}">
+            <label class="col-md-2 control-label">Card</label>
+            <div class="col-md-4">        
+                <input type="text" name="badgeCode" ng-model="vm.assignedName.badgeCode" class="form-control"/>                
+                <p class="text-muted">Cardul de acces. Ex: 0002594062 (10 cifre)</p>
+                <p ng-show="form.badgeCode.$error.myValidation" class="help-block">{{vm.errors.badgeCode}}</p>                
+            </div>
+        </div> 
+
+
+
+        
+        <div ng-show="vm.isEditMode" class="form-group" ng-class="{ 'has-error' : form.askForNotification.$invalid}">
+            <div class="col-md-4 col-md-offset-2">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="vm.assignedName.askForNotification"> Trimite un email la client pt. creare cont.
+                    </label>
+                </div>
+            </div>
+        </div>         -->
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-floppy-disk"></span> Salveaza </button>
+                <button type="button" class="btn btn-default" ng-click="vm.goBack()"> <span class=" glyphicon glyphicon-remove"></span> Renunta </button>
+            </div>
+        </div>
+
+    </form>
+
+</div>

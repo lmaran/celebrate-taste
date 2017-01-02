@@ -3,8 +3,10 @@
 var customerEmployeeService = require('./customerEmployeeService');
 var customerEmployeeValidator = require('./customerEmployeeValidator');
 var preferenceService = require('../preference/preferenceService');
+var badgeService = require('../badge/badgeService');
 var config = require('../../config/environment');
 var emailService = require('../../data/emailService');
+var _ = require('lodash');
 
 
 // ---------- OData ----------
@@ -12,13 +14,56 @@ exports.getAll = function (req, res) {
     var odataQuery = req.query;
     odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
     if(!odataQuery.$top) odataQuery.$top = "1000"; // if $top is not specified, return max. 1000 records
-        
-    customerEmployeeService.getAll(odataQuery, function (err, customerEmployees) {
-        if(err) { return handleError(res, err); }
-        res.status(200).json(customerEmployees);        
-    });
+    
+    promiseToGetCustomerEmployees(odataQuery).then(function(customerEmployees){
+        res.status(200).json(customerEmployees); 
+    })
+    .catch(function(err){
+        return handleError(res, err);
+    })    
 };
 
+exports.getAllWithBadgeInfo = function (req, res) {
+    var odataQuery = req.query;
+    odataQuery.hasCountSegment = req.url.indexOf('/$count') !== -1 //check for $count as a url segment
+    if(!odataQuery.$top) odataQuery.$top = "1000"; // if $top is not specified, return max. 1000 records
+
+    let p1 = promiseToGetCustomerEmployees(odataQuery);
+    let p2 = promiseToGetBadges("");
+    
+    Promise.all([p1, p2]).then(function(results){
+        let customerEmployees = results[0];
+        let badges = results[1];
+
+        let newCustomerEmployees = [];
+        customerEmployees.forEach(function(customerEmployee){
+            // find badge by name
+            let badge = _.find(badges, function(b){
+                return normalize(b.ownerCode) == normalize(customerEmployee.name);
+            });
+
+            // if not found, search again by adjustedName
+            if(!badge){
+                badge = _.find(badges, function(b){
+                    return normalize(b.ownerCode) == normalize(customerEmployee.adjustedName);
+                });                    
+            }
+
+            newCustomerEmployees.push({
+                _id: customerEmployee._id,
+                name: customerEmployee.name,
+                adjustedName: customerEmployee.adjustedName,
+                isActive: customerEmployee.isActive,
+                email: customerEmployee.email,
+                badgeCode: badge && badge.code
+            });
+        });
+        res.status(200).json(newCustomerEmployees);   
+    })
+    .catch(function(err){
+        return handleError(res, err);
+    })
+};
 
 // ---------- REST ----------
 exports.create = function(req, res){
@@ -138,3 +183,29 @@ exports.checkEmail = function (req, res) {
 function handleError(res, err) {
     return res.status(500).send(err);
 };
+
+// todo: refactor as it is used in ordeLineController too
+function normalize(str){
+    if(!str) return undefined;
+    return str.toLowerCase()
+        .replace(/-/g , ' ') // replace dash with one space
+        .replace(/ {2,}/g,' '); // replace multiple spaces with a single space
+}
+
+function promiseToGetCustomerEmployees(odataQuery){
+    return new Promise(function(resolve, reject) {
+        customerEmployeeService.getAll(odataQuery, function (err, customerEmployees) {
+            if(err) { reject(err) }
+            resolve(customerEmployees);
+        });  
+    });   
+}
+
+function promiseToGetBadges(odataQuery){
+    return new Promise(function(resolve, reject) {
+        badgeService.getAll(odataQuery, function (err, badges) {
+            if(err) { reject(err) }
+            resolve(badges);
+        });  
+    });   
+} 
