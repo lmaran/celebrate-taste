@@ -1,0 +1,22 @@
+{
+	"extends": "tslint:recommended", // https://github.com/palantir/tslint/blob/master/src/configs/recommended.ts
+	"rules": {
+		"no-consecutive-blank-lines": false,
+		"no-var-requires": false,
+		"no-console": [false],
+		"one-line": [
+			true,
+			"check-open-brace",
+			"check-catch",
+			"check-whitespace"
+		],
+		"trailing-comma": [
+			"never"
+		],
+		"object-literal-sort-keys": false,
+		"eofline": false,
+		"triple-equals": false,
+		"max-line-length": [false],
+		"one-variable-per-declaration": false
+	}
+}
