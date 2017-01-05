@@ -8,10 +8,10 @@
     module.component("delivery",{
         templateUrl:"app/delivery/delivery.html",
         controllerAs:"vm",
-        controller:["$route", "$window", "deliveryService", "helperValidator", "helperService", "orderLineService", "$uibModal", "menuService", "toastr", "customerEmployeeService", "orderService", "deliveryLogService", "badgeService", controller]
+        controller:["$route", "$window", "deliveryService", "helperValidator", "helperService", "orderLineService", "$uibModal", "menuService", "toastr", "customerEmployeeService", "orderService", "deliveryLogService", "badgeService", "$timeout", controller]
     });
 
-    function controller($route, $window, deliveryService, helperValidator, helperService, orderLineService, $uibModal, menuService, toastr, customerEmployeeService, orderService, deliveryLogService, badgeService){
+    function controller($route, $window, deliveryService, helperValidator, helperService, orderLineService, $uibModal, menuService, toastr, customerEmployeeService, orderService, deliveryLogService, badgeService, $timeout){
         var vm = this;
 
         //
@@ -29,7 +29,14 @@
             getBadges();
             getCustomerEmployees();
 
+            // Firefox ignores autocomplete="off" for passwords so we have to reset this field manualy            
+            // http://stackoverflow.com/a/2531          
+            $timeout(resetInputField, 3000); 
         };
+
+        function resetInputField(){
+            vm.obj.badgeCode = "";
+        }
 
         vm.$routerOnActivate = function (next, previous) {
             deliveryId = next.params.id;
@@ -105,6 +112,7 @@
         vm.deliverByBadge = function(form){
             vm.errorValidation = false; // remove any error message
             vm.orderLine = undefined; // clean up the screen
+            vm.obj.badgeCode = vm.obj.badgeCode.trim();
             if(vm.obj.badgeCode.length !== 10 || isNaN(vm.obj.badgeCode)){
                 showMessage("'" +vm.obj.badgeCode +  "' este un cod invalid! (nu are 10 cifre)");
                 vm.obj.badgeCode = ''; // reset badgeCode in UI
