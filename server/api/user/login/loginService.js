@@ -92,17 +92,24 @@ function signToken(id) {
 // }
 
 // used by loginLocalController
-function setCookies(req, res, token, userProfile){        
+function setCookies(req, res, token, userProfile){     
+    // Stormpath recommends that you store your JWT in cookies: 
+    // https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage
+    // all details are sumarized here: http://disq.us/p/16qo82e
     var milliseconds = 1000*60*60*24*365;  // (1000 = 1 sec) http://stackoverflow.com/a/9718416/2726725
+
     var isSecure = process.env.NODE_ENV == 'production'; // in production the coockie is sent only over https
     
-    //res.cookie('TOKEN', 'cookievalue', { maxAge:milliseconds, httpOnly: true, secure:isSecure });
-
+    // "secure" flag == true => this cookie will only be sent over an HTTPS connection
+    // "httpOnly" flag == true => JavaScript will not be able to read this authentication cookie 
+    // "httpOnly" is used to prevent XSS (Cross-Site Scripting)
     var c1 = cookie.serialize('access_token', token, { path:'/', maxAge:milliseconds, httpOnly: true, secure:isSecure});
     
-    // 'XSRF-TOKEN' is the default name in Anguler for CSRF token     
+    // 'XSRF-TOKEN' is the default name in Anguler for CSRF token   
+    // 'XSRF-TOKEN' is used to prevent CSRF (Cross-Site Request Forgery)
     var c2 = cookie.serialize('XSRF-TOKEN', token, { path:'/', maxAge:milliseconds});
     
+    // only for client
     var c3 = cookie.serialize('user', JSON.stringify(userProfile), { path:'/', maxAge:milliseconds});
 
     // http://www.connecto.io/blog/nodejs-express-how-to-set-multiple-cookies-in-the-same-response-object/

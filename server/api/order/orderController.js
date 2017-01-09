@@ -205,7 +205,7 @@ function printSummary(req, res){
             
             menuService.getTodaysMenu(orderDate, function (err, menu) {
                 if(err) { return handleError(res, err); }
-                
+
                 doc.fontSize(18)
                     .text("Centralizator comanda", {align:'center'})
                     .fontSize(12)
@@ -218,22 +218,23 @@ function printSummary(req, res){
                     doc.moveDown(0.5); 
                     var options = _.sortBy(summaryLine.options, 'value');
                     options.forEach(function(option) {
-                        
-                        // produce a list with acumulated values:
-                        // total = [{'A':107}, {'B':223}, {'C':106}, {'D':224}]
-                        var t = {};
-                        var key = option.value; // => 'A'
-                        t[key] = option.count; // => 24
-                        var existingOption = _.find(total, key);
-                        if(existingOption){ // if object exists => keep the existing element but update "total count"
-                            var sum = parseInt(existingOption[key]) + parseInt(option.count);
-                            existingOption[key] = sum;
-                        } else {
-                            total.push(t);
-                        }
-                        
-                        doc.text('     ' + key , {paragraphGap:3, continued: true});
-                        doc.text(': ' + option.count + ' portii  -  ' + _.find(menu.dishes, {option: key}).name);                
+                        if(option.value){
+                            // produce a list with acumulated values:
+                            // total = [{'A':107}, {'B':223}, {'C':106}, {'D':224}]
+                            var t = {};
+                            var key = option.value; // => 'A'
+                            t[key] = option.count; // => 24
+                            var existingOption = _.find(total, key);
+                            if(existingOption){ // if object exists => keep the existing element but update "total count"
+                                var sum = parseInt(existingOption[key]) + parseInt(option.count);
+                                existingOption[key] = sum;
+                            } else {
+                                total.push(t);
+                            }
+                            
+                            doc.text('     ' + key , {paragraphGap:3, continued: true});
+                            doc.text(': ' + option.count + ' portii  -  ' + _.find(menu.dishes, {option: key}).name);                
+                        }            
                     });
                     doc.moveDown(2);                          
                 });
