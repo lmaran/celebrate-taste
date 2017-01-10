@@ -128,15 +128,15 @@
                 vm.obj.badgeCode = ''; // reset badgeCode in UI
                 vm.obj.isFocusOnBadge = true;
             } else {
-                var newEmployeeName = badge.ownerCode;
+                var newEmployeeName = normalize(badge.ownerCode);
 
                 // check to see if there is an adjustedName
                 var customerEmployee = _.find(vm.customerEmployees, function(c){
-                    return normalize(c.adjustedName) === normalize(badge.ownerCode);
+                    return normalize(c.adjustedName) === newEmployeeName;
                 });
 
                 if(customerEmployee){
-                    newEmployeeName = customerEmployee.name;
+                    newEmployeeName = normalize(customerEmployee.name);
                 }
 
                 orderLineService.getOrderLinesByEmployeeName(vm.delivery.orderId, newEmployeeName).then(function (orderLines) {
