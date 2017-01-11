@@ -29,9 +29,9 @@
             getBadges();
             getCustomerEmployees();
 
-            // Firefox ignores autocomplete="off" for passwords so we have to reset this field manualy            
-            // http://stackoverflow.com/a/2531          
-            $timeout(resetInputField, 3000); 
+            // Firefox ignores autocomplete="off" for passwords so we have to reset this field manualy
+            // http://stackoverflow.com/a/2531
+            $timeout(resetInputField, 3000);
         };
 
         function resetInputField(){
@@ -128,15 +128,15 @@
                 vm.obj.badgeCode = ''; // reset badgeCode in UI
                 vm.obj.isFocusOnBadge = true;
             } else {
-                var newEmployeeName = normalize(badge.ownerCode);
+                var newEmployeeName = badge.ownerCode;
 
                 // check to see if there is an adjustedName
                 var customerEmployee = _.find(vm.customerEmployees, function(c){
-                    return normalize(c.adjustedName) === newEmployeeName;
+                    return normalize(c.adjustedName) === normalize(badge.ownerCode);
                 });
 
                 if(customerEmployee){
-                    newEmployeeName = normalize(customerEmployee.name);
+                    newEmployeeName = customerEmployee.name;
                 }
 
                 orderLineService.getOrderLinesByEmployeeName(vm.delivery.orderId, newEmployeeName).then(function (orderLines) {
