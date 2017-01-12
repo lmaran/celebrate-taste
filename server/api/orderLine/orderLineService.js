@@ -233,7 +233,7 @@
                     option2.value.remaining += item.count
                 }                
             } else { // insert new
-                if(item.opt1){
+                if(item.opt2){
                     if(item.status === 'completed'){
                         options.push({key:item.opt2, value:{delivered:item.count, remaining:0}});
                     } else { // 'open'
@@ -242,7 +242,7 @@
                 }
             }  
         });
-        
+
         // add a 'total' field
         servings.total = servings.delivered + servings.remaining;
         
