@@ -31,12 +31,12 @@
 
             // Firefox ignores autocomplete="off" for passwords so we have to reset this field manualy
             // http://stackoverflow.com/a/2531
-            $timeout(resetInputField, 3000);
+            //$timeout(resetInputField, 3000);
         };
 
-        function resetInputField(){
-            vm.obj.badgeCode = "";
-        }
+        // function resetInputField(){
+        //     vm.obj.badgeCode = "";
+        // }
 
         vm.$routerOnActivate = function (next, previous) {
             deliveryId = next.params.id;
