@@ -1,6 +1,5 @@
 /* global process */
 
-
 "use strict";
 
 // Set default node environment to development
@@ -26,4 +25,4 @@ app.listen(config.port, config.ip, function () {
 });
 
 // Expose app
-exports = module.exports = app; 
+exports = module.exports = app;
