@@ -12,7 +12,11 @@
     var _ = require('lodash');
       
     menuController.renderTodaysMenu = function (req, res, next) {
-        var todayStr = helper.getRoTodayStr(); // "2016-03-26"
+
+        var todayStr = helper.getRoTodayStr(); // "2017-04-09""
+        //var todayStr = "2017-05-01";
+
+
         if(req.user){
             let p1 = promiseToGetTodaysMenu(todayStr);
             let p2 = promiseToGetTodaysUserPreference(req.user.name, todayStr);

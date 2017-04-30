@@ -49,14 +49,38 @@
 
         // callback to run after setting the rating
         var callback = function(rating) { 
+            
+
+            let feedbackArea = $dishElem.find(".feedback-area").first();
+            let detailsArea = $dishElem.find("textarea").first();
+            let btnCancelFeedback = $dishElem.find(".btnCancel").first();
+            let btnCSubmitFeedback = $dishElem.find(".btnSubmit").first();
+
             var review = {
                 stars: rating,
-                starDetails: "test",
                 dishId: dishId,
                 dishName: dishName,
                 menuDate: menuDate
             };
-            saveMyReview(review);
+
+            $(feedbackArea).show();
+
+            detailsArea.focus();
+
+            // cancel
+            let cancelParams = {
+                feedbackArea: feedbackArea,
+            };
+            btnCancelFeedback.click(cancelParams, cancelFeedback);
+
+            //submit
+            let submitParams = {
+                feedbackArea: feedbackArea,
+                detailsArea: detailsArea,
+                btnCSubmitFeedback: btnCSubmitFeedback,
+                review:review
+            };
+            btnCSubmitFeedback.click(submitParams, submitFeedback);
         };
 
         // rating instance
@@ -71,6 +95,22 @@
         // events
         $deleteElem.click(params, deleteReview);  
     } 
+
+    function cancelFeedback(event){
+        let params = event.data;
+        params.feedbackArea.hide();
+    } 
+
+    function submitFeedback(event){
+        event.preventDefault();
+        let params = event.data;
+        params.review.starDetails = params.detailsArea.val();
+
+        params.feedbackArea.hide();
+        params.btnCSubmitFeedback.unbind('click');
+
+        saveMyReview(params.review);
+    }         
 
     function saveMyReview(review){
         var url = '/api/myReviews';

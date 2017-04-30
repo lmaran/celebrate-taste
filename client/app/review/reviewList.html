@@ -46,6 +46,7 @@
                     <th>Fel de macare</th>
                     <th>Client</th>
                     <th>Nota</th>
+                    <th>Detalii</th>
                     <th></th>
                 </tr>
             </thead>
@@ -56,7 +57,14 @@
                     <td>{{ review.menuDate }}</td>
                     <td>{{ review.dishName }}</td>
                     <td>{{ review.createdBy }}</td>
-                    <td>{{ review.stars }}</td>
+                    <td>
+                        <div style="display:flex;">
+                            <ul style="width:130px;" class="c-rating">
+                                <li class="c-rating__item" ng-class="{'is-active' : nr <= review.stars}" ng-repeat="nr in [1,2,3,4,5]"></li>
+                            </ul>
+                        </div>                        
+                    </td>
+                    <td>{{ review.starDetails }}</td>
 
                 </tr>
             </tbody>
