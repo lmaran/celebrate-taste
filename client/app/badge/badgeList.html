@@ -70,7 +70,7 @@
                         | filter: vm.filterBySearch
                         as results">
                     <td>
-                        <a ng-href="/admin/badges/{{badge._id}}">{{badge.code}}</a>
+                        {{badge.code}}
                         <i class="glyphicon glyphicon-info-sign" ng-if="badge.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{badge.description}}"></i>
                     </td>
                     <td>{{ badge.ownerCode }}</td>
