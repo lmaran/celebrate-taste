@@ -187,7 +187,7 @@
             if (err) return next(err, null);
             db.collection(collection)
                 .find({orderId:orderId}, {sort:{employeeName:1}})
-                .project({_id:0, eatSeries:1, employeeName:1, badgeCode:1, status:1, deliveryMode:1})
+                .project({_id:0, eatSeries:1, employeeName:1, status:1, deliveryMode:1})
                 .toArray(function (err, docs) {
                     if (err) return next(err, null);
                     return next(null, docs);                 
