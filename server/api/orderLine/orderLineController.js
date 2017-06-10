@@ -8,6 +8,7 @@ var badgeService = require('../badge/badgeService');
 var preferenceService = require('../preference/preferenceService');
 var menuService = require('../menu/menuService');
 var async = require('async');
+var helperService = require('../../data/helperService');
 var _ = require('lodash'); 
 
 
@@ -41,25 +42,12 @@ exports.getAllWithBadgeInfo = function (req, res) {
 
         let newOrderLines = [];
         orderLines.forEach(function(orderLine){
-            // find badge by name
-            let badge = _.find(badges, function(b){
-                return normalize(b.ownerCode) == normalize(orderLine.employeeName);
-            });
-
-            // if not found, identify the employee and then search again by its adjustedName
-            if(!badge){
-                let customerEmployee = _.find(customerEmployees, function(c){
-                    return normalize(c.name) == normalize(orderLine.employeeName);
-                });
-
-                if(customerEmployee && customerEmployee.adjustedName){
-                    badge = _.find(badges, function(b){
-                        return normalize(b.ownerCode) == normalize(customerEmployee.adjustedName);
-                    }); 
-                }                   
+            let employee = helperService.getEmployeeByName(orderLine.employeeName, customerEmployees);
+            if(employee){
+                let badge = helperService.getBadgeByEmployee(employee, badges);
+                orderLine.badgeCode = badge && badge.code;
             }
 
-            orderLine.badgeCode = badge && badge.code;
             newOrderLines.push(orderLine);
         });
         res.status(200).json(newOrderLines); 
@@ -223,7 +211,6 @@ exports.import = function(req, res){
                         status: 'open'
                     };
                     
-                    if(employee && employee.badgeCode) orderLine.badgeCode = employee.badgeCode;
                     if(preference && preference.option1){ 
                         orderLine.option1 = preference.option1;
                         orderLine.fromOwnerOpt1 = true;
