@@ -9,7 +9,7 @@ app.factory('orderLineService', ['$http', function ($http) {
     // ---------- OData ----------
     factory.getAll = function (orderId) {
         var query = "?$filter=orderId eq '" + orderId + "'";
-        return $http.get(rootUrl + query).then(function (result) {
+        return $http.get(rootUrl + "/getAllWithBadgeInfo" + query).then(function (result) {
             return result.data;
         });
     };
@@ -44,7 +44,7 @@ app.factory('orderLineService', ['$http', function ($http) {
     
     factory.getOrderLinesBySeriesAndStatus = function (orderId, eatSeries, status) {
         var query = "?$filter=orderId eq '" + orderId + "' and eatSeries eq '" +  eatSeries +  "' and status eq '" + status + "'";
-        return $http.get(rootUrl + query).then(function (result) {
+        return $http.get(rootUrl + "/getAllWithBadgeInfo" + query).then(function (result) {
             return result.data;
         });
     };    

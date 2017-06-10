@@ -2,10 +2,13 @@
 
 var orderService = require('./orderService');
 var orderLineService = require('../orderLine/orderLineService');
+var customerEmployeeService = require('../customerEmployee/customerEmployeeService');
+var badgeService = require('../badge/badgeService');
 var menuService = require('../menu/menuService');
 var orderValidator = require('./orderValidator');
 var _ = require('lodash');
 var helper = require('../../data/dateTimeHelper');   
+var helperService = require('../../data/helperService');
 var PDFDocument = require('pdfkit'); 
 var async = require('async');
 
@@ -111,21 +114,27 @@ exports.getDeliverySummary = function (req, res) {
 
 exports.closeOrder = function (req, res) {
     var orderId = req.params.id;
-    
-    async.parallel([
-        function(cb){
-            orderService.getById(orderId, cb);  // get order                  
-        },
-        function(cb){
-            orderLineService.getOrderForSummary(orderId, cb); // get orderLines (for specific order)
-        }               
-    ],
-    function(err, results){
-        if(err) { return handleError(res, err); }
 
-        var order = results[0];
-        var orderLines = results[1];
-        
+    let p1 = promiseToGetOrderById(orderId);
+    let p2 = promiseToGetOrderSummaryById(orderId); // get orderLines (for specific order)
+    let p3 = promiseToGetCustomerEmployees("");
+    let p4 = promiseToGetBadges("");
+    
+    Promise.all([p1, p2, p3, p4]).then(function(results){
+        let order = results[0];
+        let orderLines = results[1];
+        let customerEmployees = results[2];
+        let badges = results[3];
+
+        // add badgeCode to each orderLine
+        orderLines.forEach(function(orderLine){
+            let employee = helperService.getEmployeeByName(orderLine.employeeName, customerEmployees);
+            if(employee){
+                let badge = helperService.getBadgeByEmployee(employee, badges);           
+                orderLine.badgeCode = badge && badge.code;
+            }
+        });
+
         var orderSummary = getOrderSummary(order, orderLines);
 
         order.status = "completed";
@@ -134,11 +143,14 @@ exports.closeOrder = function (req, res) {
         order.modifiedOn = new Date();         
         
         orderService.update(order, function (err, response) {});        
-        //console.log(orderSummary);
         
-        res.status(200).json(orderSummary);                                                        
-    });      
-};
+        res.status(200).json(orderSummary);
+    })
+    .catch(function(err){
+        return handleError(res, err);
+    })   
+
+}
 
 
 // ---------- Helpers ----------
@@ -392,10 +404,46 @@ function getOrderSummary(order, orderLines){
     return summary;   
 }
 
+// ---------- Helpers ----------
 function handleError(res, err) {
     return res.status(500).send(err);
 };
 
+function promiseToGetOrderById(orderId){
+    return new Promise(function(resolve, reject) {
+        orderService.getById(orderId, function (err, order) {
+            if(err) { reject(err) }
+            resolve(order);
+        });  
+    });          
+}
+
+function promiseToGetOrderSummaryById(orderId){
+    return new Promise(function(resolve, reject) {
+        orderLineService.getOrderForSummary(orderId, function (err, orderSummary) {
+            if(err) { reject(err) }
+            resolve(orderSummary);
+        });  
+    });          
+}
+
+function promiseToGetCustomerEmployees(odataQuery){
+    return new Promise(function(resolve, reject) {
+        customerEmployeeService.getAll(odataQuery, function (err, customerEmployees) {
+            if(err) { reject(err) }
+            resolve(customerEmployees);
+        });  
+    });   
+}
+
+function promiseToGetBadges(odataQuery){
+    return new Promise(function(resolve, reject) {
+        badgeService.getAll(odataQuery, function (err, badges) {
+            if(err) { reject(err) }
+            resolve(badges);
+        });  
+    });   
+} 
 
   
   

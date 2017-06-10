@@ -54,7 +54,9 @@
                     vm.errors = JSON.stringify(err.data, null, 4);
                     alert(vm.errors);
                 });
-            });
+            }, function() {
+                // Cancel button
+            });  
         }         
 
         vm.refresh = function () {
@@ -89,7 +91,9 @@
                         alert(JSON.stringify(err, null, 4));
                     }
                 }); 
-            });        
+            }, function() {
+                // Cancel button
+            });      
         }
         
         vm.showEmployees = function(employees, msg){
@@ -104,7 +108,10 @@
                 employees: employees       
             };
                     
-            modalService.show(modalSettings, modalOptions);
+            modalService.show(modalSettings, modalOptions)
+            .then(function(){}, function() {
+                // Cancel button
+            });  
         
         }         
                         

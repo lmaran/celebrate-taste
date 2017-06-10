@@ -6,6 +6,7 @@ var preferenceService = require('../preference/preferenceService');
 var badgeService = require('../badge/badgeService');
 var config = require('../../config/environment');
 var emailService = require('../../data/emailService');
+var helperService = require('../../data/helperService');
 var _ = require('lodash');
 
 
@@ -36,25 +37,15 @@ exports.getAllWithBadgeInfo = function (req, res) {
         let badges = results[1];
 
         let newCustomerEmployees = [];
-        customerEmployees.forEach(function(customerEmployee){
-            // find badge by name
-            let badge = _.find(badges, function(b){
-                return normalize(b.ownerCode) == normalize(customerEmployee.name);
-            });
-
-            // if not found, search again by adjustedName
-            if(!badge){
-                badge = _.find(badges, function(b){
-                    return normalize(b.ownerCode) == normalize(customerEmployee.adjustedName);
-                });                    
-            }
-
+        customerEmployees.forEach(function(employee){
+            let badge = helperService.getBadgeByEmployee(employee, badges);
+            
             newCustomerEmployees.push({
-                _id: customerEmployee._id,
-                name: customerEmployee.name,
-                adjustedName: customerEmployee.adjustedName,
-                isActive: customerEmployee.isActive,
-                email: customerEmployee.email,
+                _id: employee._id,
+                name: employee.name,
+                adjustedName: employee.adjustedName,
+                isActive: employee.isActive,
+                email: employee.email,
                 badgeCode: badge && badge.code
             });
         });
@@ -183,14 +174,6 @@ exports.checkEmail = function (req, res) {
 function handleError(res, err) {
     return res.status(500).send(err);
 };
-
-// todo: refactor as it is used in ordeLineController too
-function normalize(str){
-    if(!str) return undefined;
-    return str.toLowerCase()
-        .replace(/-/g , ' ') // replace dash with one space
-        .replace(/ {2,}/g,' '); // replace multiple spaces with a single space
-}
 
 function promiseToGetCustomerEmployees(odataQuery){
     return new Promise(function(resolve, reject) {

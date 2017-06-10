@@ -43,7 +43,9 @@
                     vm.errors = JSON.stringify(err.data, null, 4);
                     alert(vm.errors);
                 });
-            });
+            }, function() {
+                // Cancel button
+            });  
         };
 
         vm.filterByOnline = function(orderLine){
