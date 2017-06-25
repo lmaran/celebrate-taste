@@ -4,10 +4,11 @@
     $(function(){
         let menuDateElem = $("ul[data-menu-date]"); // first 'ul'' with 'data-menu-date' as attribute
         let menuDate = menuDateElem.data("menu-date"); // the value of 'data-menu-date' attribute
+        let series = menuDateElem.data("series");
 
         var elements = document.querySelectorAll(".c-rating");        
         elements.forEach(function(el){
-            addRatingWidget(el, menuDate);
+            addRatingWidget(el, menuDate, series);
         });       
     });
 
@@ -32,7 +33,7 @@
             });        
     }
 
-    function addRatingWidget(el, menuDate){
+    function addRatingWidget(el, menuDate, series){
         // elements
         var $ratingElem = $(el)
         var $dishElem = $ratingElem.parents("li").first();
@@ -60,7 +61,8 @@
                 stars: rating,
                 dishId: dishId,
                 dishName: dishName,
-                menuDate: menuDate
+                menuDate: menuDate,
+                series: series
             };
 
             $(feedbackArea).show();
