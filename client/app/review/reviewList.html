@@ -43,7 +43,8 @@
             <thead>
                 <tr>
                     <th style="min-width:100px">Data meniu</th>
-                    <th style="min-width:250px">Fel de macare</th>
+                    <th style="min-width:100px">Serie</th>
+                    <th style="min-width:300px">Fel de macare</th>
                     <th style="min-width:200px">Client</th>
                     <th>Nota</th>
                     <th>Detalii</th>
@@ -55,6 +56,7 @@
                         | filter: vm.filterBySearch
                         as results">
                     <td>{{ review.menuDate }}</td>
+                    <td>{{ review.series }}</td>
                     <td>{{ review.dishName }}</td>
                     <td>{{ review.createdBy }}</td>
                     <td>

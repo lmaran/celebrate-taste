@@ -85,7 +85,8 @@
                             orderStatus.details = "Anvis a anuntat ca astazi urmeaza sa servesti masa in " + orderLine.eatSeries + ". Te asteptam!";
                         } else { // completed
                             orderStatus.livrata = true;
-                            orderStatus.details = "Ai servit deja masa. Daca doresti, ai posibilitatea sa evaluezi felurile de mancare servite astazi.";                            
+                            orderStatus.details = "Ai servit deja masa. Daca doresti, ai posibilitatea sa evaluezi felurile de mancare servite astazi.";
+                            orderStatus.series = orderLine.eatSeries;
                         }                         
                     }
                 }
