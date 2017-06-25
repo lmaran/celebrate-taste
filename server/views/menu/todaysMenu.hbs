@@ -40,7 +40,7 @@
 		<h1>Meniul de astazi<small class="text-muted"> ({{today}})</small></h1>
         <hr>
 		
-        <ul class="list-group" data-menu-date="{{menu.menuDate}}">
+        <ul class="list-group" data-menu-date="{{menu.menuDate}}" data-series="{{orderStatus.series}}">
             {{#each menu.dishes as |dish dishIndex|}}
                 <li class="list-group-item" data-category="{{dish.category}}" data-option="{{dish.option}}" data-dish-id="{{dish._id}}" data-dish-stars="{{dish.stars}}" data-dish-star-datails="{{dish.starDetails}}" style="border: 0 none;">	
                     {{#if option}}
