@@ -143,7 +143,7 @@
                     if(orderLines.length === 0){
                         showMessage("Lipsa comanda pt. '" + newEmployeeName + "'.");
                     } else if(orderLines.length > 1) {
-                        showMessage("Exista mai multe comenzi cu acelasi persoana: '" + newEmployeeName + "'.");
+                        showMessage("Exista mai multe comenzi pentru aceeasi persoana: '" + newEmployeeName + "'.");
                     } else if(orderLines[0].eatSeries !== vm.delivery.eatSeries) {
                         if(orderLines[0].status === 'completed')
                             showMessage("'" + newEmployeeName + "' a mancat in " + orderLines[0].eatSeries + ".");
