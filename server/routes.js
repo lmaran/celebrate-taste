@@ -93,7 +93,7 @@ module.exports = function(app) {
     app.get('/changePassword', auth.isAuthenticated(), function(req,res){res.render('user/changePassword', {user: req.user});});
     app.get('/todaysMenu', require('./views/menu/menuController').renderTodaysMenu);  
     app.get('/nextMenus', require('./views/menu/menuController').renderNextMenus);   
-    app.get('/health', require('./views/health/healthController').renderHealth);  
+    app.get('/check', require('./views/check/checkController').getInfo); 
 
     
     // client-side views
