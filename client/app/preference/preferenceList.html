@@ -119,4 +119,15 @@
     
     <span class="label label-default" style="font-size:100%; font-weight:normal">Total:</span> {{results.length}} / {{vm.preferences.length}}        
 
+    <hr>
+    <span class="label label-info" style="font-size:100%; font-weight:normal">Sumar Felul 1:</span>
+    <span ng-repeat = "option in vm.option1Summary | orderBy: 'key'">
+        ({{option.key}}): {{option.total}}<span style="margin-right:10px" ng-if="!$last">,</span>        
+    </span>
+    <br><br>
+    <span class="label label-info" style="font-size:100%; font-weight:normal">Sumar Felul 2:</span>
+    <span ng-repeat = "option in vm.option2Summary | orderBy: 'key'">
+        ({{option.key}}): {{option.total}}<span style="margin-right:10px" ng-if="!$last">,</span>
+    </span>
+    <br><br>
 </div>
