@@ -22,8 +22,10 @@
             vm.errors = {}; 
             vm.nextDates=[]; 
             vm.obj = {};
-            vm.obj.onlyFromOnline = false;               
-            
+            vm.obj.onlyFromOnline = false;
+            vm.option1Summary = [];
+            vm.option2Summary = [];
+
             getNextDates();
         };
         
@@ -121,10 +123,46 @@
         function getPreferencesByDay(dayStr){
             preferenceService.getByDate(dayStr).then(function (data) {
                 vm.preferences = data;
+                setOption1Summary(vm.preferences);
+                setOption2Summary(vm.preferences);
             })
             .catch(function (err) {
                 alert(JSON.stringify(err, null, 4));
             });          
+        }
+
+        function setOption1Summary(preferences){
+            preferences.forEach(function(preference) {
+                if(!preference.option1){
+                    preference.option1 = "-";
+                }
+                var optionFound = _.find(vm.option1Summary, {key:preference.option1 });
+                if(optionFound) {
+                    optionFound.total ++;
+                } else {
+                    vm.option1Summary.push({
+                        key: preference.option1,
+                        total: 1
+                    });
+                }
+            });
+        }
+
+        function setOption2Summary(preferences){
+            preferences.forEach(function(preference) {
+                if(!preference.option2){
+                    preference.option2 = "-";
+                }
+                var optionFound = _.find(vm.option2Summary, {key:preference.option2});
+                if(optionFound) {
+                    optionFound.total ++;
+                } else {
+                    vm.option2Summary.push({
+                        key: preference.option2,
+                        total: 1
+                    });
+                }
+            });
         }
                    
     }
