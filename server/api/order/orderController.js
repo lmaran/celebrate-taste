@@ -202,10 +202,10 @@ function printSummary(req, res){
     orderLineService.getSummary(orderId, function (err, summary) {
         if(err) { return handleError(res, err); }
 
-        var doc = new PDFDocument({margins:{top:40, bottom:10, left:72, right:50}});
+        var doc = new PDFDocument({margins:{top:40, bottom:10, left:50, right:20}});
         
         if(summary.length == 0){
-            doc.fontSize(12)
+            doc.fontSize(16)
                 .moveDown(2)
                 .text("Nu exista date!");
                 
@@ -218,9 +218,9 @@ function printSummary(req, res){
             menuService.getTodaysMenu(orderDate, function (err, menu) {
                 if(err) { return handleError(res, err); }
 
-                doc.fontSize(18)
+                doc.fontSize(22)
                     .text("Centralizator comanda", {align:'center'})
-                    .fontSize(12)
+                    .fontSize(16)
                     .text(helper.getStringFromString(orderDate), {align:'center'})
                     .moveDown(3);
                 
