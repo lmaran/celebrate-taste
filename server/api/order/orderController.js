@@ -244,8 +244,8 @@ function printSummary(req, res){
                                 total.push(t);
                             }
                             
-                            doc.text('     ' + key , {paragraphGap:3, continued: true});
-                            doc.text(': ' + option.count + ' portii  -  ' + _.find(menu.dishes, {option: key}).name);                
+                            doc.text('     ' + key , { stroke:true, paragraphGap:3, continued: true});
+                            doc.text(': ' + option.count + ' portii  -  ' + _.find(menu.dishes, {option: key}).name, { stroke:false});                
                         }            
                     });
                     doc.moveDown(2);                          
