@@ -48,6 +48,7 @@ exports.create = function (req, res, next) {
             user.createdBy = req.user.name;    
             user.createdOn = new Date();              
             user.activationToken = uuid.v4();
+            user.email = user.email.toLowerCase();
             //user.status = 'waitingToBeActivated';
             
             userService.create(user, function (err, response) {
@@ -88,7 +89,7 @@ exports.createPublicUser = function (req, res, next) {
             
             var user = {};
             user.name = customerEmployee.name;
-            user.email = customerEmployee.email;
+            user.email = customerEmployee.email.toLowerCase();
             
             user.salt = userService.makeSalt();
             user.hashedPassword = userService.encryptPassword(data.password, user.salt);  
@@ -143,7 +144,8 @@ exports.update = function(req, res){
     var user = req.body;
     
     user.modifiedBy = req.user.name;    
-    user.modifiedOn = new Date();     
+    user.modifiedOn = new Date();
+    user.email = user.email.toLowerCase();
     
     userService.updatePartial(user, function (err, response) { // replacing the entire object will delete the psw+salt
         if(err) { return handleError(res, err); }
