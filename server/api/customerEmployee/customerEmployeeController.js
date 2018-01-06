@@ -65,6 +65,7 @@ exports.create = function(req, res){
         else{
             var customerEmployee = req.body;
             
+            customerEmployee.email = customerEmployee.email.toLowerCase();
             customerEmployee.isActive = true;
             customerEmployee.createBy = req.user.name;    
             customerEmployee.createdOn = new Date();              
@@ -92,6 +93,7 @@ exports.update = function(req, res){
         }
         else{
             
+            customerEmployee.email = customerEmployee.email.toLowerCase();
             customerEmployee.modifiedBy = req.user.name;    
             customerEmployee.modifiedOn = new Date(); 
             
