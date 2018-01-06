@@ -138,7 +138,7 @@
                 }
                 var optionFound = _.find(vm.option1Summary, {key:preference.option1 });
                 if(optionFound) {
-                    optionFound.total ++;
+                    optionFound.total+=1;
                 } else {
                     vm.option1Summary.push({
                         key: preference.option1,
@@ -155,7 +155,7 @@
                 }
                 var optionFound = _.find(vm.option2Summary, {key:preference.option2});
                 if(optionFound) {
-                    optionFound.total ++;
+                    optionFound.total+=1;
                 } else {
                     vm.option2Summary.push({
                         key: preference.option2,
