@@ -44,7 +44,7 @@ function httpLogHandler(){
             }
 
             // ignore UptimeRobot's requests"
-            if(newReq.headers && newReq.headers.user-agent && newReq.headers.user-agent.indexOf("UptimeRobot") === -1) {
+            if(newReq.headers && newReq.headers["user-agent"] && newReq.headers["user-agent"].indexOf("UptimeRobot") === -1) {
                 return next();
             }
 
@@ -55,8 +55,8 @@ function httpLogHandler(){
             }
 
             // remove "x-xsrf-token" from header
-            if(newReq.headers && newReq.headers.x-xsrf-token) {
-                delete newReq.headers.x-xsrf-token
+            if(newReq.headers && newReq.headers["x-xsrf-token"]) {
+                delete newReq.headers["x-xsrf-token"]
                 return next();
             }
 
