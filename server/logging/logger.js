@@ -27,7 +27,7 @@ if (config.env === 'production' || config.env === 'staging') {
     logger.add(winston.transports.Loggly, {
         token: config.logglyToken,
         subdomain: config.logglySubdomain,
-        tags: [config.env],
+        tags: ["celebrate-taste", config.env],
         json:true
     });     
 } else { // development
