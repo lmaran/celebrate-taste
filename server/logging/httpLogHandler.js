@@ -36,8 +36,37 @@ function httpLogHandler(){
             //     newRes.body = isJson ? JSON.parse(chunk) : chunk.toString();
             // }
             
-            var newRec = reqHelper.getShortReq(req);
-            var meta = {req:newRec, res:newRes};
+            var newReq = reqHelper.getShortReq(req);
+
+            // ignore "/check" requests
+            if(newReq.url == ".check") {
+                return next();
+            }
+
+            // ignore UptimeRobot's requests"
+            if(newReq.headers && newReq.headers.user-agent && newReq.headers.user-agent.indexOf("UptimeRobot") === -1) {
+                return next();
+            }
+
+            // remove "cookie" from header
+            if(newReq.headers && newReq.headers.cookie) {
+                delete newReq.headers.cookie
+                return next();
+            }
+
+            // remove "x-xsrf-token" from header
+            if(newReq.headers && newReq.headers.x-xsrf-token) {
+                delete newReq.headers.x-xsrf-token
+                return next();
+            }
+
+            // remove "authorization" from header
+            if(newReq.headers && newReq.headers.authorization) {
+                delete newReq.headers.authorization
+                return next();
+            }
+
+            var meta = {req:newReq, res:newRes};
 
             logger.info('http logger', meta);
         };
