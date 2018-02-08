@@ -13,7 +13,7 @@ var reqHelper = require('./reqHelper');
 
 function httpLogHandler(){
 
-    return function httpLog(req, res, next) {      
+    return function httpLog(req, res, next) {
         req._startTime = new Date();
 
         // Manage to get information from the response too, just like Connect.logger does:
@@ -28,43 +28,45 @@ function httpLogHandler(){
             res.end(chunk, encoding);
 
             // ---- Uncomment if you need to log the res.body ----
-            // 
+            //
             // if (chunk) {
             //     var isJson = (res._headers && res._headers['content-type']
             //         && res._headers['content-type'].indexOf('json') >= 0);
-            // 
+            //
             //     newRes.body = isJson ? JSON.parse(chunk) : chunk.toString();
             // }
-            
-            var newReq = reqHelper.getShortReq(req);
 
+            var newReq = reqHelper.getShortReq(req);
+            var url = req.originalUrl || req.url;
             // ignore "/check" requests
-            if(newReq.url == ".check") {
-                return next();
+            if(url == "/check") {
+                return;
             }
 
             // ignore UptimeRobot's requests"
-            if(newReq.headers && newReq.headers["user-agent"] && newReq.headers["user-agent"].indexOf("UptimeRobot") === -1) {
-                return next();
+            if(req.headers && req.headers["user-agent"] && (
+                req.headers["user-agent"].indexOf("UptimeRobot") !== -1 ||
+                req.headers["user-agent"].indexOf("Pingdom.com") !== -1 )) {
+                return;
             }
 
-            // remove "cookie" from header
-            if(newReq.headers && newReq.headers.cookie) {
-                delete newReq.headers.cookie
-                return next();
-            }
+            // // remove "cookie" from header
+            // if(newReq.headers && newReq.headers.cookie) {
+            //     delete newReq.headers.cookie
+            //     return;
+            // }
 
-            // remove "x-xsrf-token" from header
-            if(newReq.headers && newReq.headers["x-xsrf-token"]) {
-                delete newReq.headers["x-xsrf-token"]
-                return next();
-            }
+            // // remove "x-xsrf-token" from header
+            // if(newReq.headers && newReq.headers["x-xsrf-token"]) {
+            //     delete newReq.headers["x-xsrf-token"]
+            //     return next();
+            // }
 
-            // remove "authorization" from header
-            if(newReq.headers && newReq.headers.authorization) {
-                delete newReq.headers.authorization
-                return next();
-            }
+            // // remove "authorization" from header
+            // if(newReq.headers && newReq.headers.authorization) {
+            //     delete newReq.headers.authorization
+            //     return next();
+            // }
 
             var meta = {req:newReq, res:newRes};
 
@@ -73,7 +75,7 @@ function httpLogHandler(){
 
         next();
     }
-    
+
 }
 
 module.exports = httpLogHandler;
