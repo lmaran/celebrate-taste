@@ -1,5 +1,5 @@
 <style>
-	/*.calories {
+    /*.calories {
         color:#BBB48C;
 	}*/
     
@@ -32,67 +32,70 @@
 <div class="container">
 
     {{#if areMenus}}
-		<h1>Meniurile viitoare</h1>
-		<hr>
-		
-		{{#each menus as |menu menuIndex|}}	
-			<h4>Meniul de 
-				<strong>{{menuDateFormated}}</strong> 
-				<small style="font-size:14px"></small>
-			</h4>
-			
-			<ul class="list-group" data-menu-date="{{menu.menuDate}}" data-preference-id="{{menu.preferenceId}}">
-				{{#each dishes as |dish dishIndex|}}
-					<li class="list-group-item" data-category = "{{dish.category}}" data-option = "{{dish.option}}" style='border: 0 none;'>	
-						{{#if option}}
-							<strong>{{option}}.</strong>
-						{{/if}}
+    <h1>Meniurile viitoare</h1>
+    <hr>
 
-                        <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}
-                        
-                        {{#if description}}
-                            <div class="text-muted">{{description}}</div>
-                        {{/if}}
-                        
-                        {{#if image.medium}}
-                            <div class="media" style="margin-top:0">
-                                <a>
-                                    <img src="{{image.medium}}" class="img-thumbnail">
-                                </a>
-                            </div>
-                        {{/if}}
+    {{#each menus as |menu menuIndex|}}
+    <h4>Meniul de
+        <strong>{{menuDateFormated}}</strong>
+        <small style="font-size:14px"></small>
+    </h4>
 
-                        {{#if isMyOption}}
-                            <div>  
-                                <span class="label label-success isMyOption">
-                                    <span class="glyphicon glyphicon-ok"></span> Optiunea mea
-                                </span>
-                            </div>
-                        {{/if}}
+    <ul class="list-group" data-menu-date="{{menu.menuDate}}" data-preference-id="{{menu.preferenceId}}">
+        {{#each dishes as |dish dishIndex|}}
+        <li class="list-group-item" data-category="{{dish.category}}" data-option="{{dish.option}}" style='border: 0 none;'>
+            {{#if option}}
+            <strong>{{option}}.</strong>
+            {{/if}}
 
-                        {{#if isNotMyOption}}
-                            <div>
-                                <button type="button" class="btn btn-default btn-sm setMyOption" style="color:#337ab7; margin-top:4px">
-                                    <span class="glyphicon glyphicon-pushpin" style="color:#337ab7"></span> 
-                                    Da, vreau!
-                                </button>
-                            </div>
-                        {{/if}}  
+            <span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>,
+                <span class="calories">{{calories}} cal.</span></span>{{/if}}
 
-					</li>
-				{{/each}}
-			</ul>					
-			<hr>				
-		{{/each}} 
-        
-	{{else}}
-		<h4> Nu exista meniuri pentru perioada urmatoare!</h4>
-	{{/if}}
-    
+            {{#if description}}
+            <div class="text-muted">{{description}}</div>
+            {{/if}}
+
+            {{#if image.medium}}
+            <div class="media" style="margin-top:0">
+                <a>
+                    <img src="{{image.medium}}" class="img-thumbnail">
+                </a>
+            </div>
+            {{/if}}
+
+            {{#if isSelectable}}
+            <div {{#if isNotMyOption}} style="display:none" {{/if}} data-is-my-option="true">
+                <span class="label label-success">
+                    <span class="glyphicon glyphicon-ok"></span> Optiunea mea
+                </span>
+                <button type="button" class="btn btn-link btn-sm cancelMyOption">
+                    Anuleaza
+                </button>
+            </div>
+
+            <div {{#if isMyOption}} style="display:none" {{/if}} data-is-not-my-option="true">
+                <button type="button" class="btn btn-default btn-sm setMyOption" style="color:#337ab7; margin-top:4px">
+                    <span class="glyphicon glyphicon-pushpin" style="color:#337ab7"></span>
+                    Da, vreau!
+                </button>
+            </div>
+            {{/if}}
+
+        </li>
+        {{/each}}
+    </ul>
+    <hr>
+    {{/each}}
+
+    {{else}}
+    <h4> Nu exista meniuri pentru perioada urmatoare!</h4>
+    {{/if}}
+
     Vezi si <a href="/todaysMenu">meniul de astazi &raquo;</a>
     <hr>
+
 </div>
 
 {{#section 'script'}}
-    <script src="/views/menu/menu.js"></script>
+<script src="/views/menu/menu.js"></script>
 {{/section}}

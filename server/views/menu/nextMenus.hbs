@@ -8,46 +8,47 @@
 
 <div class="container">
 
-    {{#if areMenus}}
-		<h1>Meniurile viitoare</h1>
-		<hr>
-		
-		{{#each menus}}	
-			<h4>Meniul de 
-				<strong>{{menuDateFormated}}</strong> 
-				<small style="font-size:14px"></small>
-			</h4>
-			
-			<ul class="list-group">
-				{{#each dishes}}
-					<li class="list-group-item" style='border: 0 none;'>	
-						{{#if option}}
-							<strong>{{option}}.</strong>
-						{{/if}}
-                        
-						<span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span class="calories">{{calories}} cal.</span></span>{{/if}}
-                        
-						{{#if description}}
-                        	<div class="text-muted">{{description}}</div>
-                        {{/if}}
-                        
-                        {{#if image.medium}}
-							<div class="media" style="margin-top:0">
-								<a>
-									<img src="{{image.medium}}" class="img-thumbnail">
-								</a>
-							</div>						
-                        {{/if}}
-					</li>
-				{{/each}}
-			</ul>					
-			<hr>				
-		{{/each}} 
+	{{#if areMenus}}
+	<h1>Meniurile viitoare</h1>
+	<hr>
+
+	{{#each menus}}
+	<h4>Meniul de
+		<strong>{{menuDateFormated}}</strong>
+		<small style="font-size:14px"></small>
+	</h4>
+
+	<ul class="list-group">
+		{{#each dishes}}
+		<li class="list-group-item" style='border: 0 none;'>
+			{{#if option}}
+			<strong>{{option}}.</strong>
+			{{/if}}
+
+			<span class="text-muted">{{name}}</span>{{#if isFasting}}<span> (post)</span>{{/if}}{{#if calories}}<span>, <span
+				 class="calories">{{calories}} cal.</span></span>{{/if}}
+
+			{{#if description}}
+			<div class="text-muted">{{description}}</div>
+			{{/if}}
+
+			{{#if image.medium}}
+			<div class="media" style="margin-top:0">
+				<a>
+					<img src="{{image.medium}}" class="img-thumbnail">
+				</a>
+			</div>
+			{{/if}}
+		</li>
+		{{/each}}
+	</ul>
+	<hr>
+	{{/each}}
 	{{else}}
-		<h4> Nu exista meniuri pentru perioada urmatoare!</h4>
+	<h4> Nu exista meniuri pentru perioada urmatoare!</h4>
 	{{/if}}
-    
-    Vezi si <a href="/todaysMenu">meniul de astazi &raquo;</a>
-    <hr>
+
+	Vezi si <a href="/todaysMenu">meniul de astazi &raquo;</a>
+	<hr>
 
 </div>
