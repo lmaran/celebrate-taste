@@ -93,7 +93,8 @@ gulp.task('watch-server', function() {
 	nodemon({ // nodemon config - http://jpsierens.com/tutorial-livereload-nodemon-gulp/
     		script: 'server/app.js', // the script to run the app
             //verbose: true,
-    		ext: 'js hbs html',
+            // ext: 'js hbs html',
+            ext: 'js',
             ignore: ['node_modules/', 'client', 'gulpfile.js']
             //stdout: false
         })

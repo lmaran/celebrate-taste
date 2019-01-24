@@ -1,79 +1,113 @@
-(function(){
-    var changePreferenceBtn;
-
+(function() {
     // DOM ready
-    $(function(){
+    $(function() {
         // elements
         setMyOptionBtns = $(".setMyOption");
+        cancelMyOptionBtns = $(".cancelMyOption");
 
         // events
         setMyOptionBtns.click(changePreference);
-        
+        cancelMyOptionBtns.click(cancelPreference);
     });
-    
-    function changePreference(){
+
+    function cancelPreference() {
+        var $cancelMyOption = $(this);
+
+        var $parentMenuUl = $cancelMyOption.closest("ul");
+        var menuDate = $parentMenuUl.data("menu-date");
+        var preferenceId = $parentMenuUl.data("preference-id");
+
+        var $parentMenuLi = $cancelMyOption.closest("li");
+        var category = $parentMenuLi.data("category");
+
+        $cancelMyOption
+            .find("span")
+            .removeClass("glyphicon-pushpin")
+            .addClass("spinning glyphicon-refresh");
+
+        var preference = {
+            menuDate: menuDate,
+            category: category,
+            selectedOption: null, // remove options
+        };
+
+        if (preferenceId) {
+            preference.preferenceId = preferenceId;
+        }
+
+        savePreference(preference, null, $cancelMyOption, $parentMenuUl);
+    }
+
+    function changePreference() {
         var $setMyOption = $(this);
 
         var $parentMenuUl = $setMyOption.closest("ul");
         var menuDate = $parentMenuUl.data("menu-date");
         var preferenceId = $parentMenuUl.data("preference-id");
-        
+
         var $parentMenuLi = $setMyOption.closest("li");
         var category = $parentMenuLi.data("category");
         var selectedOption = $parentMenuLi.data("option");
-        
-        var $parentCategoiesLi = $parentMenuUl.find("li[data-category='" + category + "']");        
-        var $isMyOption = $parentCategoiesLi.find(".isMyOption");
-        var $setMyOptionIcon = $setMyOption.find("span").removeClass("glyphicon-pushpin").addClass("spinning glyphicon-refresh");
-        
+
+        var $parentCategoriesLi = $parentMenuUl.find("li[data-category='" + category + "']");
+        var $isMyOption = $parentCategoriesLi.find("[data-is-my-option='true']:visible");
+
+        $setMyOption
+            .find("span")
+            .removeClass("glyphicon-pushpin")
+            .addClass("spinning glyphicon-refresh");
+
         var preference = {
             menuDate: menuDate,
             category: category,
-            selectedOption: selectedOption      
+            selectedOption: selectedOption,
         };
-        
-        
-        if(preferenceId){
+
+        if (preferenceId) {
             preference.preferenceId = preferenceId;
-        };
-        
-        savePreference(preference, $isMyOption, $setMyOption, $parentMenuUl, $setMyOptionIcon);
+        }
+
+        savePreference(preference, $isMyOption, $setMyOption, $parentMenuUl);
     }
-    
-    // http://stackoverflow.com/a/698440
-    function swapNodes(a, b) {
-        var aparent = a.parentNode;
-        var asibling = a.nextSibling === b ? a : a.nextSibling;
-        b.parentNode.insertBefore(a, b);
-        aparent.insertBefore(b, asibling);
-    }    
-  
-    function savePreference(preference, $isMyOption, $setMyOption, $parentMenuUl, $setMyOptionIcon){
-        var url = '/api/myPreferences';
+
+    function savePreference(preference, $isMyOption, $setMyOption, $parentMenuUl) {
+        var url = "/api/myPreferences";
         $.post(url, preference)
-            .done(function(data){
-                // if first time we create a new pref., next we want to use an update instead 
-                if(!preference.preferenceId){
+            .done(function(data) {
+                // if first time we create a new pref., next we want to use an update instead
+                if (!preference.preferenceId) {
                     // does not change the html5 'data-*' attribute, just the jQuery cache
                     // but this is enough for this case: http://stackoverflow.com/a/17246540
-                    $parentMenuUl.data("preference-id", data._id); 
-                };
-                
+                    $parentMenuUl.data("preference-id", data._id);
+                }
+
                 // update DOM
-                if($isMyOption.length){ // 1 'selected' + 1 'unselected' option => swap
-                    swapNodes($isMyOption[0], $setMyOption[0]);
-                } else { // 2 'unselected' options => replace with a new 'selected' button
-                    var el = '<span class="label label-success isMyOption"><span class="glyphicon glyphicon-ok"></span>Optiunea mea</span>';
-                    $(el).insertBefore($setMyOption);
-                    $setMyOption.remove();
-                } 
+                $setMyOption
+                    .find("span")
+                    .removeClass("spinning glyphicon-refresh")
+                    .addClass("glyphicon-pushpin");
+
+                toggleVisibility($setMyOption);
+
+                if ($isMyOption) {
+                    toggleVisibility($isMyOption);
+                }
             })
-            .fail(function(err){
+            .fail(function(err) {
                 alert(err);
             })
-            .always(function(err){
-                $setMyOptionIcon.removeClass("spinning glyphicon-refresh").addClass("glyphicon-pushpin");
-            });                    
-    }       
-        
+            .always(function(err) {
+                //$setMyOptionIcon.removeClass("spinning glyphicon-refresh").addClass("glyphicon-pushpin");
+            });
+    }
+
+    function toggleVisibility($crtBtn) {
+        // "switch" visibility between the 2 buttons on the same "row" (<li> element)
+        var $parentMenuLi = $crtBtn.closest("li");
+
+        var $isMyOptionSection = $parentMenuLi.find("[data-is-my-option='true']");
+        var $isNotMyOptionSection = $parentMenuLi.find("[data-is-not-my-option='true']");
+        $isMyOptionSection.toggle();
+        $isNotMyOptionSection.toggle();
+    }
 })();
