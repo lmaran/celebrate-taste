@@ -28,7 +28,7 @@
         var preference = {
             menuDate: menuDate,
             category: category,
-            selectedOption: null, // remove options
+            // selectedOption: null, // remove options
         };
 
         if (preferenceId) {
