@@ -1,6 +1,4 @@
 node_modules
 client/bower_components
 dist
-.publish
-client/app/**/*.css
 server/config/environment/development.js
