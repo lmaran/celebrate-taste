@@ -12,7 +12,6 @@ var gulp = require('gulp'), // task runner
     inject = require('gulp-inject'), // inject a string into placeholders in html files
     livereload = require('gulp-livereload'), // automatically refresh the browser; requires a browser plugin OR a node.js middleware
     nodemon = require('gulp-nodemon'), // monitor for changes in node.js files and restart your app
-    less = require('gulp-less'), // compile less to css
     jshint = require('gulp-jshint'), // a js code quality tool
     stylish = require('jshint-stylish'), // another reporter for jshint
     runSequence = require('run-sequence'), // a cool way of choosing what must run sequentially, and what in parallel
@@ -51,9 +50,7 @@ gulp.task('dev:watch', function(cb) {
 });
 
 gulp.task('dev', function(cb) {
-    runSequence(
-        'clean-css',
-        ['less', 'less-srv'],      
+    runSequence(    
         'jshint',        
         'build-dev-html',
     cb);
@@ -61,8 +58,7 @@ gulp.task('dev', function(cb) {
 
 gulp.task('prod', function(cb) {
     runSequence(
-        ['clean-dist', 'clean-css'],
-        ['less', 'less-srv'],
+        ['clean-dist'],
         ['build-scripts', 'build-scripts-bower', 'build-styles', 'build-styles-bower'],
         ['copy-server', 'copy-client', 'copy-bootstrap-fonts', 'copy-assets', 'copy-node-modules', 'create-buildInfo.json'],
         'build-prod-html',
@@ -89,23 +85,6 @@ gulp.task('test:server', function () {
         .once('end', function () {
             process.exit();
         });
-});
-
-
-gulp.task('clean-css', function (cb) {
-    return del(['./client/app/**/*.css'], cb); // we have to be sure that there are no CSS files without a corresponding LESS
-});
-
-gulp.task('less', function() {
-    return gulp.src('./client/app/**/*.less')
-        .pipe(less())
-        .pipe(gulp.dest('./client/app'));
-});
-
-gulp.task('less-srv', function() {
-    return gulp.src('./server/public/css/**/*.less')
-        .pipe(less())
-        .pipe(gulp.dest('./server/public/css'));
 });
 
 gulp.task('build-dev-html', function(){  
@@ -181,16 +160,7 @@ gulp.task('watch-client', function() { // using the native "gulp.watch" plugin
 
         gutil.log(gutil.colors.cyan('watch-all'), 'saw',  gutil.colors.magenta(fileName), 'was ' + file.type);            
         
-        if(ext == '.less'){                                                 
-            if(file.type === 'deleted'){
-                del(path.join(crtDir, name) + '.css'); 
-            } else if(file.type === 'added' || file.type === 'changed' || file.type === 'renamed'){
-                gulp.src(file.path)
-                    .pipe(less())
-                    .pipe(gulp.dest(path.parse(file.path).dir)); 
-            };             
-        
-        } else if(ext == '.css'){                  
+        if(ext == '.css'){                  
             if(file.type === 'added' || file.type === 'renamed'){
                 injectCssAndReload();
             } else if(file.type === 'deleted'){ 
