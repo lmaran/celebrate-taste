@@ -17,19 +17,14 @@ var gulp = require('gulp'), // task runner
     runSequence = require('run-sequence'), // a cool way of choosing what must run sequentially, and what in parallel
     del = require('del'), // delete files/folders  
     concat = require('gulp-concat'), // concatenate files    
-    // babel = require('gulp-babel'), // back thick (`) used for inline template is feature of ES5: http://stackoverflow.com/a/34411589
     uglify = require('gulp-uglify'), // js minification
     minifyCSS = require('gulp-minify-css'), // css minification
     rev = require('gulp-rev'), // add a unique id at the end of app.js (ex: app-f4446a9c.js) to prevent browser caching
     filter = require('gulp-filter'), // filter files in a stream  
-    //notify = require('gulp-notify'),  // display a message inside the pipeline  Ex: .pipe(notify('some message'))  
     gutil = require('gulp-util'), // colorful logs and ather stuff
     path = require('path'); // handling file path
-    //var debug = require('gulp-debug'); // => display files that run through your pipeline Ex: .pipe(debug())
-    var mocha = require('gulp-mocha');
     var through = require('through2');
     var ghPages = require('gulp-gh-pages');
-    // var gnf = require('gulp-npm-files'); // copy only node_modules used in production (not "dev_dependencies")
     var file = require('gulp-file'); // create a file from string
     
 /*  usage:
@@ -65,27 +60,8 @@ gulp.task('prod', function(cb) {
     cb);
 });
 
-gulp.task('test', function(cb) {
-    runSequence(
-        ['test:server'],
-    cb);
-});
-
 
 // 1. development task definitions ============================================================
-
-gulp.task('test:server', function () {
-    return gulp.src('./server/**/*.spec.js', {read: false})
-        .pipe(mocha({
-            //reporter: 'spec'
-        }))
-        .once('error', function () {
-            process.exit(1);
-        })
-        .once('end', function () {
-            process.exit();
-        });
-});
 
 gulp.task('build-dev-html', function(){  
     return gulp.src('./client/index.html')
@@ -155,8 +131,8 @@ gulp.task('watch-client', function() { // using the native "gulp.watch" plugin
         var ext = path.extname(file.path); // ex: .js       
         //var fileName = file.path.replace(__dirname, ''); // ex: \client\app\controllers\test.js
         var fileName = path.basename(file.path); // ex: test.css
-        var crtDir = path.parse(file.path).dir; // ex: c:/.../controllers
-        var name = path.parse(file.path).name; // ex: test      
+        // var crtDir = path.parse(file.path).dir; // ex: c:/.../controllers
+        // var name = path.parse(file.path).name; // ex: test      
 
         gutil.log(gutil.colors.cyan('watch-all'), 'saw',  gutil.colors.magenta(fileName), 'was ' + file.type);            
         
@@ -183,10 +159,6 @@ gulp.task('watch-client', function() { // using the native "gulp.watch" plugin
                         gutil.log(gutil.colors.red('JSHINT failed!'));
                         this.emit('end'); // end the current task so that 'passed' msg is no longer displayed
                     })                                   
-                    // .pipe(notify(function(){ // hack - 'notify' is used just as a wrapper to run regular code into the pipeline
-                    //     gutil.log(gutil.colors.green('JSHINT passed!'));
-                    //     livereload.changed(fileName);
-                    // }))
                     .pipe(through.obj(function(file, enc, cb) { // 'through2' is used as a wrapper to run regular code into the pipeline
                         gutil.log(gutil.colors.green('JSHINT passed!'));
                         livereload.changed(fileName);
@@ -210,11 +182,7 @@ gulp.task('clean-dist', function (cb) {
  
 gulp.task('build-scripts', function() {
     return gulp.src('./client/app/**/*.js')
-        .pipe(concat('app.js'))
-        // .pipe(babel({
-        //     presets: ['es2015'], // add support for ES2015 (back thick "`" in inline template) http://stackoverflow.com/a/34411589
-        //     compact: false // remove warning: 'code generator has deoptimised...' ->http://stackoverflow.com/a/30879872
-        // }))       
+        .pipe(concat('app.js'))      
         .pipe(uglify()
             .on('error', function(e){
                 console.log(e);
@@ -258,7 +226,6 @@ gulp.task('copy-server', function(){
 });
  
 gulp.task('copy-client', function(){
-    //return gulp.src('./client/**/**/*.+(html|txt|ico)')
     return gulp.src(['./client/**/**/*.html','./client/*.+(txt|ico)'])
         .pipe(gulp.dest('./dist/client/'));
 });
@@ -274,25 +241,10 @@ gulp.task('copy-assets', function() {
 });
 
 gulp.task('copy-node-modules', function() {
-    // return gulp.src(gnf(), {base:'./'})
-    //     .pipe(gulp.dest('./dist'));
-
     // on the build server, use 'npm i --only=prod' to not install dev. packages: http://stackoverflow.com/a/9276112
     return gulp.src('./node_modules/**/*.*')
         .pipe(gulp.dest('./dist/node_modules'));
 });
-
-// gulp.task('create-package.json', function() {
-//     var str = 
-//       '{\n' +
-//       '    "scripts": {\n' +
-//       '        "start": "node server/app.js",\n' +
-//       '        "start_windows": "set NODE_ENV=production&&node server/app.js"\n' +
-//       '    }\n' +
-//     '}';
-//     return file('package.json', str, { src: true })
-//         .pipe(gulp.dest('./dist'));
-// });
 
 gulp.task('build-prod-html', function(){
     var localInject = function(pathGlob, name) {
