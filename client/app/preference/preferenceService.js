@@ -34,7 +34,11 @@ app.factory('preferenceService', ['$http', 'helperService', function ($http, hel
     };
     
     factory.getNextByEmployee = function (employeeName) {
-        var todayStr = helperService.getStringFromDate(new Date());
+        // we don't have "gte" => yesterday is used instead of today
+        var d = new Date();
+        var yesterday = new Date(d.setDate(d.getDate()-1));
+
+        var todayStr = helperService.getStringFromDate(yesterday);
         var query = "?$filter=employeeName eq '" +  employeeName +  "' and date gt '" + todayStr + "'";
         //query += "&$orderby=date"
         return $http.get(rootUrl + query).then(function (result) {                
