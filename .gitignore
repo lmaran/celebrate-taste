@@ -3,5 +3,5 @@ client/bower_components
 client/dist
 
 server/node_modules
-server/config/environment/development.js
+server/src/config/environment/development.js
 server/dist
