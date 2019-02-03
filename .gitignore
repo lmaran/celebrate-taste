@@ -1,4 +1,7 @@
-node_modules
+client/node_modules
 client/bower_components
-dist
+client/dist
+
+server/node_modules
 server/config/environment/development.js
+server/dist
