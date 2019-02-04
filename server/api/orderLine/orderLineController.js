@@ -80,10 +80,9 @@ exports.create = function(req, res){
                     var availableOptions1 = getAvailableOptions(menu, '1'); // => ['A', 'B']
                     var availableOptions2 = getAvailableOptions(menu, '2'); // => ['C', 'D']
                     
-                    // we don't want to set up a default option for option 1 (this option can be empty)
-                    // if(orderLine.option1 === undefined || orderLine.option1.trim() === ''){
-                    //     orderLine.option1 = getOption(availableOptions1);
-                    // };
+                    if(orderLine.option1 === undefined || orderLine.option1.trim() === ''){
+                        orderLine.option1 = getOption(availableOptions1);
+                    };
                     if(orderLine.option2 === undefined || orderLine.option2.trim() === ''){
                         orderLine.option2 = getOption(availableOptions2);
                     };
@@ -217,8 +216,7 @@ exports.import = function(req, res){
                         orderLine.fromOwnerOpt1 = true;
                     } else {
                         // get a random value
-                        // we don't want to set up a default option for option 1 (this option can be empty)
-                        // orderLine.option1 = getOption(availableOptions1);
+                        orderLine.option1 = getOption(availableOptions1);
                     };
                     if(preference && preference.option2) {
                         orderLine.option2 = preference.option2;
