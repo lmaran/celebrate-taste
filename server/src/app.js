@@ -2,7 +2,6 @@
 
 var express = require("express");
 var favicon = require("serve-favicon");
-//var morgan = require('morgan'); // http logger
 //var logger = require("../logging/logger"); // app logger
 var bodyParser = require("body-parser");
 //var errorHandler = require('errorhandler');
@@ -61,42 +60,18 @@ module.exports = function(app) {
 
     app.use(favicon(path.join(__dirname, "/public", "favicon.ico")));
     // static for clients
-    app.use(express.static(path.join(__dirname, "../../client/src")));
-    app.use(express.static(path.join(__dirname, "../../client")));
+    app.use("/assets-ng1", express.static(path.join(__dirname, "../../client-ng1/src/assets")));
+    // js files for clients
+    app.use("/app", express.static(path.join(__dirname, "../../client-ng1/src/app")));
+
     // static for server
-    app.use(express.static(path.join(__dirname, "/")));
-    if (env === "production" || env === "staging") {
-        // app.use(express.static(path.join(__dirname, "client"), { index: "_" }));
-        // app.use(morgan('tiny', { // like 'dev' but no colors
-        //     //skip: function(req, res) { return res.statusCode < 400 },
-        //     stream: logger.stream }));
-    } else {
-        // development
-        // if you are happy with a browser plugin, then you don't need this middleware
-        // live-reload corrupts pdf files: http://stackoverflow.com/a/28091651/2726725
-        // app.use(
-        //     require("connect-livereload")({
-        //         port: 35729, // default=35729
-        //         ignore: [/print/], // all that contains 'print': https://github.com/intesso/connect-livereload#options
-        //     }),
-        // );
-        // without last argument express serves index.html even when my routing is to a different file: //http://stackoverflow.com/a/25167332/2726725
-        // It is also recommended to put static middleware first: http://stackoverflow.com/a/28143812/2726725
-        // Have this pb. only when I try to serve another jade page as homepage
-        // app.use(express.static(path.join(__dirname, "../../../client/src"), { index: "_" }));
-        // app.use(express.static(path.join(__dirname, "./../../client")));
-        //app.use(morgan('dev', { stream: logger.stream }));
-        //app.use(morgan('dev'));
-    }
+    app.use("/public", express.static(path.join(__dirname, "public")));
+
+    // for js files used by some server views
+    app.use("/views", express.static(path.join(__dirname, "views")));
 
     // log all http requests (like morgan)
     app.use(httpLogHandler());
-
-    // add a second static source for static files: http://stackoverflow.com/questions/5973432/setting-up-two-different-static-directories-in-node-js-express-framework
-    app.use("/public", express.static(path.join(__dirname, "/")));
-
-    // for js files used by some views
-    app.use("/views", express.static(path.join(__dirname, "server/views")));
 
     app.use(auth.addUserIfExist());
 };

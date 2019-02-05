@@ -115,12 +115,8 @@ module.exports = function(app) {
     app.get("/check", require("./views/check/checkController").getInfo);
 
     // client-side views
-
-    app.get("/admin", auth.hasRole("partner"), function(req, res) {
-        res.sendFile(path.join(__dirname, "../../client/src/index.html"));
-    });
     app.get("/admin|/admin/*", auth.hasRole("partner"), function(req, res) {
-        res.sendFile(path.join(__dirname, "../../client/src/index.html"));
+        res.sendFile(path.join(__dirname, "../../client-ng1/src/index.html"));
     });
 
     // All undefined asset or api routes should return a 404

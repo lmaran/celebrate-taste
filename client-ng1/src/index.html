@@ -11,17 +11,10 @@
         <link rel="apple-touch-icon" href="apple-touch-icon.png" />
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-        <!-- cdn -->
-        <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">-->
+        <link rel="stylesheet" href="assets-ng1/libs/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="assets-ng1/libs/ui-select/dist/select.css" />
+        <link rel="stylesheet" href="assets-ng1/libs/angular-toastr/dist/angular-toastr.css" />
 
-        <!-- inject-vendor:css -->
-        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="node_modules/ui-select/dist/select.css" />
-        <link rel="stylesheet" href="node_modules/angular-toastr/dist/angular-toastr.css" />
-        <!-- endinject -->
-
-        <!-- inject:css -->
         <link rel="stylesheet" href="app/app.css" />
         <link rel="stylesheet" href="app/dish/dish.css" />
         <link rel="stylesheet" href="app/home/home.css" />
@@ -29,7 +22,7 @@
         <link rel="stylesheet" href="app/review/review.css" />
         <link rel="stylesheet" href="app/todayMenu/todayMenu.css" />
         <link rel="stylesheet" href="app/user/user.css" />
-        <!-- endinject -->
+
         <meta name="detectify-verification" content="6900c1e4cf9c18d3ad8869e560d178cc" />
 
         <!-- Zopim Live Chat -->
@@ -83,34 +76,21 @@
     </head>
 
     <body ng-app="celebrate-taste">
-        <!--[if lt IE 9]>
-            <p class="browsehappy">
-                You are using an <strong>outdated</strong> browser. Please
-                <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
-            </p>
-        <![endif]-->
-
         <main-app></main-app>
 
-        <!-- inject-vendor:js -->
-        <script src="node_modules/lodash/lodash.js"></script>
-        <script src="node_modules/angular/angular.js"></script>
-        <script src="node_modules/angular-animate/angular-animate.js"></script>
-        <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
-        <script src="node_modules/angular-cookies/angular-cookies.js"></script>
-        <script src="node_modules/angular-route/angular-route.js"></script>
-        <script src="node_modules/angular-sanitize/angular-sanitize.js"></script>
-        <script src="node_modules/ui-select/dist/select.js"></script>
-        <script src="node_modules/angular-toastr/dist/angular-toastr.tpls.js"></script>
-        <script src="node_modules/@angular/router/angular1/angular_1_router.js"></script>
-        <script src="node_modules/@angular/router/angular1/ng_route_shim.js"></script>
-        <script src="node_modules/ng-file-upload/dist/ng-file-upload.js"></script>
-        <!-- endinject -->
+        <script src="assets-ng1/libs/lodash/lodash.js"></script>
+        <script src="assets-ng1/libs/angular/angular.js"></script>
+        <script src="assets-ng1/libs/angular-animate/angular-animate.js"></script>
+        <script src="assets-ng1/libs/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+        <script src="assets-ng1/libs/angular-cookies/angular-cookies.js"></script>
+        <script src="assets-ng1/libs/angular-route/angular-route.js"></script>
+        <script src="assets-ng1/libs/angular-sanitize/angular-sanitize.js"></script>
+        <script src="assets-ng1/libs/ui-select/dist/select.js"></script>
+        <script src="assets-ng1/libs/angular-toastr/dist/angular-toastr.tpls.js"></script>
+        <script src="assets-ng1/libs/@angular/router/angular1/angular_1_router.js"></script>
+        <script src="assets-ng1/libs/@angular/router/angular1/ng_route_shim.js"></script>
+        <script src="assets-ng1/libs/ng-file-upload/dist/ng-file-upload.js"></script>
 
-        <!--we need it if uibCollapse directive is used
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script>-->
-
-        <!-- inject:js -->
         <script src="app/app.js"></script>
         <script src="app/mainAppComponent.js"></script>
         <script src="app/badge/badgeComponent.js"></script>
@@ -173,6 +153,5 @@
         <script src="app/order/orderLine/orderLineImportComponent.js"></script>
         <script src="app/order/orderLine/orderLineListComponent.js"></script>
         <script src="app/order/orderLine/orderLineService.js"></script>
-        <!-- endinject -->
     </body>
 </html>

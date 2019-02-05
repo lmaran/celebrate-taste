@@ -1,5 +1,6 @@
+client-ng1/node_modules
+
 client/node_modules
-client/bower_components
 client/dist
 
 server/src/config/environment/development.js
