@@ -1,6 +1,8 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "editor.formatOnSave": true,
-    "eslint.autoFixOnSave": false,
-    "eslint.alwaysShowStatus": true
+    "eslint.autoFixOnSave": true,
+    "eslint.alwaysShowStatus": true,
+    "vetur.format.defaultFormatter.html": "prettier",
+    "vetur.format.options.tabSize": 4
 }
