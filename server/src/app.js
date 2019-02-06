@@ -60,9 +60,9 @@ module.exports = function(app) {
 
     app.use(favicon(path.join(__dirname, "/public", "favicon.ico")));
     // static for clients
-    app.use("/assets-ng1", express.static(path.join(__dirname, "../../client-ng1/src/assets")));
+    app.use("/assets-ng1", express.static(path.join(__dirname, "../../client-ng1/assets")));
     // js files for clients
-    app.use("/app", express.static(path.join(__dirname, "../../client-ng1/src/app")));
+    app.use("/app", express.static(path.join(__dirname, "../../client-ng1/app")));
 
     // static for server
     app.use("/public", express.static(path.join(__dirname, "public")));
