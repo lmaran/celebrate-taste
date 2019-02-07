@@ -4,5 +4,6 @@
     "eslint.autoFixOnSave": true,
     "eslint.alwaysShowStatus": true,
     "vetur.format.defaultFormatter.html": "prettier",
-    "vetur.format.options.tabSize": 4
+    "vetur.format.options.tabSize": 4,
+    "workbench.tree.indent": 15
 }
