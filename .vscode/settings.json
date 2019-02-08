@@ -1,9 +1,35 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "editor.formatOnSave": true,
-    "eslint.autoFixOnSave": true,
+
+    //"eslint.autoFixOnSave": false,
     "eslint.alwaysShowStatus": true,
-    "vetur.format.defaultFormatter.html": "prettier",
+    "eslint.validate": [
+        {
+            "language": "vue"
+            //"autoFix": true
+        },
+        {
+            "language": "html",
+            "autoFix": false
+        },
+        {
+            "language": "javascript",
+            "autoFix": true
+        }
+    ],
+
+    "vetur.validation.template": false,
+    // "prettier.eslintIntegration": true,
+
+    //"vetur.format.defaultFormatter.js": "prettier",
+    //"vetur.format.defaultFormatter.html": "prettier",
+    // "vetur.format.defaultFormatterOptions": {
+    //     "js-beautify-html": {
+    //         "wrap_attributes": "auto"
+    //     }
+    // },
     "vetur.format.options.tabSize": 4,
+
     "workbench.tree.indent": 15
 }
