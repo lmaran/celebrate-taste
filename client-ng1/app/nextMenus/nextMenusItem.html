@@ -1,0 +1,25 @@
+﻿<div class="container">
+    <br/>
+    <h1>{{dish.name}} 
+        <small>
+            <span ng-if="dish.calories || dish.isFasting">(</span><span ng-if="dish.calories">{{dish.calories}} calorii</span><span ng-if="dish.calories && dish.isFasting">, </span><span ng-if="dish.isFasting">de Post</span><span ng-if="dish.calories || dish.isFasting">)</span>
+        </small>
+        </br>       
+    </h1>
+
+    <h3 ng-if="dish.description"> 
+        <small>
+            {{dish.description}}
+        </small>
+    </h3>    
+    <br/>
+    
+    <div class="row" ng-if="dish.imageUrl">
+        <div class="col-md-6">
+            <a class="thumbnail">
+                <img ng-src="{{dish.imageUrl}}">
+            </a>
+        </div>
+    </div>
+
+</div>

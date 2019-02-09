@@ -1,0 +1,236 @@
+﻿<ol class="breadcrumb">
+    <li>
+        <button ng-click="vm.goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+            <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
+        </button>
+        <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
+    </li>
+    <li><a href="/admin/deliveries">Livrari</a></li>
+    <li class="active">Livrare: {{vm.dateAsShortString}} / {{vm.delivery.eatSeries}}</li>
+</ol>
+
+<div class="container-fluid">
+    <h1>Livrare: {{vm.dateAsShortString}} / {{vm.delivery.eatSeries}}</h1>
+    <uib-tabset>
+        <!--tab 1-->
+        <uib-tab select="vm.selectTab1()">
+            <uib-tab-heading>
+                <i class="glyphicon glyphicon-credit-card"></i> Livreaza cu cardul
+            </uib-tab-heading>
+     
+            <div class2="row top-margin-15" style="margin-top:80px"> 
+                <div class="col-md-2"></div>    
+                <div class="col-md-8 col-md-10-offset-2">                 
+                    <form name="form" class="form-horizontal" ng-submit="vm.deliverByBadge(form)" novalidate autocomplete="off"> 
+                        <div class="input-group input-group-lg" >
+                            <input name="badge" ng-model="vm.obj.badgeCode" type="text" class="form-control" placeholder="Scaneaza cardul..." lm-focus="vm.obj.isFocusOnBadge" autocomplete="off">
+                            <span class="input-group-btn"><button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span></button></span>
+                        </div>                                               
+                    </form>
+                    </br>
+                    
+                    <span class="pull-right">
+                        <span class2="label label-default" style="font-size:100%; font-weight:normal">Portii ramase:</span>
+                        <span ng-repeat="opt in vm.deliverySummary.options">
+                            <span class="label label-info" style="font-size:100%; font-weight:normal; background-color:#DDD; color:black">{{opt.key}}: {{opt.value.remaining}}</span>
+                        </span>  
+                    </span>  
+                                        
+                    <span class="label label-default" style="font-size:100%; font-weight:normal; background-color2:#DDD; color2:black">Persoane servite:</span> 
+                    {{vm.deliverySummary.servings.delivered}} / {{vm.deliverySummary.servings.total}}
+                
+                    <uib-progressbar animate="true" value="vm.deliverySummary.servings.delivered" max="vm.deliverySummary.servings.total" type="success" style="height:5px; margin-top:5px"><b></b></uib-progressbar> 
+
+                    <div ng-show="!vm.errorValidation && vm.orderLine">
+                        <h2 ng-style="vm.orderLine.status === 'completed' && {'text-decoration':'line-through'}">{{vm.orderLine.employeeName}}</h2>                     
+                        <hr/>
+                        <h2>
+                            <span ng-style="vm.orderLine.fromOwnerOpt1 && {'background-color':'lightgreen'}">
+                                &nbsp;{{vm.orderLine.option1}}
+                            </span>
+                            <span class="text-muted">&nbsp;- </span>
+                            <span class="text-muted" ng-style="vm.orderLine.status === 'completed' && {'text-decoration':'line-through'}">{{vm.option1.name}}</span>                          
+                        </h2>
+                        <h2>
+                            <span ng-style="vm.orderLine.fromOwnerOpt2 && {'background-color':'lightgreen'}">
+                                &nbsp;{{vm.orderLine.option2}}
+                            </span>
+                            <span class="text-muted">&nbsp;- </span>
+                            <span class="text-muted" ng-style="vm.orderLine.status === 'completed' && {'text-decoration':'line-through'}">{{vm.option2.name}}</span>                          
+                        </h2>
+                    </div>
+                    
+                    </br>
+                    <p ng-show="vm.orderLine && vm.orderLine.status === 'completed'">
+                        <span style="color:orange" class="glyphicon glyphicon-warning-sign"></span> 
+                        &nbsp;Acest meniul a fost <strong>deja livrat</strong>. Daca doresti sa anulezi livrarea, apasa 
+                        <a href ng-click="vm.revoke(vm.orderLine)">aici</a>.
+                    </h2>
+                    
+                    <div ng-show="vm.errorValidation">
+                        <h2 class="text-muted" style="color:red">{{vm.errorMessage}}</h2>
+                    </div>                                        
+                    
+                </div> 
+            </div> 
+        </uib-tab>                
+        
+        <!--tab 2 (open)-->
+        <uib-tab select="vm.selectTabOpen()">
+            <uib-tab-heading>
+                <i class="glyphicon glyphicon-eye-open"></i> Livreaza manual
+            </uib-tab-heading>
+
+            <div class="row top-margin-15"> 
+  
+                <div class="col-md-2">
+                    <form class="form-inline">
+                        <div class="form-group">                  
+                            <span class="label label-default" style="font-size:100%; font-weight:normal">Total:</span> {{resultsOpen.length}} / {{vm.orderLinesOpen.length}}
+                        </div>
+                    </form> 
+                </div>
+  
+                <div class="col-md-10">
+                    <form class="form-inline">                  
+                        
+                        <div class="form-group pull-right"> 
+                            
+                            <!--<div class="input-group" style="margin-right: 15px">
+                                <span class="btn-group" uib-dropdown>
+                                    <button style="text-align:left; min-width:120px;" type="button" class="btn btn-default btn-block" uib-dropdown-toggle ng-disabled="vm.disabled">
+                                        <span>{{vm.selectedPreference}}</span> 
+                                        <span style="float:right; height:12px; margin-top: 8px;" class="caret"></span>
+                                    </button>
+                                    <ul style="width:100%; min-width:120px" class="dropdown-menu" uib-dropdown-menu role="menu">
+                                        <li role="menuitem">
+                                            <a href="#" ng-click="vm.selectPreference('Toate pref.')">Toate pref.</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li role="menuitem" ng-repeat="preference in vm.preferences">
+                                            <a href="#" ng-click="vm.selectPreference(preference)">{{preference}}</a>
+                                        </li>
+                                    </ul>                    
+                                </span>                       
+                            </div> -->
+                            
+                            <div class="input-group" style="margin-right: 15px">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="vm.obj.onlyNoBadges"> 
+                                        Fara card
+                                    </label>
+                                </div>                     
+                            </div>                                                                                   
+                                              
+                            <div class="input-group">
+                                <span style="padding-right:10px;" class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="vm.refreshOpen()" style="border-radius:4px; background-color:lightgray"><span class="glyphicon glyphicon-refresh"></span></button>
+                                </span>
+                                <input style="border-top-left-radius:4px; border-bottom-left-radius:4px" ng-model="vm.searchInOpen" type="text" class="form-control" placeholder="Cauta...">
+                                <span class="input-group-btn"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button></span>
+                            </div>
+                        </div>
+                        
+                    </form>       
+                </div>
+                 
+            </div>    
+
+
+            <div class="table-responsive">
+                <table class="table table-responsive table-hover table-condensed">
+                    <thead>
+                        <tr>                   
+                            <th>Angajat</th>
+                            <th>Preferinte</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="orderLine in vm.orderLinesOpen 
+                                | filter: vm.badgesFilter
+                                | filter: vm.preferencesFilter                       
+                                | filter: vm.searchInOpen 
+                                as resultsOpen">                  
+                            <td>
+                                <a href ng-click="vm.openDeliveryLine(orderLine, 'open')">{{orderLine.employeeName}}</a>
+                                <span ng-if="!orderLine.badgeCode" style="color:red"> - lipsa card </span> 
+                                <!--{{orderLine.badgeCode}}-->
+                            </td>                     
+                            <td>
+                                <span ng-style="orderLine.fromOwnerOpt1 && {'background-color':'lightgreen'}">{{orderLine.option1 || '-'}}</span> / 
+                                <span ng-style="orderLine.fromOwnerOpt2 && {'background-color':'lightgreen'}">{{orderLine.option2 || '-'}}</span>
+                            </td>                
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </uib-tab>
+        
+        <!--tab 3 (completed)-->        
+        <uib-tab select="vm.selectTabCompleted()">
+            <uib-tab-heading>
+                <i class="glyphicon glyphicon-ok"></i> Livrate
+            </uib-tab-heading>
+                        
+            <div class="row top-margin-15">
+                
+                <div class="col-md-6">
+                    <form class="form-inline">
+                        <div class="form-group">                  
+                            <span class="label label-default" style="font-size:100%; font-weight:normal">Total:</span> {{resultsCompleted.length}} / {{vm.orderLinesCompleted.length}}
+                        </div>
+                    </form> 
+                </div>                
+                     
+                <div class="col-md-6">
+                    <form class="form-inline">
+                        <div class="form-group pull-right">                   
+                            <div class="input-group">
+                                <span style="padding-right:10px;" class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="vm.refreshCompleted()" style="border-radius:4px; background-color:lightgray"><span class="glyphicon glyphicon-refresh"></span></button>
+                                </span>
+                                <input style="border-top-left-radius:4px; border-bottom-left-radius:4px" ng-model="vm.searchInCompleted" type="text" class="form-control" placeholder="Cauta...">
+                                <span class="input-group-btn"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button></span>
+                            </div>
+                        </div>
+                    </form>       
+                </div>
+                 
+            </div>    
+
+
+            <div class="table-responsive">
+                <table class="table table-responsive table-hover table-condensed">
+                    <thead>
+                        <tr>                   
+                            <th>Angajat</th>
+                            <th>Preferinte</th>
+                            <th>Data livrarii</th>
+                            <th>Livrat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="orderLine in vm.orderLinesCompleted                     
+                                | filter: vm.searchInCompleted 
+                                as resultsCompleted">                  
+                            <td>
+                                <a href ng-click="vm.openDeliveryLine(orderLine, 'completed')">{{orderLine.employeeName}}</a>
+                                <span ng-if="!orderLine.badgeCode" style="color:red"> - lipsa card </span>
+                            </td>                     
+                            <td>
+                                <span ng-style="orderLine.fromOwnerOpt1 && {'background-color':'lightgreen'}">{{orderLine.option1 || '-'}}</span> / 
+                                <span ng-style="orderLine.fromOwnerOpt2 && {'background-color':'lightgreen'}">{{orderLine.option2 || '-'}}</span>
+                            </td>                
+                            <td>{{orderLine.deliveryDate | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+                            <td>{{orderLine.deliveryMode}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </uib-tab>                
+    </uib-tabset>
+
+</div>    

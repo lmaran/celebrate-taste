@@ -1,0 +1,2 @@
+[ ![Codeship Status for lmaran/celebrate-taste](https://codeship.com/projects/81058240-1769-0133-c3e2-06c83ac03245/status?branch=master)](https://codeship.com/projects/93583)
+# A canteen application for Celebrate Taste

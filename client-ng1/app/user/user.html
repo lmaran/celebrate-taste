@@ -1,0 +1,50 @@
+﻿<ol class="breadcrumb">
+    <li>
+        <button ng-click="vm.goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+            <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
+        </button>
+        <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
+    </li>
+    <li><a href="/admin/users">Utilizatori</a></li>
+    <li class="active">Utilizator: {{vm.user.name || 'nou'}}</li>
+</ol>
+
+<div class="container-fluid">
+    <h1>{{vm.pageTitle}}</h1>
+
+    <form ng-submit="vm.isEditMode ? vm.update(form) : vm.create(form)" name="form" class="form-horizontal max-width" role="form" autocomplete="off" novalidate>
+
+        <div class="form-group" ng-class="{'has-error' : form.name.$invalid}">
+            <label class="col-md-2 control-label required">Nume </label>
+            <div class="col-md-4">
+                <input type="text" name="name" ng-model="vm.user.name" class="form-control" lm-focus="vm.isFocusOnName"/>
+                <p class="text-muted">Numele in format <strong>Prenume</strong> + <strong>Nume</strong>.</p>
+                <p ng-show="form.name.$error.myValidation" class="help-block">{{vm.errors.name}}</p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error' : form.email.$invalid}">
+            <label class="col-md-2 control-label required">Email </label>
+            <div class="col-md-4">
+                <input type="email" stop-email-validation name="email" ng-model="vm.user.email" class="form-control"/>
+                <p class="text-muted">Necesar pt. notificari sau eventuale recuperari ale parolei.</p>
+                <p ng-show="form.email.$error.myValidation" class="help-block">{{vm.errors.email}}</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-floppy-disk"></span> Salveaza </button>
+                <button type="button" class="btn btn-default" ng-click="vm.goBack()"> <span class=" glyphicon glyphicon-remove"></span> Renunta </button>
+            </div>
+        </div>
+
+    </form>
+    
+    <p class="top-margin-30">
+        Observatii:
+    </p>
+    <div class="text-muted"> - dupa salvare, utilizatorul va primi un email cu instructiuni privind activarea contului.</div>
+    <div class="text-muted"> - parola va fi creata de titular, in momentul activarii contului.</div>
+    <div class="text-muted"> - <span style="color:red"><strong>Atentie!</strong></span> Persoana cu acest cont va avea acces in sectiunea de 'Admin' a aplicatiei. <strong>NU</strong> crea aici conturi pt. cei ce servesc masa!</div>  
+</div>
