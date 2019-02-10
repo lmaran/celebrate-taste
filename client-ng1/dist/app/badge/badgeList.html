@@ -1,0 +1,87 @@
+<ol class="breadcrumb">
+    <li>
+        <button ng-click="vm.goBack();" type="button" class="btn btn-default btn-xs" style="margin-right:15px">
+            <span class="glyphicon glyphicon-arrow-left" ></span> Inapoi
+        </button>
+        <a href="/admin"><span class="glyphicon glyphicon-home"></span></a>
+    </li>
+    <li class="active">Carduri</li>
+</ol>
+
+<div class="container-fluid">
+    <h1>{{vm.pageTitle}}</h1>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" ngf-select="vm.upload($file)" accept=".xls, .xlsx">
+                        <span class="glyphicon glyphicon-import" ng-class="{ 'glyphicon-paperclip' : !vm.inProgress, 'glyphicon-refresh spinning' : vm.inProgress}"></span>
+                        <span ng-if="!vm.inProgress">Importa carduri</span>
+                        <span ng-if="vm.inProgress">Se incarca... {{vm.progressPercentage}}%</span>
+                    </button>
+
+                    <span ng-if="vm.screenSize === 'widescreen'" style="display:inline-block;">
+                        <div ngf-drop class="drop-box" ng-model="file" ng-change="vm.upload(file)" accept=".xls, .xlsx"
+                            ngf-drag-over-class="'dragover'" style="padding:5px 20px 5px 20px">
+
+                            sau trage fisierul Excel aici
+
+                        </div>
+                        <div ngf-no-file-drop>Facilitatea de Drag/Drop nu este suportata de catre acest browser.</div>
+                    </span>
+                    <div ng-show = "vm.errors.fileErrorMsg" style="color:#a94442">{{vm.errors.fileErrorMsg}}</div>
+
+                </div>
+            </form>
+        </div>
+
+
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group pull-right">
+                    <div class="input-group">
+                        <span style="padding-right:10px;" class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="vm.refresh()" style="border-radius:4px; background-color:lightgray"><span class="glyphicon glyphicon-refresh"></span></button>
+                        </span>
+                        <input style="border-top-left-radius:4px; border-bottom-left-radius:4px" ng-model="vm.search" type="text" class="form-control" placeholder="Cauta...">
+                        <span class="input-group-btn"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-responsive table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>Cod card</th>
+                    <th>Nume card</th>
+                    <th>CreatDe</th>
+                    <th>CreatLa</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="badge in vm.badges
+                        | filter: vm.filterBySearch
+                        as results">
+                    <td>
+                        {{badge.code}}
+                        <i class="glyphicon glyphicon-info-sign" ng-if="badge.description" bs-tooltip data-animation="am-fade-and-scale" data-title="{{badge.description}}"></i>
+                    </td>
+                    <td>{{ badge.ownerCode }}</td>
+                    <td>{{ badge.createdBy }}</td>
+                    <td>{{ badge.createdOn | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <span class="label label-default" style="font-size:100%; font-weight:normal">Total:</span> {{results.length}} / {{vm.badges.length}}
+
+</div>
