@@ -118,7 +118,7 @@ module.exports = function(app) {
     // client-side views
     app.get("/admin|/admin/*", auth.hasRole("partner"), function(req, res) {
         var srcOrDev = config.env === "production" ? "dist" : "src";
-        res.sendFile(path.join(__dirname, `../../client-ng1/${srcOrDev}/index.html`));
+        res.sendFile(path.join(__dirname, `../../client/${srcOrDev}/index.html`));
     });
 
     // All undefined asset or api routes should return a 404
