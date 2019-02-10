@@ -9,8 +9,8 @@
 cd server && npm start
 
 # start client:
-# There is no local server to start
-# When a new js/css file is added, update the index.html manually or
+# there is no local server to start
+# when a new js/css file is added, update the index.html manually or
 cd client && npm build # or 'npx gulp'
 
 # start browser:

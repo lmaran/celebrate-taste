@@ -63,9 +63,9 @@ module.exports = function(app) {
     var srcOrDev = config.env === "production" ? "dist" : "src";
 
     // static for clients
-    app.use("/assets-ng1", express.static(path.join(__dirname, `../../client-ng1/${srcOrDev}/assets`)));
+    app.use("/assets", express.static(path.join(__dirname, `../../client/${srcOrDev}/assets`)));
     // js files for clients
-    app.use("/app", express.static(path.join(__dirname, `../../client-ng1/${srcOrDev}/app`)));
+    app.use("/app", express.static(path.join(__dirname, `../../client/${srcOrDev}/app`)));
 
     // static for server
     app.use("/public", express.static(path.join(__dirname, "public")));
