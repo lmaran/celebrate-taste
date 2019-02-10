@@ -4,8 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "gulp": "gulp"
+        "build": "gulp",
+        "build-prod": "gulp prod"
     },
     "keywords": [],
     "author": "",
@@ -17,7 +17,7 @@
         "gulp-inject": "^5.0.2",
         "gulp-minify-css": "^1.2.4",
         "gulp-rev": "^9.0.0",
-        "gulp-uglify": "^3.0.1",
-        "run-sequence": "^2.2.1"
-    }
+        "gulp-uglify": "^3.0.1"
+    },
+    "dependencies": {}
 }

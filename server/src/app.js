@@ -59,10 +59,13 @@ module.exports = function(app) {
     app.locals.gaCode = config.gaCode; // google Analytics code (e.g. 'UA-72165579-1'); http://stackoverflow.com/a/25097453
 
     app.use(favicon(path.join(__dirname, "/public", "favicon.ico")));
+
+    var srcOrDev = config.env === "production" ? "dist" : "src";
+
     // static for clients
-    app.use("/assets-ng1", express.static(path.join(__dirname, "../../client-ng1/assets")));
+    app.use("/assets-ng1", express.static(path.join(__dirname, `../../client-ng1/${srcOrDev}/assets`)));
     // js files for clients
-    app.use("/app", express.static(path.join(__dirname, "../../client-ng1/app")));
+    app.use("/app", express.static(path.join(__dirname, `../../client-ng1/${srcOrDev}/app`)));
 
     // static for server
     app.use("/public", express.static(path.join(__dirname, "public")));

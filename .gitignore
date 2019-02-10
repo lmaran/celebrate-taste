@@ -1,4 +1,5 @@
 client-ng1/node_modules
+client-ng1/dist
 
 client/node_modules
 client/dist
