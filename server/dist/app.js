@@ -60,7 +60,7 @@ module.exports = function(app) {
 
     app.use(favicon(path.join(__dirname, "/public", "favicon.ico")));
 
-    var srcOrDev = config.env === "production" ? "dist" : "src";
+    var srcOrDev = config.env === "production" || config.env === "staging" ? "dist" : "src";
 
     // static for clients
     app.use("/assets", express.static(path.join(__dirname, `../../client/${srcOrDev}/assets`)));

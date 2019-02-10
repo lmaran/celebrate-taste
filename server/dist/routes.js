@@ -117,7 +117,7 @@ module.exports = function(app) {
 
     // client-side views
     app.get("/admin|/admin/*", auth.hasRole("partner"), function(req, res) {
-        var srcOrDev = config.env === "production" ? "dist" : "src";
+        var srcOrDev = config.env === "production" || config.env === "staging" ? "dist" : "src";
         res.sendFile(path.join(__dirname, `../../client/${srcOrDev}/index.html`));
     });
 
