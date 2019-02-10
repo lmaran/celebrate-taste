@@ -41,6 +41,7 @@ extern "C" {
 typedef enum {
 	VIPS_COMBINE_MAX,
 	VIPS_COMBINE_SUM,
+	VIPS_COMBINE_MIN,
 	VIPS_COMBINE_LAST
 } VipsCombine;
 
@@ -67,6 +68,11 @@ int vips_sharpen( VipsImage *in, VipsImage **out, ... )
 int vips_spcor( VipsImage *in, VipsImage *ref, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_fastcor( VipsImage *in, VipsImage *ref, VipsImage **out, ... )
+	__attribute__((sentinel));
+
+int vips_sobel( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_canny( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
 
 #ifdef __cplusplus
