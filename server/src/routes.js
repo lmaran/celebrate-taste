@@ -5,6 +5,7 @@ var path = require("path");
 var auth = require("./api/user/login/loginService");
 var logger = require("./logging/logger");
 var reqHelper = require("./logging/reqHelper");
+var config = require("./config/environment");
 
 module.exports = function(app) {
     // ## test only (start)
@@ -116,7 +117,8 @@ module.exports = function(app) {
 
     // client-side views
     app.get("/admin|/admin/*", auth.hasRole("partner"), function(req, res) {
-        res.sendFile(path.join(__dirname, "../../client-ng1/index.html"));
+        var srcOrDev = config.env === "production" ? "dist" : "src";
+        res.sendFile(path.join(__dirname, `../../client-ng1/${srcOrDev}/index.html`));
     });
 
     // All undefined asset or api routes should return a 404
