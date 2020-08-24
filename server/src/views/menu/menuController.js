@@ -1,7 +1,7 @@
 /* global process */
 "use strict";
 
-(function(menuController) {
+(function (menuController) {
     var menuService = require("../../api/menu/menuService");
     var preferenceService = require("../../api/preference/preferenceService");
     var orderService = require("../../api/order/orderService");
@@ -10,7 +10,7 @@
     var helper = require("../../data/dateTimeHelper");
     var _ = require("lodash");
 
-    menuController.renderTodaysMenu = function(req, res, next) {
+    menuController.renderTodaysMenu = function (req, res, next) {
         var todayStr = helper.getRoTodayStr(); // "2017-04-09""
         //var todayStr = "2017-05-01";
 
@@ -22,7 +22,7 @@
             let p5 = promiseToGetTodaysEmployeeReviews(req.user.name, todayStr);
 
             Promise.all([p1, p2, p3, p4, p5])
-                .then(function(results) {
+                .then(function (results) {
                     let menu = results[0];
                     let pref = results[1];
                     let order = results[2];
@@ -32,7 +32,7 @@
                     var menuHasDishes = menu && menu.dishes && menu.dishes.length > 0;
                     if (menuHasDishes) {
                         menu.dishes = _.sortBy(menu.dishes, ["category", "option"]);
-                        menu.dishes.forEach(function(dish) {
+                        menu.dishes.forEach(function (dish) {
                             var dishesInCategory = _.filter(menu.dishes, { category: dish.category });
 
                             if (dishesInCategory.length > 0) {
@@ -106,13 +106,13 @@
 
                     res.render("menu/todaysMenu", context);
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     return handleError(res, err);
                 });
         } else {
             // anonymous user
             promiseToGetTodaysMenu(todayStr)
-                .then(function(menu) {
+                .then(function (menu) {
                     var menuHasDishes = menu && menu.dishes && menu.dishes.length > 0;
                     if (menuHasDishes) {
                         menu.dishes = _.sortBy(menu.dishes, ["category", "option"]);
@@ -127,20 +127,20 @@
 
                     res.render("menu/todaysMenu", context);
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     return handleError(res, err);
                 });
         }
     };
 
-    menuController.renderNextMenus = function(req, res, next) {
+    menuController.renderNextMenus = function (req, res, next) {
         var todayStr = helper.getRoTodayStr(); // "2016-03-26"
-        menuService.getNextMenus(todayStr, function(err, menus) {
+        menuService.getNextMenus(todayStr, function (err, menus) {
             if (err) {
                 return handleError(res, err);
             }
 
-            menus = _.map(menus, function(menu) {
+            menus = _.map(menus, function (menu) {
                 menu.menuDateFormated = helper.getStringFromString(menu.menuDate);
                 menu.dishes = _.sortBy(menu.dishes, ["category", "option"]);
                 return menu;
@@ -155,14 +155,16 @@
 
             if (req.user) {
                 // TODO: run this query in paralel with "getNextMenus"
-                preferenceService.getByEmployee(req.user.name, todayStr, function(err, preferences) {
+                preferenceService.getByEmployee(req.user.name, todayStr, function (err, preferences) {
                     if (err) {
                         return handleError(res, err);
                     }
 
-                    menus.forEach(function(menu) {
-                        menu.dishes.forEach(function(dish) {
+                    menus.forEach(function (menu) {
+                        menu.dishes.forEach(function (dish) {
                             var dishesInCategory = _.filter(menu.dishes, { category: dish.category });
+
+                            console.log(dish);
 
                             if (dishesInCategory.length > 0) {
                                 var pref = _.find(preferences, { date: menu.menuDate });
@@ -172,7 +174,11 @@
                                 }
 
                                 if (dish.category === "1") {
-                                    dish.isSelectable = true;
+                                    // prevent selecting a sandwich
+                                    if (dish.option) {
+                                        dish.isSelectable = true;
+                                    }
+
                                     if (pref && pref.option1 === dish.option) {
                                         dish.isMyOption = true;
                                     } else {
@@ -205,8 +211,8 @@
     };
 
     function promiseToGetTodaysMenu(todayStr) {
-        return new Promise(function(resolve, reject) {
-            menuService.getTodaysMenu(todayStr, function(err, menu) {
+        return new Promise(function (resolve, reject) {
+            menuService.getTodaysMenu(todayStr, function (err, menu) {
                 if (err) {
                     reject(err);
                 }
@@ -216,8 +222,8 @@
     }
 
     function promiseToGetNextMenu(todayStr) {
-        return new Promise(function(resolve, reject) {
-            menuService.getNextMenus(todayStr, function(err, menus) {
+        return new Promise(function (resolve, reject) {
+            menuService.getNextMenus(todayStr, function (err, menus) {
                 if (err) {
                     reject(err);
                 }
@@ -227,8 +233,8 @@
     }
 
     function promiseToGetUserPreferences(userName, todayStr) {
-        return new Promise(function(resolve, reject) {
-            preferenceService.getByEmployee(userName, todayStr, function(err, preferences) {
+        return new Promise(function (resolve, reject) {
+            preferenceService.getByEmployee(userName, todayStr, function (err, preferences) {
                 if (err) {
                     reject(err);
                 }
@@ -238,8 +244,8 @@
     }
 
     function promiseToGetTodaysUserPreference(userName, todayStr) {
-        return new Promise(function(resolve, reject) {
-            preferenceService.getByEmployeeAndDate(userName, todayStr, function(err, preference) {
+        return new Promise(function (resolve, reject) {
+            preferenceService.getByEmployeeAndDate(userName, todayStr, function (err, preference) {
                 if (err) {
                     reject(err);
                 }
@@ -249,8 +255,8 @@
     }
 
     function promiseToGetTodaysOrder(todayStr) {
-        return new Promise(function(resolve, reject) {
-            orderService.getByDate(todayStr, function(err, order) {
+        return new Promise(function (resolve, reject) {
+            orderService.getByDate(todayStr, function (err, order) {
                 if (err) {
                     reject(err);
                 }
@@ -260,8 +266,8 @@
     }
 
     function promiseToGetTodaysUserOrderLine(employeeName, todayStr) {
-        return new Promise(function(resolve, reject) {
-            orderLineService.getByEmployeeAndDate(employeeName, todayStr, function(err, orderLine) {
+        return new Promise(function (resolve, reject) {
+            orderLineService.getByEmployeeAndDate(employeeName, todayStr, function (err, orderLine) {
                 if (err) {
                     reject(err);
                 }
@@ -271,8 +277,8 @@
     }
 
     function promiseToGetTodaysEmployeeReviews(employeeName, todayStr) {
-        return new Promise(function(resolve, reject) {
-            reviewService.getByEmployeeAndDate(employeeName, todayStr, function(err, reviews) {
+        return new Promise(function (resolve, reject) {
+            reviewService.getByEmployeeAndDate(employeeName, todayStr, function (err, reviews) {
                 if (err) {
                     reject(err);
                 }
