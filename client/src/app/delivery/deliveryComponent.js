@@ -23,8 +23,8 @@
             "deliveryLogService",
             "badgeService",
             "$timeout",
-            controller,
-        ],
+            controller
+        ]
     });
 
     function controller(
@@ -41,7 +41,7 @@
         orderService,
         deliveryLogService,
         badgeService,
-        $timeout,
+        $timeout
     ) {
         var vm = this;
 
@@ -95,10 +95,10 @@
                         return {
                             orderLine: orderLine,
                             option1: vm.option1,
-                            option2: vm.option2,
+                            option2: vm.option2
                         };
-                    },
-                },
+                    }
+                }
             });
 
             modalInstance.result.then(
@@ -110,7 +110,7 @@
                 },
                 function () {
                     //$log.info('Modal dismissed at: ' + new Date());
-                },
+                }
             );
         };
 
@@ -185,7 +185,7 @@
                                 showMessage("'" + newEmployeeName + "' a mancat in " + orderLines[0].eatSeries + ".");
                             else
                                 showMessage(
-                                    "'" + newEmployeeName + "' a fost programat in " + orderLines[0].eatSeries + ".",
+                                    "'" + newEmployeeName + "' a fost programat in " + orderLines[0].eatSeries + "."
                                 );
                         } else {
                             vm.orderLine = orderLines[0];
@@ -411,7 +411,7 @@
             var log = {
                 orderDate: vm.delivery.orderDate,
                 series: vm.delivery.eatSeries,
-                msg: msg,
+                msg: msg
             };
 
             deliveryLogService

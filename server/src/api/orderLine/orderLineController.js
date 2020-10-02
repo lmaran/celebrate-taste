@@ -145,7 +145,7 @@ exports.update = function (req, res) {
                     // get new status
                     orderLineService.getDeliverySummary(orderLine.orderId, orderLine.eatSeries, function (
                         err,
-                        deliverySummary,
+                        deliverySummary
                     ) {
                         if (err) {
                             return handleError(res, err);
@@ -189,7 +189,7 @@ exports.import = function (req, res) {
                     },
                     function (callback) {
                         menuService.getTodaysMenu(importData.orderDate, callback);
-                    },
+                    }
                 ],
                 function (err, results) {
                     // here we have the results
@@ -227,7 +227,7 @@ exports.import = function (req, res) {
                             employeeName: employee ? employee.name : employeeName, // better formatting
                             createBy: req.user.name,
                             createdOn: new Date(),
-                            status: "open",
+                            status: "open"
                         };
 
                         if (preference && preference.option1) {
@@ -262,7 +262,7 @@ exports.import = function (req, res) {
                         }
                         res.status(201).json(response.ops[0]);
                     });
-                },
+                }
             );
         }
     });
