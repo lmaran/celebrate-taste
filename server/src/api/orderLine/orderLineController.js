@@ -12,21 +12,21 @@ var helperService = require("../../data/helperService");
 var _ = require("lodash");
 
 // ---------- OData ----------
-exports.getAll = function(req, res) {
+exports.getAll = function (req, res) {
     var odataQuery = req.query;
     odataQuery.hasCountSegment = req.url.indexOf("/$count") !== -1; //check for $count as a url segment
     if (!odataQuery.$top) odataQuery.$top = "1000"; // if $top is not specified, return max. 1000 records
 
     promiseToGetOrderLines(odataQuery)
-        .then(function(orderLines) {
+        .then(function (orderLines) {
             res.status(200).json(orderLines);
         })
-        .catch(function(err) {
+        .catch(function (err) {
             return handleError(res, err);
         });
 };
 
-exports.getAllWithBadgeInfo = function(req, res) {
+exports.getAllWithBadgeInfo = function (req, res) {
     var odataQuery = req.query;
     odataQuery.hasCountSegment = req.url.indexOf("/$count") !== -1; //check for $count as a url segment
     if (!odataQuery.$top) odataQuery.$top = "1000"; // if $top is not specified, return max. 1000 records
@@ -36,13 +36,13 @@ exports.getAllWithBadgeInfo = function(req, res) {
     let p3 = promiseToGetBadges("");
 
     Promise.all([p1, p2, p3])
-        .then(function(results) {
+        .then(function (results) {
             let orderLines = results[0];
             let customerEmployees = results[1];
             let badges = results[2];
 
             let newOrderLines = [];
-            orderLines.forEach(function(orderLine) {
+            orderLines.forEach(function (orderLine) {
                 let employee = helperService.getEmployeeByName(orderLine.employeeName, customerEmployees);
                 if (employee) {
                     let badge = helperService.getBadgeByEmployee(employee, badges);
@@ -53,20 +53,20 @@ exports.getAllWithBadgeInfo = function(req, res) {
             });
             res.status(200).json(newOrderLines);
         })
-        .catch(function(err) {
+        .catch(function (err) {
             return handleError(res, err);
         });
 };
 
 // ---------- REST ----------
-exports.create = function(req, res) {
+exports.create = function (req, res) {
     var orderLine = req.body;
 
     orderLine.createBy = req.user.name;
     orderLine.createdOn = new Date();
     orderLine.status = "open";
 
-    orderLineValidator.all(req, res, function(errors) {
+    orderLineValidator.all(req, res, function (errors) {
         if (errors) {
             res.status(400).send({ errors: errors }); // 400 - bad request
         } else {
@@ -77,7 +77,7 @@ exports.create = function(req, res) {
                 orderLine.option2.trim() === ""
             ) {
                 // get available options
-                menuService.getTodaysMenu(orderLine.orderDate, function(err, menu) {
+                menuService.getTodaysMenu(orderLine.orderDate, function (err, menu) {
                     if (err) {
                         return handleError(res, err);
                     }
@@ -94,7 +94,7 @@ exports.create = function(req, res) {
                     }
 
                     // save orderLine
-                    orderLineService.create(orderLine, function(err, response) {
+                    orderLineService.create(orderLine, function (err, response) {
                         if (err) {
                             return handleError(res, err);
                         }
@@ -103,7 +103,7 @@ exports.create = function(req, res) {
                 });
             } else {
                 // save orderLine
-                orderLineService.create(orderLine, function(err, response) {
+                orderLineService.create(orderLine, function (err, response) {
                     if (err) {
                         return handleError(res, err);
                     }
@@ -114,9 +114,9 @@ exports.create = function(req, res) {
     });
 };
 
-exports.getById = function(req, res) {
+exports.getById = function (req, res) {
     var orderLineId = req.params.id;
-    orderLineService.getById(orderLineId, function(err, orderLine) {
+    orderLineService.getById(orderLineId, function (err, orderLine) {
         if (err) {
             return handleError(res, err);
         }
@@ -124,16 +124,16 @@ exports.getById = function(req, res) {
     });
 };
 
-exports.update = function(req, res) {
+exports.update = function (req, res) {
     var orderLine = req.body;
     orderLine.modifiedBy = req.user.name;
     orderLine.modifiedOn = new Date();
 
-    orderLineValidator.all(req, res, function(errors) {
+    orderLineValidator.all(req, res, function (errors) {
         if (errors) {
             res.status(400).send({ errors: errors }); // 400 - bad request
         } else {
-            orderLineService.update(orderLine, function(err, response) {
+            orderLineService.update(orderLine, function (err, response) {
                 if (err) {
                     return handleError(res, err);
                 }
@@ -143,7 +143,7 @@ exports.update = function(req, res) {
                     //res.sendStatus(200);
 
                     // get new status
-                    orderLineService.getDeliverySummary(orderLine.orderId, orderLine.eatSeries, function(
+                    orderLineService.getDeliverySummary(orderLine.orderId, orderLine.eatSeries, function (
                         err,
                         deliverySummary,
                     ) {
@@ -158,9 +158,9 @@ exports.update = function(req, res) {
     });
 };
 
-exports.remove = function(req, res) {
+exports.remove = function (req, res) {
     var orderLineId = req.params.id;
-    orderLineService.remove(orderLineId, function(err, response) {
+    orderLineService.remove(orderLineId, function (err, response) {
         if (err) {
             return handleError(res, err);
         }
@@ -169,29 +169,29 @@ exports.remove = function(req, res) {
 };
 
 // ---------- RPC ----------
-exports.import = function(req, res) {
+exports.import = function (req, res) {
     var importData = req.body;
 
-    importDataValidator.all(req, res, function(errors) {
+    importDataValidator.all(req, res, function (errors) {
         if (errors) {
             res.status(400).send({ errors: errors }); // 400 - bad request
         } else {
             // get 'customerEmployees' and 'prefeences'
             async.parallel(
                 [
-                    function(callback) {
+                    function (callback) {
                         var odataQuery1 = { $filter: "isActive eq true" };
                         customerEmployeeService.getAll(odataQuery1, callback);
                     },
-                    function(callback) {
+                    function (callback) {
                         var odataQuery2 = { $filter: "date eq '" + importData.orderDate + "'" };
                         preferenceService.getAll(odataQuery2, callback);
                     },
-                    function(callback) {
+                    function (callback) {
                         menuService.getTodaysMenu(importData.orderDate, callback);
                     },
                 ],
-                function(err, results) {
+                function (err, results) {
                     // here we have the results
 
                     if (err) {
@@ -210,13 +210,13 @@ exports.import = function(req, res) {
                     var employeesName = req.body.employeesName.split("\n").filter(Boolean);
 
                     // create a new record for each received name
-                    employeesName.forEach(function(employeeName) {
+                    employeesName.forEach(function (employeeName) {
                         employeeName = employeeName.trim();
 
-                        var preference = _.find(preferences, function(item) {
+                        var preference = _.find(preferences, function (item) {
                             return normalize(item.employeeName) == normalize(employeeName);
                         });
-                        var employee = _.find(employees, function(item) {
+                        var employee = _.find(employees, function (item) {
                             return normalize(item.name) == normalize(employeeName);
                         });
 
@@ -256,7 +256,7 @@ exports.import = function(req, res) {
                     });
 
                     // save to db
-                    orderLineService.createMany(orderLines, function(err, response) {
+                    orderLineService.createMany(orderLines, function (err, response) {
                         if (err) {
                             return handleError(res, err);
                         }
@@ -312,7 +312,7 @@ function getAvailableOptions(menu, category) {
     if (!menu) return [];
     return _.chain(menu.dishes)
         .filter({ category: category })
-        .map(function(item) {
+        .map(function (item) {
             return item.option;
         })
         .sortBy()
@@ -325,15 +325,17 @@ function handleError(res, err) {
 
 function normalize(str) {
     if (!str) return undefined;
-    return str
-        .toLowerCase()
-        .replace(/-/g, " ") // replace dash with one space
-        .replace(/ {2,}/g, " "); // replace multiple spaces with a single space
+    return (
+        str
+            .toLowerCase()
+            //.replace(/-/g, " ") // replace dash with one space
+            .replace(/ {2,}/g, " ")
+    ); // replace multiple spaces with a single space
 }
 
 function promiseToGetOrderLines(odataQuery) {
-    return new Promise(function(resolve, reject) {
-        orderLineService.getAll(odataQuery, function(err, orderLines) {
+    return new Promise(function (resolve, reject) {
+        orderLineService.getAll(odataQuery, function (err, orderLines) {
             if (err) {
                 reject(err);
             }
@@ -343,8 +345,8 @@ function promiseToGetOrderLines(odataQuery) {
 }
 
 function promiseToGetCustomerEmployees(odataQuery) {
-    return new Promise(function(resolve, reject) {
-        customerEmployeeService.getAll(odataQuery, function(err, customerEmployees) {
+    return new Promise(function (resolve, reject) {
+        customerEmployeeService.getAll(odataQuery, function (err, customerEmployees) {
             if (err) {
                 reject(err);
             }
@@ -354,8 +356,8 @@ function promiseToGetCustomerEmployees(odataQuery) {
 }
 
 function promiseToGetBadges(odataQuery) {
-    return new Promise(function(resolve, reject) {
-        badgeService.getAll(odataQuery, function(err, badges) {
+    return new Promise(function (resolve, reject) {
+        badgeService.getAll(odataQuery, function (err, badges) {
             if (err) {
                 reject(err);
             }
