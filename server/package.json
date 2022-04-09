@@ -30,7 +30,7 @@
         "jsonwebtoken": "^5.7.0",
         "lodash": "^4.17.15",
         "mailgun-js": "^0.22.0",
-        "moment": "^2.16.0",
+        "moment": "^2.29.2",
         "mongodb": "^2.1.16",
         "multiparty": "^4.1.2",
         "node-uuid": "^1.4.7",
