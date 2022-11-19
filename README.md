@@ -11,7 +11,7 @@ cd server && npm start
 # start client:
 # there is no local server to start
 # when a new js/css file is added, update the index.html manually or
-cd client && npm build # or 'npx gulp'
+cd client && npm run build # or 'npx gulp'
 
 # start browser:
 http://localhost:1410

@@ -3,10 +3,10 @@
 var passport = require('passport');
 var config = require('../../../config/environment');
 var jwt = require('jsonwebtoken');
-var expressJwt = require('express-jwt'); // Middleware that validates JsonWebTokens and sets req.user to be used by later middleware
+var { expressjwt: expressJwt } = require('express-jwt'); // Middleware that validates JsonWebTokens and sets req.user to be used by later middleware
 var compose = require('composable-middleware'); // Treat a sequence of middleware as middleware.
 var userService = require('../userService');
-var validateJwt = expressJwt({ secret: config.secrets.session });
+var validateJwt = expressJwt({ secret: config.secrets.session, algorithms: ['HS256'] });
 var cookie = require('cookie');
 
 /**
@@ -34,14 +34,14 @@ function addUserIfExist() {
             
             if(req.cookies && req.cookies.access_token){
                 req.headers.authorization = 'Bearer ' + req.cookies.access_token;
-                validateJwt(req, res, next);
+                validateJwt(req, res, next); // if success, the decoded JWT payload is available as req.auth https://github.com/auth0/express-jwt#migration-from-v6
             } else
                 next();
         })
     // Attach user to request
         .use(function (req, res, next) {
-            if(req.user)
-                userService.getByIdWithoutPsw(req.user._id, function (err, user) {
+            if(req.auth) // the decoded JWT payload is available as req.auth (https://github.com/auth0/express-jwt#migration-from-v6)
+                userService.getByIdWithoutPsw(req.auth._id, function (err, user) {
                     if (err) return next(err);
                     if (user) {
                         if (user.role.indexOf('admin') > -1) user.isAdmin = true; //add this property for navbar

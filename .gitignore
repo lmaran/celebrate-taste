@@ -4,3 +4,4 @@ client/dist
 server/src/config/environment/development.js
 server/node_modules
 server/dist
+dump

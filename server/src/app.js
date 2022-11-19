@@ -27,7 +27,7 @@ module.exports = function(app) {
     var exphbs = require("express-handlebars");
     app.engine(
         ".hbs",
-        exphbs({
+        exphbs.engine({
             defaultLayout: "main",
             extname: ".hbs",
             // in the feature we probably don't need the next 2 lines
