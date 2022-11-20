@@ -7,14 +7,14 @@ var chalk = require('chalk');
 require('./rollbarTransport'); // init Rollbar transport for Winston
 require('winston-loggly'); // init Loggly transport for Winston
 
-var logger = new winston.Logger();
+var logger = winston.createLogger();
 var scrubFields = ['password', 'oldPassword', 'newPassword', 'hashedPassword', 'salt']
 
 // Winston && Rollbar: debug > info > warning > error
 // E.g. 'info' level catches also 'warning' or 'error' but not 'debug'
 
 if (config.env === 'production' || config.env === 'staging') {
-    logger.add(winston.transports.RollbarLogger, {
+    logger.add(new winston.transports.RollbarLogger, {
         level: 'warn',  // catches just errors and warnings      
         rollbarAccessToken: config.rollbarToken,
         rollbarConfig: {
@@ -24,14 +24,14 @@ if (config.env === 'production' || config.env === 'staging') {
         }
     }); 
     
-    logger.add(winston.transports.Loggly, {
+    logger.add(new winston.transports.Loggly, {
         token: config.logglyToken,
         subdomain: config.logglySubdomain,
         tags: ["celebrate-taste", config.env],
         json:true
     });     
 } else { // development
-    logger.add(winston.transports.Console, {
+    logger.add(new winston.transports.Console, {
         level: 'debug', // catches all messages           
         formatter: formatterFunc
     });
