@@ -14,27 +14,27 @@ var scrubFields = ['password', 'oldPassword', 'newPassword', 'hashedPassword', '
 // E.g. 'info' level catches also 'warning' or 'error' but not 'debug'
 
 if (config.env === 'production' || config.env === 'staging') {
-    logger.add(new winston.transports.RollbarLogger, {
-        level: 'warn',  // catches just errors and warnings      
-        rollbarAccessToken: config.rollbarToken,
-        rollbarConfig: {
-            environment: config.env,
-            scrubFields:scrubFields
-            //enabled: false // Sets whether reporting of errors to Rollbar is enabled (default true)
-        }
-    }); 
+    // logger.add(new winston.transports.RollbarLogger({
+    //     level: 'warn',  // catches just errors and warnings      
+    //     rollbarAccessToken: config.rollbarToken,
+    //     rollbarConfig: {
+    //         environment: config.env,
+    //         scrubFields:scrubFields
+    //         //enabled: false // Sets whether reporting of errors to Rollbar is enabled (default true)
+    //     }
+    // })); 
     
-    logger.add(new winston.transports.Loggly, {
-        token: config.logglyToken,
-        subdomain: config.logglySubdomain,
-        tags: ["celebrate-taste", config.env],
-        json:true
-    });     
+    // logger.add(new winston.transports.Loggly({
+    //     token: config.logglyToken,
+    //     subdomain: config.logglySubdomain,
+    //     tags: ["celebrate-taste", config.env],
+    //     json:true
+    // }));     
 } else { // development
-    logger.add(new winston.transports.Console, {
+    logger.add(new winston.transports.Console ({
         level: 'debug', // catches all messages           
         formatter: formatterFunc
-    });
+    }));
     
      
 

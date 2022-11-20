@@ -3,7 +3,7 @@
 var errors = require("./components/errors");
 var path = require("path");
 var auth = require("./api/user/login/loginService");
-var logger = require("./logging/logger");
+//var logger = require("./logging/logger");
 var reqHelper = require("./logging/reqHelper");
 var config = require("./config/environment");
 
@@ -20,25 +20,25 @@ module.exports = function(app) {
     });
 
     app.get("/test", function(req, res, next) {
-        logger.info("hit test page");
+        //logger.info("hit test page");
         res.json("This is an info request");
         return next();
     });
 
     app.get("/warning", function(req, res, next) {
-        logger.warn("hit warning page");
+        //logger.warn("hit warning page");
         res.json("This is a warning request.");
         return next();
     });
 
     app.get("/testmeta", function(req, res, next) {
-        logger.info("hit test page (with meta)", { some: "optional metadata" });
+        //logger.info("hit test page (with meta)", { some: "optional metadata" });
         res.json("This is a normal request (with meta)");
         return next();
     });
 
     app.get("/testreq", function(req, res, next) {
-        logger.info("hit test page (with req)", reqHelper.getShortReq(req));
+        //logger.info("hit test page (with req)", reqHelper.getShortReq(req));
         res.json("This is a normal request (with reg), it should be logged to the console too");
         return next();
     });

@@ -164,7 +164,7 @@
                         menu.dishes.forEach(function (dish) {
                             var dishesInCategory = _.filter(menu.dishes, { category: dish.category });
 
-                            console.log(dish);
+                            //console.log(dish);
 
                             if (dishesInCategory.length > 0) {
                                 var pref = _.find(preferences, { date: menu.menuDate });

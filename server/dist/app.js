@@ -10,7 +10,7 @@ var config = require("./config/environment");
 var passport = require("passport");
 var cookieParser = require("cookie-parser");
 var auth = require("./api/user/login/loginService");
-var httpLogHandler = require("./logging/httpLogHandler"); // custom error handler
+//var httpLogHandler = require("./logging/httpLogHandler"); // custom error handler
 
 //var session = require('express-session');
 //var MongoStore = require('connect-mongo')(session); // use PascalCase to avoid an warning in VSCode
@@ -74,7 +74,7 @@ module.exports = function(app) {
     app.use("/views", express.static(path.join(__dirname, "views")));
 
     // log all http requests (like morgan)
-    app.use(httpLogHandler());
+    //app.use(httpLogHandler());
 
     app.use(auth.addUserIfExist());
 };

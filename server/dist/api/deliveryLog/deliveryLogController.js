@@ -22,7 +22,7 @@ exports.create = function(req, res){
     var log = req.body;
 
     var createdOn = new Date();
-    console.log(createdOn);
+    //console.log(createdOn);
     
     log.createBy =req.user.name;
     log.createdOn = createdOn;
