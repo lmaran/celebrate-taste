@@ -55,7 +55,7 @@ exports.create = function (req, res, next) {
 
             userService.create(user, function (err, response) {
                 if(err) { return handleError(res, err); }
-                res.status(201).json(response.ops[0]);
+                res.status(201).json(response.InsertedId);
 
                 // send an email with an activationLink
                 var from = user.email;
@@ -70,7 +70,7 @@ exports.create = function (req, res, next) {
 
                     emailService.sendEmail(from, subject, tpl).then(function (result) {
                         console.log(result);
-                        //res.status(201).json(response.ops[0]);
+                        //res.status(201).json(response.InsertedId);
                     }, function (err) {
                         console.log(err);
                         //handleError(res, err)
@@ -107,7 +107,7 @@ exports.createPublicUser = function (req, res, next) {
 
             userService.create(user, function (err, response) {
                 if(err) { return handleError(res, err); }
-                //res.status(201).json(response.ops[0]);
+                //res.status(201).json(response.InsertedId);
 
                 // keep user as authenticated
                 var token = auth.signToken(user._id, user.role);

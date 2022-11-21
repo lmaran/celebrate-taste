@@ -26,7 +26,7 @@ exports.create = function(req, res){
                 
     deliveryService.create(delivery, function (err, response) {
         if(err) { return handleError(res, err); }
-        res.status(201).json(response.ops[0]);
+        res.status(201).json(response.InsertedId);
     });           
 };
 
@@ -98,7 +98,7 @@ exports.createMany = function(req, res){
 
     deliveryService.createMany(deliveries, function (err, response) {
         if(err) { return handleError(res, err); }
-        res.status(201).json(response.ops[0]);
+        res.status(201).json(response.InsertedIds[0]);
     });           
 };
 
