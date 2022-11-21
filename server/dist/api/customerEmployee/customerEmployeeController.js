@@ -74,7 +74,7 @@ exports.create = function(req, res){
 
             customerEmployeeService.create(customerEmployee, function (err, response) {
             if(err) { return handleError(res, err); }
-            res.status(201).json(response.ops[0]);
+            res.status(201).json(response.InsertedId);
         });
         }
     });

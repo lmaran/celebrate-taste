@@ -98,7 +98,7 @@ exports.create = function (req, res) {
                         if (err) {
                             return handleError(res, err);
                         }
-                        res.status(201).json(response.ops[0]);
+                        res.status(201).json(response.InsertedId);
                     });
                 });
             } else {
@@ -107,7 +107,7 @@ exports.create = function (req, res) {
                     if (err) {
                         return handleError(res, err);
                     }
-                    res.status(201).json(response.ops[0]);
+                    res.status(201).json(response.InsertedId);
                 });
             }
         }
@@ -260,7 +260,7 @@ exports.import = function (req, res) {
                         if (err) {
                             return handleError(res, err);
                         }
-                        res.status(201).json(response.ops[0]);
+                        res.status(201).json(response.InsertedIds[0]);
                     });
                 }
             );

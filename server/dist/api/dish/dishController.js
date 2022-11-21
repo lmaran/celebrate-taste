@@ -32,8 +32,8 @@ exports.create = function (req, res) {
 
     dishService.create(dish, function (err, response) {
         if (err) { return handleError(res, err); }
-        let createdDish = response.ops[0];
-        res.status(201).json(response.ops[0]);
+        let createdDish = response.InsertedId;
+        res.status(201).json(response.InsertedId);
 
         updateImageStatus(dish.image, 'dishId', createdDish._id);  // mark newDish image as used  
     });
