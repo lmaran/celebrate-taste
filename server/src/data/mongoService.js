@@ -146,7 +146,7 @@
             if (err) return next(err, null);
             obj._id = mongoHelper.normalizedId(obj._id);
             // returnOriginal: (default:true) Set to false if you want to return the modified object rather than the original
-            db.collection(collection).findOneAndUpdate({_id:obj._id}, obj, next);
+            db.collection(collection).updateOne({_id:obj._id}, {$set:obj}, next);
         });
     };  
     
@@ -156,7 +156,7 @@
             if (err) return next(err, null);
             obj._id = mongoHelper.normalizedId(obj._id);
             // returnOriginal: (default:true) Set to false if you want to return the modified object rather than the original
-            db.collection(collection).findOneAndUpdate({_id:obj._id}, {$set:obj}, next);
+            db.collection(collection).updateOne({_id:obj._id}, {$set:obj}, next);
         });
     };    
 
