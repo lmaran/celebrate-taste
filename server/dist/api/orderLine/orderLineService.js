@@ -33,9 +33,9 @@
         mongoHelper.getDb(function (err, db) {
             if (err) return next(err, null);
             orderLine._id = mongoHelper.normalizedId(orderLine._id);
-            db.collection(collection).findOneAndUpdate(
+            db.collection(collection).updateOne(
                 { _id: orderLine._id },
-                orderLine,
+                {$set: orderLine},
                 { returnOriginal: false },
                 next,
             );

@@ -58,7 +58,7 @@ exports.update = function (req, res) {
 
         dishService.update(newDish, function (err, response) {
             if (err) { return handleError(res, err); }
-            if (!response.value) {
+            if (!response.matchedCount) {
                 res.sendStatus(404); // not found
             } else {
                 res.sendStatus(200);
@@ -268,7 +268,7 @@ function  updateImageStatus(image, field, value){
 
                 dishService.updateImageEntity(imageEntity, function (err, response) {
                     if (err) { } // todo: log this
-                    if (!response.value) {
+                    if (!response.matchedCount) {
                         // todo: log this
                     } else {
                         // todo: log this
