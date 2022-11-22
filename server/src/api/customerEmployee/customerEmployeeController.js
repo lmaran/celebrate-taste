@@ -107,9 +107,9 @@ exports.update = function(req, res){
             }
 
             // update customer
-            customerEmployeeService.update(customerEmployee, function (err, response) {
+            customerEmployeeService.findOneAndUpdate(customerEmployee, function (err, response) {
                 if(err) { return handleError(res, err); }
-                if (!response.matchedCount) {
+                if (!response.value) {
                     res.sendStatus(404); // not found
                 } else {
 

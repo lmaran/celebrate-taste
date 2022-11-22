@@ -28,6 +28,10 @@
         mongoService.update(collection, badge, next);
     };  
 
+    badgeService.findOneAndUpdate = function (badge, next) {        
+        mongoService.findOneAndUpdate(collection, badge, next);
+    };  
+
     badgeService.remove = function (id, next) {
         mongoService.remove(collection, id, next);
     };
