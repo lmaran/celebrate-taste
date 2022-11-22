@@ -260,7 +260,7 @@ exports.import = function (req, res) {
                         if (err) {
                             return handleError(res, err);
                         }
-                        res.status(201).json(response.InsertedIds[0]);
+                        res.status(201).json(response.insertedIds[0]);
                     });
                 }
             );
