@@ -131,7 +131,7 @@ exports.update = function(req, res){
             // update customer
             badgeService.update(badge, function (err, response) {
                 if(err) { return handleError(res, err); }
-                if (!response.value) {
+                if (!response.matchedCount) {
                     res.sendStatus(404); // not found
                 } else {
     

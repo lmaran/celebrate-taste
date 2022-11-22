@@ -49,7 +49,7 @@ exports.update = function(req, res){
                         
             deliveryService.update(delivery, function (err, response) {
                 if(err) { return handleError(res, err); }
-                if (!response.value) {
+                if (!response.matchedCount) {
                     res.sendStatus(404); // not found
                 } else {
                     res.sendStatus(200);

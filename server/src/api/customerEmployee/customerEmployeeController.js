@@ -109,7 +109,7 @@ exports.update = function(req, res){
             // update customer
             customerEmployeeService.update(customerEmployee, function (err, response) {
                 if(err) { return handleError(res, err); }
-                if (!response.value) {
+                if (!response.matchedCount) {
                     res.sendStatus(404); // not found
                 } else {
 

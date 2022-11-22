@@ -62,7 +62,7 @@ exports.update = function(req, res) {
                 if (err) {
                     return handleError(res, err);
                 }
-                if (!response.value) {
+                if (!response.matchedCount) {
                     res.sendStatus(404); // not found
                 } else {
                     res.sendStatus(200);
@@ -132,7 +132,7 @@ exports.saveMyPreferences = function(req, res) {
                 if (err) {
                     return handleError(res, err);
                 }
-                if (!response.value) {
+                if (!response.matchedCount) {
                     res.sendStatus(404); // not found
                 } else {
                     res.sendStatus(200);
