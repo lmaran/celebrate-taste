@@ -129,9 +129,9 @@ exports.update = function(req, res){
             } 
             
             // update customer
-            badgeService.update(badge, function (err, response) {
+            badgeService.findOneAndUpdate(badge, function (err, response) {
                 if(err) { return handleError(res, err); }
-                if (!response.matchedCount) {
+                if (!response.value) {
                     res.sendStatus(404); // not found
                 } else {
     
