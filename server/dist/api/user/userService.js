@@ -78,7 +78,7 @@
 
     userService.encryptPassword = function(password, salt) {
         if (!password || !salt) return '';
-        var newSalt = new Buffer(salt, 'base64');
+        var newSalt = Buffer.from(salt, 'base64');
         return crypto.pbkdf2Sync(password, newSalt, 10000, 64 ,'sha1').toString('base64');
     };
 

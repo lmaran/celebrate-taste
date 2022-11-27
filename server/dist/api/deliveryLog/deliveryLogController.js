@@ -29,7 +29,7 @@ exports.create = function(req, res){
 
     deliveryLogService.create(log, function (err, response) {
         if(err) { return handleError(res, err); }
-        res.status(201).json(response.InsertedId);
+        res.status(201).json(response.insertedId);
     });           
 };
 

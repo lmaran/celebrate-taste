@@ -26,7 +26,7 @@ exports.create = function(req, res){
     
     menuService.create(menu, function (err, response) {
         if(err) { return handleError(res, err); }
-        res.status(201).json(response.InsertedId);
+        res.status(201).json(response.insertedId);
     });
 };
 

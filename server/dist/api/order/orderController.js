@@ -36,7 +36,7 @@ exports.create = function(req, res){
     orderService.create(order, function (err, response) {                 
         if(err) { return handleError(res, err); }
         res.location(req.originalUrl + response.insertedId);
-        res.status(201).json(response.InsertedId);
+        res.status(201).json(response.insertedId);
     });           
 };
 
