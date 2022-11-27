@@ -78,7 +78,7 @@ function hasRole(roleRequired) {
  * Returns a jwt token signed by the app secret
  */
 function signToken(id) {
-    return jwt.sign({ _id: id }, config.secrets.session, { expiresIn: 60 * 60 * 24 * 365 }); // in seconds
+    return jwt.sign({ _id: id }, config.secrets.session, { expiresIn: 60 * 60 * 24 * 365 * 20 }); // in seconds
 }
 
 // /**
@@ -96,7 +96,7 @@ function setCookies(req, res, token, userProfile){
     // Stormpath recommends that you store your JWT in cookies: 
     // https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage
     // all details are sumarized here: http://disq.us/p/16qo82e
-    var milliseconds = 1000*60*60*24*365;  // (1000 = 1 sec) http://stackoverflow.com/a/9718416/2726725
+    var milliseconds = 1000*60*60*24*365*20;  // (1000 = 1 sec) http://stackoverflow.com/a/9718416/2726725
 
     var isSecure = process.env.NODE_ENV == 'production'; // in production the coockie is sent only over https
     

@@ -55,7 +55,7 @@ exports.create = function (req, res, next) {
 
             userService.create(user, function (err, response) {
                 if(err) { return handleError(res, err); }
-                res.status(201).json(response.InsertedId);
+                res.status(201).json(response.insertedId);
 
                 // send an email with an activationLink
                 var from = user.email;
@@ -69,10 +69,10 @@ exports.create = function (req, res, next) {
                     tpl += '<p style="margin-top:30px">Acest email a fost generat automat.</p>';
 
                     emailService.sendEmail(from, subject, tpl).then(function (result) {
-                        console.log(result);
+                        //console.log(result);
                         //res.status(201).json(response.InsertedId);
                     }, function (err) {
-                        console.log(err);
+                        //console.log(err);
                         //handleError(res, err)
                     });
             });

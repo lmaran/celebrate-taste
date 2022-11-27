@@ -31,7 +31,7 @@ exports.create = function(req, res) {
                 if (err) {
                     return handleError(res, err);
                 }
-                res.status(201).json(response.InsertedId);
+                res.status(201).json(response.insertedId);
             });
         }
     });
@@ -153,7 +153,7 @@ exports.saveMyPreferences = function(req, res) {
             if (err) {
                 return handleError(res, err);
             }
-            res.status(201).json(response.InsertedId);
+            res.status(201).json(response.insertedId);
         });
     }
 };

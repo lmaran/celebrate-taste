@@ -72,7 +72,7 @@
  
             // count (by '/$count' url segment)     -> returns a Number
             if (query.hasCountSegment) {
-                return qr.count(next);
+                return db.collection(collection).countDocuments(query.$filter, query.$select || {}, next);
             }
   
             // result                               -> returns an Array
@@ -85,7 +85,7 @@
                 if (err)
                     return next(err);
 
-                db.collection(collection).find(query.$filter).count(function(err, c) {
+                db.collection(collection).countDocuments(query.$filter, function(err, c) {
                     if (err)
                         return next(err);
                     
