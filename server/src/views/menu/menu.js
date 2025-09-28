@@ -78,7 +78,7 @@
                 if (!preference.preferenceId) {
                     // does not change the html5 'data-*' attribute, just the jQuery cache
                     // but this is enough for this case: http://stackoverflow.com/a/17246540
-                    $parentMenuUl.data("preference-id", data._id);
+                    $parentMenuUl.data("preference-id", data);
                 }
 
                 // update DOM
