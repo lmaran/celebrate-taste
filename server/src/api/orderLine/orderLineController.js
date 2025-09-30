@@ -89,9 +89,11 @@ exports.create = function (req, res) {
                     // if(orderLine.option1 === undefined || orderLine.option1.trim() === ''){
                     //     orderLine.option1 = getOption(availableOptions1);
                     // };
-                    if (orderLine.option2 === undefined || orderLine.option2.trim() === "") {
-                        orderLine.option2 = getOption(availableOptions2);
-                    }
+
+                    // we don't want to set up a default option for option 2 too (request from Rita on 30.09.2025)
+                    // if (orderLine.option2 === undefined || orderLine.option2.trim() === "") {
+                    //     orderLine.option2 = getOption(availableOptions2);
+                    // }
 
                     // save orderLine
                     orderLineService.create(orderLine, function (err, response) {
@@ -247,9 +249,10 @@ exports.import = function (req, res) {
                             // orderLine.option2 = getOption(availableOptions2);
 
                             // new (daca nu si-a ales nici supa nici felul 2 atunci primeste automat optiunea "C" (cerintă 2 Martie 2020))
-                            if (!orderLine.option1) {
-                                orderLine.option2 = "C";
-                            }
+                            // we don't want to set up a default option for option 2 too (request from Rita on 30.09.2025)
+                            // if (!orderLine.option1) {
+                            //     orderLine.option2 = "C";
+                            // }
                         }
 
                         orderLines.push(orderLine);
